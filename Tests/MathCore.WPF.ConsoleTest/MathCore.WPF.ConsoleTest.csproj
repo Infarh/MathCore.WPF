@@ -9,4 +9,8 @@
     <PackageReference Include="MathCore" Version="0.0.14" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\MathCore.WPF\MathCore.WPF.csproj" />
+  </ItemGroup>
+
 </Project>
