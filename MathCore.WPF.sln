@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF", "MathCore.WPF\MathCore.WPF.csproj", "{32A25B93-BDF4-4451-BECC-2676D65BD2AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9D12AAC1-92D6-412C-9508-5B021ABB30B6}
+	EndGlobalSection
+EndGlobal
