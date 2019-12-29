@@ -16,7 +16,9 @@ jobs:
           dotnet-version: 3.1.100
           
       - name: Building
-        run: dotnet build -c Debug
+        run: |
+          dotnet build MathCore.WPF/MathCore.WPF.csproj -c Debug
+          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj -c Debug
           
       - name: Run Tests
-        run: dotnet test
+        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj
