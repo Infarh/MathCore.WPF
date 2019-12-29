@@ -29,7 +29,6 @@
 using System;
 using System.Windows.Media;
 using System.Xml.Linq;
-using System.Diagnostics;
 using System.Windows.Media.Imaging;
 using System.Windows;
 

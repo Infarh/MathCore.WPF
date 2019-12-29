@@ -66,18 +66,18 @@
 //        {
 //            var dialog = new FolderBrowserDialog();
 //            var description = Title;
-//            if(description != null)
+//            if (description != null)
 //                dialog.Description = description;
 
 //            var selectedpath = p as string ?? SelectedPath?.FullName;
-//            if(selectedpath != null)
+//            if (selectedpath != null)
 //                dialog.SelectedPath = selectedpath;
 
 //            dialog.ShowNewFolderButton = ShowNewFolderButton;
 //            dialog.RootFolder = RootFolder;
 
 //            var result = dialog.ShowDialog();
-//            if(result == DialogResult.OK || UpdateIfResultFalse)
+//            if (result == DialogResult.OK || UpdateIfResultFalse)
 //                SelectedPath = new DirectoryInfo(dialog.SelectedPath);
 //        }
 //    }

@@ -26,11 +26,6 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
-using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG
 {

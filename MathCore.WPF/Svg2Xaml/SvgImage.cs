@@ -30,7 +30,6 @@ using System;
 using System.Windows.Markup;
 using System.Windows;
 using System.IO;
-using System.Diagnostics;
 using System.Windows.Media;
 
 namespace MathCore.WPF.SVG

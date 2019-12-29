@@ -28,7 +28,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 using System.Windows.Media;
 using System.Xml.Linq;
-using System.Windows;
 using System;
 
 namespace MathCore.WPF.SVG
