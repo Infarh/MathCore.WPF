@@ -4,19 +4,71 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
+    <Version>0.0.0.2</Version>
+    <Authors>Shmachilin P.A.</Authors>
+    <Description>Библиотека инструментов для работы с WPF</Description>
+    <Copyright>shmachilin@gmail.com</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>github.com/infarh/mathcore.wpf</PackageProjectUrl>
+    <RepositoryUrl>github.com/infarh/mathcore.wpf</RepositoryUrl>
+    <PackageTags>wpf, toolkit</PackageTags>
+    <PackageReleaseNotes>Запуск проекта</PackageReleaseNotes>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>MathCoreWPFSign.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="MathCore.WPF.csproj.DotSettings" />
+    <None Remove="TeX\Fonts\cmex10.ttf" />
+    <None Remove="TeX\Fonts\cmmi10.ttf" />
+    <None Remove="TeX\Fonts\cmr10.ttf" />
+    <None Remove="TeX\Fonts\cmsy10.ttf" />
+    <None Remove="TeX\Styles\DefaultTexFont.xml" />
+    <None Remove="TeX\Styles\GlueSettings.xml" />
+    <None Remove="TeX\Styles\PredefinedTexFormulas.xml" />
+    <None Remove="TeX\Styles\TexFormulaSettings.xml" />
+    <None Remove="TeX\Styles\TexSymbols.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TeX\Fonts\cmex10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmmi10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmr10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmsy10.ttf" />
+    <EmbeddedResource Include="TeX\Styles\DefaultTexFont.xml" />
+    <EmbeddedResource Include="TeX\Styles\GlueSettings.xml" />
+    <EmbeddedResource Include="TeX\Styles\PredefinedTexFormulas.xml" />
+    <EmbeddedResource Include="TeX\Styles\TexFormulaSettings.xml" />
+    <EmbeddedResource Include="TeX\Styles\TexSymbols.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MathCore" Version="0.0.14" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.3" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Converters\" />
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

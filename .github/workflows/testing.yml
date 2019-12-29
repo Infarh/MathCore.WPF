@@ -1,0 +1,24 @@
+name: Testing
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Testing
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Use .NET 3.1.100
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
+          
+      - name: Building
+        run: |
+          dotnet build MathCore.WPF/MathCore.WPF.csproj -c Debug
+          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj -c Debug
+          
+      - name: Run Tests
+        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj

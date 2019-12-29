@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF", "MathCore.WPF\MathCore.WPF.csproj", "{32A25B93-BDF4-4451-BECC-2676D65BD2AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF", "MathCore.WPF\MathCore.WPF.csproj", "{32A25B93-BDF4-4451-BECC-2676D65BD2AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7B0FF24E-606F-4FE1-B2EB-59CE8B955D18}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF.Tests", "Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj", "{CD2921BC-8C56-4012-A3AD-966B7EB16F17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF.WindowTest", "Tests\MathCore.WPF.WindowTest\MathCore.WPF.WindowTest.csproj", "{4C6A1921-34C1-434B-BC51-F3D030628FFC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF.ConsoleTest", "Tests\MathCore.WPF.ConsoleTest\MathCore.WPF.ConsoleTest.csproj", "{9A075286-7BDD-48D0-9C51-4157E5583842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +23,26 @@ Global
 		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32A25B93-BDF4-4451-BECC-2676D65BD2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD2921BC-8C56-4012-A3AD-966B7EB16F17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD2921BC-8C56-4012-A3AD-966B7EB16F17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD2921BC-8C56-4012-A3AD-966B7EB16F17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD2921BC-8C56-4012-A3AD-966B7EB16F17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6A1921-34C1-434B-BC51-F3D030628FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6A1921-34C1-434B-BC51-F3D030628FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6A1921-34C1-434B-BC51-F3D030628FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6A1921-34C1-434B-BC51-F3D030628FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A075286-7BDD-48D0-9C51-4157E5583842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A075286-7BDD-48D0-9C51-4157E5583842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A075286-7BDD-48D0-9C51-4157E5583842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A075286-7BDD-48D0-9C51-4157E5583842}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CD2921BC-8C56-4012-A3AD-966B7EB16F17} = {7B0FF24E-606F-4FE1-B2EB-59CE8B955D18}
+		{4C6A1921-34C1-434B-BC51-F3D030628FFC} = {7B0FF24E-606F-4FE1-B2EB-59CE8B955D18}
+		{9A075286-7BDD-48D0-9C51-4157E5583842} = {7B0FF24E-606F-4FE1-B2EB-59CE8B955D18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D12AAC1-92D6-412C-9508-5B021ABB30B6}
