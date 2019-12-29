@@ -8,6 +8,27 @@
 
   <ItemGroup>
     <None Remove="MathCore.WPF.csproj.DotSettings" />
+    <None Remove="TeX\Fonts\cmex10.ttf" />
+    <None Remove="TeX\Fonts\cmmi10.ttf" />
+    <None Remove="TeX\Fonts\cmr10.ttf" />
+    <None Remove="TeX\Fonts\cmsy10.ttf" />
+    <None Remove="TeX\Styles\DefaultTexFont.xml" />
+    <None Remove="TeX\Styles\GlueSettings.xml" />
+    <None Remove="TeX\Styles\PredefinedTexFormulas.xml" />
+    <None Remove="TeX\Styles\TexFormulaSettings.xml" />
+    <None Remove="TeX\Styles\TexSymbols.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TeX\Fonts\cmex10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmmi10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmr10.ttf" />
+    <EmbeddedResource Include="TeX\Fonts\cmsy10.ttf" />
+    <EmbeddedResource Include="TeX\Styles\DefaultTexFont.xml" />
+    <EmbeddedResource Include="TeX\Styles\GlueSettings.xml" />
+    <EmbeddedResource Include="TeX\Styles\PredefinedTexFormulas.xml" />
+    <EmbeddedResource Include="TeX\Styles\TexFormulaSettings.xml" />
+    <EmbeddedResource Include="TeX\Styles\TexSymbols.xml" />
   </ItemGroup>
 
   <ItemGroup>
