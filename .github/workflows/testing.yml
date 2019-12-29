@@ -1,0 +1,22 @@
+name: Testing
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      
+      - name: Use .NET 3.1.100
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.100
+          
+      - name: Building
+        run: dotnet build -c Debug
+          
+      - name: Run Tests
+        run: dotnet test
