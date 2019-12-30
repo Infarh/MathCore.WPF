@@ -103,7 +103,7 @@ namespace MathCore.WPF
 
         #region PropertyPath
 
-        /// <summary>Имя свйоства элемента коллекции, по которому будет производиться фильтрация её элементов</summary>
+        /// <summary>Имя свойства элемента коллекции, по которому будет производиться фильтрация её элементов</summary>
         public static readonly DependencyProperty PropertyNameProperty =
             DependencyProperty.RegisterAttached(
                 "PropertyName",
@@ -203,7 +203,7 @@ namespace MathCore.WPF
 
             /// <summary>Инициализация новой структуры с информацией о свойстве типа объекта</summary>
             /// <param name="item">Объект, имя свойства которого требуется получить</param>
-            /// <param name="property">Имя свйоства объекта</param>
+            /// <param name="property">Имя свойства объекта</param>
             public TypeProperty(object item, string property)
             {
                 _Type = item.GetType();
@@ -211,7 +211,7 @@ namespace MathCore.WPF
             }
 
             /// <summary>Получить делегат метод извлечения значения свойства</summary>
-            /// <returns>Делегат, извлекающий значение свойтва объекта</returns>
+            /// <returns>Делегат, извлекающий значение свойства объекта</returns>
             public Delegate GetProperty()
             {
                 var property = _Type.GetProperty(_Property, BindingFlags.Instance | BindingFlags.Public);

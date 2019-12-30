@@ -230,20 +230,20 @@ namespace MathCore.WPF
 
         /// <summary>Инициализация нового свойства модели</summary>
         /// <param name="Name">Имя свойства модели</param>
-        /// <param name="Value">Значение свйоства модели</param>
+        /// <param name="Value">Значение свойства модели</param>
         public ModelProperty([NotNull] string Name, [CanBeNull] object Value) : this(Name) => this.Value = Value;
 
         /// <inheritdoc />
         protected override Freezable CreateInstanceCore() => new ModelProperty(Name);
     }
 
-    /// <summary>Динамический объект доступа к свйоствам модели</summary>
+    /// <summary>Динамический объект доступа к свойствам модели</summary>
     public sealed class ModelObject : DynamicObject, INotifyPropertyChanged
     {
         /// <summary>Событие возникает в момент изменения значения свойства модели</summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>Метод генерации события изменеия свйоства модели</summary>
+        /// <summary>Метод генерации события изменеия свойства модели</summary>
         /// <param name="PropertyName"></param>
         [NotifyPropertyChangedInvocator]
         private void OnPropertyChanged([CallerMemberName] string PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));

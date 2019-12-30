@@ -97,7 +97,7 @@ namespace MathCore.WPF
 
         /// <summary>Получение значения типа <see cref="VerticalAlignment"/> свойства <see cref="Watermark"/>.<see cref="VerticalAlignmentProperty"/> у целевого объекта <see cref="element"/></summary>
         /// <param name="element">Объект <see cref="DependencyObject"/>, значение <see cref="Watermark"/>.<see cref="VerticalAlignmentProperty"/> которого надо получить</param>
-        /// <returns>Значение свйоства <see cref="Watermark"/>.<see cref="VerticalAlignmentProperty"/> типа <see cref="VerticalAlignment"/> целевого объекта <see cref="element"/></returns>
+        /// <returns>Значение свойства <see cref="Watermark"/>.<see cref="VerticalAlignmentProperty"/> типа <see cref="VerticalAlignment"/> целевого объекта <see cref="element"/></returns>
         public static VerticalAlignment GetVerticalAligment(DependencyObject element) => (VerticalAlignment)element.GetValue(VerticalAlignmentProperty);
 
         #endregion
@@ -120,7 +120,7 @@ namespace MathCore.WPF
 
         /// <summary>Получение значения типа <see cref="HorizontalAlignment"/> свойства <see cref="Watermark"/>.<see cref="HorizontalAlignmentProperty"/> у целевого объекта <see cref="element"/></summary>
         /// <param name="element">Объект <see cref="DependencyObject"/>, значение <see cref="Watermark"/>.<see cref="HorizontalAlignmentProperty"/> которого надо получить</param>
-        /// <returns>Значение свйоства <see cref="Watermark"/>.<see cref="HorizontalAlignmentProperty"/> типа <see cref="HorizontalAlignment"/> целевого объекта <see cref="element"/></returns>
+        /// <returns>Значение свойства <see cref="Watermark"/>.<see cref="HorizontalAlignmentProperty"/> типа <see cref="HorizontalAlignment"/> целевого объекта <see cref="element"/></returns>
         public static HorizontalAlignment GetHorizontalAlignment(DependencyObject element) => (HorizontalAlignment)element.GetValue(HorizontalAlignmentProperty);
 
         #endregion
@@ -143,7 +143,7 @@ namespace MathCore.WPF
 
         /// <summary>Получение значения типа <see cref="double"/> свойства <see cref="Watermark"/>.<see cref="FontSizeProperty"/> у целевого объекта <see cref="element"/></summary>
         /// <param name="element">Объект <see cref="DependencyObject"/>, значение <see cref="Watermark"/>.<see cref="FontSizeProperty"/> которого надо получить</param>
-        /// <returns>Значение свйоства <see cref="Watermark"/>.<see cref="FontSizeProperty"/> типа <see cref="double"/> целевого объекта <see cref="element"/></returns>
+        /// <returns>Значение свойства <see cref="Watermark"/>.<see cref="FontSizeProperty"/> типа <see cref="double"/> целевого объекта <see cref="element"/></returns>
         public static double GetFontSize(DependencyObject element) => (double)element.GetValue(FontSizeProperty);
 
         #endregion
