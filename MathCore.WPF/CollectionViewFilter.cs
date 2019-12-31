@@ -13,8 +13,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using MathCore.Annotations;
 using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
@@ -37,7 +42,7 @@ namespace MathCore.WPF
         /// <summary>Задействованные представления</summary>
         private static readonly HashSet<CollectionViewSource> __Collections = new HashSet<CollectionViewSource>();
         /// <summary>Регулярное выражение проверки корректности имени свойства</summary>
-        private static readonly Regex __ProperyNameRegex = new Regex(@"@?[a-zA-Z][\w_]*", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex __PropertyNameRegex = new Regex(@"@?[a-zA-Z][\w_]*", RegexOptions.Compiled | RegexOptions.Singleline);
 
         #region Converter
 
@@ -48,10 +53,10 @@ namespace MathCore.WPF
                typeof(CollectionViewFilter),
                new PropertyMetadata(default(IValueConverter)));
 
-        public static void SetConverter(DependencyObject element, IValueConverter value) => element.SetValue(ConverterProperty, value);
+        public static void SetConverter([Annotations.NotNull] DependencyObject element, IValueConverter value) => element.SetValue(ConverterProperty, value);
 
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static IValueConverter GetConverter(DependencyObject element) => (IValueConverter)element.GetValue(ConverterProperty);
+        public static IValueConverter GetConverter([Annotations.NotNull] DependencyObject element) => (IValueConverter)element.GetValue(ConverterProperty);
 
         #endregion
 
@@ -68,13 +73,13 @@ namespace MathCore.WPF
         /// <summary>Установка метода сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Представление, для которой производится установка значения метода сравнения строк</param>
         /// <param name="value">Устанавливаемый метод сравнения строк</param>
-        public static void SetStringComparisonType(DependencyObject element, StringComparison value) => element.SetValue(StringComparisonTypeProperty, value);
+        public static void SetStringComparisonType([Annotations.NotNull] DependencyObject element, StringComparison value) => element.SetValue(StringComparisonTypeProperty, value);
 
         /// <summary>Получить метод сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается метод сравнения строк</param>
         /// <returns>Метод сравнения строк</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static StringComparison GetStringComparisonType(DependencyObject element) => (StringComparison)element.GetValue(StringComparisonTypeProperty);
+        public static StringComparison GetStringComparisonType([Annotations.NotNull] DependencyObject element) => (StringComparison)element.GetValue(StringComparisonTypeProperty);
 
         #endregion
 
@@ -91,13 +96,13 @@ namespace MathCore.WPF
         /// <summary>Установка способа сравнения строк для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается способ сравнения строк</param>
         /// <param name="value">Устанавливаемый способ сравнения строк</param>
-        public static void SetTextCompareType(DependencyObject element, TextCompareType value) => element.SetValue(TextCompareTypeProperty, value);
+        public static void SetTextCompareType([Annotations.NotNull] DependencyObject element, TextCompareType value) => element.SetValue(TextCompareTypeProperty, value);
 
         /// <summary>Получить способ сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой требуется получить способ сравнения строк</param>
         /// <returns>Способ сравнения строк</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static TextCompareType GetTextCompareType(DependencyObject element) => (TextCompareType)element.GetValue(TextCompareTypeProperty);
+        public static TextCompareType GetTextCompareType([Annotations.NotNull] DependencyObject element) => (TextCompareType)element.GetValue(TextCompareTypeProperty);
 
         #endregion
 
@@ -111,18 +116,18 @@ namespace MathCore.WPF
                 typeof(CollectionViewFilter),
                 new PropertyMetadata(
                     default(string), PropertyChanged),
-                    v => v is null || v is string && ((string)v == string.Empty || __ProperyNameRegex.IsMatch((string)v)));
+                    v => v is null || v is string value && (value.Length == 0 || __PropertyNameRegex.IsMatch(value)));
 
         /// <summary>Установить имя фильтруемого свойства для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается имя фильтруемого свойства её элемента</param>
-        /// <param name="value">Имя свйосвта</param>
-        public static void SetPropertyName(DependencyObject element, string value) => element.SetValue(PropertyNameProperty, value);
+        /// <param name="value">Имя свойства</param>
+        public static void SetPropertyName([Annotations.NotNull] DependencyObject element, string value) => element.SetValue(PropertyNameProperty, value);
 
         /// <summary>Получить имя фильтруемого свойства для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, имя фильтруемого свойство которой требуется получить</param>
-        /// <returns>Имя фильтруемого свойства элемнетов коллекции</returns>
+        /// <returns>Имя фильтруемого свойства элементов коллекции</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static string GetPropertyName(DependencyObject element) => (string)element.GetValue(PropertyNameProperty);
+        public static string GetPropertyName([Annotations.NotNull] DependencyObject element) => (string)element.GetValue(PropertyNameProperty);
 
         #endregion
 
@@ -137,21 +142,21 @@ namespace MathCore.WPF
                new PropertyMetadata(default(string), PropertyChanged));
 
         /// <summary>Установить текст фильтра для модели представления коллекции</summary>
-        /// <param name="element">Модель представления колекции, текст фильтра для которой требуется установить</param>
+        /// <param name="element">Модель представления коллекции, текст фильтра для которой требуется установить</param>
         /// <param name="value">Устанавливаемый текст фильтра</param>
-        public static void SetFilterText(DependencyObject element, string value) => element.SetValue(FilterTextProperty, value);
+        public static void SetFilterText([Annotations.NotNull] DependencyObject element, string value) => element.SetValue(FilterTextProperty, value);
 
-        /// <summary>Получить значение текста фильтра для модели предатавления коллекции</summary>
+        /// <summary>Получить значение текста фильтра для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, текст фильтра для которой требуется получить</param>
-        /// <returns>Текст фильтра, установленный для модели предатавления коллекции</returns>
+        /// <returns>Текст фильтра, установленный для модели представления коллекции</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static string GetFilterText(DependencyObject element) => (string)element.GetValue(FilterTextProperty);
+        public static string GetFilterText([Annotations.NotNull] DependencyObject element) => (string)element.GetValue(FilterTextProperty);
 
         #endregion
 
         #region DelayTime
 
-        /// <summary>Время задержки обновления модели предавления коллекции в миллисеккундах</summary>
+        /// <summary>Время задержки обновления модели представления коллекции в миллисекундах</summary>
         public static readonly DependencyProperty DelayTimeProperty =
             DependencyProperty.RegisterAttached(
                 "DelayTime",
@@ -159,19 +164,19 @@ namespace MathCore.WPF
                 typeof(CollectionViewFilter),
                 new PropertyMetadata(500));
 
-        public static void SetDelayTime(DependencyObject element, int value) => element.SetValue(DelayTimeProperty, value);
+        public static void SetDelayTime([Annotations.NotNull] DependencyObject element, int value) => element.SetValue(DelayTimeProperty, value);
 
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static int GetDelayTime(DependencyObject element) => (int)element.GetValue(DelayTimeProperty);
+        public static int GetDelayTime([Annotations.NotNull] DependencyObject element) => (int)element.GetValue(DelayTimeProperty);
 
         #endregion
 
         /// <summary>Время входа в метод изменения значения свойства фильтра в миллисекундах с начала работы системы</summary>
         private static int __PropertyChangedEnterTime;
 
-        /// <summary>Метод обновления значения присоединённого свойства зависимости для фильтра модели представлния коллекции</summary>
+        /// <summary>Метод обновления значения присоединённого свойства зависимости для фильтра модели представления коллекции</summary>
         /// <param name="D">Модель представления коллекции, для которой изменяется значение свойства</param>
-        /// <param name="E">Информация об изменившемся свойсвте</param>
+        /// <param name="E">Информация об изменившемся свойстве</param>
         private static async void PropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
             if (!(D is CollectionViewSource view_source)) return;
@@ -186,25 +191,25 @@ namespace MathCore.WPF
 
         /// <summary>Инициализация новой модели представления коллекции</summary>
         /// <param name="collection_view_source">Модель представления коллекции, которую требуется инициализировать</param>
-        private static void Initialize(CollectionViewSource collection_view_source)
+        private static void Initialize([CanBeNull] CollectionViewSource collection_view_source)
         {
             if (collection_view_source is null) return;
             __Collections.Add(collection_view_source);
             collection_view_source.Filter += CollectionViewSource_OnFilter;
         }
 
-        /// <summary>Информация о свойтве для указанного типа</summary>
+        /// <summary>Информация о свойстве для указанного типа</summary>
         private struct TypeProperty : IEquatable<TypeProperty>
         {
-            /// <summary>Тип, информацию о свойтве которого требуется сохранить</summary>
+            /// <summary>Тип, информацию о свойстве которого требуется сохранить</summary>
             private readonly Type _Type;
-            /// <summary>Имя свйосвта</summary>
+            /// <summary>Имя свойства</summary>
             private readonly string _Property;
 
             /// <summary>Инициализация новой структуры с информацией о свойстве типа объекта</summary>
             /// <param name="item">Объект, имя свойства которого требуется получить</param>
             /// <param name="property">Имя свойства объекта</param>
-            public TypeProperty(object item, string property)
+            public TypeProperty([Annotations.NotNull] object item, string property)
             {
                 _Type = item.GetType();
                 _Property = property;
@@ -212,20 +217,21 @@ namespace MathCore.WPF
 
             /// <summary>Получить делегат метод извлечения значения свойства</summary>
             /// <returns>Делегат, извлекающий значение свойства объекта</returns>
+            [Annotations.NotNull]
             public Delegate GetProperty()
             {
                 var property = _Type.GetProperty(_Property, BindingFlags.Instance | BindingFlags.Public);
                 if (property is null) throw new InvalidOperationException("Указанное свойство в типе не найдено");
                 if (!property.CanRead) throw new InvalidOperationException("Свойство только для записи");
                 var method_info = property.GetGetMethod();
-                return Delegate.CreateDelegate(typeof(Func<,>).MakeGenericType(_Type, method_info.ReturnType), method_info);
+                return Delegate.CreateDelegate(typeof(Func<,>).MakeGenericType(_Type, method_info!.ReturnType), method_info);
             }
 
             /// <inheritdoc />
             public bool Equals(TypeProperty other) => _Type == other._Type && string.Equals(_Property, other._Property);
 
             /// <inheritdoc />
-            public override bool Equals(object obj) => obj != null && obj is TypeProperty property && Equals(property);
+            public override bool Equals(object? obj) => obj != null && obj is TypeProperty property && Equals(property);
 
             /// <inheritdoc />
             public override int GetHashCode()
@@ -240,11 +246,11 @@ namespace MathCore.WPF
         /// <summary>Словарь свойств типов объектов</summary>
         private static readonly Dictionary<TypeProperty, Delegate> __Properties = new Dictionary<TypeProperty, Delegate>();
         /// <summary>Метод фильтрации элементов модели представления коллекции</summary>
-        /// <param name="sendeer">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>
+        /// <param name="sender">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>
         /// <param name="e">Информация о объекте, который надо отфильтровать</param>
-        private static void CollectionViewSource_OnFilter(object sendeer, FilterEventArgs e)
+        private static void CollectionViewSource_OnFilter(object sender, FilterEventArgs e)
         {
-            if (!(sendeer is CollectionViewSource view_source)) return;
+            if (!(sender is CollectionViewSource view_source)) return;
             var text = GetFilterText(view_source);
             var item = e.Item;
             if (string.IsNullOrEmpty(text) || item is null) return;
@@ -253,7 +259,7 @@ namespace MathCore.WPF
             if (!string.IsNullOrEmpty(path))
             {
                 var property = __Properties.GetValueOrAddNew(new TypeProperty(item, path), tp => tp.GetProperty());
-                item = property.DynamicInvoke(item);
+                item = property.DynamicInvoke(item)!;
             }
             else
             {
@@ -290,9 +296,10 @@ namespace MathCore.WPF
                 typeof(CollectionViewFilter),
                 new FrameworkPropertyMetadata(default(CollectionViewFiltersCollection)));
 
-        public static void SetFilters(DependencyObject element, CollectionViewFiltersCollection items) => element.SetValue(FiltersProperty, items.SetCollectionView((CollectionViewSource)element));
+        public static void SetFilters([Annotations.NotNull] DependencyObject element, [Annotations.NotNull] CollectionViewFiltersCollection items) => element.SetValue(FiltersProperty, items.SetCollectionView((CollectionViewSource)element));
 
-        public static CollectionViewFiltersCollection GetFilters(DependencyObject element)
+        [Annotations.NotNull]
+        public static CollectionViewFiltersCollection GetFilters([Annotations.NotNull] DependencyObject element)
         {
             if (!(element.GetValue(FiltersProperty) is CollectionViewFiltersCollection filters))
                 SetFilters(element, filters = new CollectionViewFiltersCollection((CollectionViewSource)element));
@@ -311,13 +318,14 @@ namespace MathCore.WPF
             ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
         }
 
+        [Annotations.NotNull]
         public CollectionViewFiltersCollection SetCollectionView(CollectionViewSource item)
         {
             _Source = item;
             return this;
         }
 
-        protected void OnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        protected void OnCollectionChanged(object sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
@@ -346,7 +354,7 @@ namespace MathCore.WPF
     public abstract class CollectionViewFilterItem : Freezable
     {
         /// <summary>Обновить представление</summary>
-        protected static void RefreshSource(DependencyObject s, DependencyPropertyChangedEventArgs e) => ((CollectionViewFilterItem)s)?.RefreshSource();
+        protected static void RefreshSource([CanBeNull] DependencyObject s, DependencyPropertyChangedEventArgs e) => ((CollectionViewFilterItem)s)?.RefreshSource();
 
         #region ValueConverter - конвертер фильтруемого значения
 
@@ -393,11 +401,11 @@ namespace MathCore.WPF
 
         #endregion
 
-        protected CollectionViewSource _Source;
+        protected CollectionViewSource? _Source;
 
-        public virtual void SetSource(CollectionViewSource source)
+        public virtual void SetSource(CollectionViewSource? source)
         {
-            if (_Source != null) source.Filter -= OnFilter;
+            if (_Source != null) _Source.Filter -= OnFilter;
             _Source = source;
             if (source != null) source.Filter += OnFilter;
         }
@@ -408,7 +416,7 @@ namespace MathCore.WPF
 
         private static readonly Dictionary<string, Delegate> __Getter = new Dictionary<string, Delegate>();
 
-        protected object GetItemValue(object item)
+        protected object? GetItemValue([CanBeNull] object item)
         {
             if (item is null) return null;
             var property = FiltredProperty;
@@ -422,7 +430,7 @@ namespace MathCore.WPF
             return converter?.Convert(item, typeof(object), null, CultureInfo.CurrentCulture);
         }
 
-        public static object GetPropertyValue(object item, string property)
+        public static object? GetPropertyValue([CanBeNull] object item, string property)
         {
             if (item is null) return null;
             var type = item.GetType();
@@ -433,13 +441,13 @@ namespace MathCore.WPF
             var base_getter_name = $"{property_info.DeclaringType.FullName}:{property}";
             if (__Getter.TryGetValue(base_getter_name, out getter)) return getter.DynamicInvoke(item);
             var delegate_tpe = typeof(Func<,>).MakeGenericType(property_info.DeclaringType, property_info.PropertyType);
-            getter = Delegate.CreateDelegate(delegate_tpe, property_info.GetGetMethod());
+            getter = Delegate.CreateDelegate(delegate_tpe, property_info.GetGetMethod()!);
             __Getter[getter_name] = getter;
             __Getter[base_getter_name] = getter;
             return getter.DynamicInvoke(item);
         }
 
-        public static object GetComplexPropertyValue(object item, string PropertyPath)
+        public static object? GetComplexPropertyValue(object? item, [Annotations.NotNull] string PropertyPath)
         {
             var properties = PropertyPath.Split('.');
             for (var i = 0; item != null && i < properties.Length; i++)
@@ -519,7 +527,7 @@ namespace MathCore.WPF
         }
 
         /// <inheritdoc />
-        protected override void OnFilter(object Sender, FilterEventArgs E)
+        protected override void OnFilter(object Sender, [Annotations.NotNull] FilterEventArgs E)
         {
             if (!E.Accepted || !Enabled) return;
             var value = GetItemValue(E.Item);
@@ -549,9 +557,9 @@ namespace MathCore.WPF
     {
         public ObservableCollection<GroupCollectionFilterItem> Groups { get; } = new ObservableCollection<GroupCollectionFilterItem>();
 
-        private IEnumerable _ViewSource;
+        private IEnumerable? _ViewSource;
 
-        private void CheckView(IEnumerable ViewSource)
+        private void CheckView(IEnumerable? ViewSource)
         {
             if (ReferenceEquals(_ViewSource, ViewSource)) return;
             { if (_ViewSource != null && _ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged -= OnItemsChanged; }
@@ -561,7 +569,7 @@ namespace MathCore.WPF
             { if (_ViewSource != null && _ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged += OnItemsChanged; }
         }
 
-        private void OnItemsChanged(object Sender, NotifyCollectionChangedEventArgs E)
+        private void OnItemsChanged(object Sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
@@ -616,19 +624,16 @@ namespace MathCore.WPF
             group.Items.Add(item);
         }
 
-        private void GroupEnableChanged(object Sender, EventArgs E) => RefreshSource(this, default(DependencyPropertyChangedEventArgs));
+        private void GroupEnableChanged(object? Sender, EventArgs E) => RefreshSource(this, default);
 
         private void RemoveItem(object item)
         {
             var value = GetItemValue(item);
             if (value is null) return;
             var group = Groups.FirstOrDefault(g => Equals(g.Key, value));
-            if (group is null) return;
-            if (group.Items.Remove(item) && group.Items.Count == 0)
-            {
-                group.EnabledChanged -= GroupEnableChanged;
-                Groups.Remove(group);
-            }
+            if (group?.Items.Remove(item) == false || group?.Items.Count != 0) return;
+            group.EnabledChanged -= GroupEnableChanged;
+            Groups.Remove(group);
         }
 
         /// <inheritdoc />
@@ -666,7 +671,7 @@ namespace MathCore.WPF
             }
         }
 
-        public event EventHandler EnabledChanged;
+        public event EventHandler? EnabledChanged;
 
         public ObservableCollection<object> Items { get; } = new ObservableCollection<object>();
 
@@ -720,32 +725,32 @@ namespace MathCore.WPF
             if (Obj is PropertyFilterItem filter) Remove(filter); else Clear();
         }
 
-        private void OnFiltersCollection_Changed(object Sender, NotifyCollectionChangedEventArgs E)
+        private void OnFiltersCollection_Changed(object Sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (PropertyFilterItem item in E.NewItems)
+                    foreach (PropertyFilterItem? item in E.NewItems)
                     {
-                        item.ItemType = CollectionItemType;
+                        item!.ItemType = CollectionItemType;
                         item.PropertyChanged += OnPropertyFilterItemChanged;
                     }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (PropertyFilterItem item in E.OldItems) item.PropertyChanged -= OnPropertyFilterItemChanged;
+                    foreach (PropertyFilterItem? item in E.OldItems) item!.PropertyChanged -= OnPropertyFilterItemChanged;
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (PropertyFilterItem item in E.OldItems) item.PropertyChanged -= OnPropertyFilterItemChanged;
-                    foreach (PropertyFilterItem item in E.NewItems)
+                    foreach (PropertyFilterItem? item in E.OldItems) item!.PropertyChanged -= OnPropertyFilterItemChanged;
+                    foreach (PropertyFilterItem? item in E.NewItems)
                     {
-                        item.ItemType = CollectionItemType;
+                        item!.ItemType = CollectionItemType;
                         item.PropertyChanged += OnPropertyFilterItemChanged;
                     }
                     break;
             }
         }
 
-        private void OnPropertyFilterItemChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyFilterItemChanged(object sender, [Annotations.NotNull] PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -762,7 +767,7 @@ namespace MathCore.WPF
 
         protected override Freezable CreateInstanceCore() => throw new NotSupportedException();
 
-        protected override void OnFilter(object Sender, FilterEventArgs E)
+        protected override void OnFilter(object Sender, [Annotations.NotNull] FilterEventArgs E)
         {
             if (!E.Accepted) return;
             if (_Filters.Any(f => !f.Filter(E.Item)))
@@ -837,11 +842,11 @@ namespace MathCore.WPF
     public class PropertyFilterItem : ViewModel
     {
         private bool _Enabled;
-        private PropertyInfo[] _PropertyChain;
+        private PropertyInfo[]? _PropertyChain;
 
         public bool Enabled { get => _Enabled; set => Set(ref _Enabled, value); }
 
-        private string _Property;
+        private string? _Property;
         public string Property
         {
             get => _Property;
@@ -868,24 +873,24 @@ namespace MathCore.WPF
             }
         }
 
-        public Type PropertyType
+        public Type? PropertyType
         {
             get
             {
                 var property_type = _PropertyChain is null || _PropertyChain.Length == 0
                     ? null
-                    : _PropertyChain[_PropertyChain.Length - 1].PropertyType;
+                    : _PropertyChain[^1].PropertyType;
                 if (property_type?.IsGenericType != true) return property_type;
                 var type_argument = property_type.GetGenericArguments()[0];
                 return property_type == typeof(Nullable<>).MakeGenericType(type_argument) ? type_argument : property_type;
             }
         }
 
-        public IEnumerable<PropertyInfo> PropertyInfos => _ItemType?.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+        public IEnumerable<PropertyInfo>? PropertyInfos => _ItemType?.GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
         public IEnumerable<PropertyDescription> Properties => GetProperties(_ItemType, null);//, $"({_ItemType?.Name})");
 
-        private IEnumerable<PropertyDescription> GetProperties(Type type, string BaseProperty, string BasePropertyDisplayName = "")
+        private static IEnumerable<PropertyDescription> GetProperties(Type? type, string? BaseProperty, string BasePropertyDisplayName = "")
         {
             if (type is null) yield break;
             foreach (var property in type.GetProperties(BindingFlags.Instance | BindingFlags.Public))
@@ -908,8 +913,8 @@ namespace MathCore.WPF
         private ComparisonType _Comparison = ComparisonType.Equal;
         public ComparisonType Comparison { get => _Comparison; set => Set(ref _Comparison, value); }
 
-        private object _Value;
-        public object Value
+        private object? _Value;
+        public object? Value
         {
             get => _Value;
             set
@@ -922,9 +927,9 @@ namespace MathCore.WPF
             }
         }
 
-        private Type _ValueType;
+        private Type? _ValueType;
 
-        public Type ValueType { get => _ValueType; set => Set(ref _ValueType, value); }
+        public Type? ValueType { get => _ValueType; set => Set(ref _ValueType, value); }
 
         private object ChangeValueType(object value)
         {
@@ -932,7 +937,7 @@ namespace MathCore.WPF
             if (_PropertyChain is null || _PropertyChain.Length <= 0 || property_type is null) return value;
             try
             {
-                return Convert.ChangeType(value, PropertyType);
+                return Convert.ChangeType(value, property_type);
             }
             catch
             {
@@ -945,7 +950,7 @@ namespace MathCore.WPF
 
         public bool Filter(object item)
         {
-            if (!_Enabled || string.IsNullOrWhiteSpace(_Property) || _Value is null || !PropertyType.IsAssignableFrom(_ValueType)) return true;
+            if (!_Enabled || string.IsNullOrWhiteSpace(_Property) || _Value is null || !PropertyType?.IsAssignableFrom(_ValueType) == true) return true;
 
             var value = CollectionViewFilterItem.GetComplexPropertyValue(item, _Property);
             if (value is null) return _CanBeNull;
@@ -953,40 +958,43 @@ namespace MathCore.WPF
 
             if (!value.GetType().IsInstanceOfType(_Value)) return false;
 
-            switch (_Comparison)
+            return _Comparison switch
             {
-                case ComparisonType.Less:
-                    return comparable.CompareTo(_Value) < 0;
-                case ComparisonType.LessOrEqual:
-                    return comparable.CompareTo(_Value) <= 0;
-                case ComparisonType.Equal:
-                    return comparable.CompareTo(_Value) == 0;
-                case ComparisonType.GreaterOrEqual:
-                    return comparable.CompareTo(_Value) >= 0;
-                case ComparisonType.Greater:
-                    return comparable.CompareTo(_Value) > 0;
-                case ComparisonType.NotEqual:
-                    return comparable.CompareTo(_Value) != 0;
-                default: throw new ArgumentOutOfRangeException();
-            }
+                ComparisonType.Less => (comparable.CompareTo(_Value) < 0),
+                ComparisonType.LessOrEqual => (comparable.CompareTo(_Value) <= 0),
+                ComparisonType.Equal => (comparable.CompareTo(_Value) == 0),
+                ComparisonType.GreaterOrEqual => (comparable.CompareTo(_Value) >= 0),
+                ComparisonType.Greater => (comparable.CompareTo(_Value) > 0),
+                ComparisonType.NotEqual => (comparable.CompareTo(_Value) != 0),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 
-    public struct PropertyDescription
+    public struct PropertyDescription : IEquatable<PropertyDescription>
     {
         public string Name { get; }
         public string DisplayName { get; }
-        public string BaseProperty { get; }
+        public string? BaseProperty { get; }
         public string BasePropertyDisplayName { get; }
         public string Path => $"{BaseProperty}.{Name}".TrimStart('.');
         public string DisplayPath => string.IsNullOrEmpty(BasePropertyDisplayName) ? DisplayName : $"{BasePropertyDisplayName}.{DisplayName}";
 
-        public PropertyDescription(string Name, string DisplayName, string BaseProperty, string BasePropertyDisplayName)
+        public PropertyDescription(string Name, string DisplayName, string? BaseProperty, [Annotations.NotNull] string BasePropertyDisplayName)
         {
             this.Name = Name;
             this.DisplayName = DisplayName;
             this.BaseProperty = BaseProperty;
             this.BasePropertyDisplayName = BasePropertyDisplayName.TrimStart('.');
         }
+
+        bool IEquatable<PropertyDescription>.Equals(PropertyDescription other) => Name == other.Name && DisplayName == other.DisplayName && BaseProperty == other.BaseProperty && BasePropertyDisplayName == other.BasePropertyDisplayName;
+
+        public override bool Equals(object? obj) => obj is PropertyDescription other && Equals(other);
+
+        public override int GetHashCode() => HashCode.Combine(Name, DisplayName, BaseProperty, BasePropertyDisplayName);
+
+        public static bool operator ==(PropertyDescription left, PropertyDescription right) => left.Equals(right);
+        public static bool operator !=(PropertyDescription left, PropertyDescription right) => !left.Equals(right);
     }
 }

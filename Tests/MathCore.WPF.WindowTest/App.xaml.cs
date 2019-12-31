@@ -1,17 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MathCore.WPF.WindowTest
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application
+    public partial class App
     {
+        public ServiceProvider Services { get; }
+
+        public App()
+        {
+            var service_collection = new ServiceCollection();
+            ConfigureServices(service_collection);
+            Services = service_collection.BuildServiceProvider();
+            Configure();
+        }
     }
 }

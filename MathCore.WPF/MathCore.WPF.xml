@@ -25,6 +25,24 @@
         <member name="P:MathCore.WPF.Animation.LinearMatrixAnimation.EasingFunction">
             <summary>Функция плавности</summary>
         </member>
+        <member name="F:MathCore.WPF.DataGridEx.UseDataAnnotationsProperty">
+            <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+        </member>
+        <member name="M:MathCore.WPF.DataGridEx.SetUseDataAnnotations(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+        </member>
+        <member name="M:MathCore.WPF.DataGridEx.GetUseDataAnnotations(System.Windows.DependencyObject)">
+            <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+        </member>
+        <member name="F:MathCore.WPF.DataGridEx.AddRowNumberProperty">
+            <summary>Добавить номера строк в их заголовки</summary>
+        </member>
+        <member name="M:MathCore.WPF.DataGridEx.SetAddRowNumber(System.Windows.DependencyObject,System.Boolean)">
+            <summary>Добавить номера строк в их заголовки</summary>
+        </member>
+        <member name="M:MathCore.WPF.DataGridEx.GetAddRowNumber(System.Windows.DependencyObject)">
+            <summary>Добавить номера строк в их заголовки</summary>
+        </member>
         <!-- Badly formed XML comment ignored for member "T:MathCore.WPF.AutoComplete" -->
         <member name="M:MathCore.WPF.AutoComplete.InitializeComponent">
             <summary>
@@ -257,7 +275,7 @@
         <member name="M:MathCore.WPF.CollectionViewFilter.SetPropertyName(System.Windows.DependencyObject,System.String)">
             <summary>Установить имя фильтруемого свойства для модели представления коллекции</summary>
             <param name="element">Модель представления коллекции, для которой устанавливается имя фильтруемого свойства её элемента</param>
-            <param name="value">Имя свйосвта</param>
+            <param name="value">Имя свойства</param>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.GetPropertyName(System.Windows.DependencyObject)">
             <summary>Получить имя фильтруемого свойства для модели представления коллекции</summary>
@@ -286,7 +304,7 @@
         <member name="M:MathCore.WPF.CollectionViewFilter.PropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>Метод обновления значения присоединённого свойства зависимости для фильтра модели представлния коллекции</summary>
             <param name="D">Модель представления коллекции, для которой изменяется значение свойства</param>
-            <param name="E">Информация об изменившемся свойсвте</param>
+            <param name="E">Информация об изменившемся свойстве</param>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.Initialize(System.Windows.Data.CollectionViewSource)">
             <summary>Инициализация новой модели представления коллекции</summary>
@@ -299,7 +317,7 @@
             <summary>Тип, информацию о свойтве которого требуется сохранить</summary>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.TypeProperty._Property">
-            <summary>Имя свйосвта</summary>
+            <summary>Имя свойства</summary>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.TypeProperty.#ctor(System.Object,System.String)">
             <summary>Инициализация новой структуры с информацией о свойстве типа объекта</summary>
@@ -308,7 +326,7 @@
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.TypeProperty.GetProperty">
             <summary>Получить делегат метод извлечения значения свойства</summary>
-            <returns>Делегат, извлекающий значение свойтва объекта</returns>
+            <returns>Делегат, извлекающий значение свойства объекта</returns>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.TypeProperty.Equals(MathCore.WPF.CollectionViewFilter.TypeProperty)">
             <inheritdoc />
@@ -6858,6 +6876,36 @@
             <summary>Waits for the task to complete execution, pumping in the meantime.</summary>
             <param name="task">The task for which to wait.</param>
             <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
         </member>
     </members>
 </doc>
