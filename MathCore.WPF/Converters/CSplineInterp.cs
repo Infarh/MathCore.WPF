@@ -1,23 +1,25 @@
 using System;
 using System.Linq;
 using System.Windows.Media;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
+    // ReSharper disable once IdentifierTypo
     public class CSplineInterp : DoubleValueConverter
     {
-        private MathCore.Interpolation.CubicSpline _SplineTo;
-        private MathCore.Interpolation.CubicSpline _SplineFrom;
-        private double min_x;
-        private double min_y;
-        private double max_x;
-        private double max_y;
+        private MathCore.Interpolation.CubicSpline? _SplineTo;
+        private MathCore.Interpolation.CubicSpline? _SplineFrom;
+        private double _MinX;
+        private double _MinY;
+        private double _MaxX;
+        private double _MaxY;
 
         public PointCollection Points { get; set; }
 
-        public CSplineInterp() { }
+        public CSplineInterp() => Points = new PointCollection();
 
-        public CSplineInterp(PointCollection points) { Points = points; }
+        public CSplineInterp(PointCollection points) => Points = points;
 
         public override object ProvideValue(IServiceProvider sp)
         {
@@ -25,8 +27,8 @@ namespace MathCore.WPF.Converters
 
             var x = Points.Select(p => p.X).ToArray();
             var y = Points.Select(p => p.Y).ToArray();
-            x.GetMinMax(v => v, out min_x, out max_x);
-            y.GetMinMax(v => v, out min_y, out max_y);
+            x.GetMinMax(v => v, out _MinX, out _MaxX);
+            y.GetMinMax(v => v, out _MinY, out _MaxY);
             _SplineTo = new MathCore.Interpolation.CubicSpline(x, y);
             _SplineFrom = new MathCore.Interpolation.CubicSpline(y, x);
 
@@ -36,17 +38,17 @@ namespace MathCore.WPF.Converters
         /// <inheritdoc />
         protected override double Convert(double v, double? p = null)
         {
-            if(v < min_x) v = min_x;
-            else if(v > max_x) v = max_x;
-            return _SplineTo.Value(v);
+            if(v < _MinX) v = _MinX;
+            else if(v > _MaxX) v = _MaxX;
+            return _SplineTo!.Value(v);
         }
 
         /// <inheritdoc />
         protected override double ConvertBack(double v, double? p = null)
         {
-            if(v < min_y) v = min_y;
-            else if(v > max_y) v = max_y;
-            return _SplineFrom.Value(v);
+            if(v < _MinY) v = _MinY;
+            else if(v > _MaxY) v = _MaxY;
+            return _SplineFrom!.Value(v);
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Input;
 using MathCore.Annotations;
 using Microsoft.Xaml.Behaviors;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Behaviors
 {

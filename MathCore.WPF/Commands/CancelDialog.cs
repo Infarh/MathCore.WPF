@@ -1,4 +1,5 @@
-﻿namespace MathCore.WPF.Commands
+﻿// ReSharper disable UnusedType.Global
+namespace MathCore.WPF.Commands
 {
     public class CancelDialog : DialogCommand
     {

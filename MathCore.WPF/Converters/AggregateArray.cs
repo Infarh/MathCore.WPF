@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -11,9 +13,10 @@ namespace MathCore.WPF.Converters
     public class AggregateArray : MultiValueValueConverter
     {
         /// <inheritdoc />
-        protected override object Convert(object[] vv, Type t, object p, CultureInfo c) => vv?.SelectMany(GetItems);
+        [CanBeNull]
+        protected override object Convert([CanBeNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.SelectMany(GetItems)!;
 
-        private static IEnumerable<object> GetItems(object Item)
+        private static IEnumerable<object?> GetItems([CanBeNull] object? Item)
         {
             if(Item is null) yield break;
             if(!(Item is IEnumerable)) yield return Item;

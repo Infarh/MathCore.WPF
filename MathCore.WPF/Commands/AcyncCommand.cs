@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -123,7 +122,6 @@ namespace MathCore.WPF.Commands
 
         public override async Task ExecuteTaskAsync(object parameter)
         {
-            Contract.Ensures(Contract.Result<Task>() != null);
             CancelCommand.NotifyCommandStarting();
             Execution = new NotifyTaskCompletion<TResult>(_TaskFunction(parameter, CancelCommand.Token));
             Invoke_OnCanExecuteChanged();
@@ -140,7 +138,7 @@ namespace MathCore.WPF.Commands
         public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
         public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
 
-        public virtual Task ExecuteAsync([CanBeNull]object parameter) => Task.Factory.StartNew(base.Execute, parameter);
+        public virtual Task ExecuteAsync(object? parameter) => Task.Factory.StartNew(base.Execute, parameter);
 
         public override async void Execute(object? parameter) => await ExecuteAsync(parameter);
     }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Commands
 {
     public class ExecuteCommand : LambdaCommand
     {
-        public string Command { get; set; }
+        public string? Command { get; set; }
         public bool ShellExecute { get; set; }
 
         public ExecuteCommand() { }
@@ -16,13 +18,13 @@ namespace MathCore.WPF.Commands
 
         public override bool CanExecute(object p) => !string.IsNullOrWhiteSpace(p as string) || !string.IsNullOrWhiteSpace(Command);
 
-        public override void Execute(object p)
+        public override void Execute(object? p)
         {
             ProcessStartInfo info;
             if(string.IsNullOrWhiteSpace(Command))
             {
                 var cmd = p?.ToString();
-                if(cmd == null)
+                if(cmd is null)
                     throw new ArgumentNullException(nameof(p),
                         @"Не задан параметр команды при отсутствии текста команды");
                 info = new ProcessStartInfo(cmd);

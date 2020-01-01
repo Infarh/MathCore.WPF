@@ -3,6 +3,10 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -10,28 +14,25 @@ namespace MathCore.WPF.Converters
     [MarkupExtensionReturnType(typeof(Bool2Visibility))]
     public class Bool2Visibility : ValueConverter
     {
-        public bool Inversed { get; set; }
+        public bool Inverted { get; set; }
 
-        protected override object Convert(object v, Type t, object p, CultureInfo c)
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c)
         {
-            if(v is bool?)
+            if (v is null) return Visibility.Collapsed;
+            if (v is bool?)
             {
-                if(!(v as bool?).HasValue) return Visibility.Collapsed;
-                return (bool)v ? !Inversed : Inversed;
+                return (bool)v ? !Inverted : Inverted;
             }
             if (!(v is Visibility)) throw new NotSupportedException();
-            switch((Visibility)v)
+            return (Visibility)v switch
             {
-                case Visibility.Visible:
-                    return !Inversed;
-                case Visibility.Hidden:
-                    return Inversed;
-                case Visibility.Collapsed:
-                    return null;
-            }
-            throw new NotSupportedException();
+                Visibility.Visible => !Inverted,
+                Visibility.Hidden => Inverted,
+                Visibility.Collapsed => null,
+                _ => throw new NotSupportedException()
+            };
         }
 
-        protected override object ConvertBack(object v, Type t, object p, CultureInfo c) => Convert(v, t, p, c);
+        protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => Convert(v, t, p, c);
     }
 }

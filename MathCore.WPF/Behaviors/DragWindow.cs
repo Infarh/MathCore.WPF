@@ -1,6 +1,5 @@
 ﻿using System.Windows.Input;
 using MathCore.Annotations;
-
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
 

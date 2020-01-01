@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-
+using MathCore.Annotations;
 // ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Converters
@@ -15,7 +15,7 @@ namespace MathCore.WPF.Converters
         /// <summary>Преобразование объекта в вещественный тип данных</summary>
         /// <param name="obj">Преобразуемое значение</param>
         /// <returns>Значение вещественного типа, если преобразование прошло успешно, и NaN в противном случае</returns>
-        public static double ConvertToDouble(object obj)
+        public static double ConvertToDouble([CanBeNull] object? obj)
         {
             if (obj is null || Equals(obj, DependencyProperty.UnsetValue)) return double.NaN;
             try
@@ -33,7 +33,7 @@ namespace MathCore.WPF.Converters
         /// <param name="obj">Преобразуемый объект</param>
         /// <param name="value">Выходное значение вещественного типа данных в случае успешного преобразования и NaN в противном случае</param>
         /// <returns>Результат успешности преобразования</returns>
-        public static bool TryConvertToDouble(object obj, out double value)
+        public static bool TryConvertToDouble([CanBeNull] object? obj, out double value)
         {
             if (obj is null)
             {
@@ -71,7 +71,7 @@ namespace MathCore.WPF.Converters
         /// <param name="p">Входной параметр</param>
         /// <param name="value">Входное значение, приведённое к вещественному типу данных</param>
         /// <param name="parameter">Входной параметр, приведённый к вещественному типу данных</param>
-        private static bool CheckParameters(object v, object p, out double value, out double? parameter)
+        private static bool CheckParameters(object? v, object? p, out double value, out double? parameter)
         {
             if (!TryConvertToDouble(v, out value))
             {
@@ -83,9 +83,11 @@ namespace MathCore.WPF.Converters
         }
 
         /// <inheritdoc />
-        protected override object Convert(object v, Type t, object p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? Convert(V, P) : double.NaN;
+        [NotNull]
+        protected override object Convert(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? Convert(V, P) : double.NaN;
 
         /// <inheritdoc />
-        protected override object ConvertBack(object v, Type t, object p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? ConvertBack(V, P) : double.NaN;
+        [NotNull]
+        protected override object ConvertBack(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? ConvertBack(V, P) : double.NaN;
     }
 }

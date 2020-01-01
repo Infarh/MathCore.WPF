@@ -1,17 +1,29 @@
 ﻿using System;
 using System.Globalization;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MathCore.WPF.Converters
 {
     public class Custom : ValueConverter
     {
-        public Func<object, object> Forvard { get; set; }
-        public Func<object, object, object> ForvardParam { get; set; }
-        public Func<object, object> Backvard { get; set; }
-        public Func<object, object, object> BackvardParam { get; set; }
+        public Func<object?, object?>? Forward { get; set; }
 
-        protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => Forvard != null ? Forvard(value) : ForvardParam?.Invoke(value, parameter);
+        public Func<object?, object?, object?>? ForwardParam { get; set; }
 
-        protected override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Backvard != null ? Backvard(value) : BackvardParam?.Invoke(value, parameter);
+        public Func<object?, object?>? Backward { get; set; }
+
+        public Func<object?, object?, object?>? BackwardParam { get; set; }
+
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
+            Forward is null
+                ? ForwardParam?.Invoke(v, p) 
+                : Forward(v);
+
+        protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 
+            Backward is null
+                ? BackwardParam?.Invoke(v, p) 
+                : Backward(v);
     }
 }

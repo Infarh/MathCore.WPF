@@ -1,16 +1,16 @@
 ﻿using System.IO;
 using System.Windows.Markup;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Commands
 {
     [MarkupExtensionReturnType(typeof(OpenInExplorer))]
     public class OpenInExplorer : Command
     {
-        public override bool CanExecute(object parameter)
+        public override bool CanExecute(object? parameter)
         {
             switch (parameter)
             {
-                case null:
                 default:
                     return false;
 
@@ -21,7 +21,7 @@ namespace MathCore.WPF.Commands
             }
         }
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
             switch (parameter)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -11,7 +12,7 @@ namespace MathCore.WPF.Converters
     {
         #region IValueConverter Members
 
-        protected override object Convert(object v, Type t, object p, System.Globalization.CultureInfo c)
+        protected override object? Convert(object? v, Type? t, object? p, System.Globalization.CultureInfo? c)
         {
             if(!(v is Point[] points) || points.Length <= 0) return null;
             var start = points[0];

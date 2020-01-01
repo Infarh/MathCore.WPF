@@ -1,5 +1,6 @@
 ﻿using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -15,7 +16,9 @@ namespace MathCore.WPF.Converters
         public double B { get; set; }
 
         public Linear() : this(1, 0) { }
+
         public Linear(double k) => K = k;
+
         public Linear(double k, double b ) : this(k) => B = b;
 
 

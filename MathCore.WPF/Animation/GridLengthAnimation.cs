@@ -49,7 +49,7 @@ namespace MathCore.WPF.Animation
             var from_val = ((GridLength)GetValue(FromProperty)).Value;
             var to_val = ((GridLength)GetValue(ToProperty)).Value;
 
-            var clock_current_progress = clock.CurrentProgress.Value;
+            var clock_current_progress = clock.CurrentProgress ?? double.NaN;
             return from_val > to_val
                 ? new GridLength((1 - clock_current_progress) * (from_val - to_val) + to_val, GridUnitType.Star)
                 : new GridLength(clock_current_progress * (to_val - from_val) + from_val, GridUnitType.Star);

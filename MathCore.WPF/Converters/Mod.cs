@@ -1,6 +1,8 @@
 using System;
 using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -14,8 +16,12 @@ namespace MathCore.WPF.Converters
 
         public Mod(double M) => this.M = M;
 
-
         /// <inheritdoc />
-        protected override double Convert(double v, double? p = null) => (p ?? v).IsNaN() ? double.NaN : (M.IsNaN() ? (p ?? v) : (p ?? v) % M);
+        protected override double Convert(double v, double? p = null) => 
+            (p ?? v).IsNaN() 
+                ? double.NaN 
+                : M.IsNaN() 
+                    ? p ?? v 
+                    : (p ?? v) % M;
     }
 }
