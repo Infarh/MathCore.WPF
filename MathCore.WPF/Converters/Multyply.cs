@@ -1,9 +1,9 @@
-using System.Windows.Markup;
+п»їusing System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Преобразователь умножения значения на вещественное число</summary>
+    /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ СѓРјРЅРѕР¶РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РЅР° РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ</summary>
     [MarkupExtensionReturnType(typeof(Multiply))]
     public class Multiply : SimpleDoubleValueConverter
     {

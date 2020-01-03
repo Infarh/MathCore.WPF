@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -6,7 +6,7 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Конвертер величин</summary>
+    /// <summary>РљРѕРЅРІРµСЂС‚РµСЂ РІРµР»РёС‡РёРЅ</summary>
     [MarkupExtensionReturnType(typeof(MultiValueValueConverter))]
     public abstract class MultiValueValueConverter : MarkupExtension, IMultiValueConverter
     {
@@ -14,22 +14,22 @@ namespace MathCore.WPF.Converters
         [NotNull]
         public override object ProvideValue(IServiceProvider sp) => this;
 
-        /// <summary>Преобразование значений</summary>
-        /// <param name="vv">Массив преобразуемых значений</param>
-        /// <param name="t">Требуемый тип значения</param>
-        /// <param name="p">Параметр преобразования</param>
-        /// <param name="c">Сведения о культуре</param>
-        /// <returns>Преобразованное значение</returns>
+        /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёР№</summary>
+        /// <param name="vv">РњР°СЃСЃРёРІ РїСЂРµРѕР±СЂР°Р·СѓРµРјС‹С… Р·РЅР°С‡РµРЅРёР№</param>
+        /// <param name="t">РўСЂРµР±СѓРµРјС‹Р№ С‚РёРї Р·РЅР°С‡РµРЅРёСЏ</param>
+        /// <param name="p">РџР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</param>
+        /// <param name="c">РЎРІРµРґРµРЅРёСЏ Рѕ РєСѓР»СЊС‚СѓСЂРµ</param>
+        /// <returns>РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ</returns>
         protected abstract object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c);
 
-        /// <summary>Обратное преобразование значения</summary>
-        /// <param name="v">Значение, для которого требуется выполнить обратное преобразование</param>
-        /// <param name="tt">Массив требуемых типов данных значений</param>
-        /// <param name="p">Параметр преобразования</param>
-        /// <param name="c">Сведения о культуре</param>
-        /// <returns>Исходные значения</returns>
-        /// <exception cref="NotSupportedException">Генерируется при отсутствии переопределения в классах наследниках</exception>
-        protected virtual object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => throw new NotSupportedException("Обратное преобразование не поддерживается");
+        /// <summary>РћР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ</summary>
+        /// <param name="v">Р—РЅР°С‡РµРЅРёРµ, РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ С‚СЂРµР±СѓРµС‚СЃСЏ РІС‹РїРѕР»РЅРёС‚СЊ РѕР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ</param>
+        /// <param name="tt">РњР°СЃСЃРёРІ С‚СЂРµР±СѓРµРјС‹С… С‚РёРїРѕРІ РґР°РЅРЅС‹С… Р·РЅР°С‡РµРЅРёР№</param>
+        /// <param name="p">РџР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</param>
+        /// <param name="c">РЎРІРµРґРµРЅРёСЏ Рѕ РєСѓР»СЊС‚СѓСЂРµ</param>
+        /// <returns>РСЃС…РѕРґРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ</returns>
+        /// <exception cref="NotSupportedException">Р“РµРЅРµСЂРёСЂСѓРµС‚СЃСЏ РїСЂРё РѕС‚СЃСѓС‚СЃС‚РІРёРё РїРµСЂРµРѕРїСЂРµРґРµР»РµРЅРёСЏ РІ РєР»Р°СЃСЃР°С… РЅР°СЃР»РµРґРЅРёРєР°С…</exception>
+        protected virtual object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => throw new NotSupportedException("РћР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
         /// <inheritdoc />
         object? IMultiValueConverter.Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => Convert(vv, t, p, c);

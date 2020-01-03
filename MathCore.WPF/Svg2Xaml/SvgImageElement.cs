@@ -129,7 +129,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public override Drawing GetBaseDrawing()
     {
-      if(Data == null)
+      if(Data is null)
         return null;
 
       string temp_file = Path.GetTempFileName();

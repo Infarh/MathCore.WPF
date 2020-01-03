@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Extensions
 {
-    //[Copyright("http://habrahabr.ru/users/Makeman/", url = "http://habrahabr.ru/post/254115/")]
+    [Copyright("http://habrahabr.ru/users/Makeman/", url = "http://habrahabr.ru/post/254115/")]
     public abstract class BindingExtension : Binding, IValueConverter
     {
         protected BindingExtension() => Source = Converter = this;
 
-        protected BindingExtension(object source)
+        protected BindingExtension(object Source)
         {
-            Source = source;
+            base.Source = Source;
             Converter = this;
         }
 
@@ -21,8 +22,9 @@ namespace MathCore.WPF.Extensions
             Converter = this;
         }
 
-        public abstract object Convert(object value, Type TargetType, object parameter, CultureInfo culture);
+        public abstract object? Convert(object? v, Type? t, object? p, CultureInfo? c);
 
-        public virtual object ConvertBack(object value, Type TargetType, object parameter, CultureInfo culture) => throw new NotSupportedException();
+        public virtual object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 
+            throw new NotSupportedException();
     }
 }

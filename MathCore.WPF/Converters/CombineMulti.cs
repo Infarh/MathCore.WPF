@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -30,7 +30,7 @@ namespace MathCore.WPF.Converters
         [CanBeNull]
         protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
         {
-            var result = (First ?? throw new InvalidOperationException("Не задан первичный конвертер значений")).Convert(vv, t, p, c);
+            var result = (First ?? throw new InvalidOperationException("РќРµ Р·Р°РґР°РЅ РїРµСЂРІРёС‡РЅС‹Р№ РєРѕРЅРІРµСЂС‚РµСЂ Р·РЅР°С‡РµРЅРёР№")).Convert(vv, t, p, c);
 
             var then = Then;
             if (then != null) result = then.Convert(result, t, p, c);
@@ -41,7 +41,7 @@ namespace MathCore.WPF.Converters
         {
             var then = Then;
             if (then != null) v = then.ConvertBack(v, v != null ? v.GetType() : typeof(object), p, c);
-            return (First ?? throw new InvalidOperationException("Не задан первичный конвертер значений")).ConvertBack(v, tt, p, c);
+            return (First ?? throw new InvalidOperationException("РќРµ Р·Р°РґР°РЅ РїРµСЂРІРёС‡РЅС‹Р№ РєРѕРЅРІРµСЂС‚РµСЂ Р·РЅР°С‡РµРЅРёР№")).ConvertBack(v, tt, p, c);
         }
     }
 }

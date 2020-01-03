@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 // Atom representing whitespace.
 namespace MathCore.WPF.TeX

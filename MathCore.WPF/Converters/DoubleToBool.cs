@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Globalization;
 using System.Windows.Data;
 using MathCore.Annotations;
@@ -19,9 +19,9 @@ namespace MathCore.WPF.Converters
             _ConvertBack = from ?? ConvertBack;
         }
 
-        protected virtual bool? Convert(double v) => throw new NotImplementedException("Не определён метод прямого преобразования величины");
+        protected virtual bool? Convert(double v) => throw new NotImplementedException("РќРµ РѕРїСЂРµРґРµР»С‘РЅ РјРµС‚РѕРґ РїСЂСЏРјРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ РІРµР»РёС‡РёРЅС‹");
 
-        protected virtual double ConvertBack(bool? v) => throw new NotSupportedException("Обратное преобразование не поддерживается");
+        protected virtual double ConvertBack(bool? v) => throw new NotSupportedException("РћР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
         /// <inheritdoc />
         protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) =>

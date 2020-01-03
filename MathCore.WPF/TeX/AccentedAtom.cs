@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MathCore.WPF.TeX
 {
@@ -23,7 +23,7 @@ namespace MathCore.WPF.TeX
         public AccentedAtom(Atom baseAtom, TexFormula accent)
         {
             var rootSymbol = accent.RootAtom as SymbolAtom;
-            if(rootSymbol == null)
+            if(rootSymbol is null)
                 throw new ArgumentException(@"The formula for the accent is not a single symbol.", nameof(accent));
             AccentAtom = rootSymbol;
 
@@ -37,7 +37,7 @@ namespace MathCore.WPF.TeX
             var style = environment.Style;
 
             // Create box for base atom.
-            var baseBox = BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
+            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
             var skew = 0d;
             if(BaseAtom is CharSymbol)
                 skew = texFont.GetSkew(((CharSymbol)BaseAtom).GetCharFont(texFont), style);

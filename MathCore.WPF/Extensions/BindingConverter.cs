@@ -17,11 +17,11 @@ namespace MathCore.WPF.Extensions
         public override bool CanConvertTo(ITypeDescriptorContext c, Type dt) => dt == typeof(MarkupExtension);
 
         /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo c, object v, Type t)
         {
-            if (destinationType != typeof(MarkupExtension))
-                return base.ConvertTo(context, culture, value, destinationType);
-            if (value is BindingExpression binding) return binding.ParentBinding;
+            if (t != typeof(MarkupExtension))
+                return base.ConvertTo(context, c, v, t);
+            if (v is BindingExpression binding) return binding.ParentBinding;
             throw new ApplicationException();
         }
     }

@@ -20,7 +20,7 @@ namespace MathCore.WPF.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo CultureInfo)
         {
             var valid = ValidationResult.ValidResult;
-            if(value == null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указно");
+            if(value is null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указно");
             if(!(value is string)) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
 
             var str = (string)value;

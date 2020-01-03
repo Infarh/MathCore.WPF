@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
@@ -40,7 +40,7 @@ namespace MathCore.WPF.TeX
 
         public virtual void Draw(DrawingContext drawingContext, double scale, double x, double y)
         {
-            if(Background == null) return;
+            if(Background is null) return;
             // Fill background of box with color.
             drawingContext.DrawRectangle(Background, null, new Rect(x * scale, (y - Height) * scale,
                 Width * scale, (Height + Depth) * scale));

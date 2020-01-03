@@ -8,6 +8,6 @@ namespace MathCore.WPF.ValidationRules
         public string ErrorMessage { get; set; }
 
         /// <inheritdoc />
-        public override ValidationResult Validate(object value, CultureInfo CultureInfo) => value == null ? new ValidationResult(false, ErrorMessage ?? "Значение не указно") : ValidationResult.ValidResult;
+        public override ValidationResult Validate(object value, CultureInfo CultureInfo) => value is null ? new ValidationResult(false, ErrorMessage ?? "Значение не указно") : ValidationResult.ValidResult;
     }
 }

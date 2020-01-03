@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing fraction, with or without separation line</summary>
     internal sealed class FractionAtom : Atom
@@ -86,9 +86,9 @@ namespace MathCore.WPF.TeX
                 lineHeight = new SpaceAtom(lineThicknessUnit, 0, lineThickness, 0).CreateBox(environment).Height;
 
             // Create boxes for numerator and demoninator atoms, and make them of equal width.
-            var numeratorBox = Numerator == null ? StrutBox.Empty :
+            var numeratorBox = Numerator is null ? StrutBox.Empty :
                 Numerator.CreateBox(environment.GetNumeratorStyle());
-            var denominatorBox = Denominator == null ? StrutBox.Empty :
+            var denominatorBox = Denominator is null ? StrutBox.Empty :
                 Denominator.CreateBox(environment.GetDenominatorStyle());
 
             if(numeratorBox.Width < denominatorBox.Width)

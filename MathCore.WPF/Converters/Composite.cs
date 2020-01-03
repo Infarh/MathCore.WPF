@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace MathCore.WPF.Converters
     {
         private readonly IList<IValueConverter> _Converters = new List<IValueConverter>();
 
-        /// <summary>Коллекция конвертеров</summary>
+        /// <summary>РљРѕР»Р»РµРєС†РёСЏ РєРѕРЅРІРµСЂС‚РµСЂРѕРІ</summary>
         [NotNull]
         public IList<IValueConverter> Converters => _Converters;
 

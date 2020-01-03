@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
@@ -7,38 +7,38 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Преобразователь значений, комбинирующий действие нескольких вложенных преобразователей</summary>
+    /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ Р·РЅР°С‡РµРЅРёР№, РєРѕРјР±РёРЅРёСЂСѓСЋС‰РёР№ РґРµР№СЃС‚РІРёРµ РЅРµСЃРєРѕР»СЊРєРёС… РІР»РѕР¶РµРЅРЅС‹С… РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»РµР№</summary>
     [MarkupExtensionReturnType(typeof(Combine))]
     public class Combine : ValueConverter
     {
-        /// <summary>Первый применяемый вложенный преобразователь</summary>
+        /// <summary>РџРµСЂРІС‹Р№ РїСЂРёРјРµРЅСЏРµРјС‹Р№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ</summary>
         [ConstructorArgument("First")]
         public IValueConverter? First { get; set; }
 
-        /// <summary>Второй применяемый вложенный преобразователь</summary>
+        /// <summary>Р’С‚РѕСЂРѕР№ РїСЂРёРјРµРЅСЏРµРјС‹Р№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ</summary>
         [ConstructorArgument("Then")]
         public IValueConverter? Then { get; set; }
 
-        /// <summary>Массив остальных вложенных преобразователей</summary>
+        /// <summary>РњР°СЃСЃРёРІ РѕСЃС‚Р°Р»СЊРЅС‹С… РІР»РѕР¶РµРЅРЅС‹С… РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»РµР№</summary>
         [ConstructorArgument("Other")]
         public IValueConverter[]? Other { get; set; }
 
-        /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
+        /// <summary>РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅРѕРІРѕРіРѕ РєРѕРјР±РёРЅРёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЏ Р·РЅР°С‡РµРЅРёР№</summary>
         public Combine() { }
 
-        /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
-        /// <param name="First">Первый вложенный преобразователь значения</param>
-        /// <param name="Then">Второй вложенный преобразователь значения</param>
+        /// <summary>РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅРѕРІРѕРіРѕ РєРѕРјР±РёРЅРёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЏ Р·РЅР°С‡РµРЅРёР№</summary>
+        /// <param name="First">РџРµСЂРІС‹Р№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ Р·РЅР°С‡РµРЅРёСЏ</param>
+        /// <param name="Then">Р’С‚РѕСЂРѕР№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ Р·РЅР°С‡РµРЅРёСЏ</param>
         public Combine(IValueConverter First, IValueConverter Then)
         {
             this.First = First;
             this.Then = Then;
         }
 
-        /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
-        /// <param name="First">Первый вложенный преобразователь значения</param>
-        /// <param name="Then">Второй вложенный преобразователь значения</param>
-        /// <param name="Other">Остальные вложенные преобразователя значений</param>
+        /// <summary>РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РЅРѕРІРѕРіРѕ РєРѕРјР±РёРЅРёСЂРѕРІР°РЅРЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЏ Р·РЅР°С‡РµРЅРёР№</summary>
+        /// <param name="First">РџРµСЂРІС‹Р№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ Р·РЅР°С‡РµРЅРёСЏ</param>
+        /// <param name="Then">Р’С‚РѕСЂРѕР№ РІР»РѕР¶РµРЅРЅС‹Р№ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ Р·РЅР°С‡РµРЅРёСЏ</param>
+        /// <param name="Other">РћСЃС‚Р°Р»СЊРЅС‹Рµ РІР»РѕР¶РµРЅРЅС‹Рµ РїСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЏ Р·РЅР°С‡РµРЅРёР№</param>
         public Combine(IValueConverter First, IValueConverter Then, params IValueConverter[] Other)
         {
             this.First = First;

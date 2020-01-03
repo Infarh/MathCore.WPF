@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows.Media;
 // ReSharper disable UnusedType.Global
@@ -23,7 +23,7 @@ namespace MathCore.WPF.Converters
 
         public override object ProvideValue(IServiceProvider sp)
         {
-            if(Points == null || Points.Count == 0) throw new FormatException();
+            if(Points is null || Points.Count == 0) throw new FormatException();
 
             var x = Points.Select(p => p.X).ToArray();
             var y = Points.Select(p => p.Y).ToArray();

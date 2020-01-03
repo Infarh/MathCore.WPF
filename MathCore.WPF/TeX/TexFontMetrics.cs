@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Specifies font metrics for single character</summary>
     internal class TexFontMetrics

@@ -9,7 +9,7 @@ namespace MathCore.WPF.Templates.Selectors
         {
             var element = container as FrameworkElement;
 
-            if(element == null || item == null) return null;
+            if(element is null || item is null) return null;
             var type = item.GetType();
             return element.FindResource(type.Name) as DataTemplate;
         }

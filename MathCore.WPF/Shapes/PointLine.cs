@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
@@ -75,7 +75,7 @@ namespace MathCore.WPF.Shapes
                 for(var i = 0; i < __StartPointAttachedLinesList.Count; i++)
                 {
                     var obj = __StartPointAttachedLinesList[i].Target;
-                    if(obj == null)
+                    if(obj is null)
                         to_remove.Add(__StartPointAttachedLinesList[i]);
                     else if(ReferenceEquals(obj, line))
                     {
@@ -99,7 +99,7 @@ namespace MathCore.WPF.Shapes
                 for(var i = 0; i < __EndPointAttachedLinesList.Count; i++)
                 {
                     var obj = __EndPointAttachedLinesList[i].Target;
-                    if(obj == null)
+                    if(obj is null)
                         to_remove.Add(__EndPointAttachedLinesList[i]);
                     else if(ReferenceEquals(obj, line))
                     {

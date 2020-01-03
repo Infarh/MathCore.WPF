@@ -157,7 +157,7 @@ namespace MathCore.WPF.SVG
           return null;
 
         SvgGradientBaseElement reference = Document.Elements[Reference] as SvgGradientBaseElement;
-        if(reference == null)
+        if(reference is null)
           throw new NotImplementedException();
         reference.SetBrush(brush);
       }

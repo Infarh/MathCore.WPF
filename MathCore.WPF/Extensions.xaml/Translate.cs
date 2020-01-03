@@ -1,24 +1,24 @@
-using System;
+п»їusing System;
 using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace MathCore.WPF
 {
-    /// <summary>Трансформация смещения</summary>
+    /// <summary>РўСЂР°РЅСЃС„РѕСЂРјР°С†РёСЏ СЃРјРµС‰РµРЅРёСЏ</summary>
     [MarkupExtensionReturnType(typeof(TranslateTransform))]
     public class Translate : MarkupExtension
     {
-        /// <summary>Смещение по X</summary>
+        /// <summary>РЎРјРµС‰РµРЅРёРµ РїРѕ X</summary>
         public double X { get; set; } = 1;
-        /// <summary>Смещение по Y</summary>
+        /// <summary>РЎРјРµС‰РµРЅРёРµ РїРѕ Y</summary>
         public double Y { get; set; } = 1;
 
-        /// <summary>Трансформация смещения</summary>
+        /// <summary>РўСЂР°РЅСЃС„РѕСЂРјР°С†РёСЏ СЃРјРµС‰РµРЅРёСЏ</summary>
         public Translate() { }
 
-        /// <summary>Трансформация смещения</summary>
-        /// <param name="x">Смещение по X</param>
-        /// <param name="y">Смещение по Y</param>
+        /// <summary>РўСЂР°РЅСЃС„РѕСЂРјР°С†РёСЏ СЃРјРµС‰РµРЅРёСЏ</summary>
+        /// <param name="x">РЎРјРµС‰РµРЅРёРµ РїРѕ X</param>
+        /// <param name="y">РЎРјРµС‰РµРЅРёРµ РїРѕ Y</param>
         public Translate(double x, double y) { X = x; Y = y; }
 
         #region Overrides of MarkupExtension

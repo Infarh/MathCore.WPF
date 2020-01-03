@@ -1,11 +1,11 @@
-using System;
+п»їusing System;
 using System.Windows.Markup;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Конвертер дифференцирования значения по времени</summary>
+    /// <summary>РљРѕРЅРІРµСЂС‚РµСЂ РґРёС„С„РµСЂРµРЅС†РёСЂРѕРІР°РЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕ РІСЂРµРјРµРЅРё</summary>
     [MarkupExtensionReturnType(typeof(TimeDifferential))]
     public class TimeDifferential : SimpleDoubleValueConverter
     {

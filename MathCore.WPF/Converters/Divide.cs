@@ -1,8 +1,8 @@
-using System.Windows.Markup;
+п»їusing System.Windows.Markup;
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Преобразователь деления значения на вещественное число</summary>
+    /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ РґРµР»РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РЅР° РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ С‡РёСЃР»Рѕ</summary>
     [MarkupExtensionReturnType(typeof(Divide))]
     // ReSharper disable once UnusedType.Global
     public class Divide : SimpleDoubleValueConverter

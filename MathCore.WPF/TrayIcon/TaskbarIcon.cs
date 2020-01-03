@@ -136,7 +136,7 @@ namespace MathCore.WPF.TrayIcon
                 return;
             }
 
-            if(balloon == null) throw new ArgumentNullException(nameof(balloon));
+            if(balloon is null) throw new ArgumentNullException(nameof(balloon));
             if(timeout.HasValue && timeout < 500)
             {
                 var msg = "Invalid timeout of {0} milliseconds. Timeout must be at least 500 ms";
@@ -245,7 +245,7 @@ namespace MathCore.WPF.TrayIcon
 
                 //reset old popup, if we still have one
                 var popup = CustomBalloon;
-                if(popup == null) return;
+                if(popup is null) return;
                 var element = popup.Child;
 
                 //announce closing
@@ -406,7 +406,7 @@ namespace MathCore.WPF.TrayIcon
         private void OnToolTipChange(bool visible)
         {
             //if we don't have a tooltip, there's nothing to do here...
-            if(TrayToolTipResolved == null) return;
+            if(TrayToolTipResolved is null) return;
 
             if(visible)
             {
@@ -458,7 +458,7 @@ namespace MathCore.WPF.TrayIcon
             //check if the item itself is a tooltip
             var tool_tip = TrayToolTip as ToolTip;
 
-            if(tool_tip == null && TrayToolTip != null)
+            if(tool_tip is null && TrayToolTip != null)
             {
                 //create an invisible wrapper tooltip that hosts the UIElement
                 tool_tip = new ToolTip
@@ -480,7 +480,7 @@ namespace MathCore.WPF.TrayIcon
 
                 //setting the 
             }
-            else if(tool_tip == null && !string.IsNullOrEmpty(ToolTipText))
+            else if(tool_tip is null && !string.IsNullOrEmpty(ToolTipText))
             {
                 //create a simple tooltip for the ToolTipText string
                 tool_tip = new ToolTip { Content = ToolTipText };
@@ -543,7 +543,7 @@ namespace MathCore.WPF.TrayIcon
             //check if the item itself is a popup
             var popup = TrayPopup as Popup;
 
-            if(popup == null && TrayPopup != null)
+            if(popup is null && TrayPopup != null)
             {
                 //create an invisible popup that hosts the UIElement
                 popup = new Popup
@@ -591,7 +591,7 @@ namespace MathCore.WPF.TrayIcon
             var args = RaisePreviewTrayPopupOpenEvent();
             if(args.Handled) return;
 
-            if(TrayPopup == null) return;
+            if(TrayPopup is null) return;
             //use absolute position, but place the popup centered above the icon
             TrayPopupResolved.Placement = PlacementMode.AbsolutePoint;
             TrayPopupResolved.HorizontalOffset = cursorPosition.X;
@@ -640,7 +640,7 @@ namespace MathCore.WPF.TrayIcon
             var args = RaisePreviewTrayContextMenuOpenEvent();
             if(args.Handled) return;
 
-            if(ContextMenu == null) return;
+            if(ContextMenu is null) return;
             //use absolute positioning. We need to set the coordinates, or a delayed opening
             //(e.g. when left-clicked) opens the context menu at the wrong place if the mouse
             //is moved!
@@ -709,7 +709,7 @@ namespace MathCore.WPF.TrayIcon
         /// is a null reference.</exception>
         public void ShowBalloonTip(string title, string message, Icon customIcon)
         {
-            if(customIcon == null) throw new ArgumentNullException(nameof(customIcon));
+            if(customIcon is null) throw new ArgumentNullException(nameof(customIcon));
 
             lock(this) ShowBalloonTip(title, message, BalloonFlags.User, customIcon.Handle);
         }
@@ -764,7 +764,7 @@ namespace MathCore.WPF.TrayIcon
 
             //run action
             var action = singleClickTimerAction;
-            if(action == null) return;
+            if(action is null) return;
             //cleanup action
             singleClickTimerAction = null;
 
@@ -876,7 +876,7 @@ namespace MathCore.WPF.TrayIcon
             {
                 //calculate scaling factor in order to support non-standard DPIs
                 var presentationSource = PresentationSource.FromVisual(this);
-                if(presentationSource == null)
+                if(presentationSource is null)
                     scalingFactor = 1;
                 else
                 {

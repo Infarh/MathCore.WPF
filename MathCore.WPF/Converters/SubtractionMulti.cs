@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Markup;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global

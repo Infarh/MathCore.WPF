@@ -122,7 +122,7 @@ namespace MathCore.WPF.Extensions
         public static object CreateObject(this Type type)
         {
             //var constructor = type.GetConstructor(new Type[] { });
-            //if (constructor == null)
+            //if (constructor is null)
             //    throw new InvalidOperationException("Не найден конструктор типа " +
             //        type + " без параметров. Для данного типа доступны следующие конструкторы " +
             //        type.GetConstructors().ConvertObjectTo(CInfo =>

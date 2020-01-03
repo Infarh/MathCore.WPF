@@ -15,7 +15,7 @@ namespace MathCore.WPF.ValidationRules
 
         public override ValidationResult Validate(object value, CultureInfo CultureInfo)
         {
-            if(value == null) return new ValidationResult(false, "Значение не указно");
+            if(value is null) return new ValidationResult(false, "Значение не указно");
             try
             {
                 var v = Convert.ToDouble(value);

@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing other atom vertically centered with respect to axis</summary>
     internal class VerticalCenteredAtom : Atom

@@ -59,7 +59,7 @@ namespace MathCore.WPF.SVG
         /// </returns>
         public static DrawingImage Load(XmlReader reader, SvgReaderOptions options)
         {
-            if(options == null)
+            if(options is null)
                 options = new SvgReaderOptions();
 
             XDocument document = XDocument.Load(reader);

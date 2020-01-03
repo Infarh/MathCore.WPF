@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MathCore.WPF.TeX
 {
@@ -61,7 +61,7 @@ namespace MathCore.WPF.TeX
                 resultBox.Add(Glue.CreateBox(BaseAtom.GetRightType(), TexAtomType.Closing, environment));
 
             // Create and add box for right delimeter.
-            if(RightDelimeter == null) return resultBox;
+            if(RightDelimeter is null) return resultBox;
 
             var rightDelimeterBox = DelimiterFactory.CreateBox(RightDelimeter.Name, minHeight, environment);
             CentreBox(rightDelimeterBox, axis);

@@ -1,9 +1,9 @@
-using System.Windows.Markup;
+п»їusing System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Преобразователь вычитания вещественного числа из значения</summary>
+    /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ РІС‹С‡РёС‚Р°РЅРёСЏ РІРµС‰РµСЃС‚РІРµРЅРЅРѕРіРѕ С‡РёСЃР»Р° РёР· Р·РЅР°С‡РµРЅРёСЏ</summary>
     [MarkupExtensionReturnType(typeof(Subtraction))]
     public class Subtraction : SimpleDoubleValueConverter
     {

@@ -1,4 +1,4 @@
-using MathCore.Values;
+﻿using MathCore.Values;
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
 

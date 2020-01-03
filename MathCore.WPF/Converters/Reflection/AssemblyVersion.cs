@@ -1,4 +1,4 @@
-using System.Windows.Markup;
+﻿using System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.Reflection

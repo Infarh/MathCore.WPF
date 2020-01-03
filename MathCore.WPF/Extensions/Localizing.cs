@@ -71,10 +71,10 @@ namespace MathCore.WPF.Extensions
                                              ?? string.Empty;
 
         [NotNull]
-        public override object Convert(object? value, Type? TargetType, object? parameter, CultureInfo culture)
+        public override object Convert(object? v, Type? t, object? p, CultureInfo c)
         {
             var key = Key;
-            var localized_value = !(value is ResourceManager resource_manager) || string.IsNullOrEmpty(key)
+            var localized_value = !(v is ResourceManager resource_manager) || string.IsNullOrEmpty(key)
                 ? $":{key}:"
                 : resource_manager.GetString(key) ?? $":{key}:";
 

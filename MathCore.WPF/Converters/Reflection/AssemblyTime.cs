@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
