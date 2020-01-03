@@ -12,13 +12,13 @@ namespace MathCore.WPF.Extensions
 
         protected BindingExtension(object Source)
         {
-            base.Source = Source;
+            this.Source = Source;
             Converter = this;
         }
 
-        protected BindingExtension(RelativeSource relativeSource)
+        protected BindingExtension(RelativeSource RelativeSource)
         {
-            RelativeSource = relativeSource;
+            this.RelativeSource = RelativeSource;
             Converter = this;
         }
 

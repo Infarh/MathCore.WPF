@@ -1,75 +1,59 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Windows;
+using MathCore.Annotations;
+
+// ReSharper disable FieldCanBeMadeReadOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.pInvoke
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 0), SuppressMessage("ReSharper", "InconsistentNaming")]
-    public struct RECT
+    [StructLayout(LayoutKind.Sequential, Pack = 0), System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
+    internal struct Rect : IEquatable<Rect>
     {
-        /// <summary> Win32 </summary>
-        public int left;
-        /// <summary> Win32 </summary>
-        public int top;
-        /// <summary> Win32 </summary>
-        public int right;
-        /// <summary> Win32 </summary>
-        public int bottom;
+        public int Left;
+        public int Top;
+        public int Right;
+        public int Bottom;
 
-        /// <summary> Win32 </summary>
-        public static readonly RECT Empty = new RECT();
+        public static readonly Rect Empty;
 
-        /// <summary> Win32 </summary>
-        public int Width => Math.Abs(right - left);  // Abs needed for BIDI OS
+        public int Width => Math.Abs(Right - Left);
 
-        /// <summary> Win32 </summary>
-        public int Height => bottom - top;
+        public int Height => Bottom - Top;
 
-        /// <summary> Win32 </summary>
-        public RECT(int left, int top, int right, int bottom)
+        public Rect(int left, int top, int right, int bottom)
         {
-            this.left = left;
-            this.top = top;
-            this.right = right;
-            this.bottom = bottom;
+            Left = left;
+            Top = top;
+            Right = right;
+            Bottom = bottom;
         }
 
 
-        /// <summary> Win32 </summary>
-        public RECT(RECT rcSrc)
+        public Rect(Rect rcSrc)
         {
-            left = rcSrc.left;
-            top = rcSrc.top;
-            right = rcSrc.right;
-            bottom = rcSrc.bottom;
+            Left = rcSrc.Left;
+            Top = rcSrc.Top;
+            Right = rcSrc.Right;
+            Bottom = rcSrc.Bottom;
         }
 
-        /// <summary> Win32 </summary>
-        // BUGBUG : On Bidi OS (hebrew arabic) left > right
-        public bool IsEmpty => left >= right || top >= bottom;
+        public bool IsEmpty => Left >= Right || Top >= Bottom;
 
         /// <summary> Return a user friendly representation of this struct </summary>
-        public override string ToString() => this == Empty ? "RECT {Empty}" : $"RECT {{ left : {left} / top : {top} / right : {right} / bottom : {bottom} }}";
+        [NotNull]
+        public override string ToString() => Equals(Empty) ? "RECT {Empty}" : $"RECT {{ left : {Left} / top : {Top} / right : {Right} / bottom : {Bottom} }}";
 
-        /// <summary> Determine if 2 RECT are equal (deep compare) </summary>
-        public override bool Equals(object obj) => obj is Rect && this == (RECT)obj;
+        public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;
 
-        /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
-        public override int GetHashCode()
-        {
-            var hash = left.GetHashCode();
-            hash = (hash * 397) ^ top.GetHashCode();
-            hash = (hash * 397) ^ right.GetHashCode();
-            hash = (hash * 397) ^ bottom.GetHashCode();
-            return hash;
-        }
+        public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 
+        public override int GetHashCode() => HashCode.Combine(Left, Top, Right, Bottom);
 
-        /// <summary> Determine if 2 RECT are equal (deep compare)</summary>
-        public static bool operator ==(RECT rect1, RECT rect2) => rect1.left == rect2.left && rect1.top == rect2.top && rect1.right == rect2.right && rect1.bottom == rect2.bottom;
+        public static bool operator ==(Rect left, Rect right) => left.Equals(right);
 
-        /// <summary> Determine if 2 RECT are different(deep compare)</summary>
-        public static bool operator !=(RECT rect1, RECT rect2) => !(rect1 == rect2);    
+        public static bool operator !=(Rect left, Rect right) => !left.Equals(right);
     }
 }

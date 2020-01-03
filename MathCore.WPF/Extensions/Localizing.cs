@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
 
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -67,11 +68,11 @@ namespace MathCore.WPF.Extensions
         }
 
         [NotNull]
-        public override string ToString() => Convert(ActiveManager.SourceManager, null, Key, Thread.CurrentThread.CurrentCulture) as string
-                                             ?? string.Empty;
+        public override string ToString() => 
+            Convert(ActiveManager.SourceManager, null, Key, Thread.CurrentThread.CurrentCulture) as string ?? string.Empty;
 
         [NotNull]
-        public override object Convert(object? v, Type? t, object? p, CultureInfo c)
+        public override object? Convert(object? v, Type? t, object? p, CultureInfo? c)
         {
             var key = Key;
             var localized_value = !(v is ResourceManager resource_manager) || string.IsNullOrEmpty(key)

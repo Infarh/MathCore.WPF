@@ -2,6 +2,11 @@
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using MathCore.Annotations;
+
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
@@ -32,13 +37,22 @@ namespace MathCore.WPF
 
         /// <summary>Эффект тени</summary>
         /// <param name="depth">Глубина</param>
-        public Shadow(double depth) { Depth = depth; }
+        public Shadow(double depth) => Depth = depth;
 
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider serviceProvider) =>
-            new DropShadowEffect { BlurRadius = Blur, Color = Color, Direction = Direction, Opacity = Opacity, RenderingBias = Bias, ShadowDepth = Depth };
+        [NotNull]
+        public override object ProvideValue(IServiceProvider sp) =>
+            new DropShadowEffect
+            {
+                BlurRadius = Blur,
+                Color = Color,
+                Direction = Direction,
+                Opacity = Opacity,
+                RenderingBias = Bias,
+                ShadowDepth = Depth
+            };
 
         #endregion  
     }

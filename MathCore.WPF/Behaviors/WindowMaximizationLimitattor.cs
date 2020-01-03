@@ -49,7 +49,7 @@ namespace MathCore.WPF.Behaviors
         [SuppressMessage("ReSharper", "InconsistentNaming")]
         private static void WmGetMinMaxInfo(IntPtr hWnd, IntPtr lParam)
         {
-            var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO))!;
+            var mmi = (MinMaxInfo)Marshal.PtrToStructure(lParam, typeof(MinMaxInfo))!;
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
             // ReSharper disable once InconsistentNaming
@@ -59,14 +59,14 @@ namespace MathCore.WPF.Behaviors
 
             if (monitor != IntPtr.Zero)
             {
-                var monitorInfo = new MONITORINFO();
+                var monitorInfo = new MonitorInfo();
                 monitor.GetMonitorInfo(monitorInfo);
-                var rcWorkArea = monitorInfo.rcWork;
-                var rcMonitorArea = monitorInfo.rcMonitor;
-                mmi.ptMaxPosition.x = Math.Abs(rcWorkArea.left - rcMonitorArea.left);
-                mmi.ptMaxPosition.y = Math.Abs(rcWorkArea.top - rcMonitorArea.top);
-                mmi.ptMaxSize.x = Math.Abs(rcWorkArea.right - rcWorkArea.left);
-                mmi.ptMaxSize.y = Math.Abs(rcWorkArea.bottom - rcWorkArea.top);
+                var rcWorkArea = monitorInfo.Work;
+                var rcMonitorArea = monitorInfo.Monitor;
+                mmi.MaxPosition.x = Math.Abs(rcWorkArea.Left - rcMonitorArea.Left);
+                mmi.MaxPosition.y = Math.Abs(rcWorkArea.Top - rcMonitorArea.Top);
+                mmi.MaxSize.x = Math.Abs(rcWorkArea.Right - rcWorkArea.Left);
+                mmi.MaxSize.y = Math.Abs(rcWorkArea.Bottom - rcWorkArea.Top);
             }
             Marshal.StructureToPtr(mmi, lParam, true);
         }

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+// ReSharper disable UnusedType.Global
+// ReSharper disable ArgumentsStyleLiteral
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Shapes
 {
@@ -38,7 +41,6 @@ namespace MathCore.WPF.Shapes
                 new FrameworkPropertyMetadata(360d,
                     FrameworkPropertyMetadataOptions.AffectsRender));
 
-
         protected override Geometry DefiningGeometry
         {
             get
@@ -60,7 +62,7 @@ namespace MathCore.WPF.Shapes
             return new Point(x, y);
         }
 
-        private Geometry GetGeometry(Rect rect, double Start, double End, double Radius)
+        private static Geometry GetGeometry(Rect rect, double Start, double End, double Radius)
         {
             var w = rect.Width;
             var h = rect.Height;
@@ -69,11 +71,13 @@ namespace MathCore.WPF.Shapes
             if(d >= 360) return new EllipseGeometry(rect);
 
 
-            var p1 = GetPoint(min(Start, End), Radius, rect);
-            var p2 = GetPoint(max(Start, End), Radius, rect);
+            var p1 = GetPoint(Math.Min(Start, End), Radius, rect);
+            var p2 = GetPoint(Math.Max(Start, End), Radius, rect);
 
             /* To draw the arc in perfect way instead of seeing it as Big arc */
-            var arc = new Size(max(0, w / 2 * Radius), max(0, h / 2 * Radius));
+            double y = w / 2 * Radius;
+            double y1 = h / 2 * Radius;
+            var arc = new Size(Math.Max(0, y), Math.Max(0, y1));
 
             var is_large = d > 180;
 

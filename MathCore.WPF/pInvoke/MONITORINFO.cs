@@ -1,25 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.pInvoke
 {
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto), SuppressMessage("ReSharper", "InconsistentNaming")]
-    public class MONITORINFO
+    internal class MonitorInfo
     {
-        /// <summary>
-        /// </summary>            
-        public int cbSize = Marshal.SizeOf(typeof(MONITORINFO));
+        public int Size = Marshal.SizeOf(typeof(MonitorInfo));
 
-        /// <summary>
-        /// </summary>            
-        public RECT rcMonitor = new RECT();
+        public Rect Monitor = new Rect();
 
-        /// <summary>
-        /// </summary>            
-        public RECT rcWork = new RECT();
+        public Rect Work = new Rect();
 
-        /// <summary>
-        /// </summary>            
-        public int dwFlags = 0;
+        public int Flags = 0;
     }
 }

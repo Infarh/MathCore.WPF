@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Windows.Markup;
 using System.Windows.Media;
+using MathCore.Annotations;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
@@ -24,7 +29,8 @@ namespace MathCore.WPF
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider serviceProvider) => new TranslateTransform { X = X, Y = Y };
+        [NotNull]
+        public override object ProvideValue(IServiceProvider sp) => new TranslateTransform { X = X, Y = Y };
 
         #endregion 
     }

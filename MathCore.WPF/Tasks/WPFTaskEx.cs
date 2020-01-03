@@ -2,17 +2,19 @@
 using System.Windows;
 using System.Windows.Threading;
 using MathCore.Annotations;
+// ReSharper disable UnusedMember.Global
 
 namespace System.Threading.Tasks
 {
     public static class WPFTaskEx
     {
-        public static DispatcherAwaiter ToUIContext() => Application.Current.Dispatcher.GetAwaiter();
+        [NotNull] public static DispatcherAwaiter ToUIContext() => (Application.Current.Dispatcher ?? throw new InvalidOperationException("Диспетчер для приложения не определён")).GetAwaiter()!;
 
         /// <summary>
         /// Метод вызывает завершение работы текущего метода в текущем контексте синхронизации и возвращает задачу, результатом которой является диспетчер исходного контекста синхронизации
         /// </summary>
         /// <returns>Задача, возвращающая диспетчер исходного контекста синхронизации в одном из потоков из пула потоков</returns>
+        [ItemNotNull]
         public static async Task<Dispatcher> FromDispatcherAsync()
         {
             var dispatcher = Dispatcher.CurrentDispatcher;
@@ -34,7 +36,6 @@ namespace System.Threading.Tasks
         }
     }
 }
-
 namespace System.Windows.Threading
 {
     public static class DispatcherExtensions

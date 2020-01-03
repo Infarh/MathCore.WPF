@@ -50,11 +50,11 @@ namespace System.Collections.ObjectModel
             public CollectionConnector(
                 [NotNull] TSource Source,
                 [NotNull] TDest Destination,
-                Func<TSourceItem, TDestItem>? Converter = null)
+                [CanBeNull] Func<TSourceItem, TDestItem>? Converter = null)
             {
                 _SourceRef = new WeakReference(Source);
                 _DestinationRef = new WeakReference(Destination);
-                _Converter = Converter ?? (s => (TDestItem)(object)s);
+                _Converter = Converter ?? (s => (TDestItem)(object)s!);
                 AddItems();
                 Source.CollectionChanged += OnCollectionChanged;
             }
@@ -194,8 +194,8 @@ namespace System.Collections.ObjectModel
                             ReferenceEquals(c.Source, SourceCollection) &&
                             ReferenceEquals(c.Destination, DestinationCollection))?.Close();
 
-        private static readonly Dictionary<Type, (Delegate, Action<object, PropertyChangedEventArgs>, Action<object, NotifyCollectionChangedEventArgs>)> __ItemsDictionary = 
-            new Dictionary<Type, (Delegate, Action<object, PropertyChangedEventArgs>, Action<object, NotifyCollectionChangedEventArgs>)>();
+        private static readonly Dictionary<Type, (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged)> __ItemsDictionary = 
+            new Dictionary<Type, (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged)>();
 
         public static void AddItemsRange<TCollection, TItem>(
             [NotNull]this TCollection collection,
@@ -208,7 +208,7 @@ namespace System.Collections.ObjectModel
 
             else
             {
-                (Delegate, Action<object, PropertyChangedEventArgs>, Action<object, NotifyCollectionChangedEventArgs>) p;
+                (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged) p;
                 lock (__ItemsDictionary)
                     p = __ItemsDictionary.GetValueOrAddNew(
                         typeof(TCollection), t =>
@@ -236,17 +236,17 @@ namespace System.Collections.ObjectModel
                                 );
                         });
 
-                var items_collection = ((Func<TCollection, IList<TItem>>)p.Item1)(collection);
+                var items_collection = ((Func<TCollection, IList<TItem>>)p.GetItems)(collection);
                 object? I = null;
                 var count = 0;
                 items_collection.AddItemsRange(items.ForeachLazy(i => { if (count++ == 0) I = i; else I = null; }));
                 if (count == 0) return;
-                p.Item2(collection, new PropertyChangedEventArgs("Count"));
-                p.Item2(collection, new PropertyChangedEventArgs("Item[]"));
+                p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Count"));
+                p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Item[]"));
                 var e = count == 1
                     ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, I)
                     : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
-                p.Item3(collection, e);
+                p.OnCollectionChanged(collection, e);
             }
         }
 
@@ -260,7 +260,7 @@ namespace System.Collections.ObjectModel
                     collection.Remove(item);
             else
             {
-                (Delegate, Action<object, PropertyChangedEventArgs>, Action<object, NotifyCollectionChangedEventArgs>) p;
+                (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged) p;
                 lock (__ItemsDictionary)
                     p = __ItemsDictionary.GetValueOrAddNew(
                         typeof(TCollection), t =>
@@ -279,17 +279,17 @@ namespace System.Collections.ObjectModel
                                 );
                         });
 
-                var items_collection = ((Func<TCollection, IList<TItem>>)p.Item1)(collection);
-                object I = null;
+                var items_collection = ((Func<TCollection, IList<TItem>>)p.GetItems)(collection);
+                object? I = null;
                 var count = 0;
                 items_collection.RemoveItemsRange(items.ForeachLazy(i => { if (count++ == 0) I = i; else I = null; }));
                 if (count == 0) return;
-                p.Item2(collection, new PropertyChangedEventArgs("Count"));
-                p.Item2(collection, new PropertyChangedEventArgs("Item[]"));
+                p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Count"));
+                p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Item[]"));
                 var e = count == 1
                     ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, I)
                     : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
-                p.Item3(collection, e);
+                p.OnCollectionChanged(collection, e);
             }
         }
 

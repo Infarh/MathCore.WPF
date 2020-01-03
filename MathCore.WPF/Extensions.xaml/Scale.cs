@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Windows.Markup;
 using System.Windows.Media;
+using MathCore.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedType.Global
 
 // ReSharper disable UnusedMember.Global
 
@@ -32,8 +37,8 @@ namespace MathCore.WPF
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider serviceProvider) =>
-            new ScaleTransform { ScaleX = X, ScaleY = Y, CenterX = X0, CenterY = Y0 };
+        [NotNull]
+        public override object ProvideValue(IServiceProvider sp) => new ScaleTransform { ScaleX = X, ScaleY = Y, CenterX = X0, CenterY = Y0 };
 
         #endregion 
     }

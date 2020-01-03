@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Windows.Markup;
 using System.Windows.Media;
+using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MathCore.WPF
 {
@@ -27,8 +32,8 @@ namespace MathCore.WPF
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider serviceProvider) =>
-            new RotateTransform { Angle = Angle, CenterX = X, CenterY = Y };
+        [NotNull]
+        public override object ProvideValue(IServiceProvider sp) => new RotateTransform { Angle = Angle, CenterX = X, CenterY = Y };
 
         #endregion 
     }
