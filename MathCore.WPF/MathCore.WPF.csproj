@@ -28,6 +28,18 @@
 
   <ItemGroup>
     <None Remove="MathCore.WPF.csproj.DotSettings" />
+    <None Remove="Shaders\BlackAndWhite.fx.ps" />
+    <None Remove="Shaders\Blur.fx.ps" />
+    <None Remove="Shaders\ColorAlphaKey.fx.ps" />
+    <None Remove="Shaders\compile.bat" />
+    <None Remove="Shaders\DirectionalBlur.fx.ps" />
+    <None Remove="Shaders\fxc.exe" />
+    <None Remove="Shaders\Grayscale.fx.ps" />
+    <None Remove="Shaders\Invert.fx.ps" />
+    <None Remove="Shaders\Opacity.fx.ps" />
+    <None Remove="Shaders\Sepia.fx.ps" />
+    <None Remove="Shaders\TestShader.DGSL" />
+    <None Remove="Shaders\ZoomBlur.fx.ps" />
     <None Remove="TeX\Fonts\cmex10.ttf" />
     <None Remove="TeX\Fonts\cmmi10.ttf" />
     <None Remove="TeX\Fonts\cmr10.ttf" />
@@ -40,6 +52,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Shaders\BlackAndWhite.fx.ps" />
+    <EmbeddedResource Include="Shaders\Blur.fx.ps" />
+    <EmbeddedResource Include="Shaders\ColorAlphaKey.fx.ps" />
+    <EmbeddedResource Include="Shaders\DirectionalBlur.fx.ps" />
+    <EmbeddedResource Include="Shaders\Grayscale.fx.ps" />
+    <EmbeddedResource Include="Shaders\Invert.fx.ps" />
+    <EmbeddedResource Include="Shaders\Opacity.fx.ps" />
+    <EmbeddedResource Include="Shaders\Sepia.fx.ps" />
+    <EmbeddedResource Include="Shaders\ZoomBlur.fx.ps" />
     <EmbeddedResource Include="TeX\Fonts\cmex10.ttf" />
     <EmbeddedResource Include="TeX\Fonts\cmmi10.ttf" />
     <EmbeddedResource Include="TeX\Fonts\cmr10.ttf" />
