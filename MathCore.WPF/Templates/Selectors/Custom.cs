@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Templates.Selectors
 {
@@ -10,10 +13,11 @@ namespace MathCore.WPF.Templates.Selectors
     public class Custom : MarkupExtension
     {
         private readonly Dictionary<string, DataTemplate> _Items = new Dictionary<string, DataTemplate>();
+
         public IDictionary<string, DataTemplate> Templates => _Items;
 
         public Func<object, string> KeySelector { get; set; } = o => o.GetType().Name;
 
-        public override object ProvideValue(IServiceProvider sp) => new CustomDataTemplateSelector(_Items, KeySelector);
+        [NotNull] public override object ProvideValue(IServiceProvider sp) => new CustomDataTemplateSelector(_Items, KeySelector);
     }
 }
