@@ -31,9 +31,7 @@ namespace MathCore.WPF.ValidationRules
         {
             var valid = ValidationResult.ValidResult;
             if (value is null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указано");
-            if (!(value is string)) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
-
-            var str = (string)value;
+            if (!(value is string str)) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
 
             var match = str.FindRegEx(Expression);
             return match.Success ? valid : new ValidationResult(false, ErrorMessage ?? $"Выражение {Expression} не найдено в строке {str}");

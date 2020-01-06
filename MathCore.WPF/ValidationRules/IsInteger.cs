@@ -19,7 +19,6 @@ namespace MathCore.WPF.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo c)
         {
             if (value is null) return AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, "Значение не указано");
-            Exception? error;
             try
             {
                 _ = Convert.ToInt32(value, c);
@@ -27,18 +26,16 @@ namespace MathCore.WPF.ValidationRules
             }
             catch (OverflowException e)
             {
-                error = e;
-
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к целочисленному (4 байта) типу: {e.Message}");
             }
             catch (InvalidCastException e)
             {
-                error = e;
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к целочисленному (4 байта) типу: {e.Message}");
             }
             catch (FormatException e)
             {
-                error = e;
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к целочисленному (4 байта) типу: {e.Message}");
             }
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка преобразования {value} к 4х-байтному целому типу: {error.Message}");
         }
     }
 }

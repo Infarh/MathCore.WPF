@@ -23,7 +23,6 @@ namespace MathCore.WPF.ValidationRules
         public override ValidationResult Validate(object value, CultureInfo c)
         {
             if (value is null) return AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, "Значение не указано");
-            Exception? error;
             try
             {
                 _ = Convert.ToDouble(value, c);
@@ -31,18 +30,16 @@ namespace MathCore.WPF.ValidationRules
             }
             catch (OverflowException e)
             {
-                error = e;
-
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
             }
             catch (InvalidCastException e)
             {
-                error = e;
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
             }
             catch (FormatException e)
             {
-                error = e;
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
             }
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка преобразования {value} к вещественному типу: {error.Message}");
         }
     }
 }

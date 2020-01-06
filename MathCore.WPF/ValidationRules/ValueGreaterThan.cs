@@ -35,9 +35,17 @@ namespace MathCore.WPF.ValidationRules
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, ErrorMessage ?? $"Значение {value} меньше чем {Value}");
             }
-            catch (Exception e)
+            catch (OverflowException e)
             {
-                return new ValidationResult(false, $"Ошибка преобразования {value} к вещественному типу: {e.Message}");
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
+            }
+            catch (InvalidCastException e)
+            {
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
+            }
+            catch (FormatException e)
+            {
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
             }
         }
     }

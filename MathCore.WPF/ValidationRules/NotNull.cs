@@ -16,8 +16,9 @@ namespace MathCore.WPF.ValidationRules
 
         /// <inheritdoc />
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo с) => value is null
-            ? new ValidationResult(false, ErrorMessage ?? "Значение не указано")
-            : ValidationResult.ValidResult;
+        public override ValidationResult Validate(object value, CultureInfo с) => 
+            value is null
+                ? new ValidationResult(false, ErrorMessage ?? "Значение не указано")
+                : ValidationResult.ValidResult;
     }
 }

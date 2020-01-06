@@ -18,17 +18,27 @@ namespace MathCore.WPF.ValidationRules
 
         /// <inheritdoc />
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo с)
+        public override ValidationResult Validate(object value, CultureInfo c)
         {
             var valid = ValidationResult.ValidResult;
             if (value is null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указано");
             try
             {
-                return !double.IsNaN(Convert.ToDouble(value, c)) ? valid : new ValidationResult(false, ErrorMessage ?? "Значение является не-числом");
+                return !double.IsNaN(Convert.ToDouble(value, c)) 
+                    ? valid 
+                    : new ValidationResult(false, ErrorMessage ?? "Значение является не-числом");
             }
-            catch (Exception e)
+            catch (OverflowException e)
             {
-                return new ValidationResult(false, ErrorMessage ?? $"Невозможно преобразовано {value} в вещественное число: {e.Message}");
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
+            }
+            catch (InvalidCastException e)
+            {
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
+            }
+            catch (FormatException e)
+            {
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
             }
         }
     }
