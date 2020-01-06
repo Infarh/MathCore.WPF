@@ -7,11 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF", "MathCore.WP
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{7B0FF24E-606F-4FE1-B2EB-59CE8B955D18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF.Tests", "Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj", "{CD2921BC-8C56-4012-A3AD-966B7EB16F17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF.Tests", "Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj", "{CD2921BC-8C56-4012-A3AD-966B7EB16F17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathCore.WPF.WindowTest", "Tests\MathCore.WPF.WindowTest\MathCore.WPF.WindowTest.csproj", "{4C6A1921-34C1-434B-BC51-F3D030628FFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF.WindowTest", "Tests\MathCore.WPF.WindowTest\MathCore.WPF.WindowTest.csproj", "{4C6A1921-34C1-434B-BC51-F3D030628FFC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MathCore.WPF.ConsoleTest", "Tests\MathCore.WPF.ConsoleTest\MathCore.WPF.ConsoleTest.csproj", "{9A075286-7BDD-48D0-9C51-4157E5583842}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F8D2B6B1-796B-4514-AD6D-78BA8F120698}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

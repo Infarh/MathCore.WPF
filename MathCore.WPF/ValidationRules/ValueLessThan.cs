@@ -1,23 +1,32 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using MathCore.Annotations;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.ValidationRules
 {
-    public class ValueLessThen : ValidationRule
+    public class ValueLessThan : ValidationRule
     {
+        [ConstructorArgument(nameof(Value))]
         public double Value { get; set; }
+
         public bool IsEquals { get; set; }
 
-        public string ErrorMessage { get; set; }
+        public string? ErrorMessage { get; set; }
 
-        public ValueLessThen() { }
+        public ValueLessThan() { }
 
-        public ValueLessThen(double value) => Value = value;
+        public ValueLessThan(double value) => Value = value;
 
+        [NotNull]
         public override ValidationResult Validate(object value, CultureInfo CultureInfo)
         {
-            if(value is null) return new ValidationResult(false, "Значение не указно");
+            if (value is null) return new ValidationResult(false, "Значение не указано");
             try
             {
                 var v = Convert.ToDouble(value);
@@ -25,7 +34,7 @@ namespace MathCore.WPF.ValidationRules
                     ? ValidationResult.ValidResult
                     : new ValidationResult(false, ErrorMessage ?? $"Значение {value} больше чем {Value}");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return new ValidationResult(false, $"Значение {value} не может быть преобразовано в вещественное число: {e.Message}");
             }
