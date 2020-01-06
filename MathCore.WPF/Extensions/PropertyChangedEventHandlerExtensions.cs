@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Windows.Threading;
 using MathCore.Annotations;
+using System.ComponentModel;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
@@ -90,7 +91,6 @@ namespace System.ComponentModel
 }
 namespace System.Collections.Specialized
 {
-    using ComponentModel;
     public static class NotifyCollectionChangedEventHandlerExtensions
     {
         public static void ThreadSafeInvoke(

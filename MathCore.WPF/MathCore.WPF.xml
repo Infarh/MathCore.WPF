@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"?>
+<?xml version="1.0"?>
 <doc>
     <assembly>
         <name>MathCore.WPF</name>
@@ -116,9 +116,7 @@
             <summary>Отсоединение поведения от объекта</summary>
         </member>
         <member name="M:MathCore.WPF.Behaviors.DragInCanvasBehavior.OnMouseLeftButtonDown(System.Object,System.Windows.Input.MouseButtonEventArgs)">
-            <summary>При нажатии левой кнопки мыши</summary>
-            <param name="sender">Источник события</param>
-            <param name="e">Аргумент события</param>
+            <summary>При нажатии левой кнопки мыши</summary><param name="sender">Источник события</param><param name="e">Аргумент события</param>
         </member>
         <member name="M:MathCore.WPF.Behaviors.DragInCanvasBehavior.OnMouseMove(System.Object,System.Windows.Input.MouseEventArgs)">
             <summary>При перемещении мыши</summary>
@@ -240,7 +238,7 @@
         <member name="F:MathCore.WPF.CollectionViewFilter.__Collections">
             <summary>Задействованные представления</summary>
         </member>
-        <member name="F:MathCore.WPF.CollectionViewFilter.__ProperyNameRegex">
+        <member name="F:MathCore.WPF.CollectionViewFilter.__PropertyNameRegex">
             <summary>Регулярное выражение проверки корректности имени свойства</summary>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.StringComparisonTypeProperty">
@@ -280,29 +278,29 @@
         <member name="M:MathCore.WPF.CollectionViewFilter.GetPropertyName(System.Windows.DependencyObject)">
             <summary>Получить имя фильтруемого свойства для модели представления коллекции</summary>
             <param name="element">Модель представления коллекции, имя фильтруемого свойство которой требуется получить</param>
-            <returns>Имя фильтруемого свойства элемнетов коллекции</returns>
+            <returns>Имя фильтруемого свойства элементов коллекции</returns>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.FilterTextProperty">
             <summary>Текст фильтра</summary>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.SetFilterText(System.Windows.DependencyObject,System.String)">
             <summary>Установить текст фильтра для модели представления коллекции</summary>
-            <param name="element">Модель представления колекции, текст фильтра для которой требуется установить</param>
+            <param name="element">Модель представления коллекции, текст фильтра для которой требуется установить</param>
             <param name="value">Устанавливаемый текст фильтра</param>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.GetFilterText(System.Windows.DependencyObject)">
-            <summary>Получить значение текста фильтра для модели предатавления коллекции</summary>
+            <summary>Получить значение текста фильтра для модели представления коллекции</summary>
             <param name="element">Модель представления коллекции, текст фильтра для которой требуется получить</param>
-            <returns>Текст фильтра, установленный для модели предатавления коллекции</returns>
+            <returns>Текст фильтра, установленный для модели представления коллекции</returns>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.DelayTimeProperty">
-            <summary>Время задержки обновления модели предавления коллекции в миллисеккундах</summary>
+            <summary>Время задержки обновления модели представления коллекции в миллисекундах</summary>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.__PropertyChangedEnterTime">
             <summary>Время входа в метод изменения значения свойства фильтра в миллисекундах с начала работы системы</summary>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.PropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>Метод обновления значения присоединённого свойства зависимости для фильтра модели представлния коллекции</summary>
+            <summary>Метод обновления значения присоединённого свойства зависимости для фильтра модели представления коллекции</summary>
             <param name="D">Модель представления коллекции, для которой изменяется значение свойства</param>
             <param name="E">Информация об изменившемся свойстве</param>
         </member>
@@ -311,10 +309,10 @@
             <param name="collection_view_source">Модель представления коллекции, которую требуется инициализировать</param>
         </member>
         <member name="T:MathCore.WPF.CollectionViewFilter.TypeProperty">
-            <summary>Информация о свойтве для указанного типа</summary>
+            <summary>Информация о свойстве для указанного типа</summary>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.TypeProperty._Type">
-            <summary>Тип, информацию о свойтве которого требуется сохранить</summary>
+            <summary>Тип, информацию о свойстве которого требуется сохранить</summary>
         </member>
         <member name="F:MathCore.WPF.CollectionViewFilter.TypeProperty._Property">
             <summary>Имя свойства</summary>
@@ -342,7 +340,7 @@
         </member>
         <member name="M:MathCore.WPF.CollectionViewFilter.CollectionViewSource_OnFilter(System.Object,System.Windows.Data.FilterEventArgs)">
             <summary>Метод фильтрации элементов модели представления коллекции</summary>
-            <param name="sendeer">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>
+            <param name="sender">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>
             <param name="e">Информация о объекте, который надо отфильтровать</param>
         </member>
         <member name="M:MathCore.WPF.CollectionViewFiltersCollection.CreateInstanceCore">
@@ -512,29 +510,23 @@
         <member name="T:MathCore.WPF.Commands.CommandBehavior">
             <summary>Defines the attached properties to create a CommandBehaviorBinding</summary>
         </member>
-        <member name="F:MathCore.WPF.Commands.CommandBehavior._BehaviorProperty">
+        <member name="F:MathCore.WPF.Commands.CommandBehavior.__BehaviorProperty">
             <summary>Behavior Attached Dependency Property</summary>
         </member>
-        <member name="M:MathCore.WPF.Commands.CommandBehavior.Getf_Behavior(System.Windows.DependencyObject)">
+        <member name="M:MathCore.WPF.Commands.CommandBehavior.Get__Behavior(System.Windows.DependencyObject)">
             <summary>Gets the Behavior property</summary>
         </member>
-        <member name="M:MathCore.WPF.Commands.CommandBehavior.Setf_Behavior(System.Windows.DependencyObject,MathCore.WPF.Commands.CommandBehaviorBinding)">
-            <summary>
-            Sets the Behavior property.  
-            </summary>
+        <member name="M:MathCore.WPF.Commands.CommandBehavior.Set__Behavior(System.Windows.DependencyObject,MathCore.WPF.Commands.CommandBehaviorBinding)">
+            <summary>Sets the Behavior property</summary>
         </member>
         <member name="F:MathCore.WPF.Commands.CommandBehavior.CommandProperty">
             <summary>Command Attached Dependency Property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.GetCommand(System.Windows.DependencyObject)">
-            <summary>
-            Gets the Command property.  
-            </summary>
+            <summary>Gets the Command property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.SetCommand(System.Windows.DependencyObject,System.Windows.Input.ICommand)">
-            <summary>
-            Sets the Command property. 
-            </summary>
+            <summary>Sets the Command property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.OnCommandChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>Handles changes to the Command property</summary>
@@ -543,34 +535,22 @@
             <summary>CommandParameter Attached Dependency Property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.GetCommandParameter(System.Windows.DependencyObject)">
-            <summary>
-            Gets the CommandParameter property.  
-            </summary>
+            <summary>Gets the CommandParameter property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.SetCommandParameter(System.Windows.DependencyObject,System.Object)">
-            <summary>
-            Sets the CommandParameter property. 
-            </summary>
+            <summary>Sets the CommandParameter property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.OnCommandParameterChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
-            <summary>
-            Handles changes to the CommandParameter property.
-            </summary>
+            <summary>Handles changes to the CommandParameter property</summary>
         </member>
         <member name="F:MathCore.WPF.Commands.CommandBehavior.EventProperty">
             <summary>Event Attached Dependency Property</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.GetEvent(System.Windows.DependencyObject)">
-            <summary>
-            Gets the Event property.  This dependency property 
-            indicates ....
-            </summary>
+            <summary>Gets the Event property.  This dependency property indicates ....</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.SetEvent(System.Windows.DependencyObject,System.String)">
-            <summary>
-            Sets the Event property.  This dependency property 
-            indicates ....
-            </summary>
+            <summary>Sets the Event property.  This dependency property indicates ....</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehavior.OnEventChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>Handles changes to the Event property</summary>
@@ -579,46 +559,28 @@
             <summary>Defines the command behavior binding</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.Owner">
-            <summary>
-            Get the owner of the CommandBinding ex: a Button
-            This property can only be set from the BindEvent Method
-            </summary>
+            <summary>Get the owner of the CommandBinding ex: a Button. This property can only be set from the BindEvent Method</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.Command">
-            <summary>
-            The command to execute when the specified event is raised
-            </summary>
+            <summary>The command to execute when the specified event is raised</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.CommandParameter">
-            <summary>
-            Gets or sets a CommandParameter
-            </summary>
+            <summary>Gets or sets a CommandParameter</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.EventName">
-            <summary>
-            The event name to hook up to
-            This property can only be set from the BindEvent Method
-            </summary>
+            <summary>The event name to hook up to. This property can only be set from the BindEvent Method</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.Event">
-            <summary>
-            The event info of the event
-            </summary>
+            <summary>The event info of the event</summary>
         </member>
         <member name="P:MathCore.WPF.Commands.CommandBehaviorBinding.EventHandler">
-            <summary>
-            Gets the EventHandler for the binding with the event
-            </summary>
+            <summary>Gets the EventHandler for the binding with the event</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehaviorBinding.ExecuteCommand">
-            <summary>
-            Executes the command
-            </summary>
+            <summary>Executes the command</summary>
         </member>
         <member name="M:MathCore.WPF.Commands.CommandBehaviorBinding.Dispose">
-            <summary>
-            Unregisters the EventHandler from the Event
-            </summary>
+            <summary>Unregister the EventHandler from the Event</summary>
         </member>
         <member name="T:MathCore.WPF.Commands.EventHandlerGenerator">
             <summary>Generates delegates according to the specified signature on runtime</summary>
@@ -628,11 +590,10 @@
             Generates a delegate with a matching signature of the supplied eventHandlerType
             This method only supports Events that have a delegate of type void
             </summary>
-            <param name="EventHandlerType"></param>
             <param name="MethodToInvoke">The method to invoke</param>
             <param name="MethodInvoker">The object where the method resides</param>
             <returns>Returns a delegate with the same signature as eventHandlerType that calls the methodToInvoke inside</returns>
-            <exception cref="T:System.ApplicationException">Delegate has a return type. This only supprts event handlers that are void</exception>
+            <exception cref="T:System.ApplicationException">Delegate has a return type. This only suppress event handlers that are void</exception>
         </member>
         <member name="M:MathCore.WPF.Commands.EventCommand.Execute(System.Object)">
             <inheritdoc />
@@ -698,16 +659,16 @@
             Перед началом использования команды поля <see cref="F:MathCore.WPF.Commands.LambdaCommand`1._ExecuteAction"/> и <see cref="F:MathCore.WPF.Commands.LambdaCommand`1._CanExecute"/> должны быть != <see langword="null"/>
             </summary>
         </member>
-        <member name="M:MathCore.WPF.Commands.MultyCommand.CanExecute(System.Object)">
+        <member name="M:MathCore.WPF.Commands.MultiCommand.CanExecute(System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Commands.MultyCommand.Execute(System.Object)">
+        <member name="M:MathCore.WPF.Commands.MultiCommand.Execute(System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Commands.MultyCommand.AddChild(System.Object)">
+        <member name="M:MathCore.WPF.Commands.MultiCommand.AddChild(System.Object)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Commands.MultyCommand.AddText(System.String)">
+        <member name="M:MathCore.WPF.Commands.MultiCommand.AddText(System.String)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Commands.OpenDirectoryCommand.ProvideValue(System.IServiceProvider)">
@@ -749,13 +710,13 @@
         <member name="T:MathCore.WPF.Converters.Addition">
             <summary>Преобразователь сложения значения с вещественным числом</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.AdditionMulty.Convert(System.Double[])">
+        <member name="M:MathCore.WPF.Converters.AdditionMulti.Convert(System.Double[])">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.AggregateArray.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.AndConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.And.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.ArrayElement.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
@@ -764,45 +725,45 @@
         <member name="M:MathCore.WPF.Converters.Average.To(System.Double,System.Double)">
             <inheritdoc />
         </member>
-        <member name="T:MathCore.WPF.Converters.Combyne">
+        <member name="T:MathCore.WPF.Converters.Combine">
             <summary>Преобразователь значений, комбинирующий действие нескольких вложенных преобразователей</summary>
         </member>
-        <member name="P:MathCore.WPF.Converters.Combyne.First">
+        <member name="P:MathCore.WPF.Converters.Combine.First">
             <summary>Первый применяемый вложенный преобразователь</summary>
         </member>
-        <member name="P:MathCore.WPF.Converters.Combyne.Then">
+        <member name="P:MathCore.WPF.Converters.Combine.Then">
             <summary>Второй применяемый вложенный преобразователь</summary>
         </member>
-        <member name="P:MathCore.WPF.Converters.Combyne.Other">
+        <member name="P:MathCore.WPF.Converters.Combine.Other">
             <summary>Массив остальных вложенных преобразователей</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.Combyne.#ctor">
+        <member name="M:MathCore.WPF.Converters.Combine.#ctor">
             <summary>Инициализация нового комбинированного преобразователя значений</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.Combyne.#ctor(System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter)">
+        <member name="M:MathCore.WPF.Converters.Combine.#ctor(System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter)">
             <summary>Инициализация нового комбинированного преобразователя значений</summary>
-            <param name="first">Первый вложенный преобразователь значения</param>
-            <param name="then">Второй вложенный преобразователь значения</param>
+            <param name="First">Первый вложенный преобразователь значения</param>
+            <param name="Then">Второй вложенный преобразователь значения</param>
         </member>
-        <member name="M:MathCore.WPF.Converters.Combyne.#ctor(System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter[])">
+        <member name="M:MathCore.WPF.Converters.Combine.#ctor(System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter,System.Windows.Data.IValueConverter[])">
             <summary>Инициализация нового комбинированного преобразователя значений</summary>
-            <param name="first">Первый вложенный преобразователь значения</param>
-            <param name="then">Второй вложенный преобразователь значения</param>
-            <param name="other">Остальные вложенные преобразователя зничений</param>
+            <param name="First">Первый вложенный преобразователь значения</param>
+            <param name="Then">Второй вложенный преобразователь значения</param>
+            <param name="Other">Остальные вложенные преобразователя значений</param>
         </member>
-        <member name="M:MathCore.WPF.Converters.Combyne.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.Combine.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.Combyne.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.Combine.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="P:MathCore.WPF.Converters.CompositeConverter.Converters">
+        <member name="P:MathCore.WPF.Converters.Composite.Converters">
             <summary>Коллекция конвертеров</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.CompositeConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.Composite.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.CompositeConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.Composite.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.CSplineInterp.Convert(System.Double,System.Nullable{System.Double})">
@@ -814,22 +775,22 @@
         <member name="M:MathCore.WPF.Converters.DataLengthString.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.dBConverter.Convert(System.Double,System.Nullable{System.Double})">
+        <member name="M:MathCore.WPF.Converters.dB.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.dBConverter.ConvertBack(System.Double,System.Nullable{System.Double})">
+        <member name="M:MathCore.WPF.Converters.dB.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
         <member name="T:MathCore.WPF.Converters.Deviation">
             <inheritdoc />
         </member>
-        <member name="T:MathCore.WPF.Converters.Divade">
+        <member name="T:MathCore.WPF.Converters.Divide">
             <summary>Преобразователь деления значения на вещественное число</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.DoubleToBoolConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.DoubleToBool.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.DoubleToBoolConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.DoubleToBool.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="T:MathCore.WPF.Converters.DoubleValueConverter">
@@ -884,7 +845,7 @@
         <member name="M:MathCore.WPF.Converters.InRange.Convert(System.Double)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.IO.FilePathToFileNameConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.IO.FilePathToName.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.IO.StringToFileInfo.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
@@ -961,10 +922,10 @@
         <member name="M:MathCore.WPF.Converters.MultiValueValueConverter.System#Windows#Data#IMultiValueConverter#ConvertBack(System.Object,System.Type[],System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="T:MathCore.WPF.Converters.Multipy">
+        <member name="T:MathCore.WPF.Converters.Multiply">
             <summary>Преобразователь умножения значения на вещественное число</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.NANtoVisibility.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.NaNtoVisibility.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.Not.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
@@ -976,7 +937,7 @@
         <member name="M:MathCore.WPF.Converters.Null2Visibility.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.OrConverter.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.Or.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.OutRange.Convert(System.Double)">
@@ -1009,11 +970,8 @@
         <member name="M:MathCore.WPF.Converters.Sign.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.SignValueConverter.Convert(System.Double,System.Nullable{System.Double})">
-            <inheritdoc />
-        </member>
         <member name="T:MathCore.WPF.Converters.SimpleDoubleValueConverter">
-            <summary>Простой математический конвертер для бинарных операций с констентой (либо с параметром)</summary>
+            <summary>Простой математический конвертер для бинарных операций с константой (либо с параметром)</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.SimpleDoubleValueConverter.Conversion">
             <summary>Метод преобразования значения</summary>
@@ -1022,7 +980,7 @@
             <returns>Преобразованное значение</returns>
         </member>
         <member name="F:MathCore.WPF.Converters.SimpleDoubleValueConverter._To">
-            <summary>Метд прямого преобразования</summary>
+            <summary>Метод прямого преобразования</summary>
         </member>
         <member name="F:MathCore.WPF.Converters.SimpleDoubleValueConverter._From">
             <summary>Метод обратного преобразования</summary>
@@ -1051,10 +1009,10 @@
         <member name="M:MathCore.WPF.Converters.SingleValue.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="T:MathCore.WPF.Converters.Substraction">
+        <member name="T:MathCore.WPF.Converters.Subtraction">
             <summary>Преобразователь вычитания вещественного числа из значения</summary>
         </member>
-        <member name="M:MathCore.WPF.Converters.SubstractionMulty.Convert(System.Double[])">
+        <member name="M:MathCore.WPF.Converters.SubtractionMulti.Convert(System.Double[])">
             <inheritdoc />
         </member>
         <member name="T:MathCore.WPF.Converters.TimeDifferential">
@@ -1063,13 +1021,13 @@
         <member name="M:MathCore.WPF.Converters.TimeDifferential.To(System.Double,System.Double)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.ToStringConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+        <member name="M:MathCore.WPF.Converters.ToString.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.Trunc.Convert(System.Double,System.Nullable{System.Double})">
+        <member name="M:MathCore.WPF.Converters.Truncate.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
-        <member name="M:MathCore.WPF.Converters.Trunc.ConvertBack(System.Double,System.Nullable{System.Double})">
+        <member name="M:MathCore.WPF.Converters.Truncate.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
         <member name="T:MathCore.WPF.Converters.ValueConverter">
@@ -1287,7 +1245,7 @@
             <summary>Кеширование изображения</summary>
         </member>
         <member name="P:MathCore.WPF.VisualCache.Scale">
-            <summary>Маштаб рендринга изображения</summary>
+            <summary>Масштаб рендринга изображения</summary>
         </member>
         <member name="P:MathCore.WPF.VisualCache.RealPixels">
             <summary>Привязка к пикселям</summary>
@@ -1692,75 +1650,17 @@
             Encapsulated event logic
             </summary>
         </member>
-        <member name="F:MathCore.WPF.pInvoke.MONITORINFO.cbSize">
-            <summary>
-            </summary>            
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.MONITORINFO.rcMonitor">
-            <summary>
-            </summary>            
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.MONITORINFO.rcWork">
-            <summary>
-            </summary>            
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.MONITORINFO.dwFlags">
-            <summary>
-            </summary>            
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.POINT.x">
+        <member name="F:MathCore.WPF.pInvoke.Point.x">
             <summary>x coordinate of point</summary>
         </member>
-        <member name="F:MathCore.WPF.pInvoke.POINT.y">
+        <member name="F:MathCore.WPF.pInvoke.Point.y">
             <summary>y coordinate of point</summary>
         </member>
-        <member name="M:MathCore.WPF.pInvoke.POINT.#ctor(System.Int32,System.Int32)">
+        <member name="M:MathCore.WPF.pInvoke.Point.#ctor(System.Int32,System.Int32)">
             <summary>Construct a point of coordinates (x,y)</summary>
         </member>
-        <member name="F:MathCore.WPF.pInvoke.RECT.left">
-            <summary> Win32 </summary>
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.RECT.top">
-            <summary> Win32 </summary>
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.RECT.right">
-            <summary> Win32 </summary>
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.RECT.bottom">
-            <summary> Win32 </summary>
-        </member>
-        <member name="F:MathCore.WPF.pInvoke.RECT.Empty">
-            <summary> Win32 </summary>
-        </member>
-        <member name="P:MathCore.WPF.pInvoke.RECT.Width">
-            <summary> Win32 </summary>
-        </member>
-        <member name="P:MathCore.WPF.pInvoke.RECT.Height">
-            <summary> Win32 </summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.#ctor(System.Int32,System.Int32,System.Int32,System.Int32)">
-            <summary> Win32 </summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.#ctor(MathCore.WPF.pInvoke.RECT)">
-            <summary> Win32 </summary>
-        </member>
-        <member name="P:MathCore.WPF.pInvoke.RECT.IsEmpty">
-            <summary> Win32 </summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.ToString">
+        <member name="M:MathCore.WPF.pInvoke.Rect.ToString">
             <summary> Return a user friendly representation of this struct </summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.Equals(System.Object)">
-            <summary> Determine if 2 RECT are equal (deep compare) </summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.GetHashCode">
-            <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.op_Equality(MathCore.WPF.pInvoke.RECT,MathCore.WPF.pInvoke.RECT)">
-            <summary> Determine if 2 RECT are equal (deep compare)</summary>
-        </member>
-        <member name="M:MathCore.WPF.pInvoke.RECT.op_Inequality(MathCore.WPF.pInvoke.RECT,MathCore.WPF.pInvoke.RECT)">
-            <summary> Determine if 2 RECT are different(deep compare)</summary>
         </member>
         <member name="T:MathCore.WPF.pInvoke.SC">
             <summary>System Command</summary>
@@ -3508,6 +3408,39 @@
         <member name="P:MathCore.WPF.RowDefinitionCollapsable.Visible">
             <summary>Видимость</summary>
         </member>
+        <member name="T:MathCore.WPF.Shaders.BlackAndWhite">
+            <summary>Чёрно-белое изображение</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.Blur">
+            <summary>Размытие</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.ColorAlphaKey">
+            <summary>Установка прозрачного цвета</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.DirectionalBlur">
+            <summary>Направленное размытие</summary>
+        </member>
+        <member name="P:MathCore.WPF.Shaders.DirectionalBlur.Angle">
+            <summary>Направление в градусах</summary>
+        </member>
+        <member name="P:MathCore.WPF.Shaders.DirectionalBlur.BlurAmount">
+            <summary>Размер размытия</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.GrayScale">
+            <summary>Оттенки серого</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.Invert">
+            <summary>Инвертирование цветов</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.Opacity">
+            <summary>Прозрачность</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.Sepia">
+            <summary>Сепия</summary>
+        </member>
+        <member name="T:MathCore.WPF.Shaders.ZoomBlur">
+            <summary>Размытие из центра</summary>
+        </member>
         <member name="T:MathCore.WPF.SVG.SvgAElement">
             <summary>
               Represents an &lt;a&gt; element.
@@ -4069,6 +4002,148 @@
         <member name="P:MathCore.WPF.ThreadSaveObservableCollectionWrapper`1.Item(System.Int32)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.TrayIcon.BalloonIcon">
+            <summary>
+             Supported icons for the tray's balloon messages.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.None">
+            <summary>
+            The balloon message is displayed without an icon.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Info">
+            <summary>
+            An information is displayed.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Warning">
+            <summary>
+            A warning is displayed.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Error">
+            <summary>
+            An error is displayed.
+            </summary>
+        </member>
+        <member name="T:MathCore.WPF.TrayIcon.NotifyCommand">
+            <summary>
+            Main operations performed on the
+            <see cref="M:MathCore.WPF.WinApi.Shell_NotifyIcon(MathCore.WPF.TrayIcon.NotifyCommand,MathCore.WPF.NotifyIconData@)"/> function.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Add">
+            <summary>
+            The taskbar icon is being created.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Modify">
+            <summary>
+            The settings of the taskbar icon are being updated.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Delete">
+            <summary>
+            The taskbar icon is deleted.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.SetFocus">
+            <summary>
+            Focus is returned to the taskbar icon. Currently not in use.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.SetVersion">
+            <summary>
+            Shell32.dll version 5.0 and later only. Instructs the taskbar
+            to behave according to the version number specified in the 
+            uVersion member of the structure pointed to by lpdata.
+            This message allows you to specify whether you want the version
+            5.0 behavior found on Microsoft Windows 2000 systems, or the
+            behavior found on earlier Shell versions. The default value for
+            uVersion is zero, indicating that the original Windows 95 notify
+            icon behavior should be used.
+            </summary>
+        </member>
+        <member name="T:MathCore.WPF.TrayIcon.PopupActivationMode">
+            <summary>
+            Defines flags that define when a popup
+            is being displayed.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftClick">
+            <summary>
+            The item is displayed if the user clicks the
+            tray icon with the left mouse button.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.RightClick">
+            <summary>
+            The item is displayed if the user clicks the
+            tray icon with the right mouse button.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.DoubleClick">
+            <summary>
+            The item is displayed if the user double-clicks the
+            tray icon.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftOrRightClick">
+            <summary>
+            The item is displayed if the user clicks the
+            tray icon with the left or the right mouse button.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftOrDoubleClick">
+            <summary>
+            The item is displayed if the user clicks the
+            tray icon with the left mouse button or if a
+            double-click is being performed.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.MiddleClick">
+            <summary>
+            The item is displayed if the user clicks the
+            tray icon with the middle mouse button.
+            </summary>
+        </member>
+        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.All">
+            <summary>
+            The item is displayed whenever a click occurs.
+            </summary>
+        </member>
+        <member name="T:MathCore.WPF.TrayIcon.RoutedEventHelper">
+            <summary>
+            Helper class used by routed events of the
+            <see cref="T:MathCore.WPF.TrayIcon.TaskbarIcon"/> class.
+            </summary>
+        </member>
+        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.RaiseEvent(System.Windows.DependencyObject,System.Windows.RoutedEventArgs)">
+            <summary>
+            A static helper method to raise a routed event on a target UIElement or ContentElement.
+            </summary>
+            <param name="target">UIElement or ContentElement on which to raise the event</param>
+            <param name="args">RoutedEventArgs to use when raising the event</param>
+        </member>
+        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.AddHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
+            <summary>
+            A static helper method that adds a handler for a routed event 
+            to a target UIElement or ContentElement.
+            </summary>
+            <param name="element">UIElement or ContentElement that listens to the event</param>
+            <param name="RoutedEvent">Event that will be handled</param>
+            <param name="handler">Event handler to be added</param>
+        </member>
+        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.RemoveHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
+            <summary>
+            A static helper method that removes a handler for a routed event 
+            from a target UIElement or ContentElement.
+            </summary>
+            <param name="element">UIElement or ContentElement that listens to the event</param>
+            <param name="RoutedEvent">Event that will no longer be handled</param>
+            <param name="handler">Event handler to be removed</param>
+        </member>
         <member name="T:MathCore.WPF.TrayIcon.TaskbarIcon">
             <summary>
             A WPF proxy to for a taskbar icon (NotifyIcon) that sits in the system's
@@ -4079,29 +4154,29 @@
             and events.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.iconData">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon._IconData">
             <summary>
             Represents the current icon data.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.messageSink">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon._MessageSink">
             <summary>
             Receives messages from the taskbar icon.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.singleClickTimerAction">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon._SingleClickTimerAction">
             <summary>
             An action that is being invoked if the
-            <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon.singleClickTimer"/> fires.
+            <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon._SingleClickTimer"/> fires.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.singleClickTimer">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon._SingleClickTimer">
             <summary>
             A timer that is used to differentiate between single
             and double clicks.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.balloonCloseTimer">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon._BalloonCloseTimer">
             <summary>
             A timer that is used to close open balloon tooltips.
             </summary>
@@ -4136,7 +4211,7 @@
             <param name="balloon"></param>
             <param name="animation">An optional animation for the popup.</param>
             <param name="timeout">The time after which the popup is being closed.
-            Submit null in order to keep the balloon open inde
+            Submit null in order to keep the balloon open
             </param>
             <exception cref="T:System.ArgumentNullException">If <paramref name="balloon"/>
             is a null reference.</exception>
@@ -4239,8 +4314,8 @@
             Displays a balloon tip with the specified title,
             text, and icon in the taskbar for the specified time period.
             </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
+            <param name="Title">The title to display on the balloon tip.</param>
+            <param name="Message">The text to display on the balloon tip.</param>
             <param name="symbol">A symbol that indicates the severity.</param>
         </member>
         <member name="M:MathCore.WPF.TrayIcon.TaskbarIcon.ShowBalloonTip(System.String,System.String,System.Drawing.Icon)">
@@ -4248,8 +4323,8 @@
             Displays a balloon tip with the specified title,
             text, and a custom icon in the taskbar for the specified time period.
             </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
+            <param name="Title">The title to display on the balloon tip.</param>
+            <param name="Message">The text to display on the balloon tip.</param>
             <param name="customIcon">A custom icon.</param>
             <exception cref="T:System.ArgumentNullException">If <paramref name="customIcon"/>
             is a null reference.</exception>
@@ -4259,10 +4334,10 @@
             Invokes <see cref="M:MathCore.WPF.WinApi.Shell_NotifyIcon(MathCore.WPF.TrayIcon.NotifyCommand,MathCore.WPF.NotifyIconData@)"/> in order to display
             a given balloon ToolTip.
             </summary>
-            <param name="title">The title to display on the balloon tip.</param>
-            <param name="message">The text to display on the balloon tip.</param>
-            <param name="flags">Indicates what icon to use.</param>
-            <param name="balloonIconHandle">A handle to a custom icon, if any, or
+            <param name="Title">The title to display on the balloon tip.</param>
+            <param name="Message">The text to display on the balloon tip.</param>
+            <param name="Flags">Indicates what icon to use.</param>
+            <param name="BalloonIconHandle">A handle to a custom icon, if any, or
             <see cref="F:System.IntPtr.Zero"/>.</param>
         </member>
         <member name="M:MathCore.WPF.TrayIcon.TaskbarIcon.HideBalloonTip">
@@ -4274,12 +4349,12 @@
             <summary>
             Performs a delayed action if the user requested an action
             based on a single click of the left mouse.<br/>
-            This method is invoked by the <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon.singleClickTimer"/>.
+            This method is invoked by the <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon._SingleClickTimer"/>.
             </summary>
         </member>
         <member name="M:MathCore.WPF.TrayIcon.TaskbarIcon.SetVersion">
             <summary>
-            Sets the version flag for the <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon.iconData"/>.
+            Sets the version flag for the <see cref="F:MathCore.WPF.TrayIcon.TaskbarIcon._IconData"/>.
             </summary>
         </member>
         <member name="M:MathCore.WPF.TrayIcon.TaskbarIcon.OnTaskbarCreated">
@@ -4360,12 +4435,12 @@
             <remarks>Check the <see cref="P:MathCore.WPF.TrayIcon.TaskbarIcon.IsDisposed"/> property to determine whether
             the method has already been called.</remarks>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.CategoryName">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.__CategoryName">
             <summary>
             Category name that is set on designer properties.
             </summary>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.TrayPopupResolvedPropertyKey">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.__TrayPopupResolvedPropertyKey">
             <summary>
             TrayPopupResolved Read-Only Dependency Property
             </summary>
@@ -4392,7 +4467,7 @@
             </summary>
             <param name="value">The new value for the property.</param>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.TrayToolTipResolvedPropertyKey">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.__TrayToolTipResolvedPropertyKey">
             <summary>
             TrayToolTipResolved Read-Only Dependency Property
             </summary>
@@ -4418,7 +4493,7 @@
             </summary>
             <param name="value">The new value for the property.</param>
         </member>
-        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.CustomBalloonPropertyKey">
+        <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.__CustomBalloonPropertyKey">
             <summary>
             CustomBalloon Read-Only Dependency Property
             </summary>
@@ -5284,7 +5359,7 @@
         </member>
         <member name="F:MathCore.WPF.TrayIcon.TaskbarIcon.ParentTaskbarIconProperty">
             <summary>
-            An attached property that is assigned to displayed UI elements (balloos, tooltips, context menus), and
+            An attached property that is assigned to displayed UI elements (balloons, tooltips, context menus), and
             that can be used to bind to this control. The attached property is being derived, so binding is
             quite straightforward:
             <code>
@@ -5404,148 +5479,6 @@
             binding expression.</returns>
             <exception cref="T:System.ArgumentNullException">If <paramref name="element"/>
             is a null reference.</exception>
-        </member>
-        <member name="T:MathCore.WPF.TrayIcon.RoutedEventHelper">
-            <summary>
-            Helper class used by routed events of the
-            <see cref="T:MathCore.WPF.TrayIcon.TaskbarIcon"/> class.
-            </summary>
-        </member>
-        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.RaiseEvent(System.Windows.DependencyObject,System.Windows.RoutedEventArgs)">
-            <summary>
-            A static helper method to raise a routed event on a target UIElement or ContentElement.
-            </summary>
-            <param name="target">UIElement or ContentElement on which to raise the event</param>
-            <param name="args">RoutedEventArgs to use when raising the event</param>
-        </member>
-        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.AddHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
-            <summary>
-            A static helper method that adds a handler for a routed event 
-            to a target UIElement or ContentElement.
-            </summary>
-            <param name="element">UIElement or ContentElement that listens to the event</param>
-            <param name="routedEvent">Event that will be handled</param>
-            <param name="handler">Event handler to be added</param>
-        </member>
-        <member name="M:MathCore.WPF.TrayIcon.RoutedEventHelper.RemoveHandler(System.Windows.DependencyObject,System.Windows.RoutedEvent,System.Delegate)">
-            <summary>
-            A static helper method that removes a handler for a routed event 
-            from a target UIElement or ContentElement.
-            </summary>
-            <param name="element">UIElement or ContentElement that listens to the event</param>
-            <param name="routedEvent">Event that will no longer be handled</param>
-            <param name="handler">Event handler to be removed</param>
-        </member>
-        <member name="T:MathCore.WPF.TrayIcon.PopupActivationMode">
-            <summary>
-            Defines flags that define when a popup
-            is being displyed.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftClick">
-            <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left mouse button.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.RightClick">
-            <summary>
-            The item is displayed if the user clicks the
-            tray icon with the right mouse button.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.DoubleClick">
-            <summary>
-            The item is displayed if the user double-clicks the
-            tray icon.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftOrRightClick">
-            <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left or the right mouse button.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.LeftOrDoubleClick">
-            <summary>
-            The item is displayed if the user clicks the
-            tray icon with the left mouse button or if a
-            double-click is being performed.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.MiddleClick">
-            <summary>
-            The item is displayed if the user clicks the
-            tray icon with the middle mouse button.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.PopupActivationMode.All">
-            <summary>
-            The item is displayed whenever a click occurs.
-            </summary>
-        </member>
-        <member name="T:MathCore.WPF.TrayIcon.BalloonIcon">
-            <summary>
-             Supported icons for the tray's balloon messages.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.None">
-            <summary>
-            The balloon message is displayed without an icon.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Info">
-            <summary>
-            An information is displayed.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Warning">
-            <summary>
-            A warning is displayed.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.BalloonIcon.Error">
-            <summary>
-            An error is displayed.
-            </summary>
-        </member>
-        <member name="T:MathCore.WPF.TrayIcon.NotifyCommand">
-            <summary>
-            Main operations performed on the
-            <see cref="M:MathCore.WPF.WinApi.Shell_NotifyIcon(MathCore.WPF.TrayIcon.NotifyCommand,MathCore.WPF.NotifyIconData@)"/> function.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Add">
-            <summary>
-            The taskbar icon is being created.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Modify">
-            <summary>
-            The settings of the taskbar icon are being updated.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.Delete">
-            <summary>
-            The taskbar icon is deleted.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.SetFocus">
-            <summary>
-            Focus is returned to the taskbar icon. Currently not in use.
-            </summary>
-        </member>
-        <member name="F:MathCore.WPF.TrayIcon.NotifyCommand.SetVersion">
-            <summary>
-            Shell32.dll version 5.0 and later only. Instructs the taskbar
-            to behave according to the version number specified in the 
-            uVersion member of the structure pointed to by lpdata.
-            This message allows you to specify whether you want the version
-            5.0 behavior found on Microsoft Windows 2000 systems, or the
-            behavior found on earlier Shell versions. The default value for
-            uVersion is zero, indicating that the original Windows 95 notify
-            icon behavior should be used.
-            </summary>
         </member>
         <member name="T:MathCore.WPF.TrayIcon.TrayInfo">
             <summary>
@@ -6876,36 +6809,6 @@
             <summary>Waits for the task to complete execution, pumping in the meantime.</summary>
             <param name="task">The task for which to wait.</param>
             <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
-        </member>
-        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
-            <summary>
-            GeneratedInternalTypeHelper
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
-            <summary>
-            CreateInstance
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            GetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
-            <summary>
-            SetPropertyValue
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
-            <summary>
-            CreateDelegate
-            </summary>
-        </member>
-        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
-            <summary>
-            AddEventHandler
-            </summary>
         </member>
     </members>
 </doc>
