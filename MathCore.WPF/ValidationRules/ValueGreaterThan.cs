@@ -24,6 +24,7 @@ namespace MathCore.WPF.ValidationRules
 
         public ValueGreaterThan(double value) => Value = value;
 
+        /// <inheritdoc />
         [NotNull]
         public override ValidationResult Validate(object value, CultureInfo c)
         {

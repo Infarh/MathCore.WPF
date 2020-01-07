@@ -5,27 +5,28 @@ using System.Windows.Controls;
 using MathCore.Annotations;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable UnusedType.Global
-
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.ValidationRules
 {
-    public class NotNaN : ValidationRule
+    /// <summary>Проверка, что значение является числом типа <see cref="double"/> и при этом не является <see cref="double.NaN"/></summary>
+    public class NotNaN : Base.FormattedValueValidation
     {
-        public bool AllowNull { get; set; }
-
-        public string? ErrorMessage { get; set; }
-
-        /// <inheritdoc />
+        /// <summary>Проверка, что значение является вещественным числом (<see cref="double"/>) и при этом не является <see cref="double.NaN"/></summary>
+        /// <param name="value">Проверяемое значение</param>
+        /// <param name="c">Сведения о текущей культуре</param>
+        /// <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="double"/></returns>
         [NotNull]
         public override ValidationResult Validate(object value, CultureInfo c)
         {
-            var valid = ValidationResult.ValidResult;
-            if (value is null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указано");
+            if (value is null)
+                return AllowNull
+                    ? ValidationResult.ValidResult 
+                    : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
             try
             {
                 return !double.IsNaN(Convert.ToDouble(value, c)) 
-                    ? valid 
+                    ? ValidationResult.ValidResult 
                     : new ValidationResult(false, ErrorMessage ?? "Значение является не-числом");
             }
             catch (OverflowException e)
@@ -38,7 +39,7 @@ namespace MathCore.WPF.ValidationRules
             }
             catch (FormatException e)
             {
-                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
+                return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
             }
         }
     }

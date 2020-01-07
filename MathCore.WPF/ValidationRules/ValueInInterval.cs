@@ -22,6 +22,7 @@ namespace MathCore.WPF.ValidationRules
 
         public string? ErrorMessage { get; set; }
 
+        /// <inheritdoc />
         [NotNull]
         public override ValidationResult Validate(object value, CultureInfo c)
         {

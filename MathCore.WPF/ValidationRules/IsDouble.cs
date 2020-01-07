@@ -6,23 +6,26 @@ using MathCore.Annotations;
 // ReSharper disable AssignmentIsFullyDiscarded
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
-
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MathCore.WPF.ValidationRules
 {
-    public class IsDouble : ValidationRule
+    /// <summary>Проверка, что значение является числом типа <see cref="double"/></summary>
+    public class IsDouble : Base.FormattedValueValidation
     {
-        public bool AllowNull { get; set; }
-
-        public string? ErrorMessage { get; set; }
-
+        /// <summary>Проверка значения на возможность его преобразования в тип <see cref="double"/></summary>
+        /// <param name="value">Проверяемое значение</param>
+        /// <param name="c">Сведения о текущей культуре</param>
+        /// <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="double"/></returns>
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo c)
+        public override ValidationResult Validate(object? value, CultureInfo c)
         {
-            if (value is null) return AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, "Значение не указано");
+            if (value is null) 
+                return AllowNull 
+                    ? ValidationResult.ValidResult 
+                    : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
             try
             {
                 _ = Convert.ToDouble(value, c);
@@ -38,7 +41,7 @@ namespace MathCore.WPF.ValidationRules
             }
             catch (FormatException e)
             {
-                return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
+                return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
             }
         }
     }
