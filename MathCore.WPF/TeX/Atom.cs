@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom (smallest unit) of TexFormula</summary>
     internal abstract class Atom

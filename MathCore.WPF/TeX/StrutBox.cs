@@ -1,4 +1,4 @@
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 // Box representing whitespace.
 namespace MathCore.WPF.TeX

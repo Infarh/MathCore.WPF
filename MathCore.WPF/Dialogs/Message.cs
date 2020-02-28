@@ -8,7 +8,6 @@ namespace MathCore.WPF.Dialogs
 {
     public class Message : Dialog
     {
-
         public static readonly DependencyProperty ButtonsProperty =
             DependencyProperty.Register(
                 nameof(Buttons),
@@ -22,17 +21,17 @@ namespace MathCore.WPF.Dialogs
             set => SetValue(ButtonsProperty, value);
         }
 
-        public static readonly DependencyProperty ImmageProperty =
+        public static readonly DependencyProperty ImageProperty =
             DependencyProperty.Register(
-                nameof(Immage),
+                nameof(Image),
                 typeof(MessageBoxImage),
                 typeof(Message),
                 new PropertyMetadata(default(MessageBoxImage)));
 
-        public MessageBoxImage Immage
+        public MessageBoxImage Image
         {
-            get => (MessageBoxImage)GetValue(ImmageProperty);
-            set => SetValue(ImmageProperty, value);
+            get => (MessageBoxImage)GetValue(ImageProperty);
+            set => SetValue(ImageProperty, value);
         }
 
         public static readonly DependencyProperty DefaultResultProperty =
@@ -92,8 +91,8 @@ namespace MathCore.WPF.Dialogs
         protected override void OpenDialog(object? p)
         {
             var message = p as string ?? Text;
-            if(message == null) return;
-            Result = MessageBox.Show(message, Title, Buttons, Immage, DefaultResult, Options);
+            if(message is null) return;
+            Result = MessageBox.Show(message, Title, Buttons, Image, DefaultResult, Options);
         }
     }
 }

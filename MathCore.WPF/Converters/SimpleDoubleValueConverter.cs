@@ -1,46 +1,50 @@
-using System;
+п»їusing System;
 using MathCore.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Простой математический конвертер для бинарных операций с констентой (либо с параметром)</summary>
+    /// <summary>РџСЂРѕСЃС‚РѕР№ РјР°С‚РµРјР°С‚РёС‡РµСЃРєРёР№ РєРѕРЅРІРµСЂС‚РµСЂ РґР»СЏ Р±РёРЅР°СЂРЅС‹С… РѕРїРµСЂР°С†РёР№ СЃ РєРѕРЅСЃС‚Р°РЅС‚РѕР№ (Р»РёР±Рѕ СЃ РїР°СЂР°РјРµС‚СЂРѕРј)</summary>
     public abstract class SimpleDoubleValueConverter : DoubleValueConverter
     {
-        /// <summary>Метод преобразования значения</summary>
-        /// <param name="value">Преобразуемое значение</param>
-        /// <param name="parameter">Параметр преобразования</param>
-        /// <returns>Преобразованное значение</returns>
+        /// <summary>РњРµС‚РѕРґ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ</summary>
+        /// <param name="value">РџСЂРµРѕР±СЂР°Р·СѓРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ</param>
+        /// <param name="parameter">РџР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</param>
+        /// <returns>РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ</returns>
         protected delegate double Conversion(double value, double parameter);
 
-        /// <summary>Метд прямого преобразования</summary>
+        /// <summary>РњРµС‚РѕРґ РїСЂСЏРјРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</summary>
         private readonly Conversion _To;
 
-        /// <summary>Метод обратного преобразования</summary>
+        /// <summary>РњРµС‚РѕРґ РѕР±СЂР°С‚РЅРѕРіРѕ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</summary>
         private readonly Conversion _From;
 
-        /// <summary>Параметр преобразования</summary>
+        /// <summary>РџР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ</summary>
         public double Parameter { get; set; }
 
-        protected SimpleDoubleValueConverter(double parameter, [CanBeNull] Conversion to = null, [CanBeNull] Conversion from = null)
-            : this(to, from) => Parameter = parameter;
+        protected SimpleDoubleValueConverter(double Parameter, Conversion? to = null, Conversion? from = null)
+            : this(to, from) => this.Parameter = Parameter;
 
-        protected SimpleDoubleValueConverter([CanBeNull] Conversion to = null, [CanBeNull] Conversion from = null)
+        protected SimpleDoubleValueConverter([CanBeNull] Conversion? to = null, [CanBeNull] Conversion? from = null)
         {
             _To = to ?? To;
             _From = from ?? From;
         }
 
-        /// <summary>Прямое преобразование значения</summary>
-        /// <param name="v">Преобразуемое значение</param>
-        /// <param name="p">Возможный параметр преобразования. В случае отсутствия берётся значение параметра объекта</param>
-        /// <returns>Преобразованное значение</returns>
-        protected virtual double To(double v, double p) => throw new NotImplementedException("Прямое преобразование не реализовано");
+        /// <summary>РџСЂСЏРјРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ</summary>
+        /// <param name="v">РџСЂРµРѕР±СЂР°Р·СѓРµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ</param>
+        /// <param name="p">Р’РѕР·РјРѕР¶РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ. Р’ СЃР»СѓС‡Р°Рµ РѕС‚СЃСѓС‚СЃС‚РІРёСЏ Р±РµСЂС‘С‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РѕР±СЉРµРєС‚Р°</param>
+        /// <returns>РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ</returns>
+        protected virtual double To(double v, double p) => throw new NotImplementedException("РџСЂСЏРјРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµ СЂРµР°Р»РёР·РѕРІР°РЅРѕ");
 
-        /// <summary>Обратное преобразование значения</summary>
-        /// <param name="v">Преобразованное значение</param>
-        /// <param name="p">Возможный параметр преобразования. В случае отсутствия берётся значение параметра объекта</param>
-        /// <returns>Исходное значение</returns>
-        protected virtual double From(double v, double p) => throw new NotSupportedException("Обратное преобразование не поддерживается");
+        /// <summary>РћР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ Р·РЅР°С‡РµРЅРёСЏ</summary>
+        /// <param name="v">РџСЂРµРѕР±СЂР°Р·РѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ</param>
+        /// <param name="p">Р’РѕР·РјРѕР¶РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ. Р’ СЃР»СѓС‡Р°Рµ РѕС‚СЃСѓС‚СЃС‚РІРёСЏ Р±РµСЂС‘С‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° РѕР±СЉРµРєС‚Р°</param>
+        /// <returns>РСЃС…РѕРґРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ</returns>
+        protected virtual double From(double v, double p) => throw new NotSupportedException("РћР±СЂР°С‚РЅРѕРµ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёРµ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
         /// <inheritdoc />
         protected override double Convert(double v, double? p = null) => _To(v, p ?? Parameter);

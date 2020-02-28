@@ -1,8 +1,10 @@
-using System;
+Ôªøusing System;
 using System.Windows;
 using System.Windows.Input;
 using MathCore.WPF.Commands;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace MathCore.WPF.Dialogs
 {
@@ -84,6 +86,7 @@ namespace MathCore.WPF.Dialogs
         #endregion
 
         protected readonly object _OpenSyncRoot = new object();
+
         protected ICommand _OpenCommand;
 
         public ICommand OpenCommand => _OpenCommand;
@@ -103,7 +106,7 @@ namespace MathCore.WPF.Dialogs
                 } catch(Exception error)
                 {
                     LastException = error;
-                    throw new ApplicationException($"Œ¯Ë·Í‡ ‰Ë‡ÎÓ„‡ {GetType()}", error);
+                    throw new ApplicationException($"–û—à–∏–±–∫–∞ –¥–∏–∞–ª–æ–≥–∞ {GetType()}", error);
                 } finally
                 {
                     IsOpened = false;
@@ -124,7 +127,7 @@ namespace MathCore.WPF.Dialogs
                 } catch(Exception error)
                 {
                     LastException = error;
-                    throw new ApplicationException($"Œ¯Ë·Í‡ ‰Ë‡ÎÓ„‡ {GetType()}", error);
+                    throw new ApplicationException($"–û—à–∏–±–∫–∞ –¥–∏–∞–ª–æ–≥–∞ {GetType()}", error);
                 } finally
                 {
                     IsOpened = false;

@@ -3,6 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.Win32;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Dialogs
 {
@@ -17,7 +20,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(SelectedFile),
                 typeof(FileInfo),
                 typeof(OpenFile),
-                new PropertyMetadata(default(FileInfo)), v => v == null || v is FileInfo);
+                new PropertyMetadata(default(FileInfo)), v => v is null || v is FileInfo);
 
         public FileInfo SelectedFile
         {
@@ -29,19 +32,19 @@ namespace MathCore.WPF.Dialogs
 
         #region SelectedFiles readonly dependency property : FileInfo[]
 
-        private static readonly DependencyPropertyKey SelectedFilesPropertyKey =
+        private static readonly DependencyPropertyKey __SelectedFilesPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(SelectedFiles),
                 typeof(FileInfo[]),
                 typeof(OpenFile),
                 new FrameworkPropertyMetadata(default(FileInfo[])));
 
-        public static readonly DependencyProperty SelectedFilesProperty = SelectedFilesPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty SelectedFilesProperty = __SelectedFilesPropertyKey.DependencyProperty;
 
         public FileInfo[] SelectedFiles
         {
             get => (FileInfo[])GetValue(SelectedFilesProperty);
-            private set => SetValue(SelectedFilesPropertyKey, value);
+            private set => SetValue(__SelectedFilesPropertyKey, value);
         }
 
         #endregion
@@ -53,7 +56,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(Filter),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata("*.*|*.*"), v => v == null || v is string);
+                new PropertyMetadata("*.*|*.*"), v => v is null || v is string);
 
         public string Filter
         {
@@ -65,36 +68,36 @@ namespace MathCore.WPF.Dialogs
 
         #region Result readonly dependency property : bool?
 
-        private static readonly DependencyPropertyKey ResultPropertyKey =
+        private static readonly DependencyPropertyKey __ResultPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Result),
                 typeof(bool?),
                 typeof(OpenFile),
-                new FrameworkPropertyMetadata(default(bool?)), v => v == null || v is bool?);
+                new FrameworkPropertyMetadata(default(bool?)), v => v is bool?);
 
-        public static readonly DependencyProperty ResultProperty = ResultPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty ResultProperty = __ResultPropertyKey.DependencyProperty;
 
         public bool? Result
         {
             get => (bool?)GetValue(ResultProperty);
-            private set => SetValue(ResultPropertyKey, value);
+            private set => SetValue(__ResultPropertyKey, value);
         }
 
         #endregion
 
         #region Multiselect dependency property : bool
 
-        public static readonly DependencyProperty MultiselectProperty =
+        public static readonly DependencyProperty MultiSelectProperty =
             DependencyProperty.Register(
-                nameof(Multiselect),
+                nameof(MultiSelect),
                 typeof(bool),
                 typeof(OpenFile),
                 new PropertyMetadata(default(bool)), v => v is bool);
 
-        public bool Multiselect
+        public bool MultiSelect
         {
-            get => (bool)GetValue(MultiselectProperty);
-            set => SetValue(MultiselectProperty, value);
+            get => (bool)GetValue(MultiSelectProperty);
+            set => SetValue(MultiSelectProperty, value);
         }
 
         #endregion
@@ -157,7 +160,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(DefaultExt),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata(default(string)), v => v == null || v is string);
+                new PropertyMetadata(default(string)), v => v is null || v is string);
 
         public string DefaultExt
         {
@@ -191,7 +194,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(FilterIndex),
                 typeof(int),
                 typeof(OpenFile),
-                new PropertyMetadata(default(int)), v => v is int && (int)v >= 0);
+                new PropertyMetadata(default(int)), v => v is int value && value >= 0);
 
         public int FilterIndex
         {
@@ -208,7 +211,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(InitialDirectory),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata(default(string)), v => v == null || v is string);
+                new PropertyMetadata(default(string)), v => v is null || v is string);
 
         public string InitialDirectory
         {
@@ -293,7 +296,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(CustomPlaces),
                 typeof(IList<FileDialogCustomPlace>),
                 typeof(OpenFile),
-                new PropertyMetadata(default(IList<FileDialogCustomPlace>)), v => v == null || v is IList<FileDialogCustomPlace>);
+                new PropertyMetadata(default(IList<FileDialogCustomPlace>)), v => v is null || v is IList<FileDialogCustomPlace>);
 
         public IList<FileDialogCustomPlace> CustomPlaces
         {
@@ -305,19 +308,19 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        protected override void OpenDialog(object p)
+        protected override void OpenDialog(object? p)
         {
             var dialog = new OpenFileDialog
             {
                 Filter = Filter,
-                FileName = p as string ?? SelectedFile?.FullName,
+                FileName = p as string ?? SelectedFile?.FullName ?? string.Empty,
                 AddExtension = AddExtension,
                 CheckFileExists = CheckFileExists,
                 CheckPathExists = CheckPathExists,
                 DefaultExt = DefaultExt,
                 DereferenceLinks = DereferenceLinks,
                 FilterIndex = FilterIndex,
-                Multiselect = Multiselect,
+                Multiselect = MultiSelect,
                 ReadOnlyChecked = ReadOnlyChecked,
                 RestoreDirectory = RestoreDirectory,
                 ShowReadOnly = ShowReadOnly,

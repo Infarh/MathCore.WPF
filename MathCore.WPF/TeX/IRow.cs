@@ -1,4 +1,4 @@
-// Atom consisting of child atoms displayed in horizontal row with glueElement between them.
+﻿// Atom consisting of child atoms displayed in horizontal row with glueElement between them.
 namespace MathCore.WPF.TeX
 {
     internal interface IRow

@@ -1,4 +1,4 @@
-// Extension character that contains character information for each of its parts.
+﻿// Extension character that contains character information for each of its parts.
 namespace MathCore.WPF.TeX
 {
     internal class ExtensionChar

@@ -3,20 +3,25 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using MathCore.Annotations;
 
 namespace MathCore.WPF.Converters
 {
     public class ExConverter : ValueConverter
     {
-        public IValueConverter From { get; set; }
-        public IValueConverter To { get; set; }
+        public IValueConverter? From { get; set; }
+
+        public IValueConverter? To { get; set; }
 
         /// <inheritdoc />
-        protected override object Convert(object v, Type t, object p, CultureInfo c) => GetConverters().Aggregate(v, (V, C) => To.Convert(C.Convert(V, t, p, c), t, p, c));
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
+            GetConverters().Aggregate(v, (value, converter) => To?.Convert(converter.Convert(value, t, p, c), t, p, c));
 
         /// <inheritdoc />
-        protected override object ConvertBack(object v, Type t, object p, CultureInfo c) => GetConverters().Reverse().Aggregate(v, (V, C) => C.ConvertBack(To.Convert(V, t, p, c), t, p, c));
+        protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 
+            GetConverters().Reverse().Aggregate(v, (value, converter) => converter.ConvertBack(To?.Convert(value, t, p, c), t, p, c));
 
+        [ItemNotNull]
         private IEnumerable<IValueConverter> GetConverters()
         {
             var converter = From;

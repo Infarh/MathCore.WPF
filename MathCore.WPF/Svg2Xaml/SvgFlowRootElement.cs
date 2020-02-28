@@ -57,7 +57,7 @@ namespace MathCore.WPF.SVG
         }
       }
 
-      if(FlowRegion == null)
+      if(FlowRegion is null)
         throw new NotImplementedException();
     }
 

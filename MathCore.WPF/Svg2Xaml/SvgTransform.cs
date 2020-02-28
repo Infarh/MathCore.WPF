@@ -40,7 +40,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public static SvgTransform Parse(string value)
     {
-      if(value == null)
+      if(value is null)
         throw new ArgumentNullException("value");
       
       value = value.Trim();

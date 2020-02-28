@@ -55,8 +55,8 @@
 //        {
 //            var path = (string)E.NewValue;
 //            var old_dir_value = (DirectoryInfo)D.GetValue(SelectedDirectoryProperty);
-//            if (path == null)
-//                if (old_dir_value == null) return;
+//            if (path is null)
+//                if (old_dir_value is null) return;
 //                else D.SetValue(SelectedDirectoryProperty, null);
 //            else if (!path.Equals(old_dir_value?.FullName, StringComparison.InvariantCultureIgnoreCase))
 //                D.SetValue(SelectedDirectoryProperty, new DirectoryInfo(path));
@@ -90,8 +90,8 @@
 //        {
 //            var dir = (DirectoryInfo)E.NewValue;
 //            var old_path_value = (string)D.GetValue(SelectedPathProperty);
-//            if (dir == null)
-//                if (old_path_value == null) return;
+//            if (dir is null)
+//                if (old_path_value is null) return;
 //                else D.SetValue(SelectedDirectoryProperty, null);
 //            else if (!dir.FullName.Equals(old_path_value, StringComparison.InvariantCultureIgnoreCase))
 //                D.SetValue(SelectedDirectoryProperty, dir?.FullName);
@@ -336,8 +336,8 @@
 //        {
 //            var path = (string)E.NewValue;
 //            var old_file = (FileInfo)D.GetValue(SelectedFileProperty);
-//            if (path == null)
-//                if (old_file == null) return;
+//            if (path is null)
+//                if (old_file is null) return;
 //                else D.SetValue(SelectedFileProperty, null);
 //            else if (!path.Equals(old_file?.FullName, StringComparison.InvariantCultureIgnoreCase))
 //                D.SetValue(SelectedFileProperty, new FileInfo(path));
@@ -371,8 +371,8 @@
 //        {
 //            var file_info = (FileInfo)E.NewValue;
 //            var old_file_name = (string)D.GetValue(FileNameProperty);
-//            if (file_info == null)
-//                if (old_file_name == null) return;
+//            if (file_info is null)
+//                if (old_file_name is null) return;
 //                else D.SetValue(FileNameProperty, null);
 //            else if (!file_info.FullName.Equals(old_file_name, StringComparison.InvariantCultureIgnoreCase))
 //                D.SetValue(FileNameProperty, file_info.FullName);
@@ -403,8 +403,8 @@
 //        {
 //            var files = (string[])E.NewValue;
 //            var old_file_infos = (FileInfo[])D.GetValue(SelectedFilesProperty);
-//            if (files == null)
-//                if (old_file_infos == null) return;
+//            if (files is null)
+//                if (old_file_infos is null) return;
 //                else D.SetValue(SelectedFilesPropertyKey, null);
 //            else if (files.Length != old_file_infos.Length)
 //                D.SetValue(SelectedFilesPropertyKey, files.Select(f => new FileInfo(f)).ToArray());
@@ -445,14 +445,14 @@
 //        {
 //            var file_infos = (FileInfo[])E.NewValue;
 //            var old_file_names = (string[])D.GetValue(FileNamesProperty);
-//            if (file_infos == null)
-//                if (old_file_names == null) return;
+//            if (file_infos is null)
+//                if (old_file_names is null) return;
 //                else D.SetValue(FileNamesPropertyKey, null);
 //            else if (file_infos.Length != old_file_names.Length)
 //                D.SetValue(FileNamesPropertyKey, file_infos.Select(f => f.FullName).ToArray());
 //            else
 //                for (var i = 0; i < file_infos.Length; i++)
-//                    if ((file_infos[i] == null && old_file_names[i] != null)
+//                    if ((file_infos[i] is null && old_file_names[i] != null)
 //                        || file_infos[i]?.FullName.Equals(old_file_names[i], StringComparison.InvariantCultureIgnoreCase) != true)
 //                    {
 //                        D.SetValue(FileNamesPropertyKey, file_infos.Select(f => f.FullName).ToArray());

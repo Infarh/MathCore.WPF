@@ -1,8 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Markup;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace MathCore.WPF.Templates.Selectors
 {
@@ -26,6 +29,7 @@ namespace MathCore.WPF.Templates.Selectors
             this.KeySelector = KeySelector;
         }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container) => item != null && _Items.TryGetValue(KeySelector(item), out var t) ? t : null;
+        public override DataTemplate? SelectTemplate(object item, DependencyObject container) => 
+            item != null && _Items.TryGetValue(KeySelector(item), out var t) ? t : null;
     }
 }

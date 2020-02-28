@@ -46,7 +46,7 @@ namespace MathCore.WPF.TeX
         internal void Add(Atom atom)
         {
             Debug.Assert(atom != null);
-            if(RootAtom == null)
+            if(RootAtom is null)
                 RootAtom = atom;
             else
             {
@@ -75,7 +75,7 @@ namespace MathCore.WPF.TeX
         internal Box CreateBox(TexEnvironment environment)
         {
             var root = RootAtom;
-            return root == null ? StrutBox.Empty : root.CreateBox(environment);
+            return root is null ? StrutBox.Empty : root.CreateBox(environment);
         }
     }
 }

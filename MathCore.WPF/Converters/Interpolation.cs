@@ -1,20 +1,20 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
     [ValueConversion(typeof(double), typeof(double))]
     [MarkupExtensionReturnType(typeof(Interpolation))]
-    public class Interpolation : ValueConverter
+    public class Interpolation : DoubleValueConverter
     {
-        private Polynom _Polynom;
-        private Point[] _Points;
+        private Polynom? _Polynom;
+        private Point[]? _Points;
 
-        public Point[] Points
+        public Point[]? Points
         {
             get => _Points;
             set
@@ -25,8 +25,6 @@ namespace MathCore.WPF.Converters
             }
         }
 
-        protected override object Convert(object v, Type t, object p, CultureInfo c) => _Polynom.Value((double)v);
-
-        protected override object ConvertBack(object v, Type t, object p, CultureInfo c) => throw new NotSupportedException();
+        protected override double Convert(double v, double? p = null) => _Polynom!.Value(v);
     }
 }

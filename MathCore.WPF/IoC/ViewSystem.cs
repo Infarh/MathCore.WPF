@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
+using MathCore.Annotations;
 using MathCore.IoC;
 
 namespace MathCore.WPF.IoC
 {
-    [SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
     public class ViewSystem : IViewSystem
     {
         private readonly IServiceManager _ServiceManager;
@@ -25,7 +25,8 @@ namespace MathCore.WPF.IoC
             _ServiceManager.RegisterSingleCall<TView>();
         }
 
-        public Window CreateView(object Model)
+        [CanBeNull]
+        public Window? CreateView([CanBeNull] object Model)
         {
             if (Model is null || !_ViewMap.TryGetValue(Model.GetType(), out var window_type)) return null;
             if (!(_ServiceManager.Get(window_type) is Window window)) return null;
@@ -37,11 +38,11 @@ namespace MathCore.WPF.IoC
         public Window CreateView<TWindow>() where TWindow : Window
         {
             var window_type = typeof(TWindow);
-            Type model_type = null;
-            foreach (var registration in _ViewModelMap)
+            Type? model_type = null;
+            foreach (var (t, w) in _ViewModelMap)
             {
-                if (registration.Value != window_type) continue;
-                model_type = registration.Key;
+                if (w != window_type) continue;
+                model_type = t;
                 break;
             }
             if (model_type is null)
@@ -60,14 +61,15 @@ namespace MathCore.WPF.IoC
             _Views.Add(window);
         }
 
-        private void OnViewClosed(object Sender, EventArgs E)
+        private void OnViewClosed(object? Sender, EventArgs E)
         {
             if (!(Sender is Window window)) return;
             window.Closed -= OnViewClosed;
             _Views.Remove(window);
         }
 
-        private Window GetView(object obj)
+        [CanBeNull]
+        private Window? GetView([CanBeNull] object? obj)
         {
             if (obj is null) return null;
             var obj_type = obj.GetType();
@@ -77,7 +79,8 @@ namespace MathCore.WPF.IoC
             return view_model is null ? null : CreateView(view_model);
         }
 
-        public Window View(object obj)
+        [CanBeNull]
+        public Window? View(object obj)
         {
             var view = GetView(obj);
             view?.Show();

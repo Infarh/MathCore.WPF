@@ -5,6 +5,7 @@ using Microsoft.Xaml.Behaviors;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable MemberCanBeMadeStatic.Local
 // ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Behaviors
 {
@@ -20,7 +21,11 @@ namespace MathCore.WPF.Behaviors
                 typeof(Resize),
                 new PropertyMetadata(3d));
 
-        public double AreaSize { get => (double)GetValue(AreaSizeProperty); set => SetValue(AreaSizeProperty, value); }
+        public double AreaSize
+        {
+            get => (double)GetValue(AreaSizeProperty);
+            set => SetValue(AreaSizeProperty, value);
+        }
 
         #endregion
 
@@ -34,7 +39,11 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(bool)));
 
         /// <summary>Изменение размера сверху</summary>
-        public bool TopResizing { get => (bool)GetValue(TopResizingProperty); set => SetValue(TopResizingProperty, value); }
+        public bool TopResizing
+        {
+            get => (bool)GetValue(TopResizingProperty);
+            set => SetValue(TopResizingProperty, value);
+        }
 
         #endregion
 
@@ -50,7 +59,11 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(bool)));
 
         /// <summary>Изменение размера снизу</summary>
-        public bool BottomResizing { get => (bool)GetValue(BottomResizingProperty); set => SetValue(BottomResizingProperty, value); }
+        public bool BottomResizing
+        {
+            get => (bool)GetValue(BottomResizingProperty);
+            set => SetValue(BottomResizingProperty, value);
+        }
 
         #endregion
 
@@ -66,12 +79,15 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(bool)));
 
         /// <summary>Изменение размера слева</summary>
-        public bool LeftResizing { get => (bool)GetValue(LeftResizingProperty); set => SetValue(LeftResizingProperty, value); }
+        public bool LeftResizing
+        {
+            get => (bool)GetValue(LeftResizingProperty);
+            set => SetValue(LeftResizingProperty, value);
+        }
 
         #endregion
 
         #region RightResizing : bool - Изменение размера справа
-
 
         /// <summary>Изменение размера справа</summary>
         public static readonly DependencyProperty RightResizingProperty =
@@ -82,7 +98,11 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(bool)));
 
         /// <summary>Изменение размера справа</summary>
-        public bool RightResizing { get => (bool)GetValue(RightResizingProperty); set => SetValue(RightResizingProperty, value); }
+        public bool RightResizing
+        {
+            get => (bool)GetValue(RightResizingProperty);
+            set => SetValue(RightResizingProperty, value);
+        }
 
         #endregion
 

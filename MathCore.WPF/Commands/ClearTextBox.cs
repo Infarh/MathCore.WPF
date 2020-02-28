@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Commands
 {

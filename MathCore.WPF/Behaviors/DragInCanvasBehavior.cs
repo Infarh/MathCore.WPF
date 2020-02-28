@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Microsoft.Xaml.Behaviors;
 // ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Behaviors
 {
@@ -120,9 +121,7 @@ namespace MathCore.WPF.Behaviors
             AssociatedObject.MouseLeftButtonUp -= OnMouseLeftButtonUp;
         }
 
-        /// <summary>При нажатии левой кнопки мыши</summary>
-        /// <param name="sender">Источник события</param>
-        /// <param name="e">Аргумент события</param>
+        /// <summary>При нажатии левой кнопки мыши</summary><param name="sender">Источник события</param><param name="e">Аргумент события</param>
         private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             // Если канва не определена, то её надо найти вверх по визуальному дереву
@@ -164,5 +163,4 @@ namespace MathCore.WPF.Behaviors
         /// <summary>При отпускании левой кнопки мыши</summary>
         private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => IsDragging = false;
     }
-
 }

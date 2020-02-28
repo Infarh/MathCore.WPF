@@ -16,7 +16,7 @@ namespace MathCore.WPF
                 var old_gesture = (MouseWheelGesture)base.Gesture;
                 var new_gesture = (MouseWheelGesture) value;
                 if(Equals(old_gesture, value)) return;
-                if(new_gesture == null) throw new ArgumentNullException(nameof(value));
+                if(new_gesture is null) throw new ArgumentNullException(nameof(value));
                 base.Gesture = value;
             }
         }

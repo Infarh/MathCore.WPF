@@ -17,7 +17,7 @@ namespace MathCore.WPF.TeX
                 nameof(Scale),
                 typeof(double),
                 typeof(MathView),
-                new PropertyMetadata(20d, OnDataChanged), v => v == null || v is double && (double)v > 0);
+                new PropertyMetadata(20d, OnDataChanged), v => v is null || v is double && (double)v > 0);
 
         /// <summary>Маштаб</summary>
         public double Scale

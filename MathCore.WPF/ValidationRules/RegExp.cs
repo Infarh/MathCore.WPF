@@ -1,32 +1,48 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.ValidationRules
 {
-    public class RegExp : ValidationRule
+    /// <summary>Проверка на соответствие строки регулярному выражению</summary>
+    public class RegExp : Base.FormattedValueValidation
     {
-        public bool AllowNull { get; set; }
         public bool AllowNotString { get; set; }
 
-        public string Expression { get; set; }
+        public string? NotStringErrorMessage { get; set; }
 
-        public string ErrorMessage { get; set; }
+        [ConstructorArgument(nameof(Expression))]
+        public string? Expression { get; set; }
 
         public RegExp() { }
-        public RegExp(string expression) { Expression = expression; }
+
+        public RegExp(string Expression) => this.Expression = Expression;
 
         /// <inheritdoc />
-        public override ValidationResult Validate(object value, CultureInfo CultureInfo)
+        [NotNull]
+        public override ValidationResult Validate(object value, CultureInfo c)
         {
             var valid = ValidationResult.ValidResult;
-            if(value == null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указно");
-            if(!(value is string)) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
+            if (value is null) 
+                return AllowNull 
+                    ? valid 
+                    : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
 
-            var str = (string)value;
+            if (!(value is string str)) 
+                return AllowNotString 
+                    ? valid
+                    : new ValidationResult(false, NotStringErrorMessage ?? ErrorMessage ?? $"Значение {value} не является строкой");
 
-            var match = str.FindRegEx(Expression);
-            return match.Success ? valid : new ValidationResult(false, ErrorMessage ?? $"Выражение {Expression} не найдено в строке {str}");
+            var match = Regex.Match(str, Expression);
+            return match.Success 
+                ? valid 
+                : new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Выражение {Expression} не найдено в строке {str}");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Markup;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Commands
 {
@@ -9,11 +10,13 @@ namespace MathCore.WPF.Commands
     {
         public OpenDirectoryCommand() : base(OnOpenDirectoryExecuted, OnOpenDirectoryCanExecuteCheck) { }
 
-        private static bool OnOpenDirectoryCanExecuteCheck(object path) =>
-            File.Exists(path as string) || (path as FileInfo)?.Exists == true
-                                        || Directory.Exists(path as string) || (path as DirectoryInfo)?.Exists == true;
+        private static bool OnOpenDirectoryCanExecuteCheck(object? path) =>
+            File.Exists(path as string) 
+            || (path as FileInfo)?.Exists == true
+            || Directory.Exists(path as string) 
+            || (path as DirectoryInfo)?.Exists == true;
 
-        private static void OnOpenDirectoryExecuted(object path)
+        private static void OnOpenDirectoryExecuted(object? path)
         {
             switch (path)
             {

@@ -234,7 +234,7 @@ namespace System.Collections.Generic
 
         public void Remove([NotNull] LinkedListNode<T> node)
         {
-            if (node == null) throw new ArgumentNullException(nameof(node));
+            if (node is null) throw new ArgumentNullException(nameof(node));
             var index = IndexOf(node);
             var is_first = ReferenceEquals(_List.First, node);
             var is_last = ReferenceEquals(_List.Last, node);

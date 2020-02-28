@@ -4,12 +4,14 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using MathCore.WPF.Commands;
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Dialogs
 {
     public class ShowWindow : Dialog
     {
-
         #region IsModal property : bool
 
         public static readonly DependencyProperty IsModalProperty =
@@ -52,9 +54,9 @@ namespace MathCore.WPF.Dialogs
                 typeof(Style),
                 typeof(ShowWindow),
                 new PropertyMetadata(default(Style)));/*,
-                s => s == null
+                s => s is null
                      || s is Style
-                        && ((Style)s).TargetType == null
+                        && ((Style)s).TargetType is null
                             || ((Style)s).TargetType == typeof(Window)
                             || ((Style)s).TargetType.IsSubclassOf(typeof(Window)));*/
 
@@ -74,9 +76,9 @@ namespace MathCore.WPF.Dialogs
         //    typeof(ControlTemplate),
         //    typeof(ShowWindow),
         //    new PropertyMetadata(default(ControlTemplate)),
-        //    t => t == null
+        //    t => t is null
         //         || t is ControlTemplate
-        //         && ((ControlTemplate)t).TargetType == null
+        //         && ((ControlTemplate)t).TargetType is null
         //            || ((ControlTemplate)t).TargetType == typeof(Window)
         //            || ((ControlTemplate)t).TargetType.IsSubclassOf(typeof(Window)));
 
@@ -188,7 +190,7 @@ namespace MathCore.WPF.Dialogs
 
         public object DataContext
         {
-            get => (object)GetValue(DataContextProperty);
+            get => GetValue(DataContextProperty);
             set => SetValue(DataContextProperty, value);
         }
 
@@ -205,7 +207,7 @@ namespace MathCore.WPF.Dialogs
 
         public object Content
         {
-            get => (object)GetValue(ContentProperty);
+            get => GetValue(ContentProperty);
             set => SetValue(ContentProperty, value);
         }
 
@@ -219,7 +221,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(Icon),
                 typeof(ImageSource),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(ImageSource)), v => v == null || v is ImageSource);
+                new PropertyMetadata(default(ImageSource)), v => v is null || v is ImageSource);
 
         /// <summary>Иконка окна</summary>
         public ImageSource Icon
@@ -232,19 +234,19 @@ namespace MathCore.WPF.Dialogs
 
         #region Window readonly dependency property : Window
 
-        private static readonly DependencyPropertyKey WindowPropertyKey =
+        private static readonly DependencyPropertyKey __WindowPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Window),
                 typeof(Window),
                 typeof(ShowWindow),
-                new FrameworkPropertyMetadata(default(Window)), v => v == null || v is Window);
+                new FrameworkPropertyMetadata(default(Window)), v => v is null || v is Window);
 
-        public static readonly DependencyProperty WindowProperty = WindowPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty WindowProperty = __WindowPropertyKey.DependencyProperty;
 
-        public Window Window
+        public Window? Window
         {
-            get => (Window)GetValue(WindowProperty);
-            private set => SetValue(WindowPropertyKey, value);
+            get => (Window?)GetValue(WindowProperty);
+            private set => SetValue(__WindowPropertyKey, value);
         }
 
         #endregion
@@ -257,7 +259,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(Topmost),
                 typeof(bool),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(bool)), v => v == null || v is bool);
+                new PropertyMetadata(default(bool)), v => v is null || v is bool);
 
         /// <summary>Окно является окном верхнего уровня</summary>
         public bool Topmost
@@ -276,7 +278,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(Owner),
                 typeof(Window),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(Window)), v => v == null || v is Window);
+                new PropertyMetadata(default(Window)), v => v is null || v is Window);
 
         /// <summary>Окно - владелец</summary>
         public Window Owner
@@ -295,7 +297,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(WindowState),
                 typeof(WindowState),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(WindowState)), v => v == null || v is WindowState);
+                new PropertyMetadata(default(WindowState)), v => v is null || v is WindowState);
 
         /// <summary>Состояние окна</summary>
         public WindowState WindowState
@@ -314,7 +316,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(StartupLocation),
                 typeof(WindowStartupLocation),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(WindowStartupLocation)), v => v == null || v is WindowStartupLocation);
+                new PropertyMetadata(default(WindowStartupLocation)), v => v is null || v is WindowStartupLocation);
 
         /// <summary>Начальное положение окна</summary>
         public WindowStartupLocation StartupLocation
@@ -333,7 +335,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(SizeToContent),
                 typeof(SizeToContent),
                 typeof(ShowWindow),
-                new PropertyMetadata(default(SizeToContent)), v => v == null || v is SizeToContent);
+                new PropertyMetadata(default(SizeToContent)), v => v is null || v is SizeToContent);
 
         /// <summary>Принцип автоматического изменения размеров окна</summary>
         public SizeToContent SizeToContent
@@ -349,12 +351,9 @@ namespace MathCore.WPF.Dialogs
         //    Control.TemplateProperty.OverrideMetadata(typeof(ShowWindow), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsMeasure));
         //}
 
-        public ShowWindow()
-        {
-            _OpenCommand = new LambdaCommand((Action<object>)Open, p => !IsOpened);
-        }
+        public ShowWindow() => _OpenCommand = new LambdaCommand((Action<object?>)Open, p => !IsOpened);
 
-        public override void Open(object p)
+        public override void Open(object? p)
         {
             if(IsOpened) return;
             lock (_OpenSyncRoot)
@@ -376,7 +375,7 @@ namespace MathCore.WPF.Dialogs
             }
         }
 
-        protected override void OpenDialog(object p)
+        protected override void OpenDialog(object? p)
         {
             var window = new Window();
             window.SetBinding(FrameworkElement.StyleProperty, new Binding("Style") { Source = this });
@@ -387,7 +386,7 @@ namespace MathCore.WPF.Dialogs
             window.SetBinding(FrameworkElement.MaxHeightProperty, new Binding("MaxHeight") { Source = this });
             window.SetBinding(FrameworkElement.HeightProperty, new Binding("Height") { Source = this });
             window.SetBinding(Window.IconProperty, new Binding("Icon") { Source = this });
-            if(p == null)
+            if(p is null)
                 window.SetBinding(FrameworkElement.DataContextProperty, new Binding("DataContext") { Source = this });
             else
                 window.DataContext = p;
@@ -407,7 +406,7 @@ namespace MathCore.WPF.Dialogs
             {
                 window.Closed += (s, e) =>
                 {
-                    DialogResult = ((Window)s).DialogResult;
+                    DialogResult = ((Window)s!).DialogResult;
                     IsOpened = false;
                     Window = null;
                 };

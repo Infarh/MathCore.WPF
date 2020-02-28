@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace MathCore.WPF.TeX
@@ -27,7 +27,7 @@ namespace MathCore.WPF.TeX
 
                 // Check that Mu font exists.
                 var muFontId = (int)generalSettings["mufontid"];
-                if(muFontId < 0 || muFontId >= fontInfoList.Length || fontInfoList[muFontId] == null)
+                if(muFontId < 0 || muFontId >= fontInfoList.Length || fontInfoList[muFontId] is null)
                     throw new InvalidOperationException("ID of Mu font is invalid.");
             } catch(Exception e)
             {
@@ -114,7 +114,7 @@ namespace MathCore.WPF.TeX
                 charIndexOffset = character - 'A';
             }
 
-            return charFont[(int)charKind] == null
+            return charFont[(int)charKind] is null
                 ? GetDefaultCharInfo(character, style)
                 : GetCharInfo(new CharFont((char)(charFont[(int)charKind].Character + charIndexOffset),
                     charFont[(int)charKind].FontId), style);
@@ -123,7 +123,7 @@ namespace MathCore.WPF.TeX
         public CharInfo GetCharInfo(char character, string textStyle, TexStyle style)
         {
             var mapping = textStyleMappings[textStyle];
-            if(mapping == null)
+            if(mapping is null)
                 throw new TextStyleMappingNotFoundException(textStyle);
             return GetCharInfo(character, mapping, style);
         }
@@ -137,7 +137,7 @@ namespace MathCore.WPF.TeX
         public CharInfo GetCharInfo(string symbolName, TexStyle style)
         {
             var mapping = symbolMappings[symbolName];
-            if(mapping == null)
+            if(mapping is null)
                 throw new SymbolMappingNotFoundException(symbolName);
             return GetCharInfo(mapping, style);
         }

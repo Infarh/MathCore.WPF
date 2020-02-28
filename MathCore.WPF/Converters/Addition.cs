@@ -1,12 +1,14 @@
-using System.Windows.Markup;
+п»їusing System.Windows.Markup;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-    /// <summary>Преобразователь сложения значения с вещественным числом</summary>
+    /// <summary>РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚РµР»СЊ СЃР»РѕР¶РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ СЃ РІРµС‰РµСЃС‚РІРµРЅРЅС‹Рј С‡РёСЃР»РѕРј</summary>
     [MarkupExtensionReturnType(typeof(Addition))]
     public class Addition : SimpleDoubleValueConverter
     {
         public Addition() : this(0) { }
+
         public Addition(double P) : base(P, (v, p) => v + p, (r, p) => r - p) { }
     }
 }

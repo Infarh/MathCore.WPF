@@ -1,17 +1,26 @@
-using System;
+﻿using System;
 using System.Windows.Data;
+using System.Windows.Markup;
+
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
     [ValueConversion(typeof(double), typeof(double))]
     public class RoundAdaptive : DoubleValueConverter
     {
+        [ConstructorArgument(nameof(Digits))]
         public int Digits { get; set; }
 
+        [ConstructorArgument(nameof(Rounding))]
         public MidpointRounding Rounding { get; set; }
 
         public RoundAdaptive() {}
+
         public RoundAdaptive(int Digits) => this.Digits = Digits;
+
         public RoundAdaptive(int Digits, MidpointRounding Rounding) : this(Digits) => this.Rounding = Rounding;
 
         /// <inheritdoc />

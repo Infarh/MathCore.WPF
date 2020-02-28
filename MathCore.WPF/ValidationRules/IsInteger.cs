@@ -2,28 +2,44 @@
 using System.Globalization;
 using System.Windows.Controls;
 
+using MathCore.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedType.Global
+
 namespace MathCore.WPF.ValidationRules
 {
-    public class IsInteger : ValidationRule
+    /// <summary>Проверка, что значение является числом типа <see cref="int"/></summary>
+    public class IsInteger : Base.FormattedValueValidation
     {
-        public bool AllowNull { get; set; }
-
-        public string ErrorMessage { get; set; }
-
-        /// <inheritdoc />
-        public override ValidationResult Validate(object value, CultureInfo CultureInfo)
+        /// <summary>Проверка значения на возможность его преобразования в тип <see cref="int"/></summary>
+        /// <param name="value">Проверяемое значение</param>
+        /// <param name="c">Сведения о текущей культуре</param>
+        /// <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="int"/></returns>
+        [NotNull]
+        public override ValidationResult Validate(object value, CultureInfo c)
         {
-            var valid = ValidationResult.ValidResult;
-            if (value == null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указно");
+            if (value is null)
+                return AllowNull
+                    ? ValidationResult.ValidResult
+                    : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано"); 
             try
             {
-                var unused = Convert.ToInt32(value);
-                return valid;
+                _ = Convert.ToInt32(value, c);
+                return ValidationResult.ValidResult;
             }
-            catch (Exception e)
+            catch (OverflowException e)
             {
-                return new ValidationResult(false, ErrorMessage ?? $"Невозможно преобразовать {value} в целое число: {e.Message}");
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к целочисленному (4 байта) типу: {e.Message}");
+            }
+            catch (InvalidCastException e)
+            {
+                return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к целочисленному (4 байта) типу: {e.Message}");
+            }
+            catch (FormatException e)
+            {
+                return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к целочисленному (4 байта) типу: {e.Message}");
             }
         }
-    }  
+    }
 }

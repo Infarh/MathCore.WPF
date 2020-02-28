@@ -72,7 +72,7 @@ namespace MathCore.WPF.TeX
         internal static TexFormula GetFormula(string name)
         {
             var f = _PredefinedFormulas.GetValue(name);
-            return f == null ? null : new TexFormula(f);
+            return f is null ? null : new TexFormula(f);
         }
 
         internal static string GetDelimeterMapping(char character)
@@ -191,7 +191,7 @@ namespace MathCore.WPF.TeX
                     var numeratorFormula = Parse(ReadGroup(formula, value, ref position, leftGroupChar, rightGroupChar));
                     SkipWhiteSpace(value, ref position);
                     var denominatorFormula = Parse(ReadGroup(formula, value, ref position, leftGroupChar, rightGroupChar));
-                    if(numeratorFormula.RootAtom == null || denominatorFormula.RootAtom == null)
+                    if(numeratorFormula.RootAtom is null || denominatorFormula.RootAtom is null)
                         throw new TexParseException("Both numerator and denominator of a fraction can't be empty!");
 
                     return new FractionAtom(numeratorFormula.RootAtom, denominatorFormula.RootAtom, true);
@@ -353,7 +353,7 @@ namespace MathCore.WPF.TeX
                     break;
             }
 
-            if(superscriptFormula == null && subscriptFormula == null)
+            if(superscriptFormula is null && subscriptFormula is null)
                 return atom;
 
             // Check whether to return Big Operator or Scripts.
@@ -371,7 +371,7 @@ namespace MathCore.WPF.TeX
             {
                 // Character is symbol.
                 var symbolName = symbols[character];
-                if(symbolName == null)
+                if(symbolName is null)
                     throw new TexParseException($"Unknown character : '{character}'");
 
                 try

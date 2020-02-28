@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows;
@@ -37,7 +37,7 @@ namespace MathCore.WPF
         private static void OnSearchStrategyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var f = (Filter)d;
-            if(f.View == null) return;
+            if(f.View is null) return;
             f.View.Filter = i => f.SearchStrategy(i, f.Pattern);
         }
 
@@ -52,7 +52,7 @@ namespace MathCore.WPF
                 CollectionViewSource.GetDefaultView(@old).Filter = null;
 
             var @new = e.NewValue as IEnumerable;
-            if(@new == null) return;
+            if(@new is null) return;
             var f = (Filter)d;
             CollectionViewSource.GetDefaultView(@new).Filter = i => f.SearchStrategy(i, f.Pattern);
         }
@@ -66,7 +66,7 @@ namespace MathCore.WPF
         protected override void OnContentChanged(object oldContent, object newContent)
         {
             var control = newContent as ItemsControl;
-            if(control == null)
+            if(control is null)
                 throw new ArgumentException("Content or Content Template must be an ItemsControl");
 
             SetBinding(ItemsSourceProperty, new Binding("ItemsSource") { Mode = BindingMode.OneWay, Source = control });
@@ -78,7 +78,7 @@ namespace MathCore.WPF
         {
             _FilterBox = Template.FindName("PART_FilterBox", this) as TextBox;
 
-            if(_FilterBox == null)
+            if(_FilterBox is null)
                 throw new ArgumentException("Filter ControlTemplate must have at least one TextBox element named PART_FilterBox");
 
             SetBinding(PatternProperty, new Binding("Text") { Mode = BindingMode.TwoWay, Source = _FilterBox });

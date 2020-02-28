@@ -1,6 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using MathCore.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
+
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Commands
 {
@@ -15,7 +19,7 @@ namespace MathCore.WPF.Commands
             _CanExecute = e => e != null;
         }
 
-        private void RenderElement(FrameworkElement e)
+        private static void RenderElement([NotNull] FrameworkElement? e)
         {
             var height = e.ActualHeight;
             var width = e.ActualWidth;
@@ -24,9 +28,9 @@ namespace MathCore.WPF.Commands
             e.UpdateLayout();
 
             var bitmap_height = height * PictureFactor;
-            var bitmap_widht = width * PictureFactor;
+            var bitmap_width = width * PictureFactor;
 
-            var bitmap = new RenderTargetBitmap((int)bitmap_widht, (int)bitmap_height, 96 * bitmap_widht / width, 96 * bitmap_height / height, PixelFormats.Default);
+            var bitmap = new RenderTargetBitmap((int)bitmap_width, (int)bitmap_height, 96 * bitmap_width / width, 96 * bitmap_height / height, PixelFormats.Default);
             bitmap.Render(e);
             Clipboard.SetImage(bitmap);
         }

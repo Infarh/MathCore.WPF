@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -102,7 +102,7 @@ namespace MathCore.WPF.TeX
             foreach(var childElement in charElement.Elements())
             {
                 var parser = charChildParsers[childElement.Name.ToString()];
-                if(parser == null)
+                if(parser is null)
                     throw new InvalidOperationException("Unknown element type.");
                 parser.Parse(childElement, character, fontInfo);
             }
@@ -113,7 +113,7 @@ namespace MathCore.WPF.TeX
             var result = new Dictionary<string, CharFont>();
 
             var symbolMappingsElement = rootElement.Element("SymbolMappings");
-            if(symbolMappingsElement == null)
+            if(symbolMappingsElement is null)
                 throw new InvalidOperationException("Cannot find SymbolMappings element.");
 
             foreach(var mappingElement in symbolMappingsElement.Elements("SymbolMapping"))
@@ -136,7 +136,7 @@ namespace MathCore.WPF.TeX
             var result = new string[3];
 
             var defaultTextStyleMappings = rootElement.Element("DefaultTextStyleMapping");
-            if(defaultTextStyleMappings == null)
+            if(defaultTextStyleMappings is null)
                 throw new InvalidOperationException("Cannot find DefaultTextStyleMapping element.");
 
             foreach(var mappingElement in defaultTextStyleMappings.Elements("MapStyle"))
@@ -159,7 +159,7 @@ namespace MathCore.WPF.TeX
         public Dictionary<string, double> GetParameters()
         {
             var parameters = rootElement.Element("Parameters");
-            if(parameters == null)
+            if(parameters is null)
                 throw new InvalidOperationException("Cannot find Parameters element.");
 
             return parameters.Attributes()
@@ -171,7 +171,7 @@ namespace MathCore.WPF.TeX
             var result = new Dictionary<string, object>();
 
             var generalSettings = rootElement.Element("GeneralSettings");
-            if(generalSettings == null)
+            if(generalSettings is null)
                 throw new InvalidOperationException("Cannot find GeneralSettings element.");
 
             result.Add("mufontid", generalSettings.AttributeInt32Value("mufontid"));
@@ -189,7 +189,7 @@ namespace MathCore.WPF.TeX
             parsedTextStyles = new Dictionary<string, CharFont[]>();
 
             var textStyleMappings = rootElement.Element("TextStyleMappings");
-            if(textStyleMappings == null)
+            if(textStyleMappings is null)
                 throw new InvalidOperationException("Cannot find TextStyleMappings element.");
 
             foreach(var mappingElement in textStyleMappings.Elements("TextStyleMapping"))

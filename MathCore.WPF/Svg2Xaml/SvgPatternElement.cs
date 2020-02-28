@@ -85,7 +85,7 @@ namespace MathCore.WPF.SVG
     {
       DrawingBrush brush = null;
 
-      if(Reference == null)
+      if(Reference is null)
         brush = new DrawingBrush(Draw());
       else
       {
@@ -96,7 +96,7 @@ namespace MathCore.WPF.SVG
           throw new NotSupportedException("Other references than patterns are not supported");
       }
 
-      if(brush == null)
+      if(brush is null)
         return null;
 
       if((Width != null) || (Height != null))

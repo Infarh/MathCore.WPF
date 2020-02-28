@@ -356,7 +356,7 @@ namespace MathCore.WPF.SVG
     public virtual Geometry GetGeometry()
     {
       Geometry geometry = GetBaseGeometry();
-      if(geometry == null)
+      if(geometry is null)
         return null;
 
       if(Transform != null)
@@ -379,7 +379,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public Pen GetPen()
     {
-      if(Stroke == null)
+      if(Stroke is null)
         return null;
 
       if(StrokeWidth.ToDouble() <= 0.0)
@@ -396,11 +396,11 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public Brush GetBrush()
     {
-      if(Fill == null)
+      if(Fill is null)
         return null;
 
       Brush brush = Fill.ToBrush(this);
-      if(brush == null)
+      if(brush is null)
         return null;
 
       brush.Opacity = Opacity.ToDouble() * FillOpacity.ToDouble();
@@ -411,7 +411,7 @@ namespace MathCore.WPF.SVG
     public virtual Drawing GetBaseDrawing()
     {
       Geometry geometry = GetGeometry();
-      if(geometry == null)
+      if(geometry is null)
         return null;
 
       if(geometry.IsEmpty())
@@ -424,7 +424,7 @@ namespace MathCore.WPF.SVG
       Brush brush = GetBrush();
       Pen pen = GetPen();
 
-      if((brush == null) && (pen == null))
+      if((brush is null) && (pen is null))
         return null;
 
 
@@ -445,7 +445,7 @@ namespace MathCore.WPF.SVG
     public virtual Drawing Draw()
     {
       Drawing drawing = GetBaseDrawing();
-      if(drawing == null)
+      if(drawing is null)
         return null;
 
       BitmapEffect bitmap_effect = null;
@@ -470,7 +470,7 @@ namespace MathCore.WPF.SVG
         }
       }
 
-      if((opacity_mask == null) && (bitmap_effect == null))
+      if((opacity_mask is null) && (bitmap_effect is null))
         return drawing;
         
 

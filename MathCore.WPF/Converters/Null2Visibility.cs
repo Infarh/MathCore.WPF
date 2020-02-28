@@ -1,8 +1,11 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -13,6 +16,6 @@ namespace MathCore.WPF.Converters
         public bool Inverted { get; set; }
 
         /// <inheritdoc />
-        protected override object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value == null ? !Inverted : Inverted;
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => v is null ? !Inverted : Inverted;
     }
 }

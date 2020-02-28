@@ -5,6 +5,9 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
 
+// ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
+
 namespace MathCore.WPF.Converters
 {
     [MarkupExtensionReturnType(typeof(ArrayElement))]
@@ -14,9 +17,10 @@ namespace MathCore.WPF.Converters
         public int Index { get; set; }
 
         public ArrayElement() { }
-        public ArrayElement(int Index) { this.Index = Index; }
+
+        public ArrayElement(int Index) => this.Index = Index;
 
         /// <inheritdoc />
-        protected override object Convert(object v, Type t, object p, CultureInfo c) => (v as IEnumerable)?.Cast<object>().ElementAtOrDefault(Index);
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => (v as IEnumerable)?.Cast<object>().ElementAtOrDefault(Index);
     }
 }

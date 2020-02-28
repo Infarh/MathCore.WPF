@@ -1,6 +1,6 @@
 ﻿namespace MathCore.WPF.pInvoke
 {
-    public enum SizingAction
+    internal enum SizingAction
     {
         West = 1,
         East = 2,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -7,19 +7,18 @@ namespace MathCore.WPF.Shapes
 {
     public abstract class ShapeBase : Shape
     {
-        protected static double min(double x, double y) => Math.Min(x, y);
-        protected static double max(double x, double y) => Math.Max(x, y);
-
         protected Rect _VisibleRect;
 
-        protected override Size ArrangeOverride(Size finalSize)
+        protected override Size ArrangeOverride(Size FinalSize)
         {
-            var size = base.ArrangeOverride(finalSize);
+            var size = base.ArrangeOverride(FinalSize);
             var t = StrokeThickness;
             var m = t / 2;
+            var y = size.Width - t;
+            var y1 = size.Height - t;
             _VisibleRect = size.IsEmpty || size.Width.Equals(0d) || size.Height.Equals(0d)
                 ? Rect.Empty
-                : new Rect(m, m, max(0, size.Width - t), max(0, size.Height - t));
+                : new Rect(m, m, Math.Max(0, y), Math.Max(0, y1));
 
             switch(Stretch)
             {

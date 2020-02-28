@@ -86,7 +86,7 @@ namespace MathCore.WPF.SVG
             {
 
                 try { stream = Application.GetResourceStream(_Uri)?.Stream; } catch (IOException) { }
-                if(stream == null && File.Exists(_Uri.ToString()))
+                if(stream is null && File.Exists(_Uri.ToString()))
                     stream = new FileStream(_Uri.ToString(), FileMode.Open);
                 else
                     return null;

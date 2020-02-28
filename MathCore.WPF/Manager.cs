@@ -34,7 +34,7 @@ namespace MathCore.WPF
             var new_value = (ElementControllersCollection)args.NewValue;
             if(old_value == new_value) return;
             if(old_value?.Element != null) old_value.ResetElement();
-            if(new_value == null || obj == null) return;
+            if(new_value is null || obj is null) return;
             if(new_value.Element != null) throw new InvalidOperationException();
             new_value.SetElement(obj);
         }
@@ -62,13 +62,13 @@ namespace MathCore.WPF
         /// <inheritdoc />
         public override void SetElement(DependencyObject element)
         {
-            if(element == null)
+            if(element is null)
             {
                 ResetElement();
                 return;
             }
             var e = element as TElement;
-            if(e == null)
+            if(e is null)
                 throw new ArgumentException($"Целевой объект не является объектом типа {typeof(TElement)}");
             SetElement(e);
         }
@@ -76,7 +76,7 @@ namespace MathCore.WPF
         protected virtual void SetElement(TElement element)
         {
             if(ReferenceEquals(_Element, element)) return;
-            if(element == null) throw new ArgumentNullException(nameof(element));
+            if(element is null) throw new ArgumentNullException(nameof(element));
             ResetElement();
             ElementSet?.Invoke(this, _Element = element);
         }
@@ -242,7 +242,7 @@ namespace MathCore.WPF
         private void OnRoutedEvent(FrameworkElement element, RoutedEventArgs args)
         {
             var sender = args.OriginalSource as FrameworkElement;
-            if(sender == null) return;
+            if(sender is null) return;
             DataContext = element.DataContext;  // Allow data binding to access element properties
             if(ExcludedSourceNames.Any(x => x.Equals(sender.Name))) return;
             // Construct an EventTrigger containing the actions, then trigger it 

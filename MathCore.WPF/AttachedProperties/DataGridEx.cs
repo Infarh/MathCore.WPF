@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using MathCore.Annotations;
 
 namespace MathCore.WPF
 {
@@ -26,10 +24,10 @@ namespace MathCore.WPF
 
         /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static void SetUseDataAnnotations(DependencyObject D, bool value) => D.SetValue(UseDataAnnotationsProperty, value);
+        public static void SetUseDataAnnotations([NotNull] DependencyObject D, bool value) => D.SetValue(UseDataAnnotationsProperty, value);
 
         /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
-        public static bool GetUseDataAnnotations(DependencyObject D) => (bool)D.GetValue(UseDataAnnotationsProperty);
+        public static bool GetUseDataAnnotations([NotNull] DependencyObject D) => (bool)D.GetValue(UseDataAnnotationsProperty);
 
         private static void OnUseDataAnnotationsPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
@@ -51,7 +49,7 @@ namespace MathCore.WPF
 
         //}
 
-        private static void OnDataGridGeneratingColumn(object? Sender, DataGridAutoGeneratingColumnEventArgs E)
+        private static void OnDataGridGeneratingColumn(object? Sender, [NotNull] DataGridAutoGeneratingColumnEventArgs E)
         {
             if(!(E.PropertyDescriptor is PropertyDescriptor property_descriptor)) return;
             var item_type = property_descriptor?.ComponentType;
@@ -138,10 +136,10 @@ namespace MathCore.WPF
 
         /// <summary>Добавить номера строк в их заголовки</summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static void SetAddRowNumber(DependencyObject D, bool value) => D.SetValue(AddRowNumberProperty, value);
+        public static void SetAddRowNumber([NotNull] DependencyObject D, bool value) => D.SetValue(AddRowNumberProperty, value);
 
         /// <summary>Добавить номера строк в их заголовки</summary>
-        public static bool GetAddRowNumber(DependencyObject D) => (bool) D.GetValue(AddRowNumberProperty);
+        public static bool GetAddRowNumber([NotNull] DependencyObject D) => (bool) D.GetValue(AddRowNumberProperty);
 
         private static void OnAddRowNumberToRowHeaderPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
@@ -152,7 +150,7 @@ namespace MathCore.WPF
                 data_grid.LoadingRow -= OnRowLoadingAddRowNumber;
         }
 
-        private static void OnRowLoadingAddRowNumber(object? Sender, DataGridRowEventArgs E) => E.Row.Header = (E.Row.GetIndex()) + 1;
+        private static void OnRowLoadingAddRowNumber(object? Sender, [NotNull] DataGridRowEventArgs E) => E.Row.Header = (E.Row.GetIndex()) + 1;
 
         #endregion
     }

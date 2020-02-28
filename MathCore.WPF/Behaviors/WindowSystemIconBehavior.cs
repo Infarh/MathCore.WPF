@@ -1,8 +1,6 @@
 ﻿using System.Windows.Input;
-using MathCore.WPF.Behaviors;
 using MathCore.WPF.pInvoke;
 using MathCore.Annotations;
-using MathCore.WPF.pInvoke;
 
 namespace MathCore.WPF.Behaviors
 {

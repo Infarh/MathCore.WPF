@@ -1,7 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Threading;
 using MathCore.Annotations;
+using System.ComponentModel;
+
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
 
@@ -9,9 +10,11 @@ namespace System.ComponentModel
 {
     public static class PropertyChangedEventHandlerExtensions
     {
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        public static void ThreadSafeInvoke([CanBeNull] this PropertyChangedEventHandler Event, [CanBeNull] object sender, [Diagnostics.CodeAnalysis.NotNull, ItemCanBeNull] [MathCore.Annotations.NotNull]
-            params string[] PropertyName)
+        [Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        public static void ThreadSafeInvoke(
+            [CanBeNull] this PropertyChangedEventHandler Event,
+            [CanBeNull] object sender,
+            [NotNull, ItemCanBeNull] params string[] PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
             if (Event is null || PropertyName.Length == 0) return;
@@ -31,7 +34,11 @@ namespace System.ComponentModel
                 }
         }
 
-        public static void ThreadSafeInvoke([CanBeNull] this PropertyChangedEventHandler Handler, [CanBeNull] object Sender, [Diagnostics.CodeAnalysis.NotNull] [MathCore.Annotations.NotNull] string PropertyName)
+        public static void ThreadSafeInvoke(
+            [CanBeNull] this PropertyChangedEventHandler Handler, 
+            [CanBeNull] object Sender,
+            [NotNull] 
+            string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
             if (Handler is null || PropertyName.Length == 0) return;
@@ -53,7 +60,10 @@ namespace System.ComponentModel
                 }
         }
 
-        public static void ThreadSafeBeginInvoke([CanBeNull] this PropertyChangedEventHandler Handler, [CanBeNull] object Sender, [Diagnostics.CodeAnalysis.NotNull] [MathCore.Annotations.NotNull] string PropertyName)
+        public static void ThreadSafeBeginInvoke(
+            [CanBeNull] this PropertyChangedEventHandler Handler,
+            [CanBeNull] object Sender,
+            [NotNull] string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
             if (Handler is null || PropertyName.Length == 0) return;
@@ -70,20 +80,23 @@ namespace System.ComponentModel
                         dispatcher_obj.Dispatcher.BeginInvoke(d, DispatcherPriority.DataBind, args);
                         break;
                     default:
-                        var @delegate = d;
-                        ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
-                        break;
+                        {
+                            var @delegate = d;
+                            ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
+                            break;
+                        }
                 }
         }
     }
 }
-
 namespace System.Collections.Specialized
 {
-    using ComponentModel;
     public static class NotifyCollectionChangedEventHandlerExtensions
     {
-        public static void ThreadSafeInvoke([CanBeNull] this NotifyCollectionChangedEventHandler Handler, [CanBeNull] object Sender, [Diagnostics.CodeAnalysis.NotNull] [MathCore.Annotations.NotNull] NotifyCollectionChangedEventArgs E)
+        public static void ThreadSafeInvoke(
+            [CanBeNull] this NotifyCollectionChangedEventHandler Handler,
+            [CanBeNull] object Sender,
+            [NotNull] NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
             if (Handler is null) return;
@@ -107,7 +120,10 @@ namespace System.Collections.Specialized
             }
         }
 
-        public static void ThreadSafeBeginInvoke([CanBeNull] this NotifyCollectionChangedEventHandler Handler, [CanBeNull] object Sender, [Diagnostics.CodeAnalysis.NotNull] [MathCore.Annotations.NotNull] NotifyCollectionChangedEventArgs E)
+        public static void ThreadSafeBeginInvoke(
+            [CanBeNull] this NotifyCollectionChangedEventHandler Handler,
+            [CanBeNull] object Sender,
+            [NotNull] NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
             if (Handler is null) return;
@@ -125,9 +141,11 @@ namespace System.Collections.Specialized
                         dispatcher_obj.Dispatcher.BeginInvoke(d, args);
                         break;
                     default:
-                        var @delegate = d;
-                        ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
-                        break;
+                        {
+                            var @delegate = d;
+                            ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
+                            break;
+                        }
                 }
             }
         }

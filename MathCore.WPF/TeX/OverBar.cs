@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Box representing other box with horizontal rule above it</summary>
     internal sealed class OverBar : VerticalBox

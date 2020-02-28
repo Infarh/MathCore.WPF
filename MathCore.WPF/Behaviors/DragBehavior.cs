@@ -6,6 +6,7 @@ using MathCore.Annotations;
 using Microsoft.Xaml.Behaviors;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InconsistentNaming
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Behaviors
 {
@@ -155,7 +156,6 @@ namespace MathCore.WPF.Behaviors
 
         /// <summary>Величина смещения по вертикали</summary>
         [NotNull] public static readonly DependencyProperty dyProperty = dyPropertyKey.DependencyProperty;
-
 
         /// <summary>Величина смещения по вертикали</summary>
         public double dy

@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+п»їnamespace MathCore.WPF.TeX
 {
     /// <summary>Dummy atom representing atom whose type can change or which can be replaced by a ligature</summary>
     internal sealed class DummyAtom : Atom
@@ -34,7 +34,7 @@ namespace MathCore.WPF.TeX
             if(IsTextSymbol)
                 ((CharSymbol)Atom).IsTextSymbol = true;
             var resultBox = Atom.CreateBox(environment);
-            //TODO: Разобраться с надстрочными знаками!
+            //TODO: Р Р°Р·РѕР±СЂР°С‚СЊСЃСЏ СЃ РЅР°РґСЃС‚СЂРѕС‡РЅС‹РјРё Р·РЅР°РєР°РјРё!
             if(Atom.Type == TexAtomType.Accent)
                 resultBox.Width = 0;
             if(IsTextSymbol)

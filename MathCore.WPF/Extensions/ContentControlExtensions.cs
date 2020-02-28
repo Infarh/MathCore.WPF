@@ -5,6 +5,7 @@ using System.Xml;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable once CheckNamespace
 namespace System.Windows

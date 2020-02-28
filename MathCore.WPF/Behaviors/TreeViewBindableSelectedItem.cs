@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using MathCore.Annotations;
 using Microsoft.Xaml.Behaviors;
 // ReSharper disable UnusedType.Global
@@ -11,7 +10,7 @@ namespace MathCore.WPF.Behaviors
 {
     public class TreeViewBindableSelectedItem : Behavior<TreeView>
     {
-        [Annotations.NotNull]
+        [NotNull]
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
                 nameof(SelectedItem),
@@ -29,7 +28,7 @@ namespace MathCore.WPF.Behaviors
             SelectTreeViewItem(tree_view, item);
         }
 
-        private static bool SelectTreeViewItem([Annotations.NotNull] ItemsControl ParentContainer, [Annotations.NotNull] object target)
+        private static bool SelectTreeViewItem([NotNull] ItemsControl ParentContainer, [NotNull] object target)
         {
             if (ParentContainer is null) throw new ArgumentNullException(nameof(ParentContainer));
 
@@ -90,7 +89,7 @@ namespace MathCore.WPF.Behaviors
                 tree_view.ItemContainerStyle?.Setters.Remove(_TreeViewItemStyleLoadedEventSetter);
         }
 
-        private void OnTreeViewSelectedItemChanged(object? sender, [Annotations.NotNull] RoutedPropertyChangedEventArgs<object> e)
+        private void OnTreeViewSelectedItemChanged(object? sender, [NotNull] RoutedPropertyChangedEventArgs<object> e)
         {
             if (!ReferenceEquals(SelectedItem, e.NewValue))
                 SelectedItem = e.NewValue;
