@@ -23,7 +23,7 @@ namespace MathCore.WPF.Commands
 
                 if (!typeof(Window).IsAssignableFrom(value))
                     throw new ArgumentException("Указанный тип не является типом окна", nameof(value));
-                if (value.GetConstructor(new Type[0]) is null)
+                if (value.GetConstructor(Array.Empty<Type>()) is null)
                     throw new ArgumentException("Нельзя использовать класс окна без конструктора по умолчанию", nameof(value));
                 _WindowType = value;
             }

@@ -50,19 +50,19 @@ namespace MathCore.WPF.SVG
     public SvgLinearGradientElement(SvgDocument document, SvgBaseElement parent, XElement linearGradientElement)
       : base(document, parent, linearGradientElement)
     {
-      XAttribute x1_attribute = linearGradientElement.Attribute("x1");
+      var x1_attribute = linearGradientElement.Attribute("x1");
       if(x1_attribute != null)
         X1 = SvgCoordinate.Parse(x1_attribute.Value);
 
-      XAttribute y1_attribute = linearGradientElement.Attribute("y1");
+      var y1_attribute = linearGradientElement.Attribute("y1");
       if(y1_attribute != null)
         Y1 = SvgCoordinate.Parse(y1_attribute.Value);
 
-      XAttribute x2_attribute = linearGradientElement.Attribute("x2");
+      var x2_attribute = linearGradientElement.Attribute("x2");
       if(x2_attribute != null)
         X2 = SvgCoordinate.Parse(x2_attribute.Value);
 
-      XAttribute y2_attribute = linearGradientElement.Attribute("y2");
+      var y2_attribute = linearGradientElement.Attribute("y2");
       if(y2_attribute != null)
         Y2 = SvgCoordinate.Parse(y2_attribute.Value);
     }
@@ -73,7 +73,7 @@ namespace MathCore.WPF.SVG
       //==========================================================================
     protected override GradientBrush SetBrush(GradientBrush brush)
     {
-      LinearGradientBrush linear_gradient_brush = base.SetBrush(brush) as LinearGradientBrush;
+      var linear_gradient_brush = base.SetBrush(brush) as LinearGradientBrush;
       if(linear_gradient_brush != null)
       {
         linear_gradient_brush.StartPoint = new Point(X1.ToDouble(), Y1.ToDouble());

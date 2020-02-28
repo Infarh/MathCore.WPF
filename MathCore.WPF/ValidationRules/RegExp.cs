@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Markup;
@@ -13,18 +14,27 @@ namespace MathCore.WPF.ValidationRules
     /// <summary>Проверка на соответствие строки регулярному выражению</summary>
     public class RegExp : Base.FormattedValueValidation
     {
+        /// <summary>Разрешить нестроковые значения (у значения будет вызван метод <see cref="object.ToString"/>)</summary>
         public bool AllowNotString { get; set; }
 
+        /// <summary>Текст ошибки, выводимый в случае получения нестрокового значения</summary>
         public string? NotStringErrorMessage { get; set; }
 
+        /// <summary>Регулярное выражение</summary>
         [ConstructorArgument(nameof(Expression))]
         public string? Expression { get; set; }
 
+        /// <summary>Инициализация нового экземпляра <see cref="RegExp"/></summary>
         public RegExp() { }
 
-        public RegExp(string Expression) => this.Expression = Expression;
+        /// <summary>Инициализация нового экземпляра <see cref="RegExp"/></summary>
+        /// <param name="Expression">Регулярное выражение</param>
+        public RegExp([RegexPattern] string Expression) => this.Expression = Expression;
 
-        /// <inheritdoc />
+        /// <summary>Проверка - удовлетворяет ли переданное значение указанному регулярному выражению</summary>
+        /// <param name="value">Проверяемое значение</param>
+        /// <param name="c">Сведения о текущей культуре</param>
+        /// <returns>Валидный результат в случае если значение удовлетворяет указанному регулярному выражению</returns>
         [NotNull]
         public override ValidationResult Validate(object value, CultureInfo c)
         {

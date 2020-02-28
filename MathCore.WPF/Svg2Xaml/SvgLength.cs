@@ -69,7 +69,7 @@ namespace MathCore.WPF.SVG
 
       string unit = null;
 
-      foreach(string unit_identifier in new string[] {"in", "cm", "mm", "pt", "pc", "px", "%" })
+      foreach(var unit_identifier in new string[] {"in", "cm", "mm", "pt", "pc", "px", "%" })
         if(value.EndsWith(unit_identifier))
         {
           unit  = unit_identifier;

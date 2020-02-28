@@ -49,9 +49,9 @@ namespace MathCore.WPF.SVG
     public SvgFilterElement(SvgDocument document, SvgBaseElement parent, XElement filterElement)
       : base(document, parent, filterElement)
     {
-      foreach(XElement element in from element in filterElement.Elements()
-                                  where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
-                                  select element)
+      foreach(var element in from element in filterElement.Elements()
+                             where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
+                             select element)
         switch(element.Name.LocalName)
         {
 
@@ -79,11 +79,11 @@ namespace MathCore.WPF.SVG
       if(Document.Options.IgnoreEffects)
         return null;
 
-      BitmapEffectGroup bitmap_effect_group = new BitmapEffectGroup();
+      var bitmap_effect_group = new BitmapEffectGroup();
 
-      foreach(SvgFilterEffectBaseElement filter_effect in FilterEffects)
+      foreach(var filter_effect in FilterEffects)
       {
-        BitmapEffect bitmap_effect = filter_effect.ToBitmapEffect();
+        var bitmap_effect = filter_effect.ToBitmapEffect();
         if(bitmap_effect != null)
           bitmap_effect_group.Children.Add(bitmap_effect);
       }

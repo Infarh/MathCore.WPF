@@ -48,23 +48,23 @@ namespace MathCore.WPF.SVG
     public SvgRadialGradientElement(SvgDocument document, SvgBaseElement parent, XElement radialGradientElement)
       : base(document, parent, radialGradientElement)
     {
-      XAttribute cx_attribute = radialGradientElement.Attribute("cx");
+      var cx_attribute = radialGradientElement.Attribute("cx");
       if(cx_attribute != null)
         CX = SvgCoordinate.Parse(cx_attribute.Value);
 
-      XAttribute cy_attribute = radialGradientElement.Attribute("cy");
+      var cy_attribute = radialGradientElement.Attribute("cy");
       if(cy_attribute != null)
         CY = SvgCoordinate.Parse(cy_attribute.Value);
 
-      XAttribute r_attribute = radialGradientElement.Attribute("r");
+      var r_attribute = radialGradientElement.Attribute("r");
       if(r_attribute != null)
         R = SvgCoordinate.Parse(r_attribute.Value);
 
-      XAttribute fx_attribute = radialGradientElement.Attribute("fx");
+      var fx_attribute = radialGradientElement.Attribute("fx");
       if(fx_attribute != null)
         FX = SvgCoordinate.Parse(fx_attribute.Value);
 
-      XAttribute fy_attribute = radialGradientElement.Attribute("fy");
+      var fy_attribute = radialGradientElement.Attribute("fy");
       if(fy_attribute != null)
         FY = SvgCoordinate.Parse(fy_attribute.Value);
       
@@ -73,7 +73,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     protected override GradientBrush CreateBrush()
     {
-      RadialGradientBrush brush = new RadialGradientBrush();
+      var brush = new RadialGradientBrush();
       brush.ColorInterpolationMode = ColorInterpolationMode.SRgbLinearInterpolation;
       return brush;
     }
@@ -81,13 +81,13 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     protected override GradientBrush SetBrush(GradientBrush brush)
     {
-      RadialGradientBrush radial_gradient_brush = base.SetBrush(brush) as RadialGradientBrush;
+      var radial_gradient_brush = base.SetBrush(brush) as RadialGradientBrush;
       if(radial_gradient_brush != null)
       {
-        double cx = CX.ToDouble();
-        double cy = CY.ToDouble();
-        double fx = FX?.ToDouble() ?? cx;
-        double fy = FY?.ToDouble() ?? cy;
+        var cx = CX.ToDouble();
+        var cy = CY.ToDouble();
+        var fx = FX?.ToDouble() ?? cx;
+        var fy = FY?.ToDouble() ?? cy;
 
         radial_gradient_brush.GradientOrigin = new Point(fx, fy);
         radial_gradient_brush.RadiusX = R.ToDouble();

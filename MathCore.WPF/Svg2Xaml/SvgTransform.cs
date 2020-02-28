@@ -47,9 +47,9 @@ namespace MathCore.WPF.SVG
       if(value == "")
         throw new ArgumentException("value must not be empty", "value");
 
-      List<SvgTransform> transforms = new List<SvgTransform>();
+      var transforms = new List<SvgTransform>();
 
-      string transform = value;
+      var transform = value;
       while(transform.Length > 0)
       {
 
@@ -59,7 +59,7 @@ namespace MathCore.WPF.SVG
           if(transform.StartsWith("("))
           {
             transform = transform.Substring(1);
-            int index = transform.IndexOf(")");
+            var index = transform.IndexOf(")");
             if(index >= 0)
             {
               transforms.Add(SvgTranslateTransform.Parse(transform.Substring(0, index).Trim()));
@@ -75,7 +75,7 @@ namespace MathCore.WPF.SVG
           if(transform.StartsWith("("))
           {
             transform = transform.Substring(1);
-            int index = transform.IndexOf(")");
+            var index = transform.IndexOf(")");
             if(index >= 0)
             {
               transforms.Add(SvgMatrixTransform.Parse(transform.Substring(0, index).Trim()));
@@ -91,7 +91,7 @@ namespace MathCore.WPF.SVG
           if(transform.StartsWith("("))
           {
             transform = transform.Substring(1);
-            int index = transform.IndexOf(")");
+            var index = transform.IndexOf(")");
             if(index >= 0)
             {
               transforms.Add(SvgScaleTransform.Parse(transform.Substring(0, index).Trim()));
@@ -107,7 +107,7 @@ namespace MathCore.WPF.SVG
           if(transform.StartsWith("("))
           {
             transform = transform.Substring(1);
-            int index = transform.IndexOf(")");
+            var index = transform.IndexOf(")");
             if(index >= 0)
             {
               transforms.Add(SvgSkewTransform.Parse(transform.Substring(0, index).Trim()));
@@ -123,7 +123,7 @@ namespace MathCore.WPF.SVG
           if(transform.StartsWith("("))
           {
             transform = transform.Substring(1);
-            int index = transform.IndexOf(")");
+            var index = transform.IndexOf(")");
             if(index >= 0)
             {
               transforms.Add(SvgScaleTransform.Parse(transform.Substring(0, index).Trim()));

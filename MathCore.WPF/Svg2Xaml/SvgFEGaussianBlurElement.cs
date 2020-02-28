@@ -47,7 +47,7 @@ namespace MathCore.WPF.SVG
     public SvgFEGaussianBlurElement(SvgDocument document, SvgBaseElement parent, XElement feGaussianBlurElement)
       : base(document, parent, feGaussianBlurElement)
     {
-      XAttribute std_deviation_attribute = feGaussianBlurElement.Attribute("stdDeviation");
+      var std_deviation_attribute = feGaussianBlurElement.Attribute("stdDeviation");
       if(std_deviation_attribute != null)
         StdDeviation = SvgCoordinate.Parse(std_deviation_attribute.Value);
 
@@ -56,7 +56,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public override BitmapEffect ToBitmapEffect()
     {
-      BlurBitmapEffect blur_bitmap_effect = new BlurBitmapEffect();
+      var blur_bitmap_effect = new BlurBitmapEffect();
       blur_bitmap_effect.Radius = StdDeviation.ToDouble();
       blur_bitmap_effect.KernelType = KernelType.Box;
       return blur_bitmap_effect;

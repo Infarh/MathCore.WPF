@@ -27,7 +27,7 @@ namespace MathCore.WPF
 
         /// <summary>Трансформация поворота</summary>
         /// <param name="angle">Угол</param>
-        public Rotate(double angle) { Angle = angle; }
+        public Rotate(double angle) => Angle = angle;
 
         #region Overrides of MarkupExtension
 
