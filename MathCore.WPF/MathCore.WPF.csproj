@@ -4,8 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
     <!--<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>-->
-    <Version>0.0.0.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.0.0.3</Version>
+    <PackageReleaseNotes>
+      Исправление в логике работы LambdaCommand.CanExecute
+    </PackageReleaseNotes>
     <Authors>Shmachilin P.A.</Authors>
     <Description>Библиотека инструментов для работы с WPF</Description>
     <Copyright>shmachilin@gmail.com</Copyright>
@@ -13,7 +20,6 @@
     <PackageProjectUrl>github.com/infarh/mathcore.wpf</PackageProjectUrl>
     <RepositoryUrl>github.com/infarh/mathcore.wpf</RepositoryUrl>
     <PackageTags>wpf, toolkit</PackageTags>
-    <PackageReleaseNotes>Запуск проекта</PackageReleaseNotes>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>MathCoreWPFSign.snk</AssemblyOriginatorKeyFile>
     <IncludeSymbols>true</IncludeSymbols>
