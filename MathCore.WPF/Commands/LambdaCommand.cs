@@ -120,15 +120,20 @@ namespace MathCore.WPF.Commands
         /// <summary>Проверка возможности выполнения команды</summary>
         /// <param name="parameter">Параметр процесса выполнения команды</param>
         /// <returns>Истина, если команда может быть выполнена</returns>
-        public override bool CanExecute(object parameter) => ViewModel.IsDesignMode || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? false);
+        public override bool CanExecute(object parameter) => 
+            ViewModel.IsDesignMode 
+            || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? true);
 
         /// <summary>Проверка возможности выполнения команды</summary>
         public void CanExecuteCheck() => OnCanExecuteChanged();
 
         #endregion
 
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => new LambdaCommand(execute);
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object?> execute) => new LambdaCommand(execute);
+        [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
+        [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
+
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new LambdaCommand(execute);
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new LambdaCommand(execute);
     }
 
     /// <summary>
