@@ -52,27 +52,27 @@ namespace MathCore.WPF.SVG
     public SvgRectElement(SvgDocument document, SvgBaseElement parent, XElement rectElement)
       : base(document, parent, rectElement)
     {
-      XAttribute x_attribute = rectElement.Attribute("x");
+      var x_attribute = rectElement.Attribute("x");
       if(x_attribute != null)
         X = SvgCoordinate.Parse(x_attribute.Value);
 
-      XAttribute y_attribute = rectElement.Attribute("y");
+      var y_attribute = rectElement.Attribute("y");
       if(y_attribute != null)
         Y = SvgCoordinate.Parse(y_attribute.Value);
 
-      XAttribute width_attribute = rectElement.Attribute("width");
+      var width_attribute = rectElement.Attribute("width");
       if(width_attribute != null)
         Width = SvgLength.Parse(width_attribute.Value);
 
-      XAttribute height_attribute = rectElement.Attribute("height");
+      var height_attribute = rectElement.Attribute("height");
       if(height_attribute != null)
         Height = SvgLength.Parse(height_attribute.Value);
 
-      XAttribute rx_attribute = rectElement.Attribute("rx");
+      var rx_attribute = rectElement.Attribute("rx");
       if(rx_attribute != null)
         CornerRadiusX = SvgCoordinate.Parse(rx_attribute.Value);
 
-      XAttribute ry_attribute = rectElement.Attribute("ry");
+      var ry_attribute = rectElement.Attribute("ry");
       if(ry_attribute != null)
         CornerRadiusY = SvgCoordinate.Parse(ry_attribute.Value);
     }

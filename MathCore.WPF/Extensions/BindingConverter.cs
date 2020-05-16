@@ -56,7 +56,7 @@ namespace MathCore.WPF.Extensions
         public BindingCustomTypeDescriptor(ICustomTypeDescriptor parent) : base(parent) { }
 
         /// <inheritdoc />
-        public override PropertyDescriptorCollection GetProperties() => GetProperties(new Attribute[0]);
+        public override PropertyDescriptorCollection GetProperties() => GetProperties(Array.Empty<Attribute>());
 
         private static readonly string[] __Properties = { "Source", "ValidationRules" };
 

@@ -43,16 +43,16 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public SvgTransformGroup(SvgTransform[] transforms)
     {
-      foreach(SvgTransform transform in transforms)
+      foreach(var transform in transforms)
         Transforms.Add(transform);
     }
 
     //==========================================================================
     public override Transform ToTransform()
     {
-      TransformGroup transform_group = new TransformGroup();
+      var transform_group = new TransformGroup();
 
-      foreach(SvgTransform transform in Transforms)
+      foreach(var transform in Transforms)
         transform_group.Children.Add(transform.ToTransform());
 
       return transform_group;

@@ -50,27 +50,27 @@ namespace MathCore.WPF.SVG
     public SvgDrawableContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement drawableContainerElement)
       : base(document, parent, drawableContainerElement)
     {
-      XAttribute opacity_attribute = drawableContainerElement.Attribute("opacity");
+      var opacity_attribute = drawableContainerElement.Attribute("opacity");
       if(opacity_attribute != null)
         Opacity = SvgLength.Parse(opacity_attribute.Value);
 
-      XAttribute transform_attribute = drawableContainerElement.Attribute("transform");
+      var transform_attribute = drawableContainerElement.Attribute("transform");
       if(transform_attribute != null)
         Transform = SvgTransform.Parse(transform_attribute.Value);
 
-      XAttribute clip_attribute = drawableContainerElement.Attribute("clip-path");
+      var clip_attribute = drawableContainerElement.Attribute("clip-path");
       if(clip_attribute != null)
         ClipPath = SvgURL.Parse(clip_attribute.Value);
 
-      XAttribute filter_attribute = drawableContainerElement.Attribute("filter");
+      var filter_attribute = drawableContainerElement.Attribute("filter");
       if(filter_attribute != null)
         Filter = SvgURL.Parse(filter_attribute.Value);
 
-      XAttribute mask_attribute = drawableContainerElement.Attribute("mask");
+      var mask_attribute = drawableContainerElement.Attribute("mask");
       if(mask_attribute != null)
         Mask = SvgURL.Parse(mask_attribute.Value);
 
-      XAttribute display_attribute = drawableContainerElement.Attribute("display");
+      var display_attribute = drawableContainerElement.Attribute("display");
       if(display_attribute != null)
         switch(display_attribute.Value)
         {
@@ -151,9 +151,9 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public virtual Geometry GetGeometry()
     {
-      GeometryGroup geometry_group = new GeometryGroup();
+      var geometry_group = new GeometryGroup();
 
-      foreach(SvgBaseElement element in Children)
+      foreach(var element in Children)
       {
         if(element is SvgDrawableBaseElement)
           geometry_group.Children.Add((element as SvgDrawableBaseElement).GetGeometry());
@@ -166,7 +166,7 @@ namespace MathCore.WPF.SVG
 
       if(ClipPath != null)
       {
-        SvgClipPathElement clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
+        var clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
         if(clip_path_element != null)
           return Geometry.Combine(geometry_group, clip_path_element.GetClipGeometry(), GeometryCombineMode.Exclude, null);
       }
@@ -177,15 +177,15 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public virtual Drawing Draw()
     {
-      DrawingGroup drawing_group = new DrawingGroup();
+      var drawing_group = new DrawingGroup();
 
       drawing_group.Opacity   = Opacity.ToDouble();
       if(Transform != null)
         drawing_group.Transform = Transform.ToTransform();
 
-      foreach(SvgBaseElement child_element in Children)
+      foreach(var child_element in Children)
       {
-        SvgBaseElement element = child_element;
+        var element = child_element;
         if(element is SvgUseElement)
           element = (element as SvgUseElement).GetElement();
 
@@ -208,24 +208,24 @@ namespace MathCore.WPF.SVG
 
       if(Filter != null)
       {
-        SvgFilterElement filter_element = Document.Elements[Filter.Id] as SvgFilterElement;
+        var filter_element = Document.Elements[Filter.Id] as SvgFilterElement;
         if(filter_element != null)
           drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
       }
 
       if(ClipPath != null)
       {
-        SvgClipPathElement clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
+        var clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
         if(clip_path_element != null)
           drawing_group.ClipGeometry= clip_path_element.GetClipGeometry();
       }
 
       if(Mask != null)
       {
-        SvgMaskElement mask_element = Document.Elements[Mask.Id] as SvgMaskElement;
+        var mask_element = Document.Elements[Mask.Id] as SvgMaskElement;
         if(mask_element != null)
         {
-          DrawingBrush opacity_mask = mask_element.GetOpacityMask();
+          var opacity_mask = mask_element.GetOpacityMask();
           /*
           if(Transform != null)
             opacity_mask.Transform = Transform.ToTransform();

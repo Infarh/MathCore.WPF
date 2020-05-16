@@ -5551,19 +5551,137 @@
         <member name="E:MathCore.WPF.UserDialog.CanExecuteChanged">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.ValidationRules.Base.FormattedValueValidation">
+            <summary>Правило проверки значения, поддерживающего формат данных</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.Base.FormattedValueValidation.FormatErrorMessage">
+            <summary>Сообщение, выводимое в случае ошибки формата</summary>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.Base.NullValueValidation">
+            <summary>Правило проверки значения, поддерживающего <see langword="null"/></summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.Base.NullValueValidation.AllowNull">
+            <summary>Разрешить пустую ссылку?</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.Base.NullValueValidation.NullReferenceMessage">
+            <summary>Сообщение, выводимое в случае обнаружения <see langword="null"/> если <see cref="P:MathCore.WPF.ValidationRules.Base.NullValueValidation.AllowNull"/> == <see langword="false"/>.</summary>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.Base.ValueValidation">
+            <summary>Правило проверки значения</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.Base.ValueValidation.ErrorMessage">
+            <summary>Сообщение об ошибке</summary>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.DirectoryExist">
+            <summary>Проверка существования директории</summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.DirectoryExist.Validate(System.Object,System.Globalization.CultureInfo)">
+            <summary>Метод проверяет значение на предмет того, что оно является объектом <see cref="T:System.IO.DirectoryInfo"/>, либо строкой и путь к директории существует</summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если путь к директории существует</returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.FileExist">
+            <summary>Проверка существования файла</summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.FileExist.Validate(System.Object,System.Globalization.CultureInfo)">
+            <summary>Метод проверяет значение на предмет того, что оно является объектом <see cref="T:System.IO.FileInfo"/>, либо строкой и путь к файлу существует</summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если путь к файлу существует</returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.IsDouble">
+            <summary>Проверка, что значение является числом типа <see cref="T:System.Double"/></summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.IsDouble.Validate(System.Object,System.Globalization.CultureInfo)">
+            <summary>Проверка значения на возможность его преобразования в тип <see cref="T:System.Double"/></summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="T:System.Double"/></returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.IsInteger">
+            <summary>Проверка, что значение является числом типа <see cref="T:System.Int32"/></summary>
+        </member>
         <member name="M:MathCore.WPF.ValidationRules.IsInteger.Validate(System.Object,System.Globalization.CultureInfo)">
-            <inheritdoc />
+            <summary>Проверка значения на возможность его преобразования в тип <see cref="T:System.Int32"/></summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="T:System.Int32"/></returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.IsNumeric">
+            <summary>Проверка, что значение является числом (<see cref="T:System.Double"/> или <see cref="T:System.Int32"/>)</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.IsNumeric.IntegerOnly">
+            <summary>Значение должно быть исключительно целочисленным (<see cref="T:System.Int32"/>)</summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.IsNumeric.Validate(System.Object,System.Globalization.CultureInfo)">
+            <summary>Проверка значения на возможность его преобразования в тип <see cref="T:System.Double"/> или <see cref="T:System.Int32"/></summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="T:System.Double"/> или <see cref="T:System.Int32"/></returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.NotNaN">
+            <summary>Проверка, что значение является числом типа <see cref="T:System.Double"/> и при этом не является <see cref="F:System.Double.NaN"/></summary>
         </member>
         <member name="M:MathCore.WPF.ValidationRules.NotNaN.Validate(System.Object,System.Globalization.CultureInfo)">
-            <inheritdoc />
+            <summary>Проверка, что значение является вещественным числом (<see cref="T:System.Double"/>) и при этом не является <see cref="F:System.Double.NaN"/></summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="T:System.Double"/></returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.NotNull">
+            <summary>Проверка, что значение не является <see langword="null"/></summary>
         </member>
         <member name="M:MathCore.WPF.ValidationRules.NotNull.Validate(System.Object,System.Globalization.CultureInfo)">
-            <inheritdoc />
+            <summary>Проверка, что значение не является <see langword="null"/></summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре (в проверке не используется)</param>
+            <returns>Корректный результат, если значение не является <see langword="null"/></returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.PathExist">
+            <summary>Проверка существования пути в файловой системе</summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.PathExist.Validate(System.Object,System.Globalization.CultureInfo)">
+            <summary>Проверка, что путь в файловой системе существует</summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Результат проверки валидный, если путь в файловой системе существует</returns>
+        </member>
+        <member name="T:MathCore.WPF.ValidationRules.RegExp">
+            <summary>Проверка на соответствие строки регулярному выражению</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.RegExp.AllowNotString">
+            <summary>Разрешить нестроковые значения (у значения будет вызван метод <see cref="M:System.Object.ToString"/>)</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.RegExp.NotStringErrorMessage">
+            <summary>Текст ошибки, выводимый в случае получения нестрокового значения</summary>
+        </member>
+        <member name="P:MathCore.WPF.ValidationRules.RegExp.Expression">
+            <summary>Регулярное выражение</summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.RegExp.#ctor">
+            <summary>Инициализация нового экземпляра <see cref="T:MathCore.WPF.ValidationRules.RegExp"/></summary>
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.RegExp.#ctor(System.String)">
+            <summary>Инициализация нового экземпляра <see cref="T:MathCore.WPF.ValidationRules.RegExp"/></summary>
+            <param name="Expression">Регулярное выражение</param>
         </member>
         <member name="M:MathCore.WPF.ValidationRules.RegExp.Validate(System.Object,System.Globalization.CultureInfo)">
-            <inheritdoc />
+            <summary>Проверка - удовлетворяет ли переданное значение указанному регулярному выражению</summary>
+            <param name="value">Проверяемое значение</param>
+            <param name="c">Сведения о текущей культуре</param>
+            <returns>Валидный результат в случае если значение удовлетворяет указанному регулярному выражению</returns>
         </member>
         <member name="M:MathCore.WPF.ValidationRules.StringLength.Validate(System.Object,System.Globalization.CultureInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.ValueGreaterThan.Validate(System.Object,System.Globalization.CultureInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.ValueInInterval.Validate(System.Object,System.Globalization.CultureInfo)">
+            <inheritdoc />
+        </member>
+        <member name="M:MathCore.WPF.ValidationRules.ValueLessThan.Validate(System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="F:MathCore.WPF.Values.ScaleValue.ScreenLengthProperty">
@@ -6809,6 +6927,36 @@
             <summary>Waits for the task to complete execution, pumping in the meantime.</summary>
             <param name="task">The task for which to wait.</param>
             <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
         </member>
     </members>
 </doc>

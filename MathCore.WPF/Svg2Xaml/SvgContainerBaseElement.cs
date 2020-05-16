@@ -48,9 +48,9 @@ namespace MathCore.WPF.SVG
         public SvgContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement containerElement)
           : base(document, parent, containerElement)
         {
-            foreach(XElement element in from element in containerElement.Elements()
-                                        where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
-                                        select element)
+            foreach(var element in from element in containerElement.Elements()
+                                   where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
+                                   select element)
                 switch(element.Name.LocalName)
                 {
                     case "svg":

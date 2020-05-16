@@ -50,19 +50,19 @@ namespace MathCore.WPF.SVG
     public SvgLineElement(SvgDocument document, SvgBaseElement parent, XElement lineElement)
       : base(document, parent, lineElement)
     {
-      XAttribute x1_attribute = lineElement.Attribute("x1");
+      var x1_attribute = lineElement.Attribute("x1");
       if(x1_attribute != null)
         X1 = SvgCoordinate.Parse(x1_attribute.Value);
 
-      XAttribute y1_attribute = lineElement.Attribute("y1");
+      var y1_attribute = lineElement.Attribute("y1");
       if(y1_attribute != null)
         Y1 = SvgCoordinate.Parse(y1_attribute.Value);
 
-      XAttribute x2_attribute = lineElement.Attribute("x2");
+      var x2_attribute = lineElement.Attribute("x2");
       if(x2_attribute != null)
         X2 = SvgCoordinate.Parse(x2_attribute.Value);
 
-      XAttribute y2_attribute = lineElement.Attribute("y2");
+      var y2_attribute = lineElement.Attribute("y2");
       if(y2_attribute != null)
         Y2 = SvgCoordinate.Parse(y2_attribute.Value);
     }

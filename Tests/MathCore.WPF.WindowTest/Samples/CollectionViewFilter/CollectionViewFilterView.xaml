@@ -20,7 +20,7 @@
         </DockPanel>
         <DataGrid ItemsSource="{Binding Source={StaticResource Employees}, IsAsync=True}"
                   EnableRowVirtualization="True"
-                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.IsVirtualizing="False"
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   VirtualizingStackPanel.CacheLength="1"
                   VirtualizingStackPanel.ScrollUnit="Item"

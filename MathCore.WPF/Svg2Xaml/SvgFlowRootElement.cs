@@ -47,7 +47,7 @@ namespace MathCore.WPF.SVG
     public SvgFlowRootElement(SvgDocument document, SvgBaseElement parent, XElement flowRootElement)
       : base(document, parent, flowRootElement)
     {
-      for(int i = 0; i < Children.Count; ++i)
+      for(var i = 0; i < Children.Count; ++i)
       {
         FlowRegion = Children[i] as SvgFlowRegionElement;
         if(FlowRegion != null)
@@ -64,13 +64,13 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public override Drawing Draw()
     {
-      DrawingGroup drawing_group = new DrawingGroup();
+      var drawing_group = new DrawingGroup();
 
       drawing_group.Opacity = Opacity.ToDouble();
       if(Transform != null)
         drawing_group.Transform = Transform.ToTransform();
 
-      foreach(SvgBaseElement element in Children)
+      foreach(var element in Children)
       {
         Drawing drawing = null;
 
@@ -87,26 +87,26 @@ namespace MathCore.WPF.SVG
 
       if(Filter != null)
       {
-        SvgFilterElement filter_element = Document.Elements[Filter.Id] as SvgFilterElement;
+        var filter_element = Document.Elements[Filter.Id] as SvgFilterElement;
         if(filter_element != null)
           drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
       }
 
       if(ClipPath != null)
       {
-        SvgClipPathElement clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
+        var clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
         if(clip_path_element != null)
           drawing_group.ClipGeometry = clip_path_element.GetClipGeometry();
       }
 
       if(Mask != null)
       {
-        SvgMaskElement mask_element = Document.Elements[Mask.Id] as SvgMaskElement;
+        var mask_element = Document.Elements[Mask.Id] as SvgMaskElement;
         if(mask_element != null)
         {
           drawing_group.OpacityMask = mask_element.GetOpacityMask();
 
-          GeometryGroup geometry_group = new GeometryGroup();
+          var geometry_group = new GeometryGroup();
 
           if(drawing_group.ClipGeometry != null)
             geometry_group.Children.Add(drawing_group.ClipGeometry);

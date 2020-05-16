@@ -55,7 +55,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public static new SvgCoordinate Parse(string value)
     {
-      SvgLength length = SvgLength.Parse(value);
+      var length = SvgLength.Parse(value);
 
       return new SvgCoordinate(length.Value, length.Unit);
 

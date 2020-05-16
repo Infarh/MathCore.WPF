@@ -52,7 +52,7 @@ namespace MathCore.WPF.SVG
       //==========================================================================
     public static new SvgRotateTransform Parse(string transform)
     {
-      string[] tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
       if(tokens.Length == 1)
         return new SvgRotateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));

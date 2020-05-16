@@ -50,19 +50,19 @@ namespace MathCore.WPF.SVG
     public SvgEllipseElement(SvgDocument document, SvgBaseElement parent, XElement ellipseElement)
       : base(document, parent, ellipseElement)
     {
-      XAttribute cx_attribute = ellipseElement.Attribute("cx");
+      var cx_attribute = ellipseElement.Attribute("cx");
       if(cx_attribute != null)
         CenterX = SvgCoordinate.Parse(cx_attribute.Value);
 
-      XAttribute cy_attribute = ellipseElement.Attribute("cy");
+      var cy_attribute = ellipseElement.Attribute("cy");
       if(cy_attribute != null)
         CenterY = SvgCoordinate.Parse(cy_attribute.Value);
 
-      XAttribute rx_attribute = ellipseElement.Attribute("rx");
+      var rx_attribute = ellipseElement.Attribute("rx");
       if(rx_attribute != null)
         RadiusX = SvgCoordinate.Parse(rx_attribute.Value);
 
-      XAttribute ry_attribute = ellipseElement.Attribute("ry");
+      var ry_attribute = ellipseElement.Attribute("ry");
       if(ry_attribute != null)
         RadiusY = SvgCoordinate.Parse(ry_attribute.Value);
     }

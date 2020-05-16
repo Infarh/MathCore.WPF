@@ -50,11 +50,11 @@ namespace MathCore.WPF.SVG
     public SvgPatternElement(SvgDocument document, SvgBaseElement parent, XElement patternElement)
       : base(document, parent, patternElement)
     {
-      XAttribute pattern_transform_attribute = patternElement.Attribute("patternTransform");
+      var pattern_transform_attribute = patternElement.Attribute("patternTransform");
       if(pattern_transform_attribute != null)
         PatternTransform = SvgTransform.Parse(pattern_transform_attribute.Value);
 
-      XAttribute pattern_units_attribute = patternElement.Attribute("patternUnits");
+      var pattern_units_attribute = patternElement.Attribute("patternUnits");
       if(pattern_units_attribute != null)
         switch(pattern_units_attribute.Value)
         {
@@ -70,11 +70,11 @@ namespace MathCore.WPF.SVG
             throw new NotImplementedException($"patternUnits value '{pattern_units_attribute.Value}' is no supported");
         }
 
-      XAttribute width_attribute = patternElement.Attribute("width");
+      var width_attribute = patternElement.Attribute("width");
       if(width_attribute != null)
         Width = SvgLength.Parse(width_attribute.Value);
 
-      XAttribute height_attribute = patternElement.Attribute("height");
+      var height_attribute = patternElement.Attribute("height");
       if(height_attribute != null)
         Height = SvgLength.Parse(height_attribute.Value);
 
@@ -89,7 +89,7 @@ namespace MathCore.WPF.SVG
         brush = new DrawingBrush(Draw());
       else
       {
-        SvgBaseElement element = Document.Elements[Reference];
+        var element = Document.Elements[Reference];
         if(element is SvgPatternElement)
           brush = (element as SvgPatternElement).ToBrush();
         else
@@ -101,8 +101,8 @@ namespace MathCore.WPF.SVG
 
       if((Width != null) || (Height != null))
       {
-        double width = brush.Drawing.Bounds.Width;
-        double height = brush.Drawing.Bounds.Height;
+        var width = brush.Drawing.Bounds.Width;
+        var height = brush.Drawing.Bounds.Height;
       }
 
       if(PatternUnits == SvgPatternUnits.UserSpaceOnUse)
@@ -113,7 +113,7 @@ namespace MathCore.WPF.SVG
 
       if(PatternTransform != null)
       {
-        DrawingGroup drawing_group = new DrawingGroup();
+        var drawing_group = new DrawingGroup();
         drawing_group.Transform = PatternTransform.ToTransform();
         drawing_group.Children.Add(brush.Drawing);
         brush.Drawing = drawing_group;

@@ -14,10 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       
-      - name: User .NET 3.1.100
+      - name: Use .NET 3.1.200
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.100
+          dotnet-version: 3.1.200
         
       - name: Building
         run: |

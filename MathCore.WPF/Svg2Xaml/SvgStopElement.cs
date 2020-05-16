@@ -46,15 +46,15 @@ namespace MathCore.WPF.SVG
     public SvgStopElement(SvgDocument document, SvgBaseElement parent, XElement stopElement)
       : base(document, parent, stopElement)
     {
-      XAttribute offset_attribute = stopElement.Attribute("offset");
+      var offset_attribute = stopElement.Attribute("offset");
       if(offset_attribute != null)
         Offset = SvgLength.Parse(offset_attribute.Value);
 
-      XAttribute stop_color_attribute = stopElement.Attribute("stop-color");
+      var stop_color_attribute = stopElement.Attribute("stop-color");
       if(stop_color_attribute != null)
         Color = SvgColor.Parse(stop_color_attribute.Value);
 
-      XAttribute stop_opacity_attribute = stopElement.Attribute("stop-opacity");
+      var stop_opacity_attribute = stopElement.Attribute("stop-opacity");
       if(stop_opacity_attribute != null)
         Opacity = SvgLength.Parse(stop_opacity_attribute.Value);
     }
@@ -62,10 +62,10 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public GradientStop ToGradientStop()
     {
-      Color color = Color.ToColor();
+      var color = Color.ToColor();
       color.A = (byte)Math.Round(Opacity.ToDouble() * 255);
 
-      GradientStop stop = new GradientStop();
+      var stop = new GradientStop();
       stop.Color = color;
       stop.Offset = Offset.ToDouble();
 
