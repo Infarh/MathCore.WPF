@@ -6,6 +6,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using MathCore.Annotations;
 // ReSharper disable VirtualMemberNeverOverridden.Global
+// ReSharper disable ArgumentsStyleAnonymousFunction
+// ReSharper disable LocalizableElement
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable ExplicitCallerInfoArgument
@@ -20,13 +22,17 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Генерация события изменения значения свойства</summary>
         /// <param name="PropertyName">Имя изменившегося свойства</param>
-        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         /// <summary>Словарь значений свойств модели</summary>
         protected readonly Dictionary<string, object> _PropertiesValues;
 
         /// <summary>Словарь значений индексаторов объекта</summary>
-        protected readonly Dictionary<object[], object> _IndexersValues = new Dictionary<object[], object>(new LamdaComparer<object[]>((k1, k2) => k1.Length == k2.Length && !k1.Where((t, i) => !Equals(t, k2[i])).Any(), k => k.GetComplexHashCode()));
+        protected readonly Dictionary<object[], object> _IndexersValues =
+            new Dictionary<object[], object>(
+                new LambdaEqualityComparer<object[]>(
+                    Comparer: (k1, k2) => k1.Length == k2.Length && !k1.Where((t, i) => !Equals(t, k2[i])).Any(),
+                    HashFunction: k => k.GetComplexHashCode()));
 
         /// <summary>Инициализация новой динамической модели-представления</summary>
         public DynamicViewModel() => _PropertiesValues = new Dictionary<string, object>();
