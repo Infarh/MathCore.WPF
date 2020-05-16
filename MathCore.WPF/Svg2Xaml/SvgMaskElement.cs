@@ -50,7 +50,7 @@ namespace MathCore.WPF.SVG
     public SvgMaskElement(SvgDocument document, SvgBaseElement parent, XElement maskElement)
       : base(document, parent, maskElement)
     {
-      XAttribute mask_units_attribute = maskElement.Attribute("maskUnits");
+      var mask_units_attribute = maskElement.Attribute("maskUnits");
       if(mask_units_attribute != null)
         switch(mask_units_attribute.Value)
         {
@@ -70,17 +70,17 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public Geometry GetClipGeometry()
     {
-      GeometryGroup geometry_group = new GeometryGroup();
+      var geometry_group = new GeometryGroup();
 
-      foreach(SvgBaseElement child_element in Children)
+      foreach(var child_element in Children)
       {
-        SvgBaseElement element = child_element;
+        var element = child_element;
         if(element is SvgUseElement)
           element = (element as SvgUseElement).GetElement();
 
         if(element is SvgDrawableBaseElement)
         {
-          Geometry geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
+          var geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
           if(geometry != null)
           {
             if((element as SvgDrawableBaseElement).Transform != null)
@@ -100,8 +100,8 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     private static Color ConvertColor(Color color)
     {
-      float max = Math.Max(Math.Max(color.ScR, color.ScG), color.ScB);
-      float min = Math.Min(Math.Min(color.ScR, color.ScG), color.ScB);
+      var max = Math.Max(Math.Max(color.ScR, color.ScG), color.ScB);
+      var min = Math.Min(Math.Min(color.ScR, color.ScG), color.ScB);
 
       return Color.FromScRgb((min + max) / 2, 0, 0, 0);
     }
@@ -118,7 +118,7 @@ namespace MathCore.WPF.SVG
         }
         else if(brush is GradientBrush)
         {
-          foreach(GradientStop gradient_stop in (brush as GradientBrush).GradientStops)
+          foreach(var gradient_stop in (brush as GradientBrush).GradientStops)
             gradient_stop.Color = ConvertColor(gradient_stop.Color);
         }
         else if(brush is DrawingBrush)
@@ -143,7 +143,7 @@ namespace MathCore.WPF.SVG
     {
       if(drawing is DrawingGroup)
       {
-        foreach(Drawing child_drawing in (drawing as DrawingGroup).Children)
+        foreach(var child_drawing in (drawing as DrawingGroup).Children)
           ConvertColors(child_drawing);
       }
       else if(drawing is GeometryDrawing)
@@ -155,24 +155,24 @@ namespace MathCore.WPF.SVG
       {
         if((drawing as ImageDrawing).ImageSource is BitmapSource)
         {
-          BitmapSource bitmap_source = (drawing as ImageDrawing).ImageSource as BitmapSource;
+          var bitmap_source = (drawing as ImageDrawing).ImageSource as BitmapSource;
           if(bitmap_source != null)
           {
-            WriteableBitmap bitmap = new WriteableBitmap(bitmap_source.PixelWidth, bitmap_source.PixelHeight, bitmap_source.DpiX, bitmap_source.DpiY, PixelFormats.Bgra32, null);
+            var bitmap = new WriteableBitmap(bitmap_source.PixelWidth, bitmap_source.PixelHeight, bitmap_source.DpiX, bitmap_source.DpiY, PixelFormats.Bgra32, null);
 
-            byte[] pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * 4];
+            var pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * 4];
             bitmap_source.CopyPixels(pixels, (bitmap_source.PixelWidth * bitmap_source.Format.BitsPerPixel + 7) / 8, 0);
 
-            for(int i = 0; i < pixels.Length; i+=4)
+            for(var i = 0; i < pixels.Length; i+=4)
             {
-              byte r = pixels[i + 0];
-              byte g = pixels[i + 1];
-              byte b = pixels[i + 2];
+              var r = pixels[i + 0];
+              var g = pixels[i + 1];
+              var b = pixels[i + 2];
 
-              byte max = Math.Max(Math.Max(r, g), b);
-              byte min = Math.Min(Math.Min(r, g), b);
+              var max = Math.Max(Math.Max(r, g), b);
+              var min = Math.Min(Math.Min(r, g), b);
 
-              byte a = (byte)(((int)min + (int)max) / 2);
+              var a = (byte)(((int)min + (int)max) / 2);
 
               pixels[i + 3] = a;
             }   
@@ -201,11 +201,11 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public DrawingBrush GetOpacityMask()
     {
-      DrawingGroup drawing_group = new DrawingGroup();
+      var drawing_group = new DrawingGroup();
 
-      foreach(SvgBaseElement child_element in Children)
+      foreach(var child_element in Children)
       {
-        SvgBaseElement element = child_element;
+        var element = child_element;
         if(element is SvgUseElement)
           element = (element as SvgUseElement).GetElement();
 
@@ -223,11 +223,11 @@ namespace MathCore.WPF.SVG
       if(drawing_group.Children.Count == 0)
         return null;
 
-      foreach(Drawing drawing in drawing_group.Children)
+      foreach(var drawing in drawing_group.Children)
         ConvertColors(drawing);
 
 
-      DrawingBrush brush = new DrawingBrush(drawing_group);
+      var brush = new DrawingBrush(drawing_group);
 
       if(MaskUnits == SvgMaskUnits.UserSpaceOnUse)
       {

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 // Atom representing other atom with delimeter and script atoms over or under it.
 namespace MathCore.WPF.TeX
@@ -38,7 +38,7 @@ namespace MathCore.WPF.TeX
         public override Box CreateBox(TexEnvironment environment)
         {
             // Create boxes for base, delimeter, and script atoms.
-            var baseBox = BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
+            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
             var delimeterBox = DelimiterFactory.CreateBox(Symbol.Name, baseBox.Width, environment);
             var scriptBox = Script?.CreateBox(Over ? environment.GetSuperscriptStyle() : environment.GetSubscriptStyle());
 

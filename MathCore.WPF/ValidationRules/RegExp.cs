@@ -1,32 +1,58 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
+using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.ValidationRules
 {
-    public class RegExp : ValidationRule
+    /// <summary>Проверка на соответствие строки регулярному выражению</summary>
+    public class RegExp : Base.FormattedValueValidation
     {
-        public bool AllowNull { get; set; }
+        /// <summary>Разрешить нестроковые значения (у значения будет вызван метод <see cref="object.ToString"/>)</summary>
         public bool AllowNotString { get; set; }
 
-        public string Expression { get; set; }
+        /// <summary>Текст ошибки, выводимый в случае получения нестрокового значения</summary>
+        public string? NotStringErrorMessage { get; set; }
 
-        public string ErrorMessage { get; set; }
+        /// <summary>Регулярное выражение</summary>
+        [ConstructorArgument(nameof(Expression))]
+        public string? Expression { get; set; }
 
+        /// <summary>Инициализация нового экземпляра <see cref="RegExp"/></summary>
         public RegExp() { }
-        public RegExp(string expression) { Expression = expression; }
 
-        /// <inheritdoc />
-        public override ValidationResult Validate(object value, CultureInfo CultureInfo)
+        /// <summary>Инициализация нового экземпляра <see cref="RegExp"/></summary>
+        /// <param name="Expression">Регулярное выражение</param>
+        public RegExp([RegexPattern] string Expression) => this.Expression = Expression;
+
+        /// <summary>Проверка - удовлетворяет ли переданное значение указанному регулярному выражению</summary>
+        /// <param name="value">Проверяемое значение</param>
+        /// <param name="c">Сведения о текущей культуре</param>
+        /// <returns>Валидный результат в случае если значение удовлетворяет указанному регулярному выражению</returns>
+        [NotNull]
+        public override ValidationResult Validate(object value, CultureInfo c)
         {
             var valid = ValidationResult.ValidResult;
-            if(value == null) return AllowNull ? valid : new ValidationResult(false, ErrorMessage ?? "Значение не указно");
-            if(!(value is string)) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
+            if (value is null) 
+                return AllowNull 
+                    ? valid 
+                    : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
 
-            var str = (string)value;
+            if (!(value is string str)) 
+                return AllowNotString 
+                    ? valid
+                    : new ValidationResult(false, NotStringErrorMessage ?? ErrorMessage ?? $"Значение {value} не является строкой");
 
-            var match = str.FindRegEx(Expression);
-            return match.Success ? valid : new ValidationResult(false, ErrorMessage ?? $"Выражение {Expression} не найдено в строке {str}");
+            var match = Regex.Match(str, Expression);
+            return match.Success 
+                ? valid 
+                : new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Выражение {Expression} не найдено в строке {str}");
         }
     }
 }

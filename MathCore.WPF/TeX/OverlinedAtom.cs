@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing other atom with horizontal rule above it</summary>
     internal class OverlinedAtom : Atom
@@ -14,7 +14,7 @@ namespace MathCore.WPF.TeX
         public override Box CreateBox(TexEnvironment environment)
         {
             // Create box for base atom, in cramped style.
-            var baseBox = BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
+            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
 
             // Create result box.
             var defaultLineThickness = environment.TexFont.GetDefaultLineThickness(environment.Style);

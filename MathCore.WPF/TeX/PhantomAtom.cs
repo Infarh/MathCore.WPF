@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing other atom that is not rendered</summary>
     internal class PhantomAtom : Atom, IRow
@@ -13,7 +13,7 @@ namespace MathCore.WPF.TeX
 
         public PhantomAtom(Atom baseAtom, bool useWidth = true, bool useHeight = true, bool useDepth = true)
         {
-            RowAtom = baseAtom == null ? new RowAtom() : new RowAtom(baseAtom);
+            RowAtom = baseAtom is null ? new RowAtom() : new RowAtom(baseAtom);
             this.useWidth = useWidth;
             this.useHeight = useHeight;
             this.useDepth = useDepth;

@@ -1,44 +1,58 @@
-using System;
+п»їusing System;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
+using MathCore.Annotations;
+
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
-    /// <summary>Эффект тени</summary>
+    /// <summary>Р­С„С„РµРєС‚ С‚РµРЅРё</summary>
     [MarkupExtensionReturnType(typeof(DropShadowEffect))]
     public class Shadow : MarkupExtension
     {
-        /// <summary>Глубина тени</summary>
+        /// <summary>Р“Р»СѓР±РёРЅР° С‚РµРЅРё</summary>
         public double Depth { get; set; } = 5;
 
-        /// <summary>Алгоритм рендринга</summary>
+        /// <summary>РђР»РіРѕСЂРёС‚Рј СЂРµРЅРґСЂРёРЅРіР°</summary>
         public RenderingBias Bias { get; set; } = RenderingBias.Performance;
 
-        /// <summary>Прозрачность</summary>
+        /// <summary>РџСЂРѕР·СЂР°С‡РЅРѕСЃС‚СЊ</summary>
         public double Opacity { get; set; } = 1;
 
-        /// <summary>Направление</summary>
+        /// <summary>РќР°РїСЂР°РІР»РµРЅРёРµ</summary>
         public double Direction { get; set; } = 315;
 
-        /// <summary>Цвет</summary>
+        /// <summary>Р¦РІРµС‚</summary>
         public Color Color { get; set; } = Colors.Black;
 
-        /// <summary>Размытие</summary>
+        /// <summary>Р Р°Р·РјС‹С‚РёРµ</summary>
         public double Blur { get; set; } = 5;
 
-        /// <summary>Эффект тени</summary>
+        /// <summary>Р­С„С„РµРєС‚ С‚РµРЅРё</summary>
         public Shadow() { }
 
-        /// <summary>Эффект тени</summary>
-        /// <param name="depth">Глубина</param>
-        public Shadow(double depth) { Depth = depth; }
+        /// <summary>Р­С„С„РµРєС‚ С‚РµРЅРё</summary>
+        /// <param name="depth">Р“Р»СѓР±РёРЅР°</param>
+        public Shadow(double depth) => Depth = depth;
 
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider serviceProvider) =>
-            new DropShadowEffect { BlurRadius = Blur, Color = Color, Direction = Direction, Opacity = Opacity, RenderingBias = Bias, ShadowDepth = Depth };
+        [NotNull]
+        public override object ProvideValue(IServiceProvider sp) =>
+            new DropShadowEffect
+            {
+                BlurRadius = Blur,
+                Color = Color,
+                Direction = Direction,
+                Opacity = Opacity,
+                RenderingBias = Bias,
+                ShadowDepth = Depth
+            };
 
         #endregion  
     }

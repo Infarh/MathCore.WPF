@@ -1,6 +1,5 @@
-using System;
+п»їusing System;
 using System.ComponentModel;
-using System.Diagnostics.Contracts;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,14 +13,14 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF.Commands
 {
-    [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
+    [Copyright("РЁР°Р±Р»РѕРЅС‹ РґР»СЏ Р°СЃРёРЅС…СЂРѕРЅРЅС‹С… MVVM-РїСЂРёР»РѕР¶РµРЅРёР№: РєРѕРјР°РЅРґС‹", url = "http://www.oszone.net/24584/")]
     public interface IAsyncTaskCommand : ICommand
     {
         [NotNull]
         Task ExecuteTaskAsync([CanBeNull]object parameter);
     }
 
-    [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
+    [Copyright("РЁР°Р±Р»РѕРЅС‹ РґР»СЏ Р°СЃРёРЅС…СЂРѕРЅРЅС‹С… MVVM-РїСЂРёР»РѕР¶РµРЅРёР№: РєРѕРјР°РЅРґС‹", url = "http://www.oszone.net/24584/")]
     public abstract class AsyncTaskCommandBase : IAsyncTaskCommand
     {
         public event EventHandler CanExecuteChanged
@@ -39,13 +38,13 @@ namespace MathCore.WPF.Commands
         public async void Execute([CanBeNull]object parameter) => await ExecuteTaskAsync(parameter);
     }
 
-    /// <summary>Асинхронная команда</summary>
+    /// <summary>РђСЃРёРЅС…СЂРѕРЅРЅР°СЏ РєРѕРјР°РЅРґР°</summary>
     /// <example>
     /// Url = "http://www.example.com/";
     /// CountUrlBytesCommand = new AsyncCommand(async () => { ByteCount = await MyService.DownloadAndCountBytesAsync(Url); });
     /// CountUrlBytesCommand = new AsyncCommand(MyService.DownloadAndCountBytesAsync(Url));
     /// </example>
-    [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
+    [Copyright("РЁР°Р±Р»РѕРЅС‹ РґР»СЏ Р°СЃРёРЅС…СЂРѕРЅРЅС‹С… MVVM-РїСЂРёР»РѕР¶РµРЅРёР№: РєРѕРјР°РЅРґС‹", url = "http://www.oszone.net/24584/")]
     public class AsyncTaskCommand<TResult> : AsyncTaskCommandBase, INotifyPropertyChanged
     {
         private sealed class CancelAsyncCommand : ICommand
@@ -123,7 +122,6 @@ namespace MathCore.WPF.Commands
 
         public override async Task ExecuteTaskAsync(object parameter)
         {
-            Contract.Ensures(Contract.Result<Task>() != null);
             CancelCommand.NotifyCommandStarting();
             Execution = new NotifyTaskCompletion<TResult>(_TaskFunction(parameter, CancelCommand.Token));
             Invoke_OnCanExecuteChanged();
@@ -140,7 +138,7 @@ namespace MathCore.WPF.Commands
         public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
         public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
 
-        public virtual Task ExecuteAsync([CanBeNull]object parameter) => Task.Factory.StartNew(base.Execute, parameter);
+        public virtual Task ExecuteAsync(object? parameter) => Task.Factory.StartNew(base.Execute, parameter);
 
         public override async void Execute(object? parameter) => await ExecuteAsync(parameter);
     }

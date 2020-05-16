@@ -40,7 +40,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public static SvgPaint Parse(string value)
     {
-      if(value == null)
+      if(value is null)
         throw new ArgumentNullException("value");
       
       value = value.Trim();
@@ -49,7 +49,7 @@ namespace MathCore.WPF.SVG
 
       if(value.StartsWith("url"))
       {
-        string url = value.Substring(3).Trim();
+        var url = value.Substring(3).Trim();
         if(url.StartsWith("(") && url.EndsWith(")"))
         {
           url = url.Substring(1, url.Length - 2).Trim();
@@ -60,32 +60,32 @@ namespace MathCore.WPF.SVG
 
       if(value.StartsWith("#"))
       {
-        string color = value.Substring(1).Trim();
+        var color = value.Substring(1).Trim();
         if(color.Length == 3)
         {
-          byte r = byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber);
-          byte g = byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber);
-          byte b = byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber);
+          var r = byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber);
+          var g = byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber);
+          var b = byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber);
           return new SvgColorPaint(new SvgColor(r, g, b));
         }
 
         if(color.Length == 6)
         {
-          byte r = byte.Parse(color.Substring(0,2), NumberStyles.HexNumber);
-          byte g = byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber);
-          byte b = byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber);
+          var r = byte.Parse(color.Substring(0,2), NumberStyles.HexNumber);
+          var g = byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber);
+          var b = byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber);
           return new SvgColorPaint(new SvgColor(r, g, b));
         }
       }
 
       if(value.StartsWith("rgb"))
       {
-        string color = value.Substring(3).Trim();
+        var color = value.Substring(3).Trim();
         if(color.StartsWith("(") && color.EndsWith(")"))
         {
           color = color.Substring(1, color.Length - 2).Trim();
 
-          string[] components = color.Split(',');
+          var components = color.Split(',');
           if(components.Length == 3)
           {
             float r,g,b;

@@ -52,7 +52,7 @@ namespace MathCore.WPF.SVG
       : base(document, parent, gradientElement)
     {
 
-      XAttribute gradient_units_attribute = gradientElement.Attribute("gradientUnits");
+      var gradient_units_attribute = gradientElement.Attribute("gradientUnits");
       if(gradient_units_attribute != null)
         switch(gradient_units_attribute.Value)
         {
@@ -68,11 +68,11 @@ namespace MathCore.WPF.SVG
             throw new NotImplementedException($"gradientUnits value '{gradient_units_attribute.Value}' is no supported");
         }
 
-      XAttribute gradient_transform_attribute = gradientElement.Attribute("gradientTransform");
+      var gradient_transform_attribute = gradientElement.Attribute("gradientTransform");
       if(gradient_transform_attribute != null)
         Transform = SvgTransform.Parse(gradient_transform_attribute.Value);
 
-      XAttribute spread_method_attribute = gradientElement.Attribute("spreadMethod");
+      var spread_method_attribute = gradientElement.Attribute("spreadMethod");
       if(spread_method_attribute != null)
        switch(spread_method_attribute.Value)
        {
@@ -91,9 +91,9 @@ namespace MathCore.WPF.SVG
 
 
 
-      foreach(XElement element in from element in gradientElement.Elements()
-                                  where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
-                                  select element)
+      foreach(var element in from element in gradientElement.Elements()
+                             where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
+                             select element)
         switch(element.Name.LocalName)
         {
           case "stop":
@@ -140,7 +140,7 @@ namespace MathCore.WPF.SVG
       if(Transform != null)
         brush.Transform = Transform.ToTransform();
 
-      foreach(SvgStopElement stop in Stops)
+      foreach(var stop in Stops)
         brush.GradientStops.Add(stop.ToGradientStop());
 
       return brush;
@@ -149,15 +149,15 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public GradientBrush ToBrush()
     {
-      GradientBrush brush = CreateBrush();
+      var brush = CreateBrush();
 
       if(Reference != null)
       {
         if (!Document.Elements.ContainsKey(Reference))
           return null;
 
-        SvgGradientBaseElement reference = Document.Elements[Reference] as SvgGradientBaseElement;
-        if(reference == null)
+        var reference = Document.Elements[Reference] as SvgGradientBaseElement;
+        if(reference is null)
           throw new NotImplementedException();
         reference.SetBrush(brush);
       }

@@ -57,37 +57,37 @@ namespace MathCore.WPF.SVG
     public SvgImageElement(SvgDocument document, SvgBaseElement parent, XElement imageElement)
       : base(document, parent, imageElement)
     {
-      XAttribute x_attribute = imageElement.Attribute("x");
+      var x_attribute = imageElement.Attribute("x");
       if(x_attribute != null)
         X = SvgCoordinate.Parse(x_attribute.Value);
 
-      XAttribute y_attribute = imageElement.Attribute("y");
+      var y_attribute = imageElement.Attribute("y");
       if(y_attribute != null)
         Y = SvgCoordinate.Parse(y_attribute.Value);
 
-      XAttribute width_attribute = imageElement.Attribute("width");
+      var width_attribute = imageElement.Attribute("width");
       if(width_attribute != null)
         Width = SvgLength.Parse(width_attribute.Value);
 
-      XAttribute height_attribute = imageElement.Attribute("height");
+      var height_attribute = imageElement.Attribute("height");
       if(height_attribute != null)
         Height = SvgLength.Parse(height_attribute.Value);
 
-      XAttribute href_attribute = imageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
+      var href_attribute = imageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
       if(href_attribute != null)
       {
-        string reference = href_attribute.Value.TrimStart();
+        var reference = href_attribute.Value.TrimStart();
         if(reference.StartsWith("data:"))
         {
           reference = reference.Substring(5).TrimStart();
-          int index = reference.IndexOf(";");
+          var index = reference.IndexOf(";");
           if(index > -1)
           {
-            string type = reference.Substring(0, index).Trim();
+            var type = reference.Substring(0, index).Trim();
             reference = reference.Substring(index + 1);
 
             index = reference.IndexOf(",");
-            string encoding = reference.Substring(0, index).Trim();
+            var encoding = reference.Substring(0, index).Trim();
             reference = reference.Substring(index + 1).TrimStart();
 
             switch(encoding)
@@ -100,7 +100,7 @@ namespace MathCore.WPF.SVG
                 throw new NotSupportedException($"Unsupported encoding: {encoding}");
             }
 
-            string[] type_tokens = type.Split('/');
+            var type_tokens = type.Split('/');
             if(type_tokens.Length != 2)
               throw new NotSupportedException($"Unsupported type: {type}");
 
@@ -129,12 +129,12 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public override Drawing GetBaseDrawing()
     {
-      if(Data == null)
+      if(Data is null)
         return null;
 
-      string temp_file = Path.GetTempFileName();
-      using(FileStream file_stream = new FileStream(temp_file, FileMode.Create, FileAccess.Write))
-      using(BinaryWriter writer = new BinaryWriter(file_stream))
+      var temp_file = Path.GetTempFileName();
+      using(var file_stream = new FileStream(temp_file, FileMode.Create, FileAccess.Write))
+      using(var writer = new BinaryWriter(file_stream))
         writer.Write(Data);
 
       return new ImageDrawing(new BitmapImage(new Uri(temp_file)), new Rect(

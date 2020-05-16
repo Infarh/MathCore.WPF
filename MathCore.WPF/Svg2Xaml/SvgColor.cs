@@ -73,32 +73,32 @@ namespace MathCore.WPF.SVG
     {
       if(value.StartsWith("#"))
       {
-        string color = value.Substring(1).Trim();
+        var color = value.Substring(1).Trim();
         if(color.Length == 3)
         {
-          float r = (float)(byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber) / 255.0);
-          float g = (float)(byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber) / 255.0);
-          float b = (float)(byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber) / 255.0);
+          var r = (float)(byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber) / 255.0);
+          var g = (float)(byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber) / 255.0);
+          var b = (float)(byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber) / 255.0);
           return new SvgColor(r, g, b);
         }
 
         if(color.Length == 6)
         {
-          float r = (float)(byte.Parse(color.Substring(0, 2), NumberStyles.HexNumber) / 255.0);
-          float g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
-          float b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
+          var r = (float)(byte.Parse(color.Substring(0, 2), NumberStyles.HexNumber) / 255.0);
+          var g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
+          var b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
           return new SvgColor(r, g, b);
         }
       }
 
       if(value.StartsWith("rgb"))
       {
-        string color = value.Substring(3).Trim();
+        var color = value.Substring(3).Trim();
         if(color.StartsWith("(") && color.EndsWith(")"))
         {
           color = color.Substring(1, color.Length - 2).Trim();
 
-          string[] components = color.Split(',');
+          var components = color.Split(',');
           if(components.Length == 3)
           {
             float r, g, b;

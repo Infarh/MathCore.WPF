@@ -1,4 +1,4 @@
-// Creates boxes containing delimeter symbol that exists in different sizes.
+﻿// Creates boxes containing delimeter symbol that exists in different sizes.
 namespace MathCore.WPF.TeX
 {
     internal static class DelimiterFactory

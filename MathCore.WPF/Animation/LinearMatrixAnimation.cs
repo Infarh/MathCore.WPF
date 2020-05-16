@@ -1,6 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
+using TransformMatrix = System.Windows.Media.Matrix;
 // ReSharper disable UnusedType.Global
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Animation
 {
@@ -10,19 +12,18 @@ namespace MathCore.WPF.Animation
 
         #region From : System.Windows.Media.Matrix? - Начальная матрица
 
-
         /// <summary>Начальная матрица</summary>
         public static readonly DependencyProperty FromProperty =
             DependencyProperty.Register(
                 nameof(From),
-                typeof(System.Windows.Media.Matrix?),
+                typeof(TransformMatrix?),
                 typeof(LinearMatrixAnimation),
-                new PropertyMetadata(default(System.Windows.Media.Matrix?)));
+                new PropertyMetadata(default(TransformMatrix?)));
 
         /// <summary>Начальная матрица</summary>
-        public System.Windows.Media.Matrix? From
+        public TransformMatrix? From
         {
-            get => (System.Windows.Media.Matrix?)GetValue(FromProperty);
+            get => (TransformMatrix?)GetValue(FromProperty);
             set => SetValue(FromProperty, value);
         }
 
@@ -30,26 +31,25 @@ namespace MathCore.WPF.Animation
 
         #region To : System.Windows.Media.Matrix? - Конечная матрица
 
-
         /// <summary>Конечная матрица</summary>
         public static readonly DependencyProperty ToProperty =
             DependencyProperty.Register(
                 nameof(To),
-                typeof(System.Windows.Media.Matrix?),
+                typeof(TransformMatrix?),
                 typeof(LinearMatrixAnimation),
-                new PropertyMetadata(default(System.Windows.Media.Matrix?)));
+                new PropertyMetadata(default(TransformMatrix?)));
 
         /// <summary>Конечная матрица</summary>
-        public System.Windows.Media.Matrix? To
+        public TransformMatrix? To
         {
-            get => (System.Windows.Media.Matrix?)GetValue(ToProperty);
+            get => (TransformMatrix?)GetValue(ToProperty);
             set => SetValue(ToProperty, value);
         }
 
         #endregion
 
         #region EasingFunction : IEasingFunction  - Функция плавности
-                                            
+
         /// <summary>Функция плавности</summary>
         public static readonly DependencyProperty EasingFunctionProperty =
             DependencyProperty.Register(
@@ -69,21 +69,21 @@ namespace MathCore.WPF.Animation
 
         public LinearMatrixAnimation() { }
 
-        public LinearMatrixAnimation(System.Windows.Media.Matrix? from, System.Windows.Media.Matrix to, Duration duration)
+        public LinearMatrixAnimation(TransformMatrix? from, TransformMatrix to, Duration duration)
         {
             Duration = duration;
             From = from;
             To = to;
         }
 
-        public LinearMatrixAnimation(System.Windows.Media.Matrix? to, Duration duration, FillBehavior fill)
+        public LinearMatrixAnimation(TransformMatrix? to, Duration duration, FillBehavior fill)
         {
             To = to;
             Duration = duration;
             FillBehavior = fill;
         }
 
-        public LinearMatrixAnimation(System.Windows.Media.Matrix? from, System.Windows.Media.Matrix? to, Duration duration, FillBehavior fill)
+        public LinearMatrixAnimation(TransformMatrix? from, TransformMatrix? to, Duration duration, FillBehavior fill)
         {
             From = from;
             To = to;
@@ -91,9 +91,9 @@ namespace MathCore.WPF.Animation
             FillBehavior = fill;
         }
 
-        protected override System.Windows.Media.Matrix GetCurrentValueCore(System.Windows.Media.Matrix DefaultOriginValue, System.Windows.Media.Matrix DefaultDestinationValue, AnimationClock animation_clock)
+        protected override TransformMatrix GetCurrentValueCore(TransformMatrix DefaultOriginValue, TransformMatrix DefaultDestinationValue, AnimationClock animation_clock)
         {
-            if (animation_clock.CurrentProgress is null) return System.Windows.Media.Matrix.Identity;
+            if (animation_clock.CurrentProgress is null) return TransformMatrix.Identity;
 
             var time = animation_clock.CurrentProgress.Value;
             if (EasingFunction != null)
@@ -102,7 +102,7 @@ namespace MathCore.WPF.Animation
             var from = From ?? DefaultOriginValue;
             var to = To ?? DefaultDestinationValue;
 
-            return new System.Windows.Media.Matrix(
+            return new TransformMatrix(
                 (to.M11 - from.M11) * time + from.M11,
                 (to.M12 - from.M12) * time + from.M12,
                 (to.M21 - from.M21) * time + from.M21,

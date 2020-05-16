@@ -3,12 +3,18 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using MathCore.Annotations;
+// ReSharper disable ArgumentsStyleAnonymousFunction
+
+// ReSharper disable ArgumentsStyleLiteral
+// ReSharper disable ArgumentsStyleNamedExpression
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Shapes
 {
     public class Pie : Shape
     {
-        private const FrameworkPropertyMetadataOptions c_DependendPropertyMetadataOptions =
+        private const FrameworkPropertyMetadataOptions __DependendPropertyMetadataOptions =
             FrameworkPropertyMetadataOptions.AffectsRender;
 
         static Pie()
@@ -23,8 +29,9 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(IsAligned),
                 typeof(bool),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(false, c_DependendPropertyMetadataOptions,
-                    (o, e) => { }, (o, a) => a,
+                new FrameworkPropertyMetadata(false, __DependendPropertyMetadataOptions,
+                    propertyChangedCallback: null, 
+                    coerceValueCallback: null,
                     isAnimationProhibited: false,
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged));
 
@@ -34,9 +41,9 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(OuterRadius),
                 typeof(double),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(1d, c_DependendPropertyMetadataOptions,
-                    (o, e) => { },
-                    (o, R) => Math.Max((double)R, ((Pie)o).InnerRadius),
+                new FrameworkPropertyMetadata(1d, __DependendPropertyMetadataOptions,
+                    propertyChangedCallback: null,
+                    coerceValueCallback: (o, R) => Math.Max((double)R, ((Pie)o).InnerRadius),
                     isAnimationProhibited: false,
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged),
                 ValidateRadius);
@@ -47,14 +54,14 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(InnerRadius),
                 typeof(double),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(0d, c_DependendPropertyMetadataOptions,
-                    (o, e) => { },
-                    (o, r) => Math.Min((double)r, ((Pie)o).OuterRadius),
+                new FrameworkPropertyMetadata(0d, __DependendPropertyMetadataOptions,
+                    propertyChangedCallback: null,
+                    coerceValueCallback: (o, r) => Math.Min((double)r, ((Pie)o).OuterRadius),
                     isAnimationProhibited: false,
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged),
                 ValidateRadius);
 
-        private static bool ValidateRadius(object r) => (double)r >= 0 && (double)r <= 1;
+        private static bool ValidateRadius([NotNull] object r) => (double)r >= 0 && (double)r <= 1;
 
         public double InnerRadius { get => (double)GetValue(InnerRadiusProperty); set => SetValue(InnerRadiusProperty, value); }
 
@@ -62,9 +69,9 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(StartAngle),
                 typeof(double),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(0d, c_DependendPropertyMetadataOptions,
-                    (o, e) => { },
-                    (o, v) => v));
+                new FrameworkPropertyMetadata(0d, __DependendPropertyMetadataOptions, 
+                    propertyChangedCallback: null, 
+                    coerceValueCallback: null));
 
         public double StartAngle { get => (double)GetValue(StartAngleProperty); set => SetValue(StartAngleProperty, value); }
 
@@ -72,11 +79,11 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(StopAngle),
                 typeof(double),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(360d, c_DependendPropertyMetadataOptions,
-                    OnStopAngleChanged,
-                    (o, v) => v));
+                new FrameworkPropertyMetadata(360d, __DependendPropertyMetadataOptions, 
+                    propertyChangedCallback: OnStopAngleChanged, 
+                    coerceValueCallback: null));
 
-        private static void OnStopAngleChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) =>
+        private static void OnStopAngleChanged([NotNull] DependencyObject o, DependencyPropertyChangedEventArgs e) =>
             o.SetValue(AngleProperty, (double)e.NewValue - ((Pie)o).StartAngle);
 
         public double StopAngle { get => (double)GetValue(StopAngleProperty); set => SetValue(StopAngleProperty, value); }
@@ -85,13 +92,13 @@ namespace MathCore.WPF.Shapes
             DependencyProperty.Register(nameof(Angle),
                 typeof(double),
                 typeof(Pie),
-                new FrameworkPropertyMetadata(360d, c_DependendPropertyMetadataOptions,
-                    OnAngleChanged,
-                    (o, v) => v,
+                new FrameworkPropertyMetadata(360d, __DependendPropertyMetadataOptions,
+                    propertyChangedCallback: OnAngleChanged,
+                    coerceValueCallback: null,
                     isAnimationProhibited: false,
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged));
 
-        private static void OnAngleChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) =>
+        private static void OnAngleChanged([NotNull] DependencyObject o, DependencyPropertyChangedEventArgs e) =>
             o.SetValue(StopAngleProperty, (double)e.NewValue + ((Pie)o).StartAngle);
 
         public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
@@ -100,8 +107,6 @@ namespace MathCore.WPF.Shapes
         private readonly EllipseGeometry _InnerEllipse = new EllipseGeometry();
         private readonly CombinedGeometry _Cycle;
         private readonly CombinedGeometry _Pie;
-        private static readonly Func<double, double, double> min = Math.Min;
-        private static readonly Func<double, double, double> max = Math.Max;
         private Rect _Rect;
 
         protected override Geometry DefiningGeometry
@@ -133,7 +138,7 @@ namespace MathCore.WPF.Shapes
             var m = t / 2;
             _Rect = size.IsEmpty || size.Width.Equals(0d) || size.Height.Equals(0d)
                 ? Rect.Empty
-                : new Rect(m, m, max(0, size.Width - t), max(0, size.Height - t));
+                : new Rect(m, m, Math.Max(0, size.Width - t), Math.Max(0, size.Height - t));
 
             switch(Stretch)
             {
@@ -183,11 +188,7 @@ namespace MathCore.WPF.Shapes
             var center = new Point(rect.Width / 2 + rect.Left, rect.Height / 2 + rect.Left);
             var w = rect.Width;
             var h = rect.Height;
-            if(aligned)
-            {
-                w = min(w, h);
-                h = min(w, h);
-            }
+            if(aligned) w = h = Math.Min(w, h);
 
             w /= 2;
             h /= 2;
@@ -225,8 +226,9 @@ namespace MathCore.WPF.Shapes
             if(w <= 0 || h <= 0) return;
             var p0 = new Point(0.5 * rect.Width + rect.Left, 0.5 * rect.Height + rect.Top);
 
+            Func<double, double, double> min = Math.Min;
             var a = min(start, stop);
-            var b = max(start, stop);
+            var b = Math.Max(start, stop);
             var d = b - a;
             if(d.Equals(0d)) return;
 

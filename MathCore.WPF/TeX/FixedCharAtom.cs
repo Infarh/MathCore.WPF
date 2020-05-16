@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing character that does not depend on text style</summary>
     internal class FixedCharAtom : CharSymbol

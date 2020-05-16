@@ -10,6 +10,7 @@ using MathCore.WPF.ViewModels;
 // ReSharper disable VirtualMemberNeverOverridden.Global
 // ReSharper disable UnusedMethodReturnValue.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable MemberCanBeProtected.Global
 
 namespace MathCore.WPF.Commands
 {
@@ -28,10 +29,10 @@ namespace MathCore.WPF.Commands
         }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([NotNull, CallerMemberName]  string PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        protected virtual void OnPropertyChanged([CallerMemberName]  string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         [NotifyPropertyChangedInvocator]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull, CallerMemberName]  string PropertyName = null)
+        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName] string? PropertyName = null)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -45,7 +46,7 @@ namespace MathCore.WPF.Commands
 
         private event EventHandler? CanExecuteChangedHandlers;
 
-        protected virtual void OnCanExecuteChanged([CanBeNull] EventArgs e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
+        protected virtual void OnCanExecuteChanged([CanBeNull] EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
 
         /// <summary>Событие возникает при изменении возможности исполнения команды</summary>
         public event EventHandler CanExecuteChanged
@@ -74,9 +75,15 @@ namespace MathCore.WPF.Commands
 
         #region Свойства
 
-        protected object? TargetObject { get; private set; }
-        protected object? RootObject { get; private set; }
-        protected object? TargetProperty { get; private set; }
+        private WeakReference? _TargetObjectReference;
+        private WeakReference? _RootObjectReference;
+        private WeakReference? _TargetPropertyReference;
+
+        [CanBeNull] protected object? TargetObject => _TargetObjectReference?.Target;
+
+        [CanBeNull] protected object? RootObject => _RootObjectReference?.Target;
+
+        [CanBeNull] protected object? TargetProperty => _TargetPropertyReference?.Target;
 
         /// <summary>Признак возможности исполнения</summary>
         public bool IsCanExecute
@@ -100,10 +107,21 @@ namespace MathCore.WPF.Commands
         public override object ProvideValue(IServiceProvider sp)
         {
             var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));
-            TargetObject = target_value_provider?.TargetObject;
-            TargetProperty = target_value_provider?.TargetProperty;
+            if (target_value_provider != null)
+            {
+                var target = target_value_provider.TargetObject;
+                _TargetObjectReference = target is null ? null : new WeakReference(target);
+                var target_property = target_value_provider.TargetProperty;
+                _TargetPropertyReference = target_property is null ? null : new WeakReference(target_property);
+            }
+
             var root_object_provider = (IRootObjectProvider)sp.GetService(typeof(IRootObjectProvider));
-            RootObject = root_object_provider?.RootObject ?? (TargetObject as FrameworkElement)?.FindVisualRoot();
+            if (root_object_provider != null)
+            {
+                var root = root_object_provider.RootObject;
+                _RootObjectReference = root is null ? null : new WeakReference(root);
+            }
+
             return this;
         }
 

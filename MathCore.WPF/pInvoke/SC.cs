@@ -5,7 +5,7 @@ namespace MathCore.WPF.pInvoke
 {
     /// <summary>System Command</summary>
     [SuppressMessage("ReSharper", "InconsistentNaming"), SuppressMessage("ReSharper", "IdentifierTypo"), SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public enum SC : uint
+    internal enum SC : uint
     {
         SIZE = 0xF000,
         MOVE = 0xF010,

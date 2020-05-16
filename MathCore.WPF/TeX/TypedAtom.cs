@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing other atom with custom left and right types</summary>
     internal sealed class TypedAtom : Atom

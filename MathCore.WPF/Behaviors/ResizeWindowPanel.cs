@@ -11,8 +11,8 @@ namespace MathCore.WPF.Behaviors
 {
     public class ResizeWindowPanel : Behavior<Panel>
     {
-        [CanBeNull] private MouseButtonEventHandler _MouseButtonsEventHandler;
-        [CanBeNull] private Window _Window;
+        private MouseButtonEventHandler? _MouseButtonsEventHandler;
+        private Window? _Window;
 
         protected override void OnAttached()
         {
@@ -38,25 +38,47 @@ namespace MathCore.WPF.Behaviors
             {
                 default: return;
                 case Line line:
-                    if (line.VerticalAlignment == VerticalAlignment.Top)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.North), IntPtr.Zero);
-                    else if (line.VerticalAlignment == VerticalAlignment.Bottom)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.South), IntPtr.Zero);
-                    else if (line.HorizontalAlignment == HorizontalAlignment.Left)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.West), IntPtr.Zero);
-                    else if (line.HorizontalAlignment == HorizontalAlignment.Right)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.East), IntPtr.Zero);
+                    switch (line.VerticalAlignment)
+                    {
+                        case VerticalAlignment.Top:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.North), IntPtr.Zero);
+                            break;
+                        case VerticalAlignment.Bottom:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.South), IntPtr.Zero);
+                            break;
+                        default:
+                            {
+                                switch (line.HorizontalAlignment)
+                                {
+                                    case HorizontalAlignment.Left:
+                                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.West), IntPtr.Zero);
+                                        break;
+                                    case HorizontalAlignment.Right:
+                                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.East), IntPtr.Zero);
+                                        break;
+                                }
+
+                                break;
+                            }
+                    }
                     break;
 
                 case Rectangle rect:
-                    if (rect.VerticalAlignment == VerticalAlignment.Top && rect.HorizontalAlignment == HorizontalAlignment.Left)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.NorthWest), IntPtr.Zero);
-                    else if (rect.VerticalAlignment == VerticalAlignment.Top && rect.HorizontalAlignment == HorizontalAlignment.Right)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.NorthEast), IntPtr.Zero);
-                    else if (rect.VerticalAlignment == VerticalAlignment.Bottom && rect.HorizontalAlignment == HorizontalAlignment.Right)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.SouthEast), IntPtr.Zero);
-                    else if (rect.VerticalAlignment == VerticalAlignment.Bottom && rect.HorizontalAlignment == HorizontalAlignment.Left)
-                        window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.SouthWest), IntPtr.Zero);
+                    switch (rect.VerticalAlignment)
+                    {
+                        case VerticalAlignment.Top when rect.HorizontalAlignment == HorizontalAlignment.Left:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.NorthWest), IntPtr.Zero);
+                            break;
+                        case VerticalAlignment.Top when rect.HorizontalAlignment == HorizontalAlignment.Right:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.NorthEast), IntPtr.Zero);
+                            break;
+                        case VerticalAlignment.Bottom when rect.HorizontalAlignment == HorizontalAlignment.Right:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.SouthEast), IntPtr.Zero);
+                            break;
+                        case VerticalAlignment.Bottom when rect.HorizontalAlignment == HorizontalAlignment.Left:
+                            window.SendMessage(WM.SYSCOMMAND, (IntPtr)((int)SC.SIZE + SizingAction.SouthWest), IntPtr.Zero);
+                            break;
+                    }
                     break;
             }
 

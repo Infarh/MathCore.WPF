@@ -46,7 +46,7 @@ namespace MathCore.WPF.SVG
     public SvgPathElement(SvgDocument document, SvgBaseElement parent, XElement pathElement)
       : base(document, parent, pathElement)
     {
-      XAttribute d_attribute = pathElement.Attribute("d");
+      var d_attribute = pathElement.Attribute("d");
       if(d_attribute != null)
         Data = d_attribute.Value;
       else

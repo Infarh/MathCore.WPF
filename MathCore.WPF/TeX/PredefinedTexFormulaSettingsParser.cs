@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -53,7 +53,7 @@ namespace MathCore.WPF.TeX
             var result = new HashSet<string>();
 
             var textStyles = rootElement.Element("TextStyles");
-            if(textStyles == null) return result;
+            if(textStyles is null) return result;
             foreach(var name in textStyles.Elements("TextStyle").Select(textStyleElement => textStyleElement.AttributeValue("name")))
             {
                 Debug.Assert(name != null);

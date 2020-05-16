@@ -50,7 +50,7 @@ namespace MathCore.WPF.SVG
       if (!element.Document.Elements.ContainsKey(Url))
         return null;
 
-      SvgBaseElement reference = element.Document.Elements[Url];
+      var reference = element.Document.Elements[Url];
       if (reference is SvgGradientBaseElement)
         return (reference as SvgGradientBaseElement).ToBrush();
       else if (reference is SvgPatternElement)

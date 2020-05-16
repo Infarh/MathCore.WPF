@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
@@ -8,13 +8,13 @@ using System.Windows.Controls;
 
 namespace MathCore.WPF
 {
-    /// <summary>Класс прикрепляемых свойств-зависимости для работы с <see cref="PasswordBox"/></summary>
+    /// <summary>РљР»Р°СЃСЃ РїСЂРёРєСЂРµРїР»СЏРµРјС‹С… СЃРІРѕР№СЃС‚РІ-Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ <see cref="PasswordBox"/></summary>
     // ReSharper disable once UnusedMember.Global
     public static class PasswordBoxEx
     {
         #region AttachProperty
 
-        /// <summary>Прикрепляемое свойство-зависимости, устанавливающее связь для дальнейшей работы с <see cref="PasswordBox"/></summary>
+        /// <summary>РџСЂРёРєСЂРµРїР»СЏРµРјРѕРµ СЃРІРѕР№СЃС‚РІРѕ-Р·Р°РІРёСЃРёРјРѕСЃС‚Рё, СѓСЃС‚Р°РЅР°РІР»РёРІР°СЋС‰РµРµ СЃРІСЏР·СЊ РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ СЂР°Р±РѕС‚С‹ СЃ <see cref="PasswordBox"/></summary>
         public static readonly DependencyProperty AttachProperty =
             DependencyProperty.RegisterAttached(
                 "Attach",
@@ -22,9 +22,9 @@ namespace MathCore.WPF
                 typeof(PasswordBoxEx),
                 new PropertyMetadata(default(bool), OnAttachChanged));
 
-        /// <summary>Установка значения свойства присоединения</summary>
-        /// <param name="o">Объект для которого производится установка значения</param>
-        /// <param name="v">Устанавливаемое значение</param>
+        /// <summary>РЈСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ СЃРІРѕР№СЃС‚РІР° РїСЂРёСЃРѕРµРґРёРЅРµРЅРёСЏ</summary>
+        /// <param name="o">РћР±СЉРµРєС‚ РґР»СЏ РєРѕС‚РѕСЂРѕРіРѕ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ СѓСЃС‚Р°РЅРѕРІРєР° Р·РЅР°С‡РµРЅРёСЏ</param>
+        /// <param name="v">РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРјРѕРµ Р·РЅР°С‡РµРЅРёРµ</param>
         [AttachedPropertyBrowsableForType(typeof(PasswordBox))]
         public static void SetAttach(DependencyObject o, bool v) => o.SetValue(AttachProperty, v);
 
@@ -88,15 +88,15 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region Attached property WhatermarkText : string - Текст, замещающий пустое пространство при отсутствии ввода пароля
+        #region Attached property WhatermarkText : string - РўРµРєСЃС‚, Р·Р°РјРµС‰Р°СЋС‰РёР№ РїСѓСЃС‚РѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РїСЂРё РѕС‚СЃСѓС‚СЃС‚РІРёРё РІРІРѕРґР° РїР°СЂРѕР»СЏ
 
-        /// <summary>Текст, замещающий пустое пространство при отсутствии ввода пароля</summary>
+        /// <summary>РўРµРєСЃС‚, Р·Р°РјРµС‰Р°СЋС‰РёР№ РїСѓСЃС‚РѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РїСЂРё РѕС‚СЃСѓС‚СЃС‚РІРёРё РІРІРѕРґР° РїР°СЂРѕР»СЏ</summary>
         public static readonly DependencyProperty WaterMarkTextProperty =
             DependencyProperty.RegisterAttached(
                 "WaterMarkText",
                 typeof(string),
                 typeof(PasswordBoxEx),
-                new PropertyMetadata("Введите пароль"));
+                new PropertyMetadata("Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ"));
 
         public static void SetWaterMarkText(DependencyObject element, string value) => element.SetValue(WaterMarkTextProperty, value);
 
@@ -107,9 +107,9 @@ namespace MathCore.WPF
 
     public class PasswordBoxWatcher : Decorator
     {
-        #region Password dependency property (Other : Пароль) : string
+        #region Password dependency property (Other : РџР°СЂРѕР»СЊ) : string
 
-        /// <summary>Пароль</summary>
+        /// <summary>РџР°СЂРѕР»СЊ</summary>
         public static readonly DependencyProperty PasswordProperty =
             DependencyProperty.Register(
                 nameof(Password),
@@ -119,9 +119,9 @@ namespace MathCore.WPF
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                     OnPasswordChanged));
 
-        /// <summary>Пароль</summary>
+        /// <summary>РџР°СЂРѕР»СЊ</summary>
         [Category("Other")]
-        [Description("Пароль")]
+        [Description("РџР°СЂРѕР»СЊ")]
         public string Password { get => (string)GetValue(PasswordProperty); set => SetValue(PasswordProperty, value); }
 
         private static void OnPasswordChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
@@ -150,9 +150,9 @@ namespace MathCore.WPF
             Child = password_box;
         }
 
-        /// <summary>Обработчик события изменения пароля</summary>
-        /// <param name="sender">Источник события - должен быть полем ввода пароля</param>
-        /// <param name="e">Аргумент события</param>
+        /// <summary>РћР±СЂР°Р±РѕС‚С‡РёРє СЃРѕР±С‹С‚РёСЏ РёР·РјРµРЅРµРЅРёСЏ РїР°СЂРѕР»СЏ</summary>
+        /// <param name="sender">РСЃС‚РѕС‡РЅРёРє СЃРѕР±С‹С‚РёСЏ - РґРѕР»Р¶РµРЅ Р±С‹С‚СЊ РїРѕР»РµРј РІРІРѕРґР° РїР°СЂРѕР»СЏ</param>
+        /// <param name="e">РђСЂРіСѓРјРµРЅС‚ СЃРѕР±С‹С‚РёСЏ</param>
         private void OnHandlePasswordChanged(object sender, RoutedEventArgs e)
         {
             _IsPreventCallback = true;

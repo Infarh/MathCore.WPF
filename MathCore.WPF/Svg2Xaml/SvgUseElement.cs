@@ -49,7 +49,7 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public SvgBaseElement GetElement()
     {
-      if(Reference == null)
+      if(Reference is null)
         throw new NotSupportedException();
 
       if (Document.Elements.ContainsKey(Reference))

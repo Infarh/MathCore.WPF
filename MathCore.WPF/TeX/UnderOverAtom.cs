@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MathCore.WPF.TeX
 {
@@ -82,7 +82,7 @@ namespace MathCore.WPF.TeX
         public override Box CreateBox(TexEnvironment environment)
         {
             // Create box for base atom.
-            var baseBox = BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
+            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
 
             // Create boxes for over and under atoms.
             Box overBox = null, underBox = null;

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MathCore.WPF.TeX
 {
@@ -49,7 +49,7 @@ namespace MathCore.WPF.TeX
             radicalContainerBox.Add(overBar);
 
             // If atom is simple radical, just return square-root box.
-            if(DegreeAtom == null)
+            if(DegreeAtom is null)
                 return radicalContainerBox;
 
             // Atom is complex radical (nth-root).

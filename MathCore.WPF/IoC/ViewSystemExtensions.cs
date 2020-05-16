@@ -1,13 +1,16 @@
-﻿using MathCore.IoC;
+﻿using MathCore.Annotations;
+using MathCore.IoC;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.IoC
 {
     public static class ViewSystemExtensions
     {
-        public static IServiceManager AddViewSystem(this IServiceManager service_manager)
+        [NotNull]
+        public static IServiceManager AddViewSystem([NotNull] this IServiceManager Manager)
         {
-            service_manager.RegisterSingleton<IViewSystem, ViewSystem>().AllowInheritance = true;
-            return service_manager;
+            Manager.RegisterSingleton<IViewSystem, ViewSystem>().AllowInheritance = true;
+            return Manager;
         }
     }
 }

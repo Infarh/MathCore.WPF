@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -70,7 +70,7 @@ namespace MathCore.WPF.TeX
             var rules = new int[typeMappings.Count, typeMappings.Count, styleMappings.Count];
 
             var GlobalElement = rootElement.Element("GlueTable");
-            if(GlobalElement == null) return rules;
+            if(GlobalElement is null) return rules;
             foreach(var element in GlobalElement.Elements("Glue"))
             {
                 var leftType = typeMappings[element.AttributeValue("lefttype")];

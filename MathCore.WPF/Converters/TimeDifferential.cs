@@ -1,36 +1,42 @@
-using System;
+п»їusing System;
 using System.Windows.Markup;
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-	/// <summary>Конвертер дифференцирования значения по времени</summary>
-	[MarkupExtensionReturnType(typeof(TimeDifferential))]
-	public class TimeDifferential : SimpleDoubleValueConverter
-	{
-		private DateTime _LastTime = DateTime.Now;
-		private double _LastValue = double.NaN;
-		public bool IgnoreNaN { get; set; }
+    /// <summary>РљРѕРЅРІРµСЂС‚РµСЂ РґРёС„С„РµСЂРµРЅС†РёСЂРѕРІР°РЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ РїРѕ РІСЂРµРјРµРЅРё</summary>
+    [MarkupExtensionReturnType(typeof(TimeDifferential))]
+    public class TimeDifferential : SimpleDoubleValueConverter
+    {
+        private DateTime _LastTime = DateTime.Now;
 
-		public TimeDifferential() : this(1) { }
-		public TimeDifferential(double K, bool ignore_nan = false) : base(K) => IgnoreNaN = ignore_nan;
+        private double _LastValue = double.NaN;
 
-		/// <inheritdoc />
-		protected override double To(double v, double p)
-		{
-			if (double.IsNaN(v)) return IgnoreNaN ? v : _LastValue = v;
+        [ConstructorArgument(nameof(IgnoreNaN))]
+        public bool IgnoreNaN { get; set; }
 
-			var now = DateTime.Now;
-			var dt = (now - _LastTime).TotalSeconds;
-			_LastTime = now;
-			if (double.IsNaN(_LastValue))
-			{
-				if (!IgnoreNaN) _LastValue = v;
-				return double.NaN;
-			}
+        public TimeDifferential() : this(1) { }
 
-			var dv = v - _LastValue;
-			_LastValue = v;
-			return dv / dt * Parameter;
-		}
-	}
+        public TimeDifferential(double K, bool IgnoreNaN = false) : base(K) => this.IgnoreNaN = IgnoreNaN;
+
+        /// <inheritdoc />
+        protected override double To(double v, double p)
+        {
+            if (double.IsNaN(v)) return IgnoreNaN ? v : _LastValue = v;
+
+            var now = DateTime.Now;
+            var dt = (now - _LastTime).TotalSeconds;
+            _LastTime = now;
+            if (double.IsNaN(_LastValue))
+            {
+                if (!IgnoreNaN) _LastValue = v;
+                return double.NaN;
+            }
+
+            var dv = v - _LastValue;
+            _LastValue = v;
+            return dv / dt * Parameter;
+        }
+    }
 }

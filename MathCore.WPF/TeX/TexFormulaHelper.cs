@@ -143,9 +143,9 @@
                 overFormula?.RootAtom, overUnit, overSpace, overScriptSize, true);
         }
 
-        public void PutOver(string overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) => PutOver(overFormula == null ? null : FormulaParser.Parse(overFormula), overUnit, overSpace, overScriptSize);
+        public void PutOver(string overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) => PutOver(overFormula is null ? null : FormulaParser.Parse(overFormula), overUnit, overSpace, overScriptSize);
 
-        public void PutUnder(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) => PutUnder(underFormula == null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
+        public void PutUnder(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) => PutUnder(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
             underScriptSize);
 
         public void PutUnder(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize)
@@ -155,8 +155,8 @@
         }
 
         public void PutUnderAndOver(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize,
-            string over, TexUnit overUnit, double overSpace, bool overScriptSize) => PutUnderAndOver(underFormula == null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
-                underScriptSize, over == null ? null : FormulaParser.Parse(over), overUnit, overSpace, overScriptSize);
+            string over, TexUnit overUnit, double overSpace, bool overScriptSize) => PutUnderAndOver(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
+                underScriptSize, over is null ? null : FormulaParser.Parse(over), overUnit, overSpace, overScriptSize);
 
         public void PutUnderAndOver(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize,
             TexFormula over, TexUnit overUnit, double overSpace, bool overScriptSize) => Formula.RootAtom = new UnderOverAtom(Formula.RootAtom, underFormula?.RootAtom, underUnit, underSpace, underScriptSize, over?.RootAtom,

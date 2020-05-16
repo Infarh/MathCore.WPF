@@ -1,7 +1,11 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
+using MathCore.Annotations;
+
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
@@ -10,18 +14,20 @@ namespace MathCore.WPF.Converters
     {
         public int Index { get; set; }
 
-        public IValueConverter Next { get; set; }
+        public IValueConverter? Next { get; set; }
 
         public SingleValue() { }
-        public SingleValue(int Index) { this.Index = Index; }
-        public SingleValue(int Index, IValueConverter Next) : this(Index) { this.Next = Next; }
 
+        public SingleValue(int Index) => this.Index = Index;
+
+        public SingleValue(int Index, IValueConverter Next) : this(Index) => this.Next = Next;
 
         /// <inheritdoc />
-        protected override object Convert(object[] vv, Type t, object p, CultureInfo c)
+        [CanBeNull]
+        protected override object? Convert([CanBeNull] object[]? vv, Type? t, object? p, CultureInfo? c)
         {
-            var v = vv == null || Index >= vv.Length ? null : vv[Index];
-            return Next == null ? v : Next.Convert(v, t, p, c);
+            var v = vv is null || Index >= vv.Length ? null : vv[Index];
+            return Next is null ? v : Next.Convert(v, t, p, c);
         }
     }
 }

@@ -27,7 +27,7 @@ namespace MathCore.WPF.TeX
         public static double AttributeDoubleValue(this XElement element, string attributeName, double? defaultValue = null)
         {
             var attribute = element.Attribute(attributeName);
-            if(attribute == null)
+            if(attribute is null)
             {
                 if(defaultValue != null)
                     return defaultValue.Value;

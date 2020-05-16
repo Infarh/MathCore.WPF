@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Markup;
+using MathCore.Annotations;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Templates.Selectors
 {
@@ -14,6 +17,6 @@ namespace MathCore.WPF.Templates.Selectors
 
         public IList Templates => _Items;
 
-        public override object ProvideValue(IServiceProvider serviceProvider) => new GenericDataTemplateSelector(_Items);
+        [NotNull] public override object ProvideValue(IServiceProvider sp) => new GenericDataTemplateSelector(_Items);
     }
 }

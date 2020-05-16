@@ -3,20 +3,20 @@ using System.Windows.Controls;
 
 namespace MathCore.WPF
 {
-    public class ColumnDefinitionCollapsable : ColumnDefinition
+    public class ColumnDefinitionCollapsible : ColumnDefinition
     {
-        static ColumnDefinitionCollapsable()
+        static ColumnDefinitionCollapsible()
         {
             WidthProperty.OverrideMetadata(
-                typeof(ColumnDefinitionCollapsable),
+                typeof(ColumnDefinitionCollapsible),
                 new FrameworkPropertyMetadata(
                     new GridLength(1, GridUnitType.Star),
                     null,
-                    (d, v) => ((ColumnDefinitionCollapsable)d).Visible ? v : new GridLength(0)));
+                    (d, v) => ((ColumnDefinitionCollapsible)d).Visible ? v : new GridLength(0)));
 
             MinWidthProperty.OverrideMetadata(
-                typeof(ColumnDefinitionCollapsable),
-                new FrameworkPropertyMetadata(0d, null, (d, v) => ((ColumnDefinitionCollapsable)d).Visible ? v : 0d));
+                typeof(ColumnDefinitionCollapsible),
+                new FrameworkPropertyMetadata(0d, null, (d, v) => ((ColumnDefinitionCollapsible)d).Visible ? v : 0d));
         }
 
         #region Visible : bool - Видимость
@@ -26,7 +26,7 @@ namespace MathCore.WPF
             DependencyProperty.Register(
                 nameof(Visible),
                 typeof(bool),
-                typeof(ColumnDefinitionCollapsable),
+                typeof(ColumnDefinitionCollapsible),
                 new PropertyMetadata(true, OnVisibleChanged));
 
         private static void OnVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

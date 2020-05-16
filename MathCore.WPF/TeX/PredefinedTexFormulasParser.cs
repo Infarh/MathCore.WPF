@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -103,7 +103,7 @@ namespace MathCore.WPF.TeX
             foreach(var element in formulaElement.Elements())
             {
                 var parser = actionParsers[element.Name.ToString()];
-                if(parser == null)
+                if(parser is null)
                     continue;
 
                 parser.TempFormulas = tempFormulas;
@@ -197,7 +197,7 @@ namespace MathCore.WPF.TeX
         {
             public override object Parse(string value, string type)
             {
-                if(value == null)
+                if(value is null)
                     return null;
 
                 var formula = TempFormulas[value];

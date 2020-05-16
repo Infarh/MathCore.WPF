@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +45,7 @@ namespace MathCore.WPF.TeX
         public RowAtom(Atom baseAtom)
             : this()
         {
-            if(baseAtom == null) return;
+            if(baseAtom is null) return;
             var atom = baseAtom as RowAtom;
             if(atom != null)
                 Elements.AddRange(atom.Elements);
@@ -58,7 +58,7 @@ namespace MathCore.WPF.TeX
         private void ChangeAtomToOrdinary(DummyAtom currentAtom, DummyAtom previousAtom, Atom nextAtom)
         {
             var type = currentAtom.GetLeftType();
-            if(type == TexAtomType.BinaryOperator && (previousAtom == null || binaryOperatorChangeSet[(int)previousAtom.GetRightType()]))
+            if(type == TexAtomType.BinaryOperator && (previousAtom is null || binaryOperatorChangeSet[(int)previousAtom.GetRightType()]))
                 currentAtom.Type = TexAtomType.Ordinary;
             else if(nextAtom != null && currentAtom.GetRightType() == TexAtomType.BinaryOperator)
             {
@@ -96,7 +96,7 @@ namespace MathCore.WPF.TeX
                         var leftAtomCharFont = current_atom.GetCharFont(texFont);
                         var rightAtomCharFont = ((CharSymbol)nextAtom).GetCharFont(texFont);
                         var ligatureCharFont = texFont.GetLigature(leftAtomCharFont, rightAtomCharFont);
-                        if(ligatureCharFont == null)
+                        if(ligatureCharFont is null)
                         {
                             // Atom should be kerned.
                             kern = texFont.GetKern(leftAtomCharFont, rightAtomCharFont, environment.Style);

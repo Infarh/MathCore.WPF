@@ -1,4 +1,4 @@
-// Atom representing single character that can be marked as text symbol.
+﻿// Atom representing single character that can be marked as text symbol.
 namespace MathCore.WPF.TeX
 {
     internal abstract class CharSymbol : Atom

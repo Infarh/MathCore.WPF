@@ -64,12 +64,12 @@ namespace MathCore.WPF.SVG
       Parent   = parent;
 
       // Create attributes from styles...
-      XAttribute style_attribute = element.Attribute("style");
+      var style_attribute = element.Attribute("style");
       if(style_attribute != null)
       {
-        foreach(string property in style_attribute.Value.Split(';'))
+        foreach(var property in style_attribute.Value.Split(';'))
         {
-          string[] tokens = property.Split(':');
+          var tokens = property.Split(':');
           if(tokens.Length == 2)
             try
             {
@@ -83,14 +83,14 @@ namespace MathCore.WPF.SVG
         style_attribute.Remove();
       }
 
-      XAttribute id_attribute = element.Attribute("id");
+      var id_attribute = element.Attribute("id");
       if(id_attribute != null)
         Document.Elements[Id = id_attribute.Value] = this;
 
-      XAttribute href_attribute = element.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
+      var href_attribute = element.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
       if(href_attribute != null)
       {
-        string reference = href_attribute.Value;
+        var reference = href_attribute.Value;
         if(reference.StartsWith("#"))
           Reference = reference.Substring(1);
       }

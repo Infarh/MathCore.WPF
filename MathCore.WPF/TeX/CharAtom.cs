@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing single character in specific text style</summary>
     internal class CharAtom : CharSymbol
@@ -18,7 +18,7 @@ namespace MathCore.WPF.TeX
             new CharBox(environment, GetCharInfo(environment.TexFont, environment.Style));
 
         private CharInfo GetCharInfo(ITeXFont texFont, TexStyle style) =>
-            TextStyle == null
+            TextStyle is null
                 ? texFont.GetDefaultCharInfo(Character, style)
                 : texFont.GetCharInfo(Character, TextStyle, style);
 

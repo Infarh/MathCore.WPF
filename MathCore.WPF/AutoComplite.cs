@@ -108,7 +108,7 @@ namespace MathCore.WPF
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
             {
                 var s = value as string;
-                return s == null ? base.ConvertFrom(context, culture, value) : new AutoCompleteFilterPathCollection(s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                return s is null ? base.ConvertFrom(context, culture, value) : new AutoCompleteFilterPathCollection(s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
             }
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
@@ -215,7 +215,7 @@ namespace MathCore.WPF
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             var filter_paths = GetAutoCompleteFilterProperty();
-            if(filter_paths == null) e.Accepted = TextBoxStartsWith(e.Item);
+            if(filter_paths is null) e.Accepted = TextBoxStartsWith(e.Item);
             else
             {
                 var type = e.Item.GetType();
@@ -247,16 +247,16 @@ namespace MathCore.WPF
         {
             if(e.Key == Key.Up || e.Key == Key.Down)
             {
-                if(_RememberedText == null) _RememberedText = _Control.Text;
+                if(_RememberedText is null) _RememberedText = _Control.Text;
                 _IteratingListItems = true;
                 var view = ViewSource.View;
 
                 if (e.Key == Key.Up)
-                    if (view.CurrentItem == null)
+                    if (view.CurrentItem is null)
                         view.MoveCurrentToLast();
                     else
                         view.MoveCurrentToPrevious();
-                else if (view.CurrentItem == null)
+                else if (view.CurrentItem is null)
                     view.MoveCurrentToFirst();
                 else
                     view.MoveCurrentToNext();

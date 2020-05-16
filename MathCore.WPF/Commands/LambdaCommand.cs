@@ -1,9 +1,8 @@
-﻿using MathCore.Annotations;
-using MathCore.WPF.ViewModels;
-
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows.Markup;
+using MathCore.Annotations;
+using MathCore.WPF.ViewModels;
 // ReSharper disable MemberCanBeProtected.Global
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -40,7 +39,7 @@ namespace MathCore.WPF.Commands
 
         public event EventHandler<EventArgs<object?>>? CompleteExecuting;
 
-        protected virtual void OnCompleteExecuting(EventArgs<object?>? args) => CompleteExecuting?.Invoke(this, args);
+        protected virtual void OnCompleteExecuting(EventArgs<object?> args) => CompleteExecuting?.Invoke(this, args);
 
         #endregion
 
@@ -99,7 +98,6 @@ namespace MathCore.WPF.Commands
         #region Методы
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp) => this;
 
         /// <summary>Выполнение команды</summary>
@@ -122,15 +120,20 @@ namespace MathCore.WPF.Commands
         /// <summary>Проверка возможности выполнения команды</summary>
         /// <param name="parameter">Параметр процесса выполнения команды</param>
         /// <returns>Истина, если команда может быть выполнена</returns>
-        public override bool CanExecute(object parameter) => ViewModel.IsDesignMode || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? false);
+        public override bool CanExecute(object parameter) => 
+            ViewModel.IsDesignMode 
+            || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? true);
 
         /// <summary>Проверка возможности выполнения команды</summary>
         public void CanExecuteCheck() => OnCanExecuteChanged();
 
         #endregion
 
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => new LambdaCommand(execute);
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object> execute) => new LambdaCommand(execute);
+        [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
+        [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
+
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new LambdaCommand(execute);
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new LambdaCommand(execute);
     }
 
     /// <summary>
@@ -200,10 +203,12 @@ namespace MathCore.WPF.Commands
 
         #region Методы
 
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => this;
+        public override object ProvideValue(IServiceProvider sp) => this;
 
-        protected object? ConvertParameter([NotNull] object parameter)
+        [CanBeNull]
+        protected object? ConvertParameter([CanBeNull] object? parameter)
         {
+            if (parameter is null) return null;
             var command_parameter_type = typeof(T);
             var parameter_type = parameter.GetType();
             if (command_parameter_type.IsAssignableFrom(parameter_type))

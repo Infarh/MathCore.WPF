@@ -14,10 +14,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       
-      - name: User .NET 3.1.100
+      - name: Use .NET 3.1.200
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 3.1.100
+          dotnet-version: 3.1.200
         
       - name: Building
         run: |
@@ -31,4 +31,4 @@ jobs:
         run: dotnet pack MathCore.WPF\MathCore.WPF.csproj --no-build -c Release -v q
         
       - name: Publishing
-        run: dotnet nuget push MathCore.WPF\bin\Release\*.nupkg -k ${{ secrets.NuGetApiKey }} -n -SkipDuplicate -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push MathCore.WPF\bin\Release\*.nupkg -k ${{ secrets.NuGetApiKey }} -n --skip-duplicate -s https://api.nuget.org/v3/index.json

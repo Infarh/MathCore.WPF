@@ -1,4 +1,4 @@
-// Font that specifies how TexFormula objects are rendered.
+﻿// Font that specifies how TexFormula objects are rendered.
 namespace MathCore.WPF.TeX
 {
     internal interface ITeXFont

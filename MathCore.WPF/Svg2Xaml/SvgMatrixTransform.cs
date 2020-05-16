@@ -62,7 +62,7 @@ namespace MathCore.WPF.SVG
       //==========================================================================
     public static new SvgMatrixTransform Parse(string transform)
     {
-      string[] tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
       if(tokens.Length == 6)
         return new SvgMatrixTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                                       double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat),

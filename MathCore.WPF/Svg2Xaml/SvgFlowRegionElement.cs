@@ -51,13 +51,13 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public Geometry GetClipGeometry()
     {
-      GeometryGroup geometry_group = new GeometryGroup();
+      var geometry_group = new GeometryGroup();
 
-      foreach(SvgBaseElement element in Children)
+      foreach(var element in Children)
       {
         if(element is SvgDrawableBaseElement)
         {
-          Geometry geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
+          var geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
           if(geometry != null)
             geometry_group.Children.Add(geometry);
         }

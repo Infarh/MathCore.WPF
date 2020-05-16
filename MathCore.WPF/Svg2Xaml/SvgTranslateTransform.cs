@@ -53,7 +53,7 @@ namespace MathCore.WPF.SVG
       //==========================================================================
     public static new SvgTranslateTransform Parse(string transform)
     {
-      string[] tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
       if(tokens.Length != 2)
         throw new FormatException("A translate transformation must have two values");
 

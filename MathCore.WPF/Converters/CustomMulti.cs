@@ -1,17 +1,31 @@
-using System;
+﻿using System;
 using System.Globalization;
+using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace MathCore.WPF.Converters
 {
     public class CustomMulti : MultiValueValueConverter
     {
-        public Func<object[], object> Forvard { get; set; }
-        public Func<object[], object, object> ForvardParam { get; set; }
-        public Func<object, object[]> Backvard { get; set; }
-        public Func<object, object, object[]> BackvardParam { get; set; }
+        public Func<object[]?, object?>? Forward { get; set; }
 
-        protected override object Convert(object[] vv, Type t, object p, CultureInfo c) => Forvard != null ? Forvard(vv) : ForvardParam?.Invoke(vv, p);
+        public Func<object[]?, object?, object?>? ForwardParam { get; set; }
 
-        protected override object[] ConvertBack(object v, Type[] tt, object p, CultureInfo c) => Backvard != null ? Backvard(v) : BackvardParam?.Invoke(v, p);
+        public Func<object?, object[]?>? Backward { get; set; }
+
+        public Func<object?, object?, object[]?>? BackwardParam { get; set; }
+
+        [CanBeNull]
+        protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => 
+            Forward is null 
+                ? ForwardParam?.Invoke(vv, p) 
+                : Forward(vv);
+
+        [CanBeNull]
+        protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => 
+            Backward is null 
+                ? BackwardParam?.Invoke(v, p) 
+                : Backward(v);
     }
 }

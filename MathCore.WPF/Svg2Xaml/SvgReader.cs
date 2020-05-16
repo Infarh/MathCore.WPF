@@ -59,10 +59,10 @@ namespace MathCore.WPF.SVG
         /// </returns>
         public static DrawingImage Load(XmlReader reader, SvgReaderOptions options)
         {
-            if(options == null)
+            if(options is null)
                 options = new SvgReaderOptions();
 
-            XDocument document = XDocument.Load(reader);
+            var document = XDocument.Load(reader);
             if(document.Root.Name.NamespaceName != "http://www.w3.org/2000/svg")
                 throw new XmlException("Root element is not in namespace 'http://www.w3.org/2000/svg'.");
             if(document.Root.Name.LocalName != "svg")
@@ -103,7 +103,7 @@ namespace MathCore.WPF.SVG
         /// </returns>
         public static DrawingImage Load(Stream stream, SvgReaderOptions options)
         {
-            using(XmlReader reader = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+            using(var reader = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
                 return Load(reader, options);
         }
 

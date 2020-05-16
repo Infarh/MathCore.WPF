@@ -289,13 +289,12 @@ namespace MathCore.WPF
             taskbarRestartMessageId = WinApi.RegisterWindowMessage("TaskbarCreated");
 
             // Create the message window
-            MessageWindowHandle = WinApi.CreateWindowEx(0, WindowId, "", 0, 0, 0, 1, 1, IntPtr.Zero, IntPtr.Zero,
-                        IntPtr.Zero, IntPtr.Zero);
+            MessageWindowHandle = WinApi.CreateWindowEx(0, WindowId, "", 0, 0, 0, 1, 1, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
 
             if (MessageWindowHandle == IntPtr.Zero)
             {
 #if SILVERLIGHT
-      	throw new Exception("Message window handle was not a valid pointer.");
+                throw new Exception("Message window handle was not a valid pointer.");
 #else
                 throw new Win32Exception("Message window handle was not a valid pointer");
 #endif

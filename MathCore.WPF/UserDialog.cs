@@ -1,4 +1,4 @@
-using System;
+п»їusing System;
 using System.Collections;
 using System.ComponentModel;
 using System.Linq;
@@ -11,12 +11,12 @@ using MathCore.WPF.Commands;
 
 namespace MathCore.WPF
 {
-    /// <summary>Пользовательский диалог</summary>
+    /// <summary>РџРѕР»СЊР·РѕРІР°С‚РµР»СЊСЃРєРёР№ РґРёР°Р»РѕРі</summary>
     public sealed class UserDialog : FrameworkElement, ICommand
     {
-        #region WindowStyle dependency property (Other : Стиль окна диалога) : Style
+        #region WindowStyle dependency property (Other : РЎС‚РёР»СЊ РѕРєРЅР° РґРёР°Р»РѕРіР°) : Style
 
-        /// <summary>Стиль окна диалога</summary>
+        /// <summary>РЎС‚РёР»СЊ РѕРєРЅР° РґРёР°Р»РѕРіР°</summary>
         public static readonly DependencyProperty WindowStyleProperty =
             DependencyProperty.Register(
                 nameof(WindowStyle),
@@ -24,9 +24,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(Style)));
 
-        /// <summary>Стиль окна диалога</summary>
+        /// <summary>РЎС‚РёР»СЊ РѕРєРЅР° РґРёР°Р»РѕРіР°</summary>
         [Category("Other")]
-        [Description("Стиль окна диалога")]
+        [Description("РЎС‚РёР»СЊ РѕРєРЅР° РґРёР°Р»РѕРіР°")]
         public Style WindowStyle
         {
             get => (Style)GetValue(WindowStyleProperty);
@@ -35,9 +35,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region IsDialogDefault dependency property (Other : Отображение по умолчанию в виде диалога) : bool
+        #region IsDialogDefault dependency property (Other : РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РІРёРґРµ РґРёР°Р»РѕРіР°) : bool
 
-        /// <summary>Отображение по умолчанию в виде диалога</summary>
+        /// <summary>РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РІРёРґРµ РґРёР°Р»РѕРіР°</summary>
         public static readonly DependencyProperty IsDialogDefaultProperty =
             DependencyProperty.Register(
                 nameof(IsDialogDefault),
@@ -45,9 +45,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(bool)));
 
-        /// <summary>Отображение по умолчанию в виде диалога</summary>
+        /// <summary>РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РІРёРґРµ РґРёР°Р»РѕРіР°</summary>
         [Category("Other")]
-        [Description("Отображение по умолчанию в виде диалога")]
+        [Description("РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ РІ РІРёРґРµ РґРёР°Р»РѕРіР°")]
         public bool IsDialogDefault
         {
             get => (bool)GetValue(IsDialogDefaultProperty);
@@ -56,9 +56,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region WindowContent dependency property (Other : Содержимое окна) : object
+        #region WindowContent dependency property (Other : РЎРѕРґРµСЂР¶РёРјРѕРµ РѕРєРЅР°) : object
 
-        /// <summary>Содержимое окна</summary>
+        /// <summary>РЎРѕРґРµСЂР¶РёРјРѕРµ РѕРєРЅР°</summary>
         public static readonly DependencyProperty WindowContentProperty =
             DependencyProperty.Register(
                 nameof(WindowContent),
@@ -66,16 +66,16 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(object)));
 
-        /// <summary>Содержимое окна</summary>
+        /// <summary>РЎРѕРґРµСЂР¶РёРјРѕРµ РѕРєРЅР°</summary>
         [Category("Other")]
-        [Description("Содержимое окна")]
+        [Description("РЎРѕРґРµСЂР¶РёРјРѕРµ РѕРєРЅР°")]
         public object WindowContent { get => GetValue(WindowContentProperty); set => SetValue(WindowContentProperty, value); }
 
         #endregion
 
-        #region Template dependency property (Other : Шаблон диалога) : DataTemplate
+        #region Template dependency property (Other : РЁР°Р±Р»РѕРЅ РґРёР°Р»РѕРіР°) : DataTemplate
 
-        /// <summary>Шаблон диалога</summary>
+        /// <summary>РЁР°Р±Р»РѕРЅ РґРёР°Р»РѕРіР°</summary>
         public static readonly DependencyProperty TemplateProperty =
             DependencyProperty.Register(
                 nameof(Template),
@@ -83,9 +83,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(DataTemplate)));
 
-        /// <summary>Шаблон диалога</summary>
+        /// <summary>РЁР°Р±Р»РѕРЅ РґРёР°Р»РѕРіР°</summary>
         [Category("Other")]
-        [Description("Шаблон диалога")]
+        [Description("РЁР°Р±Р»РѕРЅ РґРёР°Р»РѕРіР°")]
         public DataTemplate Template
         {
             get => (DataTemplate)GetValue(TemplateProperty);
@@ -94,9 +94,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region WindowIcon dependency property (Other : Иконка окна диалога) : ImageSource
+        #region WindowIcon dependency property (Other : РРєРѕРЅРєР° РѕРєРЅР° РґРёР°Р»РѕРіР°) : ImageSource
 
-        /// <summary>Иконка окна диалога</summary>
+        /// <summary>РРєРѕРЅРєР° РѕРєРЅР° РґРёР°Р»РѕРіР°</summary>
         public static readonly DependencyProperty WindowIconProperty =
             DependencyProperty.Register(
                 nameof(WindowIcon),
@@ -104,9 +104,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(ImageSource)));
 
-        /// <summary>Иконка окна диалога</summary>
+        /// <summary>РРєРѕРЅРєР° РѕРєРЅР° РґРёР°Р»РѕРіР°</summary>
         [Category("Other")]
-        [Description("Иконка окна диалога")]
+        [Description("РРєРѕРЅРєР° РѕРєРЅР° РґРёР°Р»РѕРіР°")]
         public ImageSource WindowIcon
         {
             get => (ImageSource)GetValue(WindowIconProperty);
@@ -115,9 +115,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region WindowWidth dependency property (Other : Ширина окна) : double
+        #region WindowWidth dependency property (Other : РЁРёСЂРёРЅР° РѕРєРЅР°) : double
 
-        /// <summary>Ширина окна</summary>
+        /// <summary>РЁРёСЂРёРЅР° РѕРєРЅР°</summary>
         public static readonly DependencyProperty WindowWidthProperty =
             DependencyProperty.Register(
                 nameof(WindowWidth),
@@ -125,9 +125,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(double)));
 
-        /// <summary>Ширина окна</summary>
+        /// <summary>РЁРёСЂРёРЅР° РѕРєРЅР°</summary>
         [Category("Other")]
-        [Description("Ширина окна")]
+        [Description("РЁРёСЂРёРЅР° РѕРєРЅР°")]
         public double WindowWidth
         {
             get => (double)GetValue(WindowWidthProperty);
@@ -136,9 +136,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region WindowHeight dependency property (Other : Высота окна) : double
+        #region WindowHeight dependency property (Other : Р’С‹СЃРѕС‚Р° РѕРєРЅР°) : double
 
-        /// <summary>Высота окна</summary>
+        /// <summary>Р’С‹СЃРѕС‚Р° РѕРєРЅР°</summary>
         public static readonly DependencyProperty WindowHeightProperty =
             DependencyProperty.Register(
                 nameof(WindowHeight),
@@ -146,9 +146,9 @@ namespace MathCore.WPF
                 typeof(UserDialog),
                 new PropertyMetadata(default(double)));
 
-        /// <summary>Высота окна</summary>
+        /// <summary>Р’С‹СЃРѕС‚Р° РѕРєРЅР°</summary>
         [Category("Other")]
-        [Description("Высота окна")]
+        [Description("Р’С‹СЃРѕС‚Р° РѕРєРЅР°")]
         public double WindowHeight
         {
             get => (double)GetValue(WindowHeightProperty);
@@ -157,10 +157,10 @@ namespace MathCore.WPF
 
         #endregion
 
-        /// <summary>Показать окно без блокировки</summary>
+        /// <summary>РџРѕРєР°Р·Р°С‚СЊ РѕРєРЅРѕ Р±РµР· Р±Р»РѕРєРёСЂРѕРІРєРё</summary>
         public ICommand ShowCommand => new LambdaCommand(OnShowCommandExecute);
 
-        /// <summary>Показать диалог в модальном режиме</summary>
+        /// <summary>РџРѕРєР°Р·Р°С‚СЊ РґРёР°Р»РѕРі РІ РјРѕРґР°Р»СЊРЅРѕРј СЂРµР¶РёРјРµ</summary>
         public ICommand ShowDialogCommand => new LambdaCommand(OnShowDialogCommandExecute);
 
         private void OnShowDialogCommandExecute(object Obj) => CreateWindow(Obj).ShowDialog();

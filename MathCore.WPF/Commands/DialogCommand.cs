@@ -1,11 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
     public class DialogCommand : LambdaCommand<bool?>
     {
-        private Window Window
+        [CanBeNull]
+        private Window? Window
         {
             get
             {
@@ -15,13 +18,13 @@ namespace MathCore.WPF.Commands
             }
         }
 
-        public override bool CanExecute(object obj) => ViewModel.IsDesignMode || Window != null;
+        public override bool CanExecute(object? obj) => ViewModel.IsDesignMode || Window != null;
 
-        public override void Execute(object parameter)
+        public override void Execute(object? parameter)
         {
-            var window = Window;
-            if (!(parameter is bool)) parameter = ConvertParameter(parameter);
-            window.DialogResult = parameter as bool?;
+            var window = Window ?? throw new InvalidOperationException("Отсутствует ссылка на окно");
+            window.DialogResult = parameter as bool? ?? ConvertParameter(parameter) as bool? ?? false;
+
             window.Close();
         }
     }

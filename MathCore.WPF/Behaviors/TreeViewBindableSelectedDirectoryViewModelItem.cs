@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Behaviors
 {
@@ -17,8 +18,9 @@ namespace MathCore.WPF.Behaviors
 
         private static bool SelectTreeViewItem([NotNull] ItemsControl Container, [NotNull] string path)
         {
-            foreach (DirectoryViewModel model in Container.Items)
+            foreach (DirectoryViewModel? model in Container.Items)
             {
+                if(model is null) continue;
                 var view = (TreeViewItem)Container.ItemContainerGenerator.ContainerFromItem(model);
                 if (view is null) continue;
                 if (model.Equals(path))
@@ -42,11 +44,11 @@ namespace MathCore.WPF.Behaviors
             return false;
         }
 
-        protected override void OnTreeViewItem_Loaded(object Sender, RoutedEventArgs _)
+        protected override void OnTreeViewItem_Loaded(object? Sender, RoutedEventArgs? _)
         {
-            var selected_item = (DirectoryViewModel)SelectedItem;
+            var selected_item = (DirectoryViewModel)SelectedItem!;
             if (selected_item is null) return;
-            var tree_view_item = (TreeViewItem)Sender ?? throw new InvalidOperationException();
+            var tree_view_item = (TreeViewItem)Sender!;
             var current_item = (DirectoryViewModel)tree_view_item.DataContext;
             var selected_path = selected_item.Directory.FullName;
             var current_path = current_item.Directory.FullName;

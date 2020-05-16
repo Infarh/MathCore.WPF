@@ -1,4 +1,4 @@
-namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX
 {
     /// <summary>Atom representing other atom that is underlined</summary>
     internal class UnderlinedAtom : Atom
@@ -16,7 +16,7 @@ namespace MathCore.WPF.TeX
             var defaultLineThickness = environment.TexFont.GetDefaultLineThickness(environment.Style);
 
             // Create box for base atom.
-            var baseBox = BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
+            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
 
             // Create result box.
             var resultBox = new VerticalBox();

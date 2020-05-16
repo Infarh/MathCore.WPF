@@ -1,12 +1,14 @@
 ﻿using System.Windows;
 using MathCore.Annotations;
+// ReSharper disable MemberCanBePrivate.Global
+
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Commands
 {
     public class ShowMessageCommand : Command
     {
-        [CanBeNull]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         public MessageBoxButton Buttons { get; set; } = MessageBoxButton.OK;
 
@@ -33,8 +35,8 @@ namespace MathCore.WPF.Commands
         public ShowMessageCommand() { }
         public ShowMessageCommand([CanBeNull] string Title) => this.Title = Title;
 
-        public override bool CanExecute(object parameter) => !string.IsNullOrEmpty(parameter as string);
+        public override bool CanExecute(object? parameter) => !string.IsNullOrEmpty(parameter as string);
 
-        public override void Execute(object parameter) => Result = MessageBox.Show((string)parameter, Title ?? "Message", Buttons, Image, DefaultResult, Options);
+        public override void Execute(object? parameter) => Result = MessageBox.Show((string)parameter!, Title ?? "Message", Buttons, Image, DefaultResult, Options);
     }
 }

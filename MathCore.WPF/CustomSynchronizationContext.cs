@@ -119,7 +119,7 @@ namespace MathCore.WPF
             public SynchronousWorkItem(SendOrPostCallback sendOrPostCallback, object state, AutoResetEvent ResetEvent,
                 ref WorkItemExecutionInfo WorkItemExecutionInfo) : base(sendOrPostCallback, state)
             {
-                if(WorkItemExecutionInfo == null)
+                if(WorkItemExecutionInfo is null)
                     throw new NullReferenceException(nameof(WorkItemExecutionInfo));
 
                 _SyncObject = ResetEvent;

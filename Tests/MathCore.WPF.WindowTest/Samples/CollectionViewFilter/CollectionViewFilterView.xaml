@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="MathCore.WPF.WindowTest.Samples.CollectionViewFilter.CollectionViewFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:l="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <l:CollectionViewFilterViewModel />
+    </UserControl.DataContext>
+    <DockPanel>
+        <DockPanel.Resources>
+            <CollectionViewSource x:Key="Employees" Source="{Binding Employees}"
+                                  CollectionViewFilter.FilterText="{Binding Text, ElementName=FilterText, UpdateSourceTrigger=PropertyChanged}"
+                                  CollectionViewFilter.PropertyName="EmployeName"/>
+        </DockPanel.Resources>
+        <DockPanel DockPanel.Dock="Top" Margin="2">
+            <TextBlock Text="Фильтр:" Margin="0,0,2,0"/>
+            <TextBox Name="FilterText"/>
+        </DockPanel>
+        <DataGrid ItemsSource="{Binding Source={StaticResource Employees}, IsAsync=True}"
+                  EnableRowVirtualization="True"
+                  VirtualizingStackPanel.IsVirtualizing="False"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  VirtualizingStackPanel.CacheLength="1"
+                  VirtualizingStackPanel.ScrollUnit="Item"
+                  VirtualizingStackPanel.CacheLengthUnit="Item"
+                  ScrollViewer.IsDeferredScrollingEnabled="False"
+                  AlternatingRowBackground="LightCyan"
+                  GridLinesVisibility="Vertical"
+                  VerticalGridLinesBrush="LightGray"
+                  DataGridEx.UseDataAnnotations="True" DataGridEx.AddRowNumber="True">
+            <DataGrid.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </DataGrid.ItemsPanel>
+        </DataGrid>
+    </DockPanel>
+</UserControl>

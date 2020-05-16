@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace MathCore.WPF.TeX
 {
@@ -26,8 +26,8 @@ namespace MathCore.WPF.TeX
             var style = environment.Style;
 
             // Create box for base atom.
-            var baseBox = (BaseAtom == null ? StrutBox.Empty : BaseAtom.CreateBox(environment));
-            if(SubscriptAtom == null && SuperscriptAtom == null)
+            var baseBox = (BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment));
+            if(SubscriptAtom is null && SuperscriptAtom is null)
                 return baseBox;
 
             // Create result box.
@@ -63,7 +63,7 @@ namespace MathCore.WPF.TeX
                 resultBox = new HorizontalBox(charBox);
 
                 delta = charInfo.Metrics.Italic;
-                if(delta > TexUtilities.FloatPrecision && SubscriptAtom == null)
+                if(delta > TexUtilities.FloatPrecision && SubscriptAtom is null)
                     resultBox.Add(new StrutBox(delta, 0, 0, 0));
 
                 shiftUp = resultBox.Height - texFont.GetSupDrop(superscriptStyle.Style);
@@ -74,7 +74,7 @@ namespace MathCore.WPF.TeX
                 var charFont = ((CharSymbol)BaseAtom).GetCharFont(texFont);
                 if(!((CharSymbol)BaseAtom).IsTextSymbol || !texFont.HasSpace(charFont.FontId))
                     delta = texFont.GetCharInfo(charFont, style).Metrics.Italic;
-                if(delta > TexUtilities.FloatPrecision && SubscriptAtom == null)
+                if(delta > TexUtilities.FloatPrecision && SubscriptAtom is null)
                 {
                     resultBox.Add(new StrutBox(delta, 0, 0, 0));
                     delta = 0;
@@ -126,7 +126,7 @@ namespace MathCore.WPF.TeX
             }
 
             // Check if only superscript is set.
-            if(subscriptBox == null)
+            if(subscriptBox is null)
             {
                 superscriptContainerBox.Shift = -shiftUp;
                 resultBox.Add(superscriptContainerBox);
@@ -134,7 +134,7 @@ namespace MathCore.WPF.TeX
             }
 
             // Check if only subscript is set.
-            if(superscriptBox == null)
+            if(superscriptBox is null)
             {
                 subscriptBox.Shift = Math.Max(Math.Max(shiftDown, texFont.GetSub1(style)), subscriptBox.Height - 4 *
                                                                                            Math.Abs(texFont.GetXHeight(style, lastFontId)) / 5);

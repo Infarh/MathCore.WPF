@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+// ReSharper disable CommentTypo
+// ReSharper disable IdentifierTypo
 
 namespace MathCore.WPF.pInvoke
 {
     /// <summary>Windows Messages</summary>
     [SuppressMessage("ReSharper", "InconsistentNaming"), SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public enum WM : uint
+    internal enum WM : uint
     {
         /// <summary>
         /// The WM_NULL message performs no operation. An application sends the WM_NULL message if it wants to post a message that the recipient window will ignore.

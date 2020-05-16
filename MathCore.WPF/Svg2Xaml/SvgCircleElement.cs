@@ -62,15 +62,15 @@ namespace MathCore.WPF.SVG
     public SvgCircleElement(SvgDocument document, SvgBaseElement parent, XElement circleElement)
       : base(document, parent, circleElement)
     {
-      XAttribute cx_attribute = circleElement.Attribute("cx");
+      var cx_attribute = circleElement.Attribute("cx");
       if(cx_attribute != null)
         CenterX = SvgCoordinate.Parse(cx_attribute.Value);
 
-      XAttribute cy_attribute = circleElement.Attribute("cy");
+      var cy_attribute = circleElement.Attribute("cy");
       if(cy_attribute != null)
         CenterY = SvgCoordinate.Parse(cy_attribute.Value);
 
-      XAttribute r_attribute = circleElement.Attribute("r");
+      var r_attribute = circleElement.Attribute("r");
       if(r_attribute != null)
         Radius = SvgLength.Parse(r_attribute.Value);
     }
