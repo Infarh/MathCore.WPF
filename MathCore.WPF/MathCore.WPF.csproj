@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <PackageReleaseNotes>
-      Исправление работы команд
+      Добавлены мульти-конвертеры для объединения значений в перечисление и в CompositeCollection
     </PackageReleaseNotes>
     <Authors>Shmachilin P.A.</Authors>
     <Description>Библиотека инструментов для работы с WPF</Description>
