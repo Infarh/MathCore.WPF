@@ -4,7 +4,8 @@ using System.Xaml;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Extensions
+// ReSharper disable once CheckNamespace
+namespace System
 {
     public static class ServiceProviderInterfaceExtensions
     {
