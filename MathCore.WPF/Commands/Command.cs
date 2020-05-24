@@ -106,7 +106,8 @@ namespace MathCore.WPF.Commands
         [NotNull]
         public override object ProvideValue(IServiceProvider sp)
         {
-            var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));
+            //var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));
+            var target_value_provider = sp.GetValueTargetProvider();
             if (target_value_provider != null)
             {
                 var target = target_value_provider.TargetObject;
@@ -115,7 +116,8 @@ namespace MathCore.WPF.Commands
                 _TargetPropertyReference = target_property is null ? null : new WeakReference(target_property);
             }
 
-            var root_object_provider = (IRootObjectProvider)sp.GetService(typeof(IRootObjectProvider));
+            //var root_object_provider = (IRootObjectProvider)sp.GetService(typeof(IRootObjectProvider));
+            var root_object_provider = sp.GetRootObjectProvider();
             if (root_object_provider != null)
             {
                 var root = root_object_provider.RootObject;

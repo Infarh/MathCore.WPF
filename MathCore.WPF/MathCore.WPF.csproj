@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <PackageReleaseNotes>
-      ObservableLinkedList переименован в DispatcheredObservableLinkedList
+      Исправление работы команд
     </PackageReleaseNotes>
     <Authors>Shmachilin P.A.</Authors>
     <Description>Библиотека инструментов для работы с WPF</Description>

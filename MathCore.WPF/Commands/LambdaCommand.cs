@@ -97,9 +97,6 @@ namespace MathCore.WPF.Commands
 
         #region Методы
 
-        /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider sp) => this;
-
         /// <summary>Выполнение команды</summary>
         /// <param name="parameter">Параметр процесса выполнения команды</param>
         /// <exception cref="InvalidOperationException">Метод выполнения команды не определён</exception>
@@ -202,8 +199,6 @@ namespace MathCore.WPF.Commands
         #endregion
 
         #region Методы
-
-        public override object ProvideValue(IServiceProvider sp) => this;
 
         [CanBeNull]
         protected object? ConvertParameter([CanBeNull] object? parameter)
