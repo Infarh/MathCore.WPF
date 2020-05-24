@@ -11,7 +11,7 @@
   <PropertyGroup>
     <Version>0.0.3</Version>
     <PackageReleaseNotes>
-      Добавлены мульти-конвертеры для объекдинения значений в перечисление и в CompositeCollection
+      Добавлены мульти-конвертеры для объединения значений в перечисление и в CompositeCollection
     </PackageReleaseNotes>
     <Authors>Shmachilin P.A.</Authors>
     <Description>Библиотека инструментов для работы с WPF</Description>
