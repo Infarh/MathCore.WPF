@@ -4,16 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
-             xmlns:vm="clr-namespace:MathCore.WPF.ViewModels;assembly=MathCore.WPF"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:collectionViewFilter="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
+        xmlns:events="clr-namespace:MathCore.WPF.UIEvents;assembly=MathCore.WPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Выход" Command="{CloseWindow}"/>
             </MenuItem>
         </Menu>
+        <StatusBar DockPanel.Dock="Bottom" Validation.Error="OnContentChanged">
+            <StatusBarItem >
+                <Button Content="Click" Command="{Binding TestCommand}"
+                        ModelEvent.Source="{Binding StatusChangedEvent}">
+                    <Button.Triggers>
+                        <EventTrigger RoutedEvent="ModelEvent.Invoked">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                     To="0" Duration="0:0:3" AutoReverse="True"/>
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Button.Triggers>
+                </Button>
+            </StatusBarItem>
+            <StatusBarItem Content="{Binding Status}"/>
+        </StatusBar>
         <collectionViewFilter:CollectionViewFilterView/>
     </DockPanel>
 </Window>
