@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
-        xmlns:collectionViewFilter="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
+        xmlns:cvf="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
         xmlns:events="clr-namespace:MathCore.WPF.UIEvents;assembly=MathCore.WPF"
         mc:Ignorable="d"
         Title="{Binding Title}"
@@ -13,30 +13,37 @@
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <CubicEase x:Key="CubicEase_InOut" EasingMode="EaseInOut" />
+        <Storyboard x:Key="Opacity_1s_Reversed">
+            <!--<DoubleAnimation Storyboard.TargetProperty="Opacity" 
+                             From="1" To="0.3" Duration="0:0:0.05" 
+                             FillBehavior="Stop" AutoReverse="True" RepeatBehavior="0:0:0.5"/>-->
+            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
+                            From="White" To="Red" Duration="0:0:0.1" 
+                            FillBehavior="Stop" AutoReverse="True" RepeatBehavior="5x" 
+                            EasingFunction="{StaticResource CubicEase_InOut}">
+            </ColorAnimation>
+        </Storyboard>
+    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл">
                 <MenuItem Header="Выход" Command="{CloseWindow}"/>
             </MenuItem>
         </Menu>
-        <StatusBar DockPanel.Dock="Bottom" Validation.Error="OnContentChanged">
+        <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem >
-                <Button Content="Click" Command="{Binding TestCommand}"
-                        ModelEvent.Source="{Binding StatusChangedEvent}">
+                <Button Content="Click" Padding="15,0" Background="White" Command="{Binding TestCommand}" ModelEvent.Source="{Binding StatusChangedEvent}">
                     <Button.Triggers>
                         <EventTrigger RoutedEvent="ModelEvent.Invoked">
-                            <BeginStoryboard>
-                                <Storyboard>
-                                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                                     To="0" Duration="0:0:3" AutoReverse="True"/>
-                                </Storyboard>
-                            </BeginStoryboard>
+                            <BeginStoryboard Storyboard="{StaticResource Opacity_1s_Reversed}"/>
                         </EventTrigger>
                     </Button.Triggers>
                 </Button>
             </StatusBarItem>
             <StatusBarItem Content="{Binding Status}"/>
         </StatusBar>
-        <collectionViewFilter:CollectionViewFilterView/>
+        <cvf:CollectionViewFilterView/>
     </DockPanel>
 </Window>
