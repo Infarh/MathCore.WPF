@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathCore" Version="0.0.24" />
+    <PackageReference Include="NAudio" Version="1.10.0" />
   </ItemGroup>
 
   <ItemGroup>
