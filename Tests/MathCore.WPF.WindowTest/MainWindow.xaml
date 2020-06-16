@@ -4,16 +4,51 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
-             xmlns:vm="clr-namespace:MathCore.WPF.ViewModels;assembly=MathCore.WPF"
+        xmlns:vm="clr-namespace:MathCore.WPF.ViewModels;assembly=MathCore.WPF"
         xmlns:collectionViewFilter="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+        xmlns:ss="clr-namespace:MathCore.WPF.Styles.Selectors;assembly=MathCore.WPF"
+        xmlns:dts="clr-namespace:MathCore.WPF.Templates.Selectors;assembly=MathCore.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Файл">
-                <MenuItem Header="Выход" Command="{CloseWindow}"/>
-            </MenuItem>
-        </Menu>
-        <collectionViewFilter:CollectionViewFilterView/>
+        <ListBox>
+            <ListBox.ItemTemplateSelector>
+                <dts:FirstLastItemsSelector>
+                    <dts:FirstLastItemsSelector.FirstItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Foreground="White"/>
+                        </DataTemplate>
+                    </dts:FirstLastItemsSelector.FirstItemTemplate>
+                    <dts:FirstLastItemsSelector.LastItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Foreground="White"/>
+                        </DataTemplate>
+                    </dts:FirstLastItemsSelector.LastItemTemplate>
+                </dts:FirstLastItemsSelector>
+            </ListBox.ItemTemplateSelector>
+            <ListBox.ItemContainerStyleSelector>
+                <ss:FirstLastItemsSelector>
+                    <ss:FirstLastItemsSelector.FirstItemStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Red"/>
+                        </Style>
+                    </ss:FirstLastItemsSelector.FirstItemStyle>
+                    <ss:FirstLastItemsSelector.LastItemStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Background" Value="Lime"/>
+                        </Style>
+                    </ss:FirstLastItemsSelector.LastItemStyle>
+                </ss:FirstLastItemsSelector>
+            </ListBox.ItemContainerStyleSelector>
+            <ListBox.ItemsSource>
+                <CompositeCollection>
+                    <sys:String>qwe</sys:String>
+                    <sys:String>qwe</sys:String>
+                    <sys:String>qwe</sys:String>
+                    <sys:String>qwe</sys:String>
+                </CompositeCollection>
+            </ListBox.ItemsSource>
+        </ListBox>
     </DockPanel>
 </Window>

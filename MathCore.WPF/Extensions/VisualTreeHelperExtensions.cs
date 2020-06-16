@@ -15,42 +15,60 @@ namespace System.Windows
         public static T? FindVisualParent<T>([CanBeNull] this DependencyObject obj) where T : class
         {
             if (obj is null) return null;
-            var target = obj;
-            do { target = VisualTreeHelper.GetParent(target); } while (target != null && !(target is T));
-            return target as T;
-        }
+            for(var target = VisualTreeHelper.GetParent(obj); target != null; target = VisualTreeHelper.GetParent(target))
+                if (target is T result)
+                    return result;
+            return null;
 
-        [CanBeNull]
-        public static DependencyObject? FindLogicalRoot([CanBeNull] this DependencyObject obj)
-        {
-            if (obj is null) return null;
-            do
-            {
-                var parent = LogicalTreeHelper.GetParent(obj);
-                if (parent is null) return obj;
-                obj = parent;
-            } while (true);
-        }
-
-        [CanBeNull]
-        public static DependencyObject? FindVisualRoot([CanBeNull] this DependencyObject obj)
-        {
-            if (obj is null) return null;
-            do
-            {
-                var parent = VisualTreeHelper.GetParent(obj);
-                if (parent is null) return obj;
-                obj = parent;
-            } while (true);
+            //var target = obj;
+            //do { target = VisualTreeHelper.GetParent(target); } while (target != null && !(target is T));
+            //return target as T;
         }
 
         [CanBeNull]
         public static T? FindLogicalParent<T>([CanBeNull] this DependencyObject obj) where T : class
         {
             if (obj is null) return null;
-            var target = obj;
-            do { target = LogicalTreeHelper.GetParent(target); } while (target != null && !(target is T));
-            return target as T;
+            for (var target = LogicalTreeHelper.GetParent(obj); target != null; target = LogicalTreeHelper.GetParent(target))
+                if (target is T result)
+                    return result;
+            return null;
+
+            //var target = obj;
+            //do { target = LogicalTreeHelper.GetParent(target); } while (target != null && !(target is T));
+            //return target as T;
+        }
+
+        [CanBeNull]
+        public static DependencyObject? FindLogicalRoot([CanBeNull] this DependencyObject obj)
+        {
+            if (obj is null) return null;
+            for (var parent = LogicalTreeHelper.GetParent(obj); parent != null; parent = LogicalTreeHelper.GetParent(obj))
+                obj = parent;
+            return obj;
+
+            //do
+            //{
+            //    var parent = LogicalTreeHelper.GetParent(obj);
+            //    if (parent is null) return obj;
+            //    obj = parent;
+            //} while (true);
+        }
+
+        [CanBeNull]
+        public static DependencyObject? FindVisualRoot([CanBeNull] this DependencyObject obj)
+        {
+            if (obj is null) return null;
+            for (var parent = VisualTreeHelper.GetParent(obj); parent != null; parent = VisualTreeHelper.GetParent(obj))
+                obj = parent;
+            return obj;
+
+            //do
+            //{
+            //    var parent = VisualTreeHelper.GetParent(obj);
+            //    if (parent is null) return obj;
+            //    obj = parent;
+            //} while (true);
         }
 
         public static IEnumerable<DependencyObject> GetAllVisualChilds([CanBeNull] this DependencyObject obj)
