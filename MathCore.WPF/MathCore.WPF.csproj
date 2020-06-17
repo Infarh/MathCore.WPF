@@ -9,10 +9,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <PackageReleaseNotes>
-      Добавлены мульти-конвертеры для объединения значений в перечисление и в CompositeCollection
+      Добавлен класс, упрощающий работу с элементами коллекции при их привязке в интерфейсе
     </PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <Authors>Shmachilin P.A.</Authors>
     <Description>Библиотека инструментов для работы с WPF</Description>
     <Copyright>shmachilin@gmail.com</Copyright>
