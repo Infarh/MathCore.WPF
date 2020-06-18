@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <PackageReleaseNotes>
-      Добавлен класс, упрощающий работу с элементами коллекции при их привязке в интерфейсе
+      Добавлены асинхронные реализации методов-продолжений сеттеров свойств модели-представления
     </PackageReleaseNotes>
   </PropertyGroup>
 
