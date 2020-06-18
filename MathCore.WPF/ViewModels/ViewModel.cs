@@ -461,9 +461,27 @@ namespace MathCore.WPF.ViewModels
                 return _Result;
             }
 
+            public bool ThenAsync([NotNull] Action execute)
+            {
+                if (_Result) Task.Run(execute);
+                return _Result;
+            }
+
+            public bool ThenAsync([NotNull] Action<T> execute)
+            {
+                if (_Result) _NewValue.Async(execute);
+                return _Result;
+            }
+
             public bool ThenIf([NotNull] Func<T, bool> predicate, [NotNull] Action<T> execute)
             {
                 if (_Result && predicate(_NewValue)) execute(_NewValue);
+                return _Result;
+            }
+
+            public bool ThenIfAsync([NotNull] Func<T, bool> predicate, [NotNull] Action<T> execute)
+            {
+                if (_Result && predicate(_NewValue)) _NewValue.Async(execute);
                 return _Result;
             }
 
@@ -474,12 +492,25 @@ namespace MathCore.WPF.ViewModels
                 return this;
             }
 
+            [NotNull]
+            public SetValueResult<T> ThenSetAsync([NotNull] Action<T> SetAction)
+            {
+                if (_Result) _NewValue.Async(SetAction);
+                return this;
+            }
+
             public bool Then([NotNull] Action<T, T> execute)
             {
                 if (_Result) execute(_OldValue, _NewValue);
                 return _Result;
             }
-            
+
+            public bool ThenAsync([NotNull] Action<T, T> execute)
+            {
+                if (_Result) _OldValue.Async(_NewValue, execute);
+                return _Result;
+            }
+
             [NotNull]
             public SetValueResult<T> ThenUpdate([NotNull] string PropertyName, bool UpdateCommands = false)
             {
@@ -524,31 +555,37 @@ namespace MathCore.WPF.ViewModels
                 execute();
                 return _Result;
             }
+
             public bool AnywayThen([NotNull] Action<bool> execute)
             {
                 execute(_Result);
                 return _Result;
             }
+
             public bool AnywayThen([NotNull] Action<T> execute)
             {
                 execute(_NewValue);
                 return _Result;
             }
+
             public bool AnywayThen([NotNull] Action<T, bool> execute)
             {
                 execute(_NewValue, _Result);
                 return _Result;
             }
+
             public bool AnywayThen([NotNull] Action<T, T> execute)
             {
                 execute(_OldValue, _NewValue);
                 return _Result;
             }
+
             public bool AnywayThen([NotNull] Action<T, T, bool> execute)
             {
                 execute(_OldValue, _NewValue, _Result);
                 return _Result;
             }
+
             public static implicit operator bool([NotNull] SetValueResult<T> result) => result._Result;
         }
 
