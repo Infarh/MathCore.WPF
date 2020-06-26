@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq.Reactive;
 using System.Windows.Markup;
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
@@ -137,7 +138,7 @@ namespace MathCore.WPF.Commands
     /// Типизированная лямбда-команда
     /// Позволяет быстро указывать методы для выполнения основного тела команды и определения возможности выполнения
     /// </summary>
-    public class LambdaCommand<T> : Command
+    public class LambdaCommand<T> : Command, IObservableEx<T>
     {
         #region События
 
@@ -219,7 +220,7 @@ namespace MathCore.WPF.Commands
 
         public override void Execute(object? parameter)
         {
-            var execute_action = _ExecuteAction ?? throw new InvalidOperationException("Метод выполенния команды не определён");
+            var execute_action = _ExecuteAction ?? throw new InvalidOperationException(@"Метод выполнения команды не определён");
             if (parameter != null && !(parameter is T))
                 parameter = ConvertParameter(parameter);
             var cancel_args = new CancelEventArgs();
@@ -229,7 +230,18 @@ namespace MathCore.WPF.Commands
                 OnCancelled(cancel_args);
                 if (cancel_args.Cancel) return;
             }
-            execute_action.Invoke((T)parameter!);
+
+            var value = (T)parameter!;
+            if (_CanExecute?.Invoke(value) == false) return;
+            try
+            {
+                execute_action.Invoke(value);
+            }
+            catch (Exception error)
+            {
+                _Orservable?.OnError(error);
+                throw;
+            }
             OnCompleteExecuting(new EventArgs<object?>(parameter));
         }
 
@@ -252,10 +264,23 @@ namespace MathCore.WPF.Commands
             if (!disposing) return;
             _ExecuteAction = null;
             _CanExecute = null;
+            _Orservable?.OnCompleted();
+            _Orservable?.Dispose();
+            _Orservable = null;
         }
 
         #endregion
 
         [NotNull] public static explicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new LambdaCommand<T>(execute);
+
+        #region IObservable<T>
+
+        private SimpleObservableEx<T>? _Orservable;
+
+        public IDisposable Subscribe(IObserverEx<T> observer) => (_Orservable ??= new SimpleObservableEx<T>()).Subscribe(observer); 
+        public IDisposable Subscribe(IObserver<T> observer) => (_Orservable ??= new SimpleObservableEx<T>()).Subscribe(observer); 
+
+        #endregion
+
     }
 }

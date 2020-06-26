@@ -13,7 +13,7 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
-    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservable<object>
+    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object>
     {
         #region События
 
@@ -161,13 +161,14 @@ namespace MathCore.WPF.Commands
             GC.SuppressFinalize(this);
         }
 
-        protected bool _Disposed;
+        private bool _Disposed;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing || _Disposed) return;
 
             _Observable?.OnCompleted();
             _Observable?.Dispose();
+            _Observable = null;
             _Disposed = true;
         }
 
@@ -175,8 +176,9 @@ namespace MathCore.WPF.Commands
 
         #region IObservable<object>
 
-        private SimpleObservableEx<object> _Observable;
+        private SimpleObservableEx<object>? _Observable;
 
+        public IDisposable Subscribe(IObserverEx<object> observer) => (_Observable ??= new SimpleObservableEx<object>()).Subscribe(observer);
         public IDisposable Subscribe(IObserver<object> observer) => (_Observable ??= new SimpleObservableEx<object>()).Subscribe(observer);
 
         #endregion 
