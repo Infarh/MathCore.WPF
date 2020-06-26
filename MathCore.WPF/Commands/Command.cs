@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq.Reactive;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Xaml;
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
 // ReSharper disable VirtualMemberNeverOverridden.Global
@@ -14,7 +13,7 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
-    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable
+    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservable<object>
     {
         #region События
 
@@ -24,12 +23,12 @@ namespace MathCore.WPF.Commands
 
         event PropertyChangedEventHandler? INotifyPropertyChanged.PropertyChanged
         {
-            add => PropertyChangedHandlers += value; 
+            add => PropertyChangedHandlers += value;
             remove => PropertyChangedHandlers -= value;
         }
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName]  string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         [NotifyPropertyChangedInvocator]
         protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName] string? PropertyName = null)
@@ -129,29 +128,57 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
+        public virtual bool CanExecute([CanBeNull] object parameter) => ViewModel.IsDesignMode || _IsCanExecute;
+
+        public abstract void Execute([CanBeNull] object parameter);
+
         #region ICommand
 
-        public virtual bool CanExecute([CanBeNull] object parameter) => ViewModel.IsDesignMode || _IsCanExecute;
-        public abstract void Execute([CanBeNull] object parameter);
+        bool ICommand.CanExecute(object parameter) => CanExecute(parameter);
+
+        void ICommand.Execute(object parameter)
+        {
+            if (!CanExecute(parameter)) return;
+            try
+            {
+                Execute(parameter);
+                _Observable?.OnNext(parameter);
+            }
+            catch (Exception error)
+            {
+                _Observable?.OnError(error);
+                throw;
+            }
+        }
 
         #endregion
 
         #region IDisposable
 
-        protected bool _Disposed;
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        protected bool _Disposed;
         protected virtual void Dispose(bool disposing)
         {
             if (!disposing || _Disposed) return;
 
+            _Observable?.OnCompleted();
+            _Observable?.Dispose();
             _Disposed = true;
         }
 
         #endregion
+
+        #region IObservable<object>
+
+        private SimpleObservableEx<object> _Observable;
+
+        public IDisposable Subscribe(IObserver<object> observer) => (_Observable ??= new SimpleObservableEx<object>()).Subscribe(observer);
+
+        #endregion 
     }
 }
