@@ -20,7 +20,11 @@ using System.Windows.Markup;
 
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "MathCore.WPF.Converters")]
 [assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2007/xaml/presentation", "MathCore.WPF.Converters")]
-[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2008/xaml/presentation", "MathCore.WPF.Converters")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2008/xaml/presentation", "MathCore.WPF.Converters")] 
+
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "MathCore.WPF.UIEvents")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2007/xaml/presentation", "MathCore.WPF.UIEvents")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2008/xaml/presentation", "MathCore.WPF.UIEvents")]
 
 //[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "MathCore.WPF.Shapes")]
 //[assembly: XmlnsDefinition("http://schemas.microsoft.com/winfx/2007/xaml/presentation", "MathCore.WPF.Shapes")]

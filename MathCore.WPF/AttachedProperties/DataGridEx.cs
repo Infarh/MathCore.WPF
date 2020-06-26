@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
@@ -68,27 +69,17 @@ namespace MathCore.WPF
             //    column = E.Column;
             //}
 
-            var display_attribute = property.GetCustomAttribute<DisplayAttribute>();
-            if (display_attribute != null)
+            if (property.GetCustomAttribute<DisplayAttribute>() is { } display_attribute)
             {
-                try
+                if (display_attribute.GetAutoGenerateField() == false)
                 {
-                    if (!display_attribute.AutoGenerateField)
-                    {
-                        E.Cancel = true;
-                        return;
-                    }
-                }
-                catch (InvalidOperationException)
-                {
-
+                    E.Cancel = true;
+                    return;
                 }
 
-                var name = display_attribute.Name;
-                if (name != null) column.Header = name;
+                if (display_attribute.Name is {} name) column.Header = name;
 
-                var description = display_attribute.Description;
-                if (description != null)
+                if (display_attribute.Description is {} description)
                 {
                     var text_block = new FrameworkElementFactory(typeof(TextBlock));
                     text_block.SetBinding(TextBlock.TextProperty, new Binding());
@@ -100,8 +91,7 @@ namespace MathCore.WPF
                 }
             }
 
-            var format_attribute = property.GetCustomAttribute<DisplayFormatAttribute>();
-            if (format_attribute != null)
+            if (property.GetCustomAttribute<DisplayFormatAttribute>() is {} format_attribute)
             {
                 var text_column = column as DataGridTextColumn;
                 var value_format = format_attribute.DataFormatString;

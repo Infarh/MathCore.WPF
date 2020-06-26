@@ -455,6 +455,12 @@ namespace MathCore.WPF.ViewModels
                 return _Result;
             }
 
+            public bool Then([NotNull] Action<object?> execute)
+            {
+                if (_Result) execute(_NewValue);
+                return _Result;
+            }
+
             public bool Then([NotNull] Action<T> execute)
             {
                 if (_Result) execute(_NewValue);
