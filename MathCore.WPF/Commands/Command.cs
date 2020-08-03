@@ -128,9 +128,9 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        public virtual bool CanExecute([CanBeNull] object parameter) => ViewModel.IsDesignMode || _IsCanExecute;
+        public virtual bool CanExecute(object? parameter) => ViewModel.IsDesignMode || _IsCanExecute;
 
-        public abstract void Execute([CanBeNull] object parameter);
+        public abstract void Execute(object? parameter);
 
         #region ICommand
 

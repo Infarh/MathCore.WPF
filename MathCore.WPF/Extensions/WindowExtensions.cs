@@ -13,6 +13,7 @@ namespace System.Windows
 
         public static void ForWindowFromChild(this object ChildDependencyObject, Action<Window> action)
         {
+            if (action is null) throw new ArgumentNullException(nameof(action));
             var element = ChildDependencyObject as DependencyObject;
             while (element != null)
             {
@@ -25,7 +26,8 @@ namespace System.Windows
 
         public static void ForWindowFromTemplate(this object TemplateFrameworkElement, Action<Window> action)
         {
-            if (((FrameworkElement)TemplateFrameworkElement).TemplatedParent is Window window) action(window);
+            if (action is null) throw new ArgumentNullException(nameof(action));
+            if (((FrameworkElement)TemplateFrameworkElement)?.TemplatedParent is Window window) action(window);
         }
     }
 }

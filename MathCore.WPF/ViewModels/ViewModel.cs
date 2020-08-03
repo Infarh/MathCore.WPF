@@ -22,7 +22,7 @@ using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessage
 namespace MathCore.WPF.ViewModels
 {
     /// <summary>Визуальная объектная модель, представляющая механизм обработки событий изменения свойств</summary>
-    public abstract class ViewModel : MarkupExtension, INotifyPropertyChanged, IDisposable //,IDataErrorInfo
+    public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChanged, IDisposable //,IDataErrorInfo
     {
         private event PropertyChangedEventHandler? PropertyChangedEvent;
 

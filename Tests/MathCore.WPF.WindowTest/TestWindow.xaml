@@ -5,41 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:m="clr-namespace:MathCore.WPF.WindowTest.Models"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         mc:Ignorable="d"
         Title="TestWindow"
         Width="800" Height="450"
         DataContext="{l:TestViewModel}">
     <Grid>
-        <ListBox ItemsSource="{Binding Commands}" Grid.IsSharedSizeScope="True"
-                 VirtualizingPanel.IsVirtualizing="True"
-                 VirtualizingPanel.VirtualizationMode="Recycling"
-                 VirtualizingPanel.IsContainerVirtualizable="True">
-            <ListBox.ItemsPanel>
+        <ItemsControl ItemsSource="{Binding Graph.Links}">
+            <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
+                    <Grid/>
                 </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="m:TitledCommand">
-                    <Button Margin="3,0,0,0" Content="{Binding Title}" Command="{Binding}">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding CanExecute}" Value="False">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:Link}">
+                    <Line StrokeThickness="{Binding Weight}" Stroke="Lime"
+                          X1="{Binding Start.Position.X}" Y1="{Binding Start.Position.Y}"
+                          X2="{Binding End.Position.X}" Y2="{Binding End.Position.Y}"/>
                 </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl ItemsSource="{Binding Graph.Nodes}">
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
+                    <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type vm:Node}">
+                    <Ellipse Width="{Binding Radius}" Height="{Binding Radius}" Fill="Red" StrokeThickness="1" Stroke="Blue" ToolTip="{Binding Radius}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Window>

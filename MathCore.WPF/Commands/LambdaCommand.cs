@@ -104,6 +104,7 @@ namespace MathCore.WPF.Commands
         public override void Execute(object? parameter)
         {
             if (_ExecuteAction is null) throw new InvalidOperationException("Метод выполнения команды не определён");
+            if (!CanExecute(parameter)) return;
             var cancel_args = new CancelEventArgs();
             OnStartExecuting(cancel_args);
             if (cancel_args.Cancel)
@@ -111,14 +112,14 @@ namespace MathCore.WPF.Commands
                 OnCancelled(cancel_args);
                 if (cancel_args.Cancel) return;
             }
-            _ExecuteAction?.Invoke(parameter);
+            _ExecuteAction(parameter);
             OnCompleteExecuting(new EventArgs<object?>(parameter));
         }
 
         /// <summary>Проверка возможности выполнения команды</summary>
         /// <param name="parameter">Параметр процесса выполнения команды</param>
         /// <returns>Истина, если команда может быть выполнена</returns>
-        public override bool CanExecute(object parameter) => 
+        public override bool CanExecute(object? parameter) => 
             ViewModel.IsDesignMode 
             || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? true);
 

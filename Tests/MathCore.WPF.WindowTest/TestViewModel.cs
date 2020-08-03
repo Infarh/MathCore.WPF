@@ -1,39 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Windows;
 using System.Windows.Markup;
 
-using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
-using MathCore.WPF.WindowTest.Models;
+using MathCore.WPF.WindowTest.ViewModels;
 
 namespace MathCore.WPF.WindowTest
 {
     [MarkupExtensionReturnType(typeof(TestViewModel))]
     class TestViewModel : ViewModel
     {
-        private const int __CommandsCount = 100;
-
-        public TitledCommand[] Commands { get; }
+        public Graph Graph { get; } = new Graph();
 
         public TestViewModel()
         {
-            Action command_action = OnCommandExecuted;
-            Commands = Enumerable
-               .Range(1, __CommandsCount)
-               .Select(i => new TitledCommand(command_action) {Title = $"C{i}"})
-               .ToArray();
-        }
-
-        private static readonly Random __Rnd = new Random();
-
-        private void OnCommandExecuted()
-        {
-            for (var i = 0; i < __CommandsCount / 10; i++)
-            {
-                var cmd = Commands[__Rnd.Next(0, __CommandsCount)];
-                cmd.CanExecute ^= true;
-            }
+            var rnd = new Random();
+            var graph = Graph;
+            for (var i = 0; i < 20; i++)
+                graph.Add(new Node { Position = new Point(rnd.Next(10, 491), rnd.Next(10, 491)), Radius = rnd.Next(2, 11) });
         }
     }
 }

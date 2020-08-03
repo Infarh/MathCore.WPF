@@ -9,6 +9,9 @@ namespace System.Windows.Threading
         public static void Invoke<T>([NotNull] this T obj, [NotNull] Action<T> action, DispatcherPriority priority = DispatcherPriority.Normal)
             where T : DispatcherObject
         {
+            if (obj is null) throw new ArgumentNullException(nameof(obj));
+            if (action is null) throw new ArgumentNullException(nameof(action));
+
             var obj_dispatcher = obj.Dispatcher;
             if (obj_dispatcher is null)
                 action(obj);
@@ -16,10 +19,15 @@ namespace System.Windows.Threading
                 obj_dispatcher.Invoke(action, priority, obj);
         }
 
-        public static TValue GetValue<TObject, TValue>([NotNull] this TObject obj, [NotNull] Func<TObject, TValue> func,
+        public static TValue GetValue<TObject, TValue>(
+            [NotNull] this TObject obj, 
+            [NotNull] Func<TObject, TValue> func,
             DispatcherPriority priority = DispatcherPriority.Normal)
             where TObject : DispatcherObject
         {
+            if (obj is null) throw new ArgumentNullException(nameof(obj));
+            if (func is null) throw new ArgumentNullException(nameof(func));
+
             var obj_dispatcher = obj.Dispatcher;
             return obj_dispatcher is null ? func(obj) : (TValue) obj_dispatcher.Invoke(func, priority, obj);
         }
