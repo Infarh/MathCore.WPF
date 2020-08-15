@@ -1,50 +1,32 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-
-using MathCore.WPF.ViewModels;
-
-using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Windows;
+using Microsoft.Extensions.Hosting;
 
 namespace MathCore.WPF.WindowTest
 {
     public partial class App
     {
-        public ServiceProvider Services { get; }
+        private IHost? _Host;
 
-        public App()
+        public IHost Host => _Host ??= Microsoft.Extensions.Hosting.Host
+           .CreateDefaultBuilder(Environment.GetCommandLineArgs())
+           .ConfigureServices(ConfigureServices)
+           .Build();
+
+        public IServiceProvider Services => Host.Services;
+
+        protected override async void OnStartup(StartupEventArgs e)
         {
-            var vm = new TestValidableViewModel();
-
-            var error_info = vm as IDataErrorInfo;
-            var error_informer = vm as INotifyDataErrorInfo;
-            error_informer.ErrorsChanged += (s, e) => Debug.WriteLine(e.PropertyName + " invalid: " + error_info[e.PropertyName]);
-
-            vm.Name = "123";
-            vm.Name = null;
-            vm.Name = "QWE";
-            vm.Name = "";
-
-            var service_collection = new ServiceCollection();
-            ConfigureServices(service_collection);
-            Services = service_collection.BuildServiceProvider();
+            var host = Host;
+            base.OnStartup(e);
+            await host.StartAsync();
         }
 
-
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            base.OnExit(e);
+            using var host = Host;
+            await host.StopAsync();
+        }
     }
-
-    internal class TestValidableViewModel : ValidableViewModel
-    {
-        #region Name : string - Имя
-
-        /// <summary>Имя</summary>
-        private string _Name;
-
-        /// <summary>Имя</summary>
-        [Required(AllowEmptyStrings = false)]
-        public string Name { get => _Name; set => Set(ref _Name, value); }
-
-        #endregion
-    }
-
 }

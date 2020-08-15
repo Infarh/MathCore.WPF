@@ -11,10 +11,5 @@ namespace MathCore.WPF.WindowTest
         {
             
         }
-
-        private void Configure()
-        {
-                
-        }
     }
 }
