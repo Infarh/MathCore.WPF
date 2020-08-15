@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.5</Version>
+    <Version>0.0.6</Version>
     <PackageReleaseNotes>
-      Добавлены асинхронные реализации методов-продолжений сеттеров свойств модели-представления
+      Валидация в моделях-представлений
     </PackageReleaseNotes>
   </PropertyGroup>
 
