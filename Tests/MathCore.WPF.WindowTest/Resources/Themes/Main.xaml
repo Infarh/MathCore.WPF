@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Main/Base/Colors.xaml"/>
+        <ResourceDictionary Source="Main/Base/Shadows.xaml"/>
+        <ResourceDictionary Source="Main/Base/EasingFunctions.xaml"/>
+
+        <ResourceDictionary Source="Main/DarkMenuStyle.xaml"/>
+        <ResourceDictionary Source="Main/ConfirmButtonStyle.xaml"/>
+        <ResourceDictionary Source="Main/TaggedTextBoxStyle.xaml"/>
+        <ResourceDictionary Source="Main/ToggleButtonCheckBoxStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

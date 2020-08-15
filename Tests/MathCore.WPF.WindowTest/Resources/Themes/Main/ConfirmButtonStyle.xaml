@@ -1,0 +1,161 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:l="clr-namespace:MathCore.WPF">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Base/Colors.xaml"/>
+        <ResourceDictionary Source="Base/EasingFunctions.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <Color x:Key="ConfirmButton.ConfirmForegroundColor">OrangeRed</Color>
+    <Color x:Key="ConfirmButton.ConfirmBackgroundColor">WhiteSmoke</Color>
+    <Color x:Key="ConfirmButton.ConfirmBorderColor">Red</Color>
+
+    <SolidColorBrush x:Key="ConfirmButton.ConfirmForegroundBrush" Color="{StaticResource ConfirmButton.ConfirmForegroundColor}"/>
+    <SolidColorBrush x:Key="ConfirmButton.ConfirmBackgroundBrush" Color="{StaticResource ConfirmButton.ConfirmBackgroundColor}" />
+    <SolidColorBrush x:Key="ConfirmButton.ConfirmBorderBrush" Color="{StaticResource ConfirmButton.ConfirmBorderColor}" />
+
+
+    <Storyboard x:Key="ConfirmButton.MouseEnterAnimation" RepeatBehavior="Forever" AutoReverse="True">
+        <ColorAnimation Storyboard.TargetName="ConfirmButtonBorder"
+                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                        To="{StaticResource ConfirmButton.ConfirmForegroundColor}"
+                        Duration="0:0:0.5"
+                        EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
+        <ColorAnimation Storyboard.TargetName="Content"
+                        Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                        To="{StaticResource ConfirmButton.ConfirmBackgroundColor}"
+                        Duration="0:0:0.5"
+                        EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
+    </Storyboard>
+
+    <Storyboard x:Key="ConfirmButton.MouseExitAnimation">
+        <ColorAnimation Storyboard.TargetName="ConfirmButtonBorder"
+                        Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                        From="{StaticResource ConfirmButton.ConfirmForegroundColor}"
+                        Duration="0:0:0.25"
+                        EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
+        <ColorAnimation Storyboard.TargetName="Content"
+                        Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
+                        From="{StaticResource ConfirmButton.ConfirmBackgroundColor}"
+                        Duration="0:0:0.25"
+                        EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
+    </Storyboard>
+
+    <ControlTemplate x:Key="ConfirmButton.ToggleButtonTemplate" TargetType="{x:Type ToggleButton}" >
+
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ConfirmButton.ConfirmButtonTemplate" TargetType="{x:Type Button}" >
+        <Border Name="ConfirmButtonBorder" 
+                CornerRadius="{TemplateBinding l:ConfirmButton.ConfirmButtonCornerRadius}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                Padding="{TemplateBinding Padding}"
+                Margin="{TemplateBinding Margin}">
+            <ContentPresenter Name="Content" ContentSource="Content"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              TextBlock.FontWeight="{TemplateBinding l:ConfirmButton.ConfirmButtonFontWeight}"
+                              TextBlock.FontSize="{TemplateBinding l:ConfirmButton.ConfirmButtonFontSize}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard Storyboard="{StaticResource ConfirmButton.MouseEnterAnimation}"/>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard Storyboard="{StaticResource ConfirmButton.MouseExitAnimation}"/>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="ConfirmButtonTemplate" TargetType="{x:Type Button}" >
+        <Grid>
+            <ToggleButton Name="ToggleButton" 
+                          Content="{TemplateBinding Content}"
+                          Padding="{TemplateBinding Padding}"
+                          Background="{TemplateBinding Background}"
+                          BorderThickness="{TemplateBinding BorderThickness}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            <Popup Name="Popup" 
+                   IsOpen="{Binding IsChecked, ElementName=ToggleButton}"
+                   StaysOpen="False"
+                   Placement="{TemplateBinding l:ConfirmButton.PopupPlacemen}"
+                   PopupAnimation="{TemplateBinding l:ConfirmButton.Animation}"
+                   HorizontalOffset="{TemplateBinding l:ConfirmButton.HorizontalPopupOffset}"
+                   VerticalOffset="{TemplateBinding l:ConfirmButton.VerticalPopupOffset}"
+                   AllowsTransparency="True">
+                <Button Name="ConfirmButton"
+                        Template="{StaticResource ConfirmButton.ConfirmButtonTemplate}"
+                        Content="{TemplateBinding l:ConfirmButton.Content}"
+                        Margin="{TemplateBinding l:ConfirmButton.ConfirmButtonMargin}"
+                        Padding="{TemplateBinding l:ConfirmButton.ConfirmButtonPadding}"
+                        VerticalAlignment="{TemplateBinding l:ConfirmButton.ConfirmButtonVerticalAlignment}"
+                        Background="{TemplateBinding l:ConfirmButton.ConfirmButtonBackground}"
+                        Foreground="{TemplateBinding l:ConfirmButton.ConfirmButtonForeground}"
+                        BorderBrush="{TemplateBinding l:ConfirmButton.ConfirmButtonBorderBrush}"
+                        BorderThickness="{TemplateBinding l:ConfirmButton.ConfirmButtonBorderThickness}"
+                        Command="{TemplateBinding Command}"
+                        CommandParameter="{TemplateBinding CommandParameter}"
+                        CommandTarget="{TemplateBinding CommandTarget}"
+                        HorizontalContentAlignment="Center"
+                        l:ConfirmButton.ConfirmButtonCornerRadius="{TemplateBinding l:ConfirmButton.ConfirmButtonCornerRadius}"
+                        l:ConfirmButton.ConfirmButtonFontWeight="{TemplateBinding l:ConfirmButton.ConfirmButtonFontWeight}"
+                        l:ConfirmButton.ConfirmButtonFontSize="{TemplateBinding l:ConfirmButton.ConfirmButtonFontSize}"/>
+            </Popup>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger SourceName="Popup" Property="Placement" Value="Top">
+                <Setter TargetName="Popup" Property="Margin" Value="0,0,0,2"/>
+            </Trigger>
+            <Trigger SourceName="Popup" Property="Placement" Value="Bottom">
+                <Setter TargetName="Popup" Property="Margin" Value="0,2,0,0"/>
+            </Trigger>
+            <Trigger SourceName="Popup" Property="Placement" Value="Right">
+                <Setter TargetName="Popup" Property="Margin" Value="0,0,2,0"/>
+            </Trigger>
+            <Trigger SourceName="Popup" Property="Placement" Value="Left">
+                <Setter TargetName="Popup" Property="Margin" Value="2,0,0,0"/>
+            </Trigger>
+
+            <Trigger Property="IsDefault" Value="True">
+                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                <Setter TargetName="ToggleButton" Property="BorderThickness" Value="2"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="ToggleButton" Property="Background" Value="WhiteSmoke"/>
+                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="DarkBlue"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter TargetName="ToggleButton" Property="Background" Value="LightSkyBlue"/>
+                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="Fuchsia"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="ConfirmButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="l:ConfirmButton.Animation" Value="Fade"/>
+        <Setter Property="l:ConfirmButton.PopupPlacemen" Value="Right"/>
+        <Setter Property="l:ConfirmButton.HorizontalPopupOffset" Value="0"/>
+        <Setter Property="l:ConfirmButton.VerticalPopupOffset" Value="0"/>
+        <Setter Property="l:ConfirmButton.Content" Value="Подтверждаете?"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="1"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonPadding" Value="4"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonVerticalAlignment" Value="Center"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonForeground" Value="{StaticResource ConfirmButton.ConfirmForegroundBrush}"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonBackground" Value="{StaticResource ConfirmButton.ConfirmBackgroundBrush}"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonBorderBrush" Value="{StaticResource ConfirmButton.ConfirmBorderBrush}"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonBorderThickness" Value="1"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonCornerRadius" Value="5"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonFontWeight" Value="Bold"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonFontSize" Value="{Binding FontSize, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="Template" Value="{StaticResource ConfirmButtonTemplate}"/>
+    </Style>
+
+</ResourceDictionary>

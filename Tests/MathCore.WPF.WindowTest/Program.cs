@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace MathCore.WPF.WindowTest
 {
@@ -15,20 +13,5 @@ namespace MathCore.WPF.WindowTest
             app.InitializeComponent();
             app.Run();
         }
-    }
-
-    public interface IWpfAppBuilder
-    {
-
-    }
-
-    public class WpfAppBuilder
-    {
-
-    }
-
-    public interface IWpfStartup
-    {
-        void ConfigureServices(IServiceCollection Services);
     }
 }

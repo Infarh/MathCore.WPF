@@ -1,0 +1,54 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindow2"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        Title="{Binding Title}"
+        Topmost="True"
+        Width="269" Height="236">
+    <Window.DataContext>
+        <l:TestWindow2ViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Border BorderBrush="{StaticResource BlueBrush}"
+                BorderThickness="1" CornerRadius="5"
+                Padding="10" Margin="10,10"
+                VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                DataContext="{Binding Registration}">
+            <DockPanel>
+                <UniformGrid Columns="1" DockPanel.Dock="Top">
+                    <UniformGrid.Resources>
+                        <Style TargetType="{x:Type TextBox}" 
+                               BasedOn="{StaticResource TaggedTextBoxStyle}"/>
+                    </UniformGrid.Resources>
+                    <TextBox Tag="Имя пользователя" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
+                    <!--<PasswordBox Tag="Пароль">
+                        <i:Interaction.Behaviors>
+                            <b:PasswordBoxBinder Password="{Binding Password}"/>
+                        </i:Interaction.Behaviors>
+                    </PasswordBox>-->
+                </UniformGrid>
+                <CheckBox DockPanel.Dock="Top" Content="Запомнить?" Margin="5" IsChecked="True"
+                          Style="{StaticResource ToggleButtonCheckBoxStyle}"/>
+                <Button Margin="10" Background="WhiteSmoke" 
+                        Style="{StaticResource ConfirmButtonStyle}">
+                    <Border Width="30" Height="30" CornerRadius="30" BorderThickness="1">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="1" BlurRadius="5" Color="DarkRed"/>
+                        </Border.Effect>
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.4,0.3" Center="0.4,0.3">
+                                <GradientStop Color="OrangeRed" Offset="0"/>
+                                <GradientStop Color="DarkRed" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                        <TextBlock Text="!" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White"/>
+                    </Border>
+                </Button>
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>
