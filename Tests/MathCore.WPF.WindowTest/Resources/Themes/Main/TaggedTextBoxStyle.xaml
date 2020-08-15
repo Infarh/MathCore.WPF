@@ -79,28 +79,72 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate x:Key="TaggedTextBoxTemplate.Validation">
+    <ControlTemplate x:Key="TaggedTextBoxTemplate.Validation.ToolTipTemplate" TargetType="ToolTip">
+        <Border Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Margin="{TemplateBinding Margin}"
+                Padding="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                CornerRadius="5">
+            <ContentPresenter 
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+    </ControlTemplate>
+    <Style x:Key="TaggedTextBoxTemplate.Validation.ToolTipStyle" TargetType="ToolTip">
+        <Setter Property="Template" Value="{StaticResource TaggedTextBoxTemplate.Validation.ToolTipTemplate}"/>
+        <Setter Property="Background" Value="Yellow"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="OrangeRed"/>
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+
+    <ControlTemplate x:Key="TaggedTextBoxTemplate.Validation" TargetType="Control">
         <Grid>
             <AdornedElementPlaceholder Name="ErrorVisualElement"/>
-            <Border BorderThickness="1" CornerRadius="10" Padding="6,0"
-                    BorderBrush="OrangeRed" Margin="2"
-                    Background="Red"
+            <Border BorderThickness="1" CornerRadius="12"
+                    Width="24" Height="24"
+                    Margin="2"
                     VerticalAlignment="Top"
-                    HorizontalAlignment="Right">
-                <TextBlock Text="!" Foreground="White" FontWeight="Bold"
-                           ToolTipService.BetweenShowDelay="0"
-                           ToolTipService.InitialShowDelay="0"
-                           ToolTipService.ShowDuration="65535">
-                    <TextBlock.ToolTip>
-                        <ItemsControl ItemsSource="{Binding}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="ValidationError">
-                                    <TextBlock Text="{Binding ErrorContent}"/>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </TextBlock.ToolTip>
-                </TextBlock>
+                    HorizontalAlignment="Right"
+                    ToolTipService.BetweenShowDelay="0"
+                    ToolTipService.InitialShowDelay="0"
+                    ToolTipService.ShowDuration="65535">
+                <ToolTipService.ToolTip>
+                    <ToolTip Style="{StaticResource TaggedTextBoxTemplate.Validation.ToolTipStyle}">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top">
+                                Ошибок: <Run Text="{Binding Count, Mode=OneWay}"/>
+                            </TextBlock>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="ValidationError">
+                                        <BulletDecorator>
+                                            <BulletDecorator.Bullet>
+                                                <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Fill="Red" Width="5" Height="5"/>
+                                            </BulletDecorator.Bullet>
+                                            <TextBlock Text="{Binding ErrorContent}" Margin="5,0,0,0"/>
+                                        </BulletDecorator>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.4,0.3" Center="0.4,0.3">
+                        <GradientStop Color="OrangeRed" Offset="0"/>
+                        <GradientStop Color="DarkRed" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Color="DarkRed"/>
+                </Border.Effect>
+                <Viewbox>
+                    <TextBlock Text="!" Foreground="WhiteSmoke" FontWeight="Bold"/>
+                </Viewbox>
             </Border>
         </Grid>
     </ControlTemplate>

@@ -83,22 +83,22 @@ namespace MathCore.WPF
 
         #endregion
 
-        #region Attached property ConfirmButtonContent : object - Содержимое кнопки подтверждения
+        #region Attached property Content : object - Содержимое кнопки подтверждения
 
         /// <summary>Содержимое кнопки подтверждения</summary>
-        public static readonly DependencyProperty ConfirmButtonContentProperty =
+        public static readonly DependencyProperty ContentProperty =
             DependencyProperty.RegisterAttached(
-                "ConfirmButtonContent",
+                "Content",
                 typeof(object),
                 typeof(ConfirmButton),
                 new PropertyMetadata(default(object)));
 
         /// <summary>Содержимое кнопки подтверждения</summary>
         [AttachedPropertyBrowsableForType(typeof(Button))]
-        public static void SetConfirmButtonContent(DependencyObject element, object value) => element.SetValue(ConfirmButtonContentProperty, value);
+        public static void SetContent(DependencyObject element, object value) => element.SetValue(ContentProperty, value);
 
         /// <summary>Содержимое кнопки подтверждения</summary>
-        public static object GetConfirmButtonContent(DependencyObject element) => (object)element.GetValue(ConfirmButtonContentProperty);
+        public static object GetContent(DependencyObject element) => (object)element.GetValue(ContentProperty);
 
         #endregion
 

@@ -22,7 +22,7 @@
                         To="{StaticResource ConfirmButton.ConfirmForegroundColor}"
                         Duration="0:0:0.5"
                         EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
-        <ColorAnimation Storyboard.TargetName="ConfirmButtonContent"
+        <ColorAnimation Storyboard.TargetName="Content"
                         Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
                         To="{StaticResource ConfirmButton.ConfirmBackgroundColor}"
                         Duration="0:0:0.5"
@@ -35,7 +35,7 @@
                         From="{StaticResource ConfirmButton.ConfirmForegroundColor}"
                         Duration="0:0:0.25"
                         EasingFunction="{StaticResource CubicEasingInOutFunction}"/>
-        <ColorAnimation Storyboard.TargetName="ConfirmButtonContent"
+        <ColorAnimation Storyboard.TargetName="Content"
                         Storyboard.TargetProperty="(TextBlock.Foreground).(SolidColorBrush.Color)"
                         From="{StaticResource ConfirmButton.ConfirmBackgroundColor}"
                         Duration="0:0:0.25"
@@ -54,7 +54,7 @@
                 Background="{TemplateBinding Background}"
                 Padding="{TemplateBinding Padding}"
                 Margin="{TemplateBinding Margin}">
-            <ContentPresenter Name="ConfirmButtonContent" ContentSource="Content"
+            <ContentPresenter Name="Content" ContentSource="Content"
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                               TextBlock.FontWeight="{TemplateBinding l:ConfirmButton.ConfirmButtonFontWeight}"
@@ -91,7 +91,8 @@
                    VerticalOffset="{TemplateBinding l:ConfirmButton.VerticalPopupOffset}"
                    AllowsTransparency="True">
                 <Button Name="ConfirmButton"
-                        Content="{TemplateBinding l:ConfirmButton.ConfirmButtonContent}"
+                        Template="{StaticResource ConfirmButton.ConfirmButtonTemplate}"
+                        Content="{TemplateBinding l:ConfirmButton.Content}"
                         Margin="{TemplateBinding l:ConfirmButton.ConfirmButtonMargin}"
                         Padding="{TemplateBinding l:ConfirmButton.ConfirmButtonPadding}"
                         VerticalAlignment="{TemplateBinding l:ConfirmButton.ConfirmButtonVerticalAlignment}"
@@ -102,7 +103,6 @@
                         Command="{TemplateBinding Command}"
                         CommandParameter="{TemplateBinding CommandParameter}"
                         CommandTarget="{TemplateBinding CommandTarget}"
-                        Template="{StaticResource ConfirmButton.ConfirmButtonTemplate}"
                         HorizontalContentAlignment="Center"
                         l:ConfirmButton.ConfirmButtonCornerRadius="{TemplateBinding l:ConfirmButton.ConfirmButtonCornerRadius}"
                         l:ConfirmButton.ConfirmButtonFontWeight="{TemplateBinding l:ConfirmButton.ConfirmButtonFontWeight}"
@@ -111,16 +111,16 @@
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger SourceName="Popup" Property="Placement" Value="Top">
-                <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="0,0,0,2"/>
+                <Setter TargetName="Popup" Property="Margin" Value="0,0,0,2"/>
             </Trigger>
             <Trigger SourceName="Popup" Property="Placement" Value="Bottom">
-                <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="0,2,0,0"/>
+                <Setter TargetName="Popup" Property="Margin" Value="0,2,0,0"/>
             </Trigger>
             <Trigger SourceName="Popup" Property="Placement" Value="Right">
-                <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="0,0,2,0"/>
+                <Setter TargetName="Popup" Property="Margin" Value="0,0,2,0"/>
             </Trigger>
             <Trigger SourceName="Popup" Property="Placement" Value="Left">
-                <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="2,0,0,0"/>
+                <Setter TargetName="Popup" Property="Margin" Value="2,0,0,0"/>
             </Trigger>
 
             <Trigger Property="IsDefault" Value="True">
@@ -140,14 +140,13 @@
     </ControlTemplate>
 
     <Style x:Key="ConfirmButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="l:ConfirmButton.Animation" Value="Fade"/>
         <Setter Property="l:ConfirmButton.PopupPlacemen" Value="Right"/>
         <Setter Property="l:ConfirmButton.HorizontalPopupOffset" Value="0"/>
         <Setter Property="l:ConfirmButton.VerticalPopupOffset" Value="0"/>
-        <Setter Property="l:ConfirmButton.ConfirmButtonContent" Value="Подтверждаете?"/>
-        <Setter Property="l:ConfirmButton.ConfirmButtonPadding" Value="4,1"/>
+        <Setter Property="l:ConfirmButton.Content" Value="Подтверждаете?"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonMargin" Value="1"/>
+        <Setter Property="l:ConfirmButton.ConfirmButtonPadding" Value="4"/>
         <Setter Property="l:ConfirmButton.ConfirmButtonVerticalAlignment" Value="Center"/>
         <Setter Property="l:ConfirmButton.ConfirmButtonForeground" Value="{StaticResource ConfirmButton.ConfirmForegroundBrush}"/>
         <Setter Property="l:ConfirmButton.ConfirmButtonBackground" Value="{StaticResource ConfirmButton.ConfirmBackgroundBrush}"/>

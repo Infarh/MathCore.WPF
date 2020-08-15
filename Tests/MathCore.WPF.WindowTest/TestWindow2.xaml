@@ -25,15 +25,29 @@
                                BasedOn="{StaticResource TaggedTextBoxStyle}"/>
                     </UniformGrid.Resources>
                     <TextBox Tag="Имя пользователя" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged}"/>
-                    <PasswordBox Tag="Пароль">
+                    <!--<PasswordBox Tag="Пароль">
                         <i:Interaction.Behaviors>
                             <b:PasswordBoxBinder Password="{Binding Password}"/>
                         </i:Interaction.Behaviors>
-                    </PasswordBox>
+                    </PasswordBox>-->
                 </UniformGrid>
                 <CheckBox DockPanel.Dock="Top" Content="Запомнить?" Margin="5" IsChecked="True"
                           Style="{StaticResource ToggleButtonCheckBoxStyle}"/>
-                <Button Margin="10"/>
+                <Button Margin="10" Background="WhiteSmoke" 
+                        Style="{StaticResource ConfirmButtonStyle}">
+                    <Border Width="30" Height="30" CornerRadius="30" BorderThickness="1">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="1" BlurRadius="5" Color="DarkRed"/>
+                        </Border.Effect>
+                        <Border.Background>
+                            <RadialGradientBrush GradientOrigin="0.4,0.3" Center="0.4,0.3">
+                                <GradientStop Color="OrangeRed" Offset="0"/>
+                                <GradientStop Color="DarkRed" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Border.Background>
+                        <TextBlock Text="!" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White"/>
+                    </Border>
+                </Button>
             </DockPanel>
         </Border>
     </Grid>
