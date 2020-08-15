@@ -4,11 +4,12 @@ using System.Windows.Threading;
 using MathCore.Annotations;
 // ReSharper disable UnusedMember.Global
 
+// ReSharper disable once CheckNamespace
 namespace System.Threading.Tasks
 {
     public static class WPFTaskEx
     {
-        [NotNull] public static DispatcherAwaiter ToUIContext() => (Application.Current.Dispatcher ?? throw new InvalidOperationException("Диспетчер для приложения не определён")).GetAwaiter()!;
+        public static DispatcherAwaiter ToUIContext() => (Application.Current.Dispatcher ?? throw new InvalidOperationException("Диспетчер для приложения не определён")).GetAwaiter()!;
 
         /// <summary>
         /// Метод вызывает завершение работы текущего метода в текущем контексте синхронизации и возвращает задачу, результатом которой является диспетчер исходного контекста синхронизации
