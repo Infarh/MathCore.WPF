@@ -3,64 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:ta="clr-namespace:MathCore.WPF.TriggerActions;assembly=MathCore.WPF"
         Title="{Binding Title}"
         Width="800" Height="450">
+    <Window.InputBindings>
+        <KeyBinding Key="Enter" CommandParameter="{Binding ElementName=TestElement}">
+            <KeyBinding.Command>
+                <SetFocusCommand/>
+            </KeyBinding.Command>
+        </KeyBinding>
+    </Window.InputBindings>
     <Window.DataContext>
-        <local:TestWindow3ViewModel/>
+        <l:TestWindow3ViewModel/>
     </Window.DataContext>
     <Grid>
-        <ListBox ItemsSource="{Binding Students}" ScrollViewer.HorizontalScrollBarVisibility="Disabled" >
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Padding="8" Margin="5" Background="WhiteSmoke">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="Border.MouseEnter">
-                                <BeginStoryboard>
-                                    <BeginStoryboard.Storyboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetName="ShadowEffect"
-                                                             Storyboard.TargetProperty="ShadowDepth"
-                                                             To="3"
-                                                             Duration="0:0:0.5"/>
-                                        </Storyboard>
-                                    </BeginStoryboard.Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Border.MouseLeave">
-                                <BeginStoryboard>
-                                    <BeginStoryboard.Storyboard>
-                                        <Storyboard>
-                                            <DoubleAnimation Storyboard.TargetName="ShadowEffect"
-                                                             Storyboard.TargetProperty="ShadowDepth"
-                                                             To="0.1"
-                                                             Duration="0:0:2"/>
-                                        </Storyboard>
-                                    </BeginStoryboard.Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
-                        <Border.Effect>
-                            <DropShadowEffect x:Name="ShadowEffect" ShadowDepth="5" BlurRadius="12"/>
-                        </Border.Effect>
-                        <DockPanel>
-                            <Grid DockPanel.Dock="Bottom">
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                <TextBlock Text="{Binding Rating, StringFormat=p1}" HorizontalAlignment="Right"/>
-                            </Grid>
-                            <Border BorderThickness="1" BorderBrush="Blue" CornerRadius="5" Margin="0,0,0,5"
-                                    Width="110" Height="100">
-                                <TextBlock Text="{Binding Avatar}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                            </Border>
-                        </DockPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10" Width="160"/>
+        <TextBox Name="TestElement" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,10" Width="160"/>
     </Grid>
 </Window>
