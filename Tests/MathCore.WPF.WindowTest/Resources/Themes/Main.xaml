@@ -10,4 +10,12 @@
         <ResourceDictionary Source="Main/TaggedTextBoxStyle.xaml"/>
         <ResourceDictionary Source="Main/ToggleButtonCheckBoxStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <!-- 
+     <ResourceDictionary Source="pack://application:,,,/MathCore.WPF.Styles;component/Styles/TextBoxes/TaggedTextBoxStyle.xaml"/>
+     <ResourceDictionary Source="pack://application:,,,/MathCore.WPF.Styles;component/Styles/CheckBoxes/ToggleButtonCheckBoxStyle.xaml"/>
+     <ResourceDictionary Source="pack://application:,,,/MathCore.WPF.Styles;component/Styles/Buttons/ConfirmButtonStyle.xaml"/>
+
+     <ResourceDictionary Source="pack://application:,,,/MathCore.WPF.Styles;component/Styles/Main.xaml"/>
+    -->
 </ResourceDictionary>
