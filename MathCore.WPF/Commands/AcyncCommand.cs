@@ -130,16 +130,4 @@ namespace MathCore.WPF.Commands
             Invoke_OnCanExecuteChanged();
         }
     }
-
-    public class AsyncLambdaCommand : LambdaCommand
-    {
-        public AsyncLambdaCommand([NotNull]Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
-        public AsyncLambdaCommand([NotNull]Action<object?> ExecuteAction, Func<bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
-        public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
-        public AsyncLambdaCommand([NotNull]Action ExecuteAction, Func<bool>? CanExecute = null) : base(ExecuteAction, CanExecute) { }
-
-        public virtual Task ExecuteAsync(object? parameter) => Task.Factory.StartNew(base.Execute, parameter);
-
-        public override async void Execute(object? parameter) => await ExecuteAsync(parameter);
-    }
 }

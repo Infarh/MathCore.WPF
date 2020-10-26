@@ -19,8 +19,8 @@ namespace MathCore.WPF.Converters
 
         public LambdaMultiConverter(Func<object[]?, object?> SimpleConverter, [CanBeNull] Func<object?, object[]?>? SimpleBackConverter = null)
             : this(
-                (v,t,p,c) => SimpleConverter(v), 
-                SimpleBackConverter is null ? (ConverterBack?)null : (v, t, p, c) => SimpleBackConverter!(v))
+                (v,_,_,_) => SimpleConverter(v), 
+                SimpleBackConverter is null ? null : (ConverterBack)((v,_,_,_) => SimpleBackConverter!(v)))
         { }
 
         public LambdaMultiConverter(Converter Conversation,
