@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.32.1" />
+    <PackageReference Include="MathCore" Version="0.0.34" />
     <PackageReference Include="MathCore.TestsExtensions" Version="0.1.30" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.7.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.2" />

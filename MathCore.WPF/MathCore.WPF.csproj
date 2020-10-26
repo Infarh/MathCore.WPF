@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <PackageReleaseNotes>
-      SetFocusCommand, обновление версий пакетов
+      Асинхронные лямбда-функци
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.32.1" />
+    <PackageReference Include="MathCore" Version="0.0.34" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

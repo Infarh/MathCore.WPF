@@ -4,6 +4,7 @@ using System.Linq.Reactive;
 using System.Windows.Markup;
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
+
 // ReSharper disable MemberCanBeProtected.Global
 
 // ReSharper disable MemberCanBePrivate.Global
@@ -202,28 +203,40 @@ namespace MathCore.WPF.Commands
 
         #region Методы
 
-        [CanBeNull]
-        protected object? ConvertParameter([CanBeNull] object? parameter)
+        public static T ConvertParameter([CanBeNull] object? parameter)
         {
-            if (parameter is null) return null;
-            var command_parameter_type = typeof(T);
+            if (parameter is null) return default!;
+            if (parameter is T result) return result;
+
+            var command_type = typeof(T);
             var parameter_type = parameter.GetType();
-            if (command_parameter_type.IsAssignableFrom(parameter_type))
-                return parameter;
-            var converter = TypeDescriptor.GetConverter(command_parameter_type);
-            if (converter.CanConvertFrom(parameter_type))
-                return converter.ConvertFrom(parameter);
-            converter = TypeDescriptor.GetConverter(parameter_type);
-            if (converter.CanConvertFrom(command_parameter_type))
-                return converter.ConvertFrom(parameter);
-            return null;
+
+            if (command_type.IsAssignableFrom(parameter_type))
+                return (T)parameter;
+
+            var command_type_converter = TypeDescriptor.GetConverter(command_type);
+            if (command_type_converter.CanConvertFrom(parameter_type))
+                return ((T)command_type_converter.ConvertFrom(parameter))!;
+
+            var parameter_converter = TypeDescriptor.GetConverter(parameter_type);
+            if (parameter_converter.CanConvertTo(command_type))
+                return (T)parameter_converter.ConvertFrom(parameter)!;
+
+            return default!;
         }
 
         public override void Execute(object? parameter)
         {
-            var execute_action = _ExecuteAction ?? throw new InvalidOperationException(@"Метод выполнения команды не определён");
-            if (parameter != null && !(parameter is T))
-                parameter = ConvertParameter(parameter);
+            var execute_action = _ExecuteAction 
+                    ?? throw new InvalidOperationException(@"Метод выполнения команды не определён");
+
+            if (!(parameter is T value))
+                value = parameter is null 
+                    ? default 
+                    : ConvertParameter(parameter);
+
+            if (!CanExecute(value)) return;
+
             var cancel_args = new CancelEventArgs();
             OnStartExecuting(cancel_args);
             if (cancel_args.Cancel)
@@ -232,11 +245,10 @@ namespace MathCore.WPF.Commands
                 if (cancel_args.Cancel) return;
             }
 
-            var value = (T)parameter!;
-            if (_CanExecute?.Invoke(value) == false) return;
+            if (_CanExecute?.Invoke(value!) == false) return;
             try
             {
-                execute_action.Invoke(value);
+                execute_action.Invoke(value!);
             }
             catch (Exception error)
             {

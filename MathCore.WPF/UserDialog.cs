@@ -179,7 +179,7 @@ namespace MathCore.WPF
 
             var resources = Resources
                 .Cast<DictionaryEntry>()
-                .Where(r => !(r.Value is Style && ((Style)r.Value).TargetType == typeof(Window) || ((Style)r.Value).TargetType.IsSubclassOf(typeof(Window))));
+                .Where(r => !(r.Value is Style style && style.TargetType == typeof(Window) || ((Style)r.Value).TargetType.IsSubclassOf(typeof(Window))));
             foreach (var e in resources) window.Resources.Add(e.Key, e.Value);
 
             if (WindowContent != null) window.Content = WindowContent;
