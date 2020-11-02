@@ -1,9 +1,25 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 
 namespace MathCore.WPF.Commands
 {
-    public abstract class WindowCommand : LambdaCommand<Window>
+    public abstract class WindowCommand : Command
     {
-        public override bool CanExecute(object? obj) => true;
+        protected virtual Window? Getwindow(object? parameter) =>
+            parameter as Window
+             ?? RootObject as Window
+             ?? Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsFocused)
+             ?? Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+
+        public override bool CanExecute(object? obj) => obj is Window || Getwindow(obj) is not null;
+
+        public override void Execute(object? parameter)
+        {
+            var window = Getwindow(parameter);
+            if (window is null || !CanExecute(window)) return;
+            Execute(window);
+        }
+
+        protected abstract void Execute(Window window);
     }
 }

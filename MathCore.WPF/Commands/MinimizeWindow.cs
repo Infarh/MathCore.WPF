@@ -4,10 +4,10 @@ namespace MathCore.WPF.Commands
 {
     public class MinimizeWindow : WindowCommand
     {
-        public override void Execute(object? parameter)
+        protected override void Execute(Window window)
         {
-            if (!((parameter ?? RootObject) is Window window)) return;
-            window.WindowState = WindowState.Minimized;
+            if (window != null)
+                window.WindowState = WindowState.Minimized;
         }
     }
 }
