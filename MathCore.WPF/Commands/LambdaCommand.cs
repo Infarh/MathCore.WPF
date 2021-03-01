@@ -262,11 +262,12 @@ namespace MathCore.WPF.Commands
         {
             if (ViewModel.IsDesignMode) return true;
             if (!IsCanExecute) return false;
-            var can_execute = _CanExecute;
-            if (can_execute is null) return true;
-            if (obj is null || obj is T parameter && can_execute(parameter)) return true;
-            obj = ConvertParameter(obj);
-            return can_execute((T)obj!);
+            return _CanExecute is not { } can_execute || obj switch
+            {
+                null => can_execute(default!),
+                T parameter => can_execute(parameter),
+                _ => can_execute((T)ConvertParameter(obj))
+            };
         }
 
         public void CanExecuteCheck() => OnCanExecuteChanged();
