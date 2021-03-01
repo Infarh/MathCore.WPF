@@ -43,10 +43,7 @@ namespace MathCore.WPF.SVG
     public readonly SvgColor Color;
 
     //==========================================================================
-    public SvgColorPaint(SvgColor color)
-    {
-      Color = color;
-    }
+    public SvgColorPaint(SvgColor color) => Color = color;
 
     //==========================================================================
     public override Brush ToBrush(SvgBaseElement element) => new SolidColorBrush(Color.ToColor());

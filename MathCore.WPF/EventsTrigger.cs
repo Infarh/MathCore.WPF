@@ -11,7 +11,7 @@ namespace MathCore.WPF
     {
         public abstract class TriggersPool : INotifyCollectionChanged
         {
-            private readonly Dictionary<string, EventsTrigger> _Triggers = new Dictionary<string, EventsTrigger>();
+            private readonly Dictionary<string, EventsTrigger> _Triggers = new();
 
             public EventsTrigger this[string Name]
             {
@@ -61,7 +61,7 @@ namespace MathCore.WPF
 
         private class EventTriggersPool : TriggersPool { }
 
-        static EventsTrigger() { __Pool = new EventTriggersPool(); }
+        static EventsTrigger() => __Pool = new EventTriggersPool();
 
         private static readonly TriggersPool __Pool;
 
@@ -79,16 +79,16 @@ namespace MathCore.WPF
         [NotNull]
         private readonly Func<object, bool> _Checker;
 
-        private readonly object _SyncRoot = new object();
+        private readonly object _SyncRoot = new();
         private bool _LastState;
 
-        private readonly List<IObserver<bool>> _StateObservers = new List<IObserver<bool>>();
+        private readonly List<IObserver<bool>> _StateObservers = new();
 
         public bool LastState => _LastState;
 
         public EventsTrigger([NotNull] Func<bool> Checker) : this(obj => Checker()) { }
 
-        public EventsTrigger([NotNull] Func<object, bool> Checker) { _Checker = Checker; }
+        public EventsTrigger([NotNull] Func<object, bool> Checker) => _Checker = Checker;
 
         public bool Check() => Check(null);
 

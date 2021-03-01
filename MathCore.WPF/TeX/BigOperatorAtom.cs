@@ -10,12 +10,10 @@ namespace MathCore.WPF.TeX
         /// <param name="box"></param>
         /// <param name="maxWidth"></param>
         /// <returns></returns>
-        private static Box ChangeWidth(Box box, double maxWidth)
-        {
-            return Math.Abs(maxWidth - box.Width) > TexUtilities.FloatPrecision
+        private static Box ChangeWidth(Box box, double maxWidth) =>
+            Math.Abs(maxWidth - box.Width) > TexUtilities.FloatPrecision
                 ? new HorizontalBox(box, maxWidth, TexAlignment.Center)
                 : box;
-        }
 
         /// <summary>Atom representing big operator</summary>
         public Atom BaseAtom { get; }
@@ -29,10 +27,8 @@ namespace MathCore.WPF.TeX
         public bool? UseVerticalLimits { get; }
 
         public BigOperatorAtom(Atom baseAtom, Atom lowerLimitAtom, Atom upperLimitAtom, bool? useVerticalLimits = null)
-            : this(baseAtom, lowerLimitAtom, upperLimitAtom)
-        {
+            : this(baseAtom, lowerLimitAtom, upperLimitAtom) =>
             UseVerticalLimits = useVerticalLimits;
-        }
 
         public BigOperatorAtom(Atom baseAtom, Atom lowerLimitAtom, Atom upperLimitAtom)
         {

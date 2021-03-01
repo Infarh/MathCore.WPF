@@ -43,7 +43,7 @@ namespace MathCore.WPF.SVG
     : SvgBaseElement
   {
     //==========================================================================
-    public readonly List<SvgFilterEffectBaseElement> FilterEffects = new List<SvgFilterEffectBaseElement>();
+    public readonly List<SvgFilterEffectBaseElement> FilterEffects = new();
 
     //==========================================================================
     public SvgFilterElement(SvgDocument document, SvgBaseElement parent, XElement filterElement)

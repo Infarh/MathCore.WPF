@@ -17,8 +17,8 @@ namespace MathCore.WPF.TeX
         public Brush Foreground { get; set; }
         public int LastFontId
         {
-            get { return lastFontId == TexFontUtilities.NoFontId ? TexFont.GetMuFontId() : lastFontId; }
-            set { lastFontId = value; }
+            get => lastFontId == TexFontUtilities.NoFontId ? TexFont.GetMuFontId() : lastFontId;
+            set => lastFontId = value;
         }
 
         public TexEnvironment(TexStyle style, ITeXFont texFont) : this(style, texFont, null, null) { }
@@ -78,7 +78,7 @@ namespace MathCore.WPF.TeX
             return newEnvironment;
         }
 
-        public TexEnvironment Clone() => new TexEnvironment(Style, TexFont, Background, Foreground);
+        public TexEnvironment Clone() => new(Style, TexFont, Background, Foreground);
 
         public void Reset()
         {

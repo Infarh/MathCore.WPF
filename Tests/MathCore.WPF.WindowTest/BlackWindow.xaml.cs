@@ -17,9 +17,6 @@ namespace MathCore.WPF.WindowTest
     /// </summary>
     public partial class BlackWindow : Window
     {
-        public BlackWindow()
-        {
-            InitializeComponent();
-        }
+        public BlackWindow() => InitializeComponent();
     }
 }

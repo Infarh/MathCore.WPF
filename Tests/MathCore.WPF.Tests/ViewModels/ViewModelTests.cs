@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+
 using MathCore.WPF.ViewModels;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MathCore.WPF.Tests.ViewModels

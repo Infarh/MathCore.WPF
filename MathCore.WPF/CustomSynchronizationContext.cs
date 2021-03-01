@@ -66,16 +66,14 @@ namespace MathCore.WPF
             if(Thread.CurrentThread == _Thread) post(state);
             else
             {
-                using(var lv_ResetEvent = new AutoResetEvent(false))
-                {
-                    var lv_WiExecutionInfo = new WorkItemExecutionInfo();
-                    _WorkItems.Enqueue(new SynchronousWorkItem(post, state, lv_ResetEvent, ref lv_WiExecutionInfo));
-                    _WorkerResetEvent.Set();
+                using var reset_event = new AutoResetEvent(false);
+                var wi_execution_info = new WorkItemExecutionInfo();
+                _WorkItems.Enqueue(new SynchronousWorkItem(post, state, reset_event, ref wi_execution_info));
+                _WorkerResetEvent.Set();
 
-                    lv_ResetEvent.WaitOne();
-                    if(lv_WiExecutionInfo.HasException)
-                        throw lv_WiExecutionInfo.Exception;
-                }
+                reset_event.WaitOne();
+                if(wi_execution_info.HasException)
+                    throw wi_execution_info.Exception;
             }
         }
 
@@ -116,8 +114,8 @@ namespace MathCore.WPF
             private readonly AutoResetEvent _SyncObject;
             private readonly WorkItemExecutionInfo _WorkItemExecutionInfo;
 
-            public SynchronousWorkItem(SendOrPostCallback sendOrPostCallback, object state, AutoResetEvent ResetEvent,
-                ref WorkItemExecutionInfo WorkItemExecutionInfo) : base(sendOrPostCallback, state)
+            public SynchronousWorkItem(SendOrPostCallback SendOrPostCallback, object state, AutoResetEvent ResetEvent,
+                ref WorkItemExecutionInfo WorkItemExecutionInfo) : base(SendOrPostCallback, state)
             {
                 if(WorkItemExecutionInfo is null)
                     throw new NullReferenceException(nameof(WorkItemExecutionInfo));
@@ -135,8 +133,8 @@ namespace MathCore.WPF
 
         private sealed class AsynchronousWorkItem : WorkItem
         {
-            public AsynchronousWorkItem(SendOrPostCallback sendOrPostCallback, object state)
-                : base(sendOrPostCallback, state)
+            public AsynchronousWorkItem(SendOrPostCallback SendOrPostCallback, object state)
+                : base(SendOrPostCallback, state)
             { }
 
             public override void Execute() => SendOrPostCallback(State);

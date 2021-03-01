@@ -68,7 +68,7 @@ namespace MathCore.WPF.TeX
             this.depth = depth;
         }
 
-        public SpaceAtom() { isHardSpace = true; }
+        public SpaceAtom() => isHardSpace = true;
 
         public override Box CreateBox(TexEnvironment environment)
         {

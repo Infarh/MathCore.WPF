@@ -77,7 +77,7 @@ namespace MathCore.WPF.Commands
 
         public override async void Execute(object? parameter)
         {
-            if (!(parameter is T value))
+            if (parameter is not T value)
                 value = parameter is null
                     ? default
                     : LambdaCommand<T>.ConvertParameter(parameter);

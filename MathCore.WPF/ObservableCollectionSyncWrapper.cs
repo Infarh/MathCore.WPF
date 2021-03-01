@@ -98,7 +98,7 @@ namespace MathCore.WPF
         public int Count => _Collection.Count;
         public bool IsReadOnly => ((ICollection<T>)_Collection).IsReadOnly;
 
-        public static implicit operator ObservableCollectionSyncWrapper<T>(ObservableCollection<T> collection) => new ObservableCollectionSyncWrapper<T>(collection);
+        public static implicit operator ObservableCollectionSyncWrapper<T>(ObservableCollection<T> collection) => new(collection);
         public static explicit operator ObservableCollection<T>(ObservableCollectionSyncWrapper<T> wrapper) => wrapper._Collection;
     }
 
@@ -127,12 +127,12 @@ namespace MathCore.WPF
 
     public class DeferEventObservableCollection<T> : ObservableCollection<T>
     {
-        private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = new List<NotifyCollectionChangedEventArgs>();
+        private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = new();
         private bool _HasQueuedDispatcherUpdate;
         private readonly int _Threshold;
-        private readonly object _SyncRoot = new object();
+        private readonly object _SyncRoot = new();
 
-        public DeferEventObservableCollection(int threshold = 10) { _Threshold = threshold; }
+        public DeferEventObservableCollection(int threshold = 10) => _Threshold = threshold;
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
@@ -179,7 +179,7 @@ namespace MathCore.WPF
         }
 
         /// <summary>Отложить посылку уведомлений об изменении состава коллекции</summary><returns>Дескриптор</returns>
-        public DeferRefreshHelper DeferRefresh() => new DeferRefreshHelper(this);
+        public DeferRefreshHelper DeferRefresh() => new(this);
 
         /// <summary>Дескриптор отложенных изменений</summary>
         public struct DeferRefreshHelper : IDisposable

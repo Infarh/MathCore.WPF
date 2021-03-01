@@ -40,7 +40,7 @@ namespace MathCore.WPF.SVG
     : SvgBaseElement
   {
     //==========================================================================
-    public readonly List<SvgStopElement> Stops = new List<SvgStopElement>();
+    public readonly List<SvgStopElement> Stops = new();
 
     //==========================================================================
     public readonly SvgGradientUnits GradientUnits = SvgGradientUnits.ObjectBoundingBox;
@@ -156,8 +156,7 @@ namespace MathCore.WPF.SVG
         if (!Document.Elements.ContainsKey(Reference))
           return null;
 
-        var reference = Document.Elements[Reference] as SvgGradientBaseElement;
-        if(reference is null)
+        if(!(Document.Elements[Reference] is SvgGradientBaseElement reference))
           throw new NotImplementedException();
         reference.SetBrush(brush);
       }

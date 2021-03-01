@@ -21,7 +21,7 @@ namespace MathCore.WPF.Behaviors
 
         private static void OnCloseTriggerChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if (!(D is CloseBehavior behavior) || !(E.NewValue is bool dialog_result)) return;
+            if (D is not CloseBehavior behavior || E.NewValue is not bool dialog_result) return;
             var window = behavior.AssociatedObject;
             window.DialogResult = dialog_result;
             if (behavior._CloseInProgress) return;

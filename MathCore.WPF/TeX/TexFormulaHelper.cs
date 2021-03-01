@@ -137,22 +137,18 @@
                 subscriptName?.RootAtom, SymbolAtom.GetAtom(name), kernUnit, kern, false);
         }
 
-        public void PutOver(TexFormula overFormula, TexUnit overUnit, double overSpace, bool overScriptSize)
-        {
+        public void PutOver(TexFormula overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) =>
             Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
                 overFormula?.RootAtom, overUnit, overSpace, overScriptSize, true);
-        }
 
         public void PutOver(string overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) => PutOver(overFormula is null ? null : FormulaParser.Parse(overFormula), overUnit, overSpace, overScriptSize);
 
         public void PutUnder(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) => PutUnder(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
             underScriptSize);
 
-        public void PutUnder(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize)
-        {
+        public void PutUnder(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) =>
             Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
                 underFormula?.RootAtom, underUnit, underSpace, underScriptSize, false);
-        }
 
         public void PutUnderAndOver(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize,
             string over, TexUnit overUnit, double overSpace, bool overScriptSize) => PutUnderAndOver(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,

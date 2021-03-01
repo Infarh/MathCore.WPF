@@ -37,7 +37,7 @@ namespace MathCore.WPF
         // Handler for resizing from the bottom-right.
         private void HandleBottomRight(object sender, DragDeltaEventArgs args)
         {
-            if (!(AdornedElement is FrameworkElement element) || !(sender is Thumb thumb)) return;
+            if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
             //var parentElement = adorned_element.Parent as FrameworkElement;
 
             // Ensure that the Width and Height are properly initialized after the resize.
@@ -53,7 +53,7 @@ namespace MathCore.WPF
 
         private void HandleTopRight(object sender, DragDeltaEventArgs args)
         {
-            if (!(AdornedElement is FrameworkElement element) || !(sender is Thumb thumb)) return;
+            if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
             //var parentElement = adornedElement.Parent as FrameworkElement;
 
             // Ensure that the Width and Height are properly initialized after the resize.
@@ -75,7 +75,7 @@ namespace MathCore.WPF
 
         private void HandleTopLeft(object sender, DragDeltaEventArgs args)
         {
-            if (!(AdornedElement is FrameworkElement element) || !(sender is Thumb thumb)) return;
+            if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
 
             // Ensure that the Width and Height are properly initialized after the resize.
             EnforceSize(element);
@@ -102,7 +102,7 @@ namespace MathCore.WPF
 
         private void HandleBottomLeft(object sender, DragDeltaEventArgs args)
         {
-            if (!(AdornedElement is FrameworkElement element) || !(sender is Thumb thumb)) return;
+            if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
 
             // Ensure that the Width and Height are properly initialized after the resize.
             EnforceSize(element);
@@ -166,7 +166,7 @@ namespace MathCore.WPF
             if (element.Height.Equals(double.NaN))
                 element.Height = element.DesiredSize.Height;
 
-            if (!(element.Parent is FrameworkElement parent)) return;
+            if (element.Parent is not FrameworkElement parent) return;
             element.MaxHeight = parent.ActualHeight;
             element.MaxWidth = parent.ActualWidth;
         }

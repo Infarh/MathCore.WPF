@@ -51,8 +51,8 @@ namespace MathCore.WPF
 
         public CollectionSelector(IEnumerable<T> Items, bool SelectFirstItem = true) : this(SelectFirstItem) => this.Items = Items;
 
-        public static implicit operator CollectionSelector<T>(T[] Collection) => new CollectionSelector<T>(Collection);
-        public static implicit operator CollectionSelector<T>(List<T> Collection) => new CollectionSelector<T>(Collection);
-        public static implicit operator CollectionSelector<T>(ObservableCollection<T> Collection) => new CollectionSelector<T>(Collection);
+        public static implicit operator CollectionSelector<T>(T[] Collection) => new(Collection);
+        public static implicit operator CollectionSelector<T>(List<T> Collection) => new(Collection);
+        public static implicit operator CollectionSelector<T>(ObservableCollection<T> Collection) => new(Collection);
     }
 }

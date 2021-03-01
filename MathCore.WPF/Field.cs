@@ -23,7 +23,7 @@ namespace MathCore.WPF
 
         private static void OnValuePropertyChaged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!(d is Field field)) return;
+            if (d is not Field field) return;
             foreach (var value in field)
                 value.Value = e.NewValue;
         }
@@ -79,7 +79,7 @@ namespace MathCore.WPF
 
         private static void OnValuePropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if (!(D is FieldValue value) || value._Field is null) return;
+            if (D is not FieldValue value || value._Field is null) return;
             value._Field.Value = E.NewValue;
         }
 

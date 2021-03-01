@@ -39,10 +39,7 @@ namespace MathCore.WPF.SVG
     public readonly string Id;
     
     //==========================================================================
-    public SvgURL(string id)
-    {
-      Id = id;
-    }
+    public SvgURL(string id) => Id = id;
 
     //==========================================================================
     public static SvgURL Parse(string value)

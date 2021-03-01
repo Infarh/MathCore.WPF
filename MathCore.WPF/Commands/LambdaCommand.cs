@@ -23,10 +23,10 @@ namespace MathCore.WPF.Commands
     public class LambdaCommand : Command
     {
         [NotNull]
-        public static LambdaCommand OnExecute([NotNull]Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null) => new LambdaCommand(ExecuteAction, CanExecute);
+        public static LambdaCommand OnExecute([NotNull]Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
 
         [NotNull]
-        public static LambdaCommand OnExecute([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) => new LambdaCommand(ExecuteAction, CanExecute);
+        public static LambdaCommand OnExecute([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
 
         #region События
 
@@ -132,8 +132,8 @@ namespace MathCore.WPF.Commands
         [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
         [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
 
-        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new LambdaCommand(execute);
-        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new LambdaCommand(execute);
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new(execute);
+        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new(execute);
     }
 
     /// <summary>
@@ -230,7 +230,7 @@ namespace MathCore.WPF.Commands
             var execute_action = _ExecuteAction 
                     ?? throw new InvalidOperationException(@"Метод выполнения команды не определён");
 
-            if (!(parameter is T value))
+            if (parameter is not T value)
                 value = parameter is null 
                     ? default 
                     : ConvertParameter(parameter);
@@ -284,7 +284,7 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        [NotNull] public static explicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new LambdaCommand<T>(execute);
+        [NotNull] public static explicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new(execute);
 
         #region IObservable<T>
 

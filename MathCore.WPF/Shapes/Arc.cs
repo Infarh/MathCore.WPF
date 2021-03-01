@@ -82,11 +82,9 @@ namespace MathCore.WPF.Shapes
             var is_large = d > 180;
 
             var geometry = new StreamGeometry();
-            using(var context = geometry.Open())
-            {
-                context.BeginFigure(p1, isFilled: false, isClosed: false);
-                context.ArcTo(p2, arc, 0, is_large, SweepDirection.Clockwise, isStroked: true, isSmoothJoin: false);
-            }
+            using var context = geometry.Open();
+            context.BeginFigure(p1, isFilled: false, isClosed: false);
+            context.ArcTo(p2, arc, 0, is_large, SweepDirection.Clockwise, isStroked: true, isSmoothJoin: false);
 
             return geometry;
         }

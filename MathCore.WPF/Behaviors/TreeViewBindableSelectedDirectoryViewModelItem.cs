@@ -10,7 +10,7 @@ namespace MathCore.WPF.Behaviors
     {
         protected override void OnSelectedItemPropertyChanged(object item)
         {
-            if (!(item is DirectoryViewModel model)) return;
+            if (item is not DirectoryViewModel model) return;
             var tree_view = AssociatedObject;
             if (tree_view is null || ReferenceEquals(tree_view.SelectedItem, item)) return;
             SelectTreeViewItem(tree_view, model.Directory.FullName);

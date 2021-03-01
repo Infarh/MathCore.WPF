@@ -151,9 +151,9 @@ namespace MathCore.WPF
         #endregion
 
         /// <summary>Словарь объектов ItemsControls, которым установлен водяной знак</summary>
-        [NotNull] private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = new Dictionary<object, ItemsControl>();
+        [NotNull] private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = new();
 
-        [NotNull] private static readonly List<Control> __AttachedControlsList = new List<Control>(50);
+        [NotNull] private static readonly List<Control> __AttachedControlsList = new(50);
 
         /// <summary>Обработчик события изменения водяного знака</summary>
         /// <param name="d"><see cref="DependencyObject"/> - источник события</param>
@@ -203,7 +203,7 @@ namespace MathCore.WPF
                     break;
                 default:
                     {
-                        if (!(control is ItemsControl items_control)) return;
+                        if (control is not ItemsControl items_control) return;
                         items_control.ItemContainerGenerator.ItemsChanged += OnItemsChanged;
                         __ItemsControlsDictionary.Add(items_control.ItemContainerGenerator, items_control);
 

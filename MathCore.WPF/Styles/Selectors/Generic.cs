@@ -14,7 +14,7 @@ namespace MathCore.WPF.Styles.Selectors
     [MarkupExtensionReturnType(typeof(GenericStyleSelector))]
     public class Generic : MarkupExtension
     {
-        private readonly List<Style> _Items = new List<Style>();
+        private readonly List<Style> _Items = new();
 
         public IList Styles => _Items;
 

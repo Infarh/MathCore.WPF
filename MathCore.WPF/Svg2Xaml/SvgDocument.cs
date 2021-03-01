@@ -37,7 +37,7 @@ namespace MathCore.WPF.SVG
   sealed class SvgDocument
   {
     //==========================================================================
-    public readonly Dictionary<string, SvgBaseElement> Elements = new Dictionary<string,SvgBaseElement>();
+    public readonly Dictionary<string, SvgBaseElement> Elements = new();
 
     //==========================================================================
     public readonly SvgSVGElement    Root;
@@ -51,7 +51,7 @@ namespace MathCore.WPF.SVG
     }
 
     //==========================================================================
-    public DrawingImage Draw() => new DrawingImage(Root.Draw());
+    public DrawingImage Draw() => new(Root.Draw());
   } // class SvgDocument
 
 }

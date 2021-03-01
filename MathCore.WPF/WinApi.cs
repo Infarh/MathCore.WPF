@@ -241,14 +241,12 @@ namespace MathCore.WPF
         /// Used at design time.
         /// </summary>
         /// <returns></returns>
-        internal static WindowMessageSink CreateEmpty()
-        {
-            return new WindowMessageSink
+        internal static WindowMessageSink CreateEmpty() =>
+            new()
             {
                 MessageWindowHandle = IntPtr.Zero,
                 Version = NotifyIconVersion.Vista
             };
-        }
 
         #endregion
 
@@ -447,10 +445,7 @@ namespace MathCore.WPF
         /// this class.
         /// </para>
         /// </summary>
-        ~WindowMessageSink()
-        {
-            Dispose(false);
-        }
+        ~WindowMessageSink() => Dispose(false);
 
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace MathCore.WPF.Converters
 
         protected override object? Convert(object? v, Type? t, object? p, System.Globalization.CultureInfo? c)
         {
-            if(!(v is Point[] points) || points.Length <= 0) return null;
+            if(v is not Point[] points || points.Length <= 0) return null;
             var start = points[0];
             var segments = new List<LineSegment>();
             for(var i = 1; i < points.Length; i++)

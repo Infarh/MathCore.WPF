@@ -41,7 +41,7 @@ namespace MathCore.WPF.SVG
   {
 
     //==========================================================================
-    public readonly SvgLength StdDeviation = new SvgLength(1.0);
+    public readonly SvgLength StdDeviation = new(1.0);
 
     //==========================================================================
     public SvgFEGaussianBlurElement(SvgDocument document, SvgBaseElement parent, XElement feGaussianBlurElement)

@@ -5,7 +5,7 @@
     {
         public Atom Atom { get; }
 
-        public VerticalCenteredAtom(Atom atom) { Atom = atom; }
+        public VerticalCenteredAtom(Atom atom) => Atom = atom;
 
         public override Box CreateBox(TexEnvironment environment)
         {

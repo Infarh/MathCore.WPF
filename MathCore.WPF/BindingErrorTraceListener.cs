@@ -12,7 +12,7 @@ namespace MathCore.WPF
             PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Error;
         }
 
-        private readonly StringBuilder _MessageBuilder = new StringBuilder();
+        private readonly StringBuilder _MessageBuilder = new();
 
         /// <inheritdoc />
         public override void Write(string message) => _MessageBuilder.Append(message);

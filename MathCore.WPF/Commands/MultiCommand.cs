@@ -16,7 +16,7 @@ namespace MathCore.WPF.Commands
     [ContentProperty("Commands")]
     public class MultiCommand : LambdaCommand, IAddChild
     {
-        private readonly Collection<ICommand> _Commands = new Collection<ICommand>();
+        private readonly Collection<ICommand> _Commands = new();
 
         private bool _ExecuteIndependently = true;
 
@@ -66,7 +66,7 @@ namespace MathCore.WPF.Commands
         public void AddChild([NotNull] object? value)
         {
             if(value is null) throw new ArgumentNullException(nameof(value));
-            if(!(value is ICommand command))
+            if(value is not ICommand command)
                 throw new ArgumentException($"Не допускается добавления значений тип {value.GetType()}", nameof(value));
             _Commands.Add(command);
         }

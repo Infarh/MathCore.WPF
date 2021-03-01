@@ -48,7 +48,7 @@ namespace MathCore.WPF.TeX
         }
 
         public double Size { get; }
-        public DefaultTexFont(double size) { Size = size; }
+        public DefaultTexFont(double size) => Size = size;
 
         public ITeXFont DeriveFont(double newSize) => new DefaultTexFont(newSize);
 

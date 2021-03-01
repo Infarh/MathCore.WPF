@@ -7,10 +7,8 @@ namespace MathCore.WPF
     {
         public static bool IsInDesignMode { get; }
 
-        static WPFService()
-        {
+        static WPFService() =>
             IsInDesignMode = (bool)DependencyPropertyDescriptor.FromProperty(DesignerProperties.IsInDesignModeProperty,
-                        typeof(FrameworkElement)).Metadata.DefaultValue;
-        }
+                typeof(FrameworkElement)).Metadata.DefaultValue;
     }
 }

@@ -24,9 +24,9 @@ namespace MathCore.WPF.ValidationRules
             value switch
             {
                 null => AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Отсутствует ссылка на объект"),
-                DirectoryInfo dir when dir.Exists => ValidationResult.ValidResult,
+                DirectoryInfo { Exists: true } => ValidationResult.ValidResult,
                 string dir when Directory.Exists(dir) => ValidationResult.ValidResult,
-                string str when str.Length == 2 && str[1] == ':' => new ValidationResult(false, FormatErrorMessage ?? "Некорректный формат пути"),
+                string { Length: 2 } str when str[1] == ':' => new ValidationResult(false, FormatErrorMessage ?? "Некорректный формат пути"),
                 string dir => new ValidationResult(false, ErrorMessage?.Contains("{0}", StringComparison.Ordinal) == true ? string.Format(c, ErrorMessage, dir) : ErrorMessage ?? $"Директория {dir} не найдена"),
                 _ => new ValidationResult(false, $"Тип {value.GetType()} не поддерживается")
             };

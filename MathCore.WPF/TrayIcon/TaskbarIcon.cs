@@ -130,7 +130,7 @@ namespace MathCore.WPF.TrayIcon
             }
 
             if (balloon is null) throw new ArgumentNullException(nameof(balloon));
-            if (timeout.HasValue && timeout < 500)
+            if (timeout < 500)
                 throw new ArgumentOutOfRangeException(nameof(timeout), timeout, $"Invalid timeout of {timeout} milliseconds. Timeout must be at least 500 ms");
 
             EnsureNotDisposed();
@@ -909,7 +909,7 @@ namespace MathCore.WPF.TrayIcon
         /// this class.
         /// </para>
         /// </summary>
-        ~TaskbarIcon() { Dispose(false); }
+        ~TaskbarIcon() => Dispose(false);
 
 
         /// <summary>

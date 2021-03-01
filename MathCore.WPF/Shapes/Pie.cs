@@ -103,8 +103,8 @@ namespace MathCore.WPF.Shapes
 
         public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
-        private readonly EllipseGeometry _OuterEllipse = new EllipseGeometry();
-        private readonly EllipseGeometry _InnerEllipse = new EllipseGeometry();
+        private readonly EllipseGeometry _OuterEllipse = new();
+        private readonly EllipseGeometry _InnerEllipse = new();
         private readonly CombinedGeometry _Cycle;
         private readonly CombinedGeometry _Pie;
         private Rect _Rect;

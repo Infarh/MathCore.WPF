@@ -22,8 +22,8 @@ namespace MathCore.WPF.TeX
         /// <summary>Маштаб</summary>
         public double Scale
         {
-            get { return (double)GetValue(ScaleProperty); }
-            set { SetValue(ScaleProperty, value); }
+            get => (double)GetValue(ScaleProperty);
+            set => SetValue(ScaleProperty, value);
         }
 
         #endregion
@@ -41,8 +41,8 @@ namespace MathCore.WPF.TeX
         /// <summary>Кисть отрисовки текста формулы</summary>
         public Brush Foreground
         {
-            get { return (Brush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
+            get => (Brush)GetValue(ForegroundProperty);
+            set => SetValue(ForegroundProperty, value);
         }
 
         #endregion
@@ -60,8 +60,8 @@ namespace MathCore.WPF.TeX
         /// <summary>Кисть отрисовки заднего фона</summary>
         public Brush Background
         {
-            get { return (Brush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
+            get => (Brush)GetValue(BackgroundProperty);
+            set => SetValue(BackgroundProperty, value);
         }
 
         #endregion
@@ -100,8 +100,8 @@ namespace MathCore.WPF.TeX
                     boxes.ToArray();
                 //var size = renderer.RenderSize;
 
-                using(var dContext = visual.RenderOpen())
-                    renderer.Render(dContext, 0, 1);
+                using var dContext = visual.RenderOpen();
+                renderer.Render(dContext, 0, 1);
             } catch(Exception e)
             {
                 Debug.WriteLine(e);
@@ -112,20 +112,20 @@ namespace MathCore.WPF.TeX
         /// <summary>Строковое выражение</summary>
         public string Data
         {
-            get { return (string)GetValue(DataProperty); }
-            set { SetValue(DataProperty, value); }
+            get => (string)GetValue(DataProperty);
+            set => SetValue(DataProperty, value);
         }
 
         #endregion
 
-        private readonly TexFormulaParser _Parser = new TexFormulaParser();
+        private readonly TexFormulaParser _Parser = new();
         private DrawingVisual _Visual;
 
         protected override int VisualChildrenCount => 1;
 
         private DrawingVisual Visual
         {
-            get { return _Visual; }
+            get => _Visual;
             set
             {
                 RemoveVisualChild(_Visual);

@@ -13,7 +13,7 @@ namespace MathCore.WPF.Commands
             get
             {
                 if (RootObject is Window window) return window;
-                if (!(TargetObject is FrameworkElement element)) return null;
+                if (TargetObject is not FrameworkElement element) return null;
                 return element.FindVisualParent<Window>();
             }
         }

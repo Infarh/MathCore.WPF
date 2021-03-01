@@ -9,7 +9,7 @@ namespace MathCore.WPF
     [ContentProperty("Elements")]
     public class AggregateArray : MarkupExtension
     {
-        private readonly ArrayList _Elements = new ArrayList();
+        private readonly ArrayList _Elements = new();
 
         public IList Elements => _Elements;
 

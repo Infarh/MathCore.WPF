@@ -15,7 +15,7 @@ namespace MathCore.WPF
     [TemplatePart(Name = "PART_FilterBox")]
     public class Filter : HeaderedContentControl
     {
-        static Filter() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Filter), new FrameworkPropertyMetadata(typeof(Filter))); }
+        static Filter() => DefaultStyleKeyProperty.OverrideMetadata(typeof(Filter), new FrameworkPropertyMetadata(typeof(Filter)));
 
         public static readonly Func<object, string, bool> ContentTextSearch = (element, pattern) =>
         {
@@ -47,26 +47,23 @@ namespace MathCore.WPF
 
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var @old = e.OldValue as IEnumerable;
-            if(@old != null)
+            if(e.OldValue is IEnumerable old)
                 CollectionViewSource.GetDefaultView(@old).Filter = null;
 
-            var @new = e.NewValue as IEnumerable;
-            if(@new is null) return;
+            if(!(e.NewValue is IEnumerable @new)) return;
             var f = (Filter)d;
             CollectionViewSource.GetDefaultView(@new).Filter = i => f.SearchStrategy(i, f.Pattern);
         }
 
         private TextBox _FilterBox;
 
-        public Filter() { FilterBoxStyle = (Style)TryFindResource(new ComponentResourceKey(typeof(Filter), "FilterBoxStyle")); }
+        public Filter() => FilterBoxStyle = (Style)TryFindResource(new ComponentResourceKey(typeof(Filter), "FilterBoxStyle"));
 
         private ICollectionView View => CollectionViewSource.GetDefaultView(ItemsSource);
 
         protected override void OnContentChanged(object oldContent, object newContent)
         {
-            var control = newContent as ItemsControl;
-            if(control is null)
+            if(!(newContent is ItemsControl control))
                 throw new ArgumentException("Content or Content Template must be an ItemsControl");
 
             SetBinding(ItemsSourceProperty, new Binding("ItemsSource") { Mode = BindingMode.OneWay, Source = control });

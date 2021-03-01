@@ -32,7 +32,7 @@ namespace MathCore.WPF
 
         private static void OnUseDataAnnotationsPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if (!(D is DataGrid data_grid)) return;
+            if (D is not DataGrid data_grid) return;
             if ((bool)E.NewValue)
             {
                 data_grid.AutoGeneratingColumn += OnDataGridGeneratingColumn;
@@ -52,7 +52,7 @@ namespace MathCore.WPF
 
         private static void OnDataGridGeneratingColumn(object? Sender, [NotNull] DataGridAutoGeneratingColumnEventArgs E)
         {
-            if(!(E.PropertyDescriptor is PropertyDescriptor property_descriptor)) return;
+            if(E.PropertyDescriptor is not PropertyDescriptor property_descriptor) return;
             var item_type = property_descriptor?.ComponentType;
             var property = item_type?.GetProperty(E.PropertyName);
             if (property is null) return;
@@ -133,7 +133,7 @@ namespace MathCore.WPF
 
         private static void OnAddRowNumberToRowHeaderPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if(!(D is DataGrid data_grid)) return;
+            if(D is not DataGrid data_grid) return;
             if ((bool) E.NewValue)
                 data_grid.LoadingRow += OnRowLoadingAddRowNumber;
             else

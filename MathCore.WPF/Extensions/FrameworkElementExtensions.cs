@@ -144,7 +144,7 @@ namespace System.Windows
                 };
 
 
-            private Rect ElementBounds => new Rect(GetLayoutSize(_Element));
+            private Rect ElementBounds => new(GetLayoutSize(_Element));
 
             public ElementDragManager(FrameworkElement element, bool AllowX = true, bool AllowY = true, bool ConstrainToParent = false)
             {
@@ -198,7 +198,7 @@ namespace System.Windows
 
             private void ApplyTranslation(Vector Transition)
             {
-                if (!(_Element.Parent is FrameworkElement parent)) return;
+                if (_Element.Parent is not FrameworkElement parent) return;
                 var parent_transition_transform = _Root.TransformToVisual(parent);
                 var transition = GetTransformVector(parent_transition_transform, Transition.X, Transition.Y);
 
@@ -232,7 +232,7 @@ namespace System.Windows
             private void ApplyTranslationTransform(Vector Transition)
             {
                 var transform = RenderTransform;
-                if (!(transform is TranslateTransform translate_transform))
+                if (transform is not TranslateTransform translate_transform)
                 {
                     switch (transform)
                     {

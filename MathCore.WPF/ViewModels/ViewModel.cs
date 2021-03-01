@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Xaml;
+
 using MathCore.Annotations;
+
 using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -31,13 +33,13 @@ namespace MathCore.WPF.ViewModels
         {
             add
             {
-                if(value is null) return;
+                if (value is null) return;
                 lock (_PropertiesDependenciesSyncRoot)
                     PropertyChanged_AddHandler(value);
             }
             remove
             {
-                if(value is null) return;
+                if (value is null) return;
                 lock (_PropertiesDependenciesSyncRoot)
                     PropertyChanged_RemoveHandler(value);
             }
@@ -54,7 +56,7 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
         public static bool IsDesignMode => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
-        [NotNull] private readonly object _PropertiesDependenciesSyncRoot = new object();
+        [NotNull] private readonly object _PropertiesDependenciesSyncRoot = new();
 
         /// <summary>Словарь графа зависимости изменений свойств</summary>
         private Dictionary<string, List<string>>? _PropertiesDependenciesDictionary;
@@ -116,18 +118,24 @@ namespace MathCore.WPF.ViewModels
         /// <param name="invoke_stack">Стек вызова</param>
         /// <returns>Истина, если найден цикл</returns>
         [ItemNotNull, CanBeNull]
-        private Queue<string>? IsLoopDependency([NotNull] string property, [NotNull] string dependence, [CanBeNull] string next_property = null, [CanBeNull, ItemNotNull] Stack<string> invoke_stack = null)
+        private Queue<string>? IsLoopDependency([NotNull] string property, [NotNull] string dependence, string? next_property = null, [ItemNotNull] Stack<string>? invoke_stack = null)
         {
-            if (invoke_stack is null) invoke_stack = new Stack<string> { property };
-            if (string.Equals(property, next_property)) return invoke_stack.ToQueueReverse().AddValue(property);
+            invoke_stack ??= new Stack<string> { property };
+            if (string.Equals(property, next_property))
+                return invoke_stack.ToQueueReverse().AddValue(property);
+
             var check_property = next_property ?? dependence;
             Debug.Assert(_PropertiesDependenciesDictionary != null, $"{nameof(_PropertiesDependenciesDictionary)} != null");
-            if (!_PropertiesDependenciesDictionary.TryGetValue(check_property, out var dependence_properties)) return null;
+            if (!_PropertiesDependenciesDictionary.TryGetValue(check_property, out var dependence_properties))
+                return null;
+
             foreach (var dependence_property in dependence_properties)
             {
                 var invoke_queue = IsLoopDependency(property, dependence, dependence_property, invoke_stack.AddValue(check_property));
-                if (invoke_queue != null) return invoke_queue;
+                if (invoke_queue != null)
+                    return invoke_queue;
             }
+
             invoke_stack.Pop();
             return null;
         }
@@ -140,10 +148,13 @@ namespace MathCore.WPF.ViewModels
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
-                if (_PropertiesDependenciesDictionary?.ContainsKey(PropertyName) != true) return false;
+                if (_PropertiesDependenciesDictionary?.ContainsKey(PropertyName) != true)
+                    return false;
+
                 var dependences = _PropertiesDependenciesDictionary[PropertyName];
                 var result = dependences.Remove(Dependence);
-                if (dependences.Count == 0) _PropertiesDependenciesDictionary.Remove(PropertyName);
+                if (dependences.Count == 0)
+                    _PropertiesDependenciesDictionary.Remove(PropertyName);
                 return result;
             }
         }
@@ -154,8 +165,12 @@ namespace MathCore.WPF.ViewModels
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
-                if (!(_PropertiesDependenciesDictionary?.Remove(PropertyName) ?? false)) return false;
-                if (_PropertiesDependenciesDictionary.Count == 0) _PropertiesDependenciesDictionary = null;
+                if (!(_PropertiesDependenciesDictionary?.Remove(PropertyName) ?? false))
+                    return false;
+
+                if (_PropertiesDependenciesDictionary.Count == 0)
+                    _PropertiesDependenciesDictionary = null;
+
                 return true;
             }
         }
@@ -167,8 +182,10 @@ namespace MathCore.WPF.ViewModels
             lock (_PropertiesDependenciesSyncRoot)
             {
                 var handlers = _PropertyChangedHandlers ??= new Dictionary<string, Action>();
-                if (handlers.ContainsKey(PropertyName)) handlers[PropertyName] += handler;
-                else handlers.Add(PropertyName, handler);
+                if (handlers.ContainsKey(PropertyName))
+                    handlers[PropertyName] += handler;
+                else
+                    handlers.Add(PropertyName, handler);
             }
         }
 
@@ -176,10 +193,13 @@ namespace MathCore.WPF.ViewModels
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
-                if (_PropertyChangedHandlers is null || _PropertyChangedHandlers.Count == 0 || !_PropertyChangedHandlers.TryGetValue(PropertyName, out var h)) return false;
+                if (_PropertyChangedHandlers is null || _PropertyChangedHandlers.Count == 0 || !_PropertyChangedHandlers.TryGetValue(PropertyName, out var handlers))
+                    return false;
                 // ReSharper disable once DelegateSubtraction
-                h -= handler;
-                if (h is null) _PropertyChangedHandlers.Remove(PropertyName);
+                handlers -= handler;
+                if (handlers is null)
+                    _PropertyChangedHandlers.Remove(PropertyName);
+
                 return true;
             }
         }
@@ -187,15 +207,18 @@ namespace MathCore.WPF.ViewModels
         protected bool PropertyChanged_ClearHandlers([NotNull] string PropertyName)
         {
             lock (_PropertiesDependenciesSyncRoot)
-                return _PropertyChangedHandlers != null && _PropertyChangedHandlers.Count > 0 &&
-                       _PropertyChangedHandlers.Remove(PropertyName);
+                return _PropertyChangedHandlers != null
+                       && _PropertyChangedHandlers.Count > 0
+                       && _PropertyChangedHandlers.Remove(PropertyName);
         }
 
         protected virtual bool PropertyChanged_ClearHandlers()
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
-                if (_PropertyChangedHandlers is null || _PropertyChangedHandlers.Count == 0) return false;
+                if (_PropertyChangedHandlers is null || _PropertyChangedHandlers.Count == 0)
+                    return false;
+
                 _PropertyChangedHandlers.Clear();
                 return true;
             }
@@ -204,10 +227,11 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Генерация события изменения значения свойства</summary>
         /// <param name="PropertyName">Имя изменившегося свойства</param>
         /// <param name="UpdateCommandsState">Обновить состояния <see cref="ICommand"/></param>
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
         protected virtual void OnPropertyChanged([CallerMemberName, NotNull] string PropertyName = null, bool UpdateCommandsState = false)
         {
-            if (PropertyName is null) return; // Если имя свойства не указано, то выход
+            if (PropertyName is null)
+                return; // Если имя свойства не указано, то выход
+
             // Извлекаем всех подписчиков события
             var handlers = PropertyChangedEvent;
             handlers?.ThreadSafeInvoke(this, PropertyName);
@@ -226,11 +250,12 @@ namespace MathCore.WPF.ViewModels
                     foreach (var dependence in dependencies)
                         if (dependency_handlers.TryGetValue(dependence, out handler)) handler?.Invoke();
             }
-            if (UpdateCommandsState) CommandManager.InvalidateRequerySuggested();
+            if (UpdateCommandsState)
+                CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>Словарь, хранящий время последней генерации события изменения указанного свойства в асинхронном режиме</summary>
-        [NotNull] private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = new Dictionary<string, DateTime>();
+        [NotNull] private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = new();
 
         /// <summary>Асинхронная генерация события изменения свойства с возможностью указания таймаута ожидания повторных изменений</summary>
         /// <param name="PropertyName">Имя свойства</param>
@@ -287,12 +312,12 @@ namespace MathCore.WPF.ViewModels
             }
         }
 
-        [NotNull] private readonly Dictionary<string, object?> _ModelPropertyValues = new Dictionary<string, object?>();
+        [NotNull] private readonly Dictionary<string, object?> _ModelPropertyValues = new();
 
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
         protected bool Set<T>([CanBeNull] T value, [CallerMemberName, NotNull] string Property = null, bool UpdateCommandsState = false)
         {
-            if (_ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property), "Имя свойства не задано"), out var old_value) && Equals(old_value, value)) 
+            if (_ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property), "Имя свойства не задано"), out var old_value) && Equals(old_value, value))
                 return false;
             _ModelPropertyValues[Property] = value;
             OnPropertyChanged(Property, UpdateCommandsState);
@@ -300,7 +325,7 @@ namespace MathCore.WPF.ViewModels
         }
 
         [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull"), CanBeNull]
-        protected T Get<T>([CallerMemberName, NotNull] string Property = null) => 
+        protected T Get<T>([CallerMemberName, NotNull] string Property = null) =>
             _ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property)), out var value)
 #pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
                 ? (T)value
@@ -370,11 +395,11 @@ namespace MathCore.WPF.ViewModels
         [CanBeNull]
         public static string? CheckDesignModeFilePath(
             [CanBeNull] string? RelativeFileName,
-            [CallerFilePath, CanBeNull]  string? SourceFilePath = null) =>
-            !IsDesignMode 
-            || SourceFilePath is null 
-            || RelativeFileName is null 
-            || RelativeFileName.Length > 3 
+            [CallerFilePath, CanBeNull] string? SourceFilePath = null) =>
+            !IsDesignMode
+            || SourceFilePath is null
+            || RelativeFileName is null
+            || RelativeFileName.Length > 3
             && RelativeFileName[1] == ':'
                 ? RelativeFileName
                 : Path.Combine(Path.GetDirectoryName(SourceFilePath) ?? "", RelativeFileName);

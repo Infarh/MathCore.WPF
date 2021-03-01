@@ -20,7 +20,7 @@ namespace System.Collections.Generic
                 var o = d.Target;
                 switch (o)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke {InvokeRequired: true} synchronize_invoke:
                         synchronize_invoke.Invoke(d, args);
                         break;
                     case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess() && dispatcher_obj.Dispatcher != null:

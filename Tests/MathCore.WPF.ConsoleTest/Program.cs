@@ -9,15 +9,15 @@ namespace MathCore.WPF.ConsoleTest
     {
         static void Main(string[] args)
         {
-            var lines = GetLines("TestFile.txt").Take(5);
+            //var lines = GetLines("TestFile.txt").Take(5);
         }
 
-        private static IEnumerable<string?> GetLines(string FileName)
-        {
-            using var reader = new StreamReader(FileName);
-            while (!reader.EndOfStream)
-                yield return reader.ReadLine();
-        }
+        //private static IEnumerable<string?> GetLines(string FileName)
+        //{
+        //    using var reader = new StreamReader(FileName);
+        //    while (!reader.EndOfStream)
+        //        yield return reader.ReadLine();
+        //}
     }
 
     //class TestActionClass

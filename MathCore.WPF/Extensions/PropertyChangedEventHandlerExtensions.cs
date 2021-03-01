@@ -10,10 +10,9 @@ namespace System.ComponentModel
 {
     public static class PropertyChangedEventHandlerExtensions
     {
-        [Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         public static void ThreadSafeInvoke(
-            [CanBeNull] this PropertyChangedEventHandler Event,
-            [CanBeNull] object sender,
+            this PropertyChangedEventHandler? Event,
+            object? sender,
             [NotNull, ItemCanBeNull] params string[] PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -22,7 +21,7 @@ namespace System.ComponentModel
             foreach (var d in Event.GetInvocationList())
                 switch (d.Target)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
                         foreach (var arg in args) synchronize_invoke.Invoke(d, new[] { sender, arg });
                         break;
                     case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess():
@@ -35,9 +34,9 @@ namespace System.ComponentModel
         }
 
         public static void ThreadSafeInvoke(
-            [CanBeNull] this PropertyChangedEventHandler Handler, 
-            [CanBeNull] object Sender,
-            [NotNull] 
+            this PropertyChangedEventHandler? Handler,
+            object? Sender,
+            [NotNull]
             string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -48,10 +47,10 @@ namespace System.ComponentModel
             foreach (var d in invocation_list)
                 switch (d.Target)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
                         synchronize_invoke.Invoke(d, args);
                         break;
-                    case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess() && dispatcher_obj.Dispatcher != null:
+                    case DispatcherObject { Dispatcher: { } } dispatcher_obj when !dispatcher_obj.CheckAccess():
                         dispatcher_obj.Dispatcher.Invoke(d, args);
                         break;
                     default:
@@ -61,8 +60,8 @@ namespace System.ComponentModel
         }
 
         public static void ThreadSafeBeginInvoke(
-            [CanBeNull] this PropertyChangedEventHandler Handler,
-            [CanBeNull] object Sender,
+            this PropertyChangedEventHandler? Handler,
+            object? Sender,
             [NotNull] string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -73,18 +72,18 @@ namespace System.ComponentModel
             foreach (var d in invocation_list)
                 switch (d.Target)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
                         synchronize_invoke.BeginInvoke(d, args);
                         break;
-                    case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess() && dispatcher_obj.Dispatcher != null:
+                    case DispatcherObject { Dispatcher: { } } dispatcher_obj when !dispatcher_obj.CheckAccess():
                         dispatcher_obj.Dispatcher.BeginInvoke(d, DispatcherPriority.DataBind, args);
                         break;
                     default:
-                        {
-                            var @delegate = d;
-                            ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
-                            break;
-                        }
+                    {
+                        var @delegate = d;
+                        ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args!, null, null);
+                        break;
+                    }
                 }
         }
     }
@@ -94,8 +93,8 @@ namespace System.Collections.Specialized
     public static class NotifyCollectionChangedEventHandlerExtensions
     {
         public static void ThreadSafeInvoke(
-            [CanBeNull] this NotifyCollectionChangedEventHandler Handler,
-            [CanBeNull] object Sender,
+            this NotifyCollectionChangedEventHandler? Handler,
+            object? Sender,
             [NotNull] NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
@@ -107,10 +106,10 @@ namespace System.Collections.Specialized
                 var o = d.Target;
                 switch (o)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
                         synchronize_invoke.Invoke(d, args);
                         break;
-                    case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess() && dispatcher_obj.Dispatcher != null:
+                    case DispatcherObject { Dispatcher: { } } dispatcher_obj when !dispatcher_obj.CheckAccess():
                         dispatcher_obj.Dispatcher.Invoke(d, args);
                         break;
                     default:
@@ -121,8 +120,8 @@ namespace System.Collections.Specialized
         }
 
         public static void ThreadSafeBeginInvoke(
-            [CanBeNull] this NotifyCollectionChangedEventHandler Handler,
-            [CanBeNull] object Sender,
+            this NotifyCollectionChangedEventHandler? Handler,
+            object? Sender,
             [NotNull] NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
@@ -134,18 +133,18 @@ namespace System.Collections.Specialized
                 var o = d.Target;
                 switch (o)
                 {
-                    case ISynchronizeInvoke synchronize_invoke when synchronize_invoke.InvokeRequired:
+                    case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
                         synchronize_invoke.BeginInvoke(d, args);
                         break;
-                    case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess() && dispatcher_obj.Dispatcher != null:
+                    case DispatcherObject { Dispatcher: { } } dispatcher_obj when !dispatcher_obj.CheckAccess():
                         dispatcher_obj.Dispatcher.BeginInvoke(d, args);
                         break;
                     default:
-                        {
-                            var @delegate = d;
-                            ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args, null, null);
-                            break;
-                        }
+                    {
+                        var @delegate = d;
+                        ((Action<object[]>)(a => @delegate.DynamicInvoke(a))).BeginInvoke(args!, null, null);
+                        break;
+                    }
                 }
             }
         }

@@ -14,12 +14,18 @@
                 <SetFocusCommand/>
             </KeyBinding.Command>
         </KeyBinding>
+        <KeyBinding Key="Escape" Command="{StaticResource CloseWindowCommand}"/>
     </Window.InputBindings>
     <Window.DataContext>
         <l:TestWindow3ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10" Width="160"/>
-        <TextBox Name="TestElement" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,10" Width="160"/>
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Выход" Command="{StaticResource CloseWindowCommand}"/>
+        </Menu>
+        <Grid>
+            <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10" Width="160"/>
+            <TextBox Name="TestElement" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,10" Width="160"/>
+        </Grid>
+    </DockPanel>
 </Window>

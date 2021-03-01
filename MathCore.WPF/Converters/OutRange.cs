@@ -11,7 +11,7 @@ namespace MathCore.WPF.Converters
     [ValueConversion(typeof(double), typeof(bool?))]
     public class OutRange : DoubleToBool
     {
-        private Interval _Interval = new Interval(0, 0);
+        private Interval _Interval = new(0, 0);
 
         [ConstructorArgument(nameof(Min))]
         public double Min { get => _Interval.Min; set => _Interval = _Interval.SetMin(value); }

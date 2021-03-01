@@ -11,23 +11,23 @@ namespace MathCore.WPF
     public class XAML : MarkupExtension
     {
         /// <summary>Указатель на источник разметки</summary>
-        public string URI { get; set; }
+        public string? URI { get; set; }
 
         /// <summary>Инициализация нового генератора разметки</summary>
         public XAML() { }
 
         /// <summary>Инициализация нового генератора разметки</summary>
         /// <param name="URI">Указатель на источник разметки</param>
-        public XAML(string URI) => this.URI = URI;
+        public XAML(string? URI) => this.URI = URI;
 
         /// <inheritdoc />
-        public override object ProvideValue(IServiceProvider ServiceProvider)
+        public override object? ProvideValue(IServiceProvider ServiceProvider)
         {
             if (string.IsNullOrWhiteSpace(URI)) return null;
             try
             {
-                using(var reader = XmlReader.Create(URI))
-                    return XamlReader.Load(reader);
+                using var reader = XmlReader.Create(URI);
+                return XamlReader.Load(reader);
             }
             catch(Exception e)
             {

@@ -7,7 +7,7 @@
         private readonly bool useHeight;
         private readonly bool useDepth;
 
-        public DummyAtom PreviousAtom { get { return RowAtom.PreviousAtom; } set { RowAtom.PreviousAtom = value; } }
+        public DummyAtom PreviousAtom { get => RowAtom.PreviousAtom; set => RowAtom.PreviousAtom = value; }
 
         public RowAtom RowAtom { get; }
 

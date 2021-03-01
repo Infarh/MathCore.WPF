@@ -24,7 +24,7 @@ namespace MathCore.WPF.Converters
             var e2 = (IEnumerable)vv[1];
             Func<object, object>? f1 = null;
             Func<object, object>? f2 = null;
-            Point Func(object x, object y) => new Point((double)(f1 ??= typeof(double).GetCasterFrom(x.GetType()))(x), (double)(f2 ??= typeof(double).GetCasterFrom(y.GetType()))(y));
+            Point Func(object x, object y) => new((double)(f1 ??= typeof(double).GetCasterFrom(x.GetType()))(x), (double)(f2 ??= typeof(double).GetCasterFrom(y.GetType()))(y));
             return new PointCollection(e1.Cast<object>().Zip(e2.Cast<object>(), (Func<object, object, Point>)Func));
         }
     }

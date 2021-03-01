@@ -7,8 +7,8 @@ namespace MathCore.WPF.TeX
     {
         public DummyAtom PreviousAtom
         {
-            get { return RowAtom.PreviousAtom; }
-            set { RowAtom.PreviousAtom = value; }
+            get => RowAtom.PreviousAtom;
+            set => RowAtom.PreviousAtom = value;
         }
 
         /// <summary>RowAtom to which colors are applied</summary>
@@ -39,6 +39,6 @@ namespace MathCore.WPF.TeX
 
         public override TexAtomType GetRightType() => RowAtom.GetRightType();
 
-        public StyledAtom Clone() => new StyledAtom(RowAtom, Background, Foreground);
+        public StyledAtom Clone() => new(RowAtom, Background, Foreground);
     }
 }

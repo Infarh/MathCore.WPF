@@ -18,9 +18,6 @@ namespace MathCore.WPF.WindowTest.Samples.CollectionViewFilter
     /// </summary>
     public partial class CollectionViewFilterView : UserControl
     {
-        public CollectionViewFilterView()
-        {
-            InitializeComponent();
-        }
+        public CollectionViewFilterView() => InitializeComponent();
     }
 }

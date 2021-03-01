@@ -38,9 +38,9 @@ namespace MathCore.WPF.SVG
     : SvgBaseElement
   {
     //==========================================================================
-    public readonly SvgLength Offset = new SvgLength(0);
-    public readonly SvgColor Color = new SvgColor(0,0,0);
-    public readonly SvgLength Opacity = new SvgLength(1);
+    public readonly SvgLength Offset = new(0);
+    public readonly SvgColor Color = new(0,0,0);
+    public readonly SvgLength Opacity = new(1);
 
     //==========================================================================
     public SvgStopElement(SvgDocument document, SvgBaseElement parent, XElement stopElement)

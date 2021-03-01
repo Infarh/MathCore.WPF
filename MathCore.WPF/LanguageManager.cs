@@ -25,7 +25,7 @@ namespace MathCore.WPF
         #region Singleton
 
         private static volatile LanguageManager __Manager;
-        private static readonly object __ManagerSyncRoot = new object();
+        private static readonly object __ManagerSyncRoot = new();
 
         public static LanguageManager Current
         {

@@ -15,7 +15,7 @@ namespace MathCore.WPF.TrayIcon
     /// </summary>
     internal static class TaskBarIconUtilities
     {
-        private static readonly object __SyncRoot = new object();
+        private static readonly object __SyncRoot = new();
 
         #region IsDesignMode
 

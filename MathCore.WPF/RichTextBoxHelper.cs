@@ -13,7 +13,7 @@ namespace MathCore.WPF
 {
     public static class RichTextBoxHelper
     {
-        private static readonly HashSet<Thread> __RecursionProtection = new HashSet<Thread>();
+        private static readonly HashSet<Thread> __RecursionProtection = new();
 
         [CanBeNull] public static string GetDocumentXaml([NotNull] DependencyObject obj) => (string)obj.GetValue(DocumentXamlProperty);
 
@@ -56,7 +56,7 @@ namespace MathCore.WPF
                         // When the document changes update the source
                         rich_text_box.TextChanged += (sender, args) =>
                         {
-                            if (!(sender is RichTextBox another_rich_text_box)) return;
+                            if (sender is not RichTextBox another_rich_text_box) return;
                             SetDocumentXaml(rich_text_box, XamlWriter.Save(another_rich_text_box.Document));
                         };
                     }

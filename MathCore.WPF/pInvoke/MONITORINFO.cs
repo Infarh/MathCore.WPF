@@ -9,9 +9,9 @@ namespace MathCore.WPF.pInvoke
     {
         public int Size = Marshal.SizeOf(typeof(MonitorInfo));
 
-        public Rect Monitor = new Rect();
+        public Rect Monitor = new();
 
-        public Rect Work = new Rect();
+        public Rect Work = new();
 
         public int Flags = 0;
     }

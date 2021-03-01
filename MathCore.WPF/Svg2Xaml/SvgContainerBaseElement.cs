@@ -42,7 +42,7 @@ namespace MathCore.WPF.SVG
       : SvgBaseElement
     {
         //==========================================================================
-        public readonly List<SvgBaseElement> Children = new List<SvgBaseElement>();
+        public readonly List<SvgBaseElement> Children = new();
 
         //==========================================================================
         public SvgContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement containerElement)

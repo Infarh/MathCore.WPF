@@ -34,8 +34,7 @@ namespace MathCore.WPF.Behaviors
         /// <summary>Create the AdornerLayer when Parent for current Element loads</summary>
         private void ResizeBehaviorParent_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_AdornerLayer is null)
-                _AdornerLayer = AdornerLayer.GetAdornerLayer(sender as Visual ?? throw new InvalidOperationException());
+            _AdornerLayer ??= AdornerLayer.GetAdornerLayer(sender as Visual ?? throw new InvalidOperationException());
             _AttachedElement!.MouseEnter += AttachedElement_MouseEnter;
         }
 

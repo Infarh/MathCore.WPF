@@ -18,7 +18,7 @@ namespace System.Windows
             while (element != null)
             {
                 element = VisualTreeHelper.GetParent(element);
-                if(!(element is Window window)) continue;
+                if(element is not Window window) continue;
                 action(window); 
                 break;
             }

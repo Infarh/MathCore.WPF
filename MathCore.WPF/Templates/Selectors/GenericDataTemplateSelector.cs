@@ -11,8 +11,7 @@ namespace MathCore.WPF.Templates.Selectors
     {
         private readonly Dictionary<Type, DataTemplate> _Templates;
 
-        public GenericDataTemplateSelector([NotNull] IEnumerable<DataTemplate> Styles)
-        {
+        public GenericDataTemplateSelector([NotNull] IEnumerable<DataTemplate> Styles) =>
             _Templates = Styles.ToDictionary(t =>
             {
                 var type = t.DataType as Type;
@@ -21,7 +20,6 @@ namespace MathCore.WPF.Templates.Selectors
                 throw new InvalidCastException(
                     $"Невозможно привести {t.DataType} типа {t.DataType.GetType()} к {typeof(Type)}");
             });
-        }
 
         public override DataTemplate? SelectTemplate(object item, DependencyObject container) => 
             item != null && _Templates.TryGetValue(item.GetType(), out var t) ? t : null;

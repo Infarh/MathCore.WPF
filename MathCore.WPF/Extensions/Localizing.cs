@@ -48,7 +48,7 @@ namespace MathCore.WPF.Extensions
             Upper
         }
 
-        public static readonly Manager ActiveManager = new Manager();
+        public static readonly Manager ActiveManager = new();
 
         public string? Key { get; set; }
 
@@ -75,7 +75,7 @@ namespace MathCore.WPF.Extensions
         public override object? Convert(object? v, Type? t, object? p, CultureInfo? c)
         {
             var key = Key;
-            var localized_value = !(v is ResourceManager resource_manager) || string.IsNullOrEmpty(key)
+            var localized_value = v is not ResourceManager resource_manager || string.IsNullOrEmpty(key)
                 ? $":{key}:"
                 : resource_manager.GetString(key) ?? $":{key}:";
 
