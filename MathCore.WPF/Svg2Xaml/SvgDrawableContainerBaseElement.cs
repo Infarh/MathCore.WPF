@@ -32,211 +32,156 @@ using System;
 
 namespace MathCore.WPF.SVG
 {
-  
-  //****************************************************************************
-  class SvgDrawableContainerBaseElement
-    : SvgContainerBaseElement
-  {
 
-    //==========================================================================
-    public readonly SvgLength    Opacity = new SvgLength(1.0);
-    public readonly SvgTransform Transform;
-    public readonly SvgURL ClipPath;
-    public readonly SvgURL Filter;
-    public readonly SvgURL Mask;
-    public readonly SvgDisplay Display = SvgDisplay.Inline; 
-
-    //==========================================================================
-    public SvgDrawableContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement drawableContainerElement)
-      : base(document, parent, drawableContainerElement)
+    //****************************************************************************
+    class SvgDrawableContainerBaseElement
+      : SvgContainerBaseElement
     {
-      var opacity_attribute = drawableContainerElement.Attribute("opacity");
-      if(opacity_attribute != null)
-        Opacity = SvgLength.Parse(opacity_attribute.Value);
 
-      var transform_attribute = drawableContainerElement.Attribute("transform");
-      if(transform_attribute != null)
-        Transform = SvgTransform.Parse(transform_attribute.Value);
+        //==========================================================================
+        public readonly SvgLength Opacity = new(1.0);
+        public readonly SvgTransform Transform;
+        public readonly SvgURL ClipPath;
+        public readonly SvgURL Filter;
+        public readonly SvgURL Mask;
+        public readonly SvgDisplay Display = SvgDisplay.Inline;
 
-      var clip_attribute = drawableContainerElement.Attribute("clip-path");
-      if(clip_attribute != null)
-        ClipPath = SvgURL.Parse(clip_attribute.Value);
-
-      var filter_attribute = drawableContainerElement.Attribute("filter");
-      if(filter_attribute != null)
-        Filter = SvgURL.Parse(filter_attribute.Value);
-
-      var mask_attribute = drawableContainerElement.Attribute("mask");
-      if(mask_attribute != null)
-        Mask = SvgURL.Parse(mask_attribute.Value);
-
-      var display_attribute = drawableContainerElement.Attribute("display");
-      if(display_attribute != null)
-        switch(display_attribute.Value)
+        //==========================================================================
+        public SvgDrawableContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement drawableContainerElement)
+          : base(document, parent, drawableContainerElement)
         {
-          case "inline":
-            Display = SvgDisplay.Inline;
-            break;
+            var opacity_attribute = drawableContainerElement.Attribute("opacity");
+            if (opacity_attribute != null)
+                Opacity = SvgLength.Parse(opacity_attribute.Value);
 
-          case "block":
-            Display = SvgDisplay.Block;
-            break;
+            var transform_attribute = drawableContainerElement.Attribute("transform");
+            if (transform_attribute != null)
+                Transform = SvgTransform.Parse(transform_attribute.Value);
 
-          case "list-item":
-            Display = SvgDisplay.ListItem;
-            break;
+            var clip_attribute = drawableContainerElement.Attribute("clip-path");
+            if (clip_attribute != null)
+                ClipPath = SvgURL.Parse(clip_attribute.Value);
 
-          case "run-in":
-            Display = SvgDisplay.RunIn;
-            break;
+            var filter_attribute = drawableContainerElement.Attribute("filter");
+            if (filter_attribute != null)
+                Filter = SvgURL.Parse(filter_attribute.Value);
 
-          case "compact":
-            Display = SvgDisplay.Compact;
-            break;
+            var mask_attribute = drawableContainerElement.Attribute("mask");
+            if (mask_attribute != null)
+                Mask = SvgURL.Parse(mask_attribute.Value);
 
-          case "marker":
-            Display = SvgDisplay.Marker;
-            break;
-
-          case "table":
-            Display = SvgDisplay.Table;
-            break;
-
-          case "inline-table":
-            Display = SvgDisplay.InlineTable;
-            break;
-
-          case "table-row-group":
-            Display = SvgDisplay.TableRowGroup;
-            break;
-
-          case "table-header-group":
-            Display = SvgDisplay.TableHeaderGroup;
-            break;
-
-          case "table-footer-group":
-            Display = SvgDisplay.TableFooterGroup;
-            break;
-
-          case "table-row":
-            Display = SvgDisplay.TableRow;
-            break;
-
-          case "table-column-group":
-            Display = SvgDisplay.TableColumnGroup;
-            break;
-
-          case "table-column":
-            Display = SvgDisplay.TableColumn;
-            break;
-
-          case "table-cell":
-            Display = SvgDisplay.TableCell;
-            break;
-
-          case "table-caption":
-            Display = SvgDisplay.TableCaption;
-            break;
-
-          case "none":
-            Display = SvgDisplay.None;
-            break;
-
-          default:
-            throw new NotImplementedException();
+            var display_attribute = drawableContainerElement.Attribute("display");
+            if (display_attribute != null)
+                Display = display_attribute.Value switch
+                {
+                    "inline" => SvgDisplay.Inline,
+                    "block" => SvgDisplay.Block,
+                    "list-item" => SvgDisplay.ListItem,
+                    "run-in" => SvgDisplay.RunIn,
+                    "compact" => SvgDisplay.Compact,
+                    "marker" => SvgDisplay.Marker,
+                    "table" => SvgDisplay.Table,
+                    "inline-table" => SvgDisplay.InlineTable,
+                    "table-row-group" => SvgDisplay.TableRowGroup,
+                    "table-header-group" => SvgDisplay.TableHeaderGroup,
+                    "table-footer-group" => SvgDisplay.TableFooterGroup,
+                    "table-row" => SvgDisplay.TableRow,
+                    "table-column-group" => SvgDisplay.TableColumnGroup,
+                    "table-column" => SvgDisplay.TableColumn,
+                    "table-cell" => SvgDisplay.TableCell,
+                    "table-caption" => SvgDisplay.TableCaption,
+                    "none" => SvgDisplay.None,
+                    _ => throw new NotImplementedException(),
+                };
         }
 
-    }
-
-    //==========================================================================
-    public virtual Geometry GetGeometry()
-    {
-      var geometry_group = new GeometryGroup();
-
-      foreach(var element in Children)
-      {
-        if(element is SvgDrawableBaseElement)
-          geometry_group.Children.Add((element as SvgDrawableBaseElement).GetGeometry());
-        else if(element is SvgDrawableContainerBaseElement)
-          geometry_group.Children.Add((element as SvgDrawableContainerBaseElement).GetGeometry());
-      }
-
-      if(Transform != null)
-        geometry_group.Transform = Transform.ToTransform();
-
-      if(ClipPath != null)
-      {
-        var clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
-        if(clip_path_element != null)
-          return Geometry.Combine(geometry_group, clip_path_element.GetClipGeometry(), GeometryCombineMode.Exclude, null);
-      }
-
-      return geometry_group;
-    }
-
-    //==========================================================================
-    public virtual Drawing Draw()
-    {
-      var drawing_group = new DrawingGroup();
-
-      drawing_group.Opacity   = Opacity.ToDouble();
-      if(Transform != null)
-        drawing_group.Transform = Transform.ToTransform();
-
-      foreach(var child_element in Children)
-      {
-        var element = child_element;
-        if(element is SvgUseElement)
-          element = (element as SvgUseElement).GetElement();
-
-        Drawing drawing = null;
-
-        if(element is SvgDrawableBaseElement)
+        //==========================================================================
+        public virtual Geometry GetGeometry()
         {
-          if((element as SvgDrawableBaseElement).Display != SvgDisplay.None)
-            drawing = (element as SvgDrawableBaseElement).Draw();
-        }
-        else if(element is SvgDrawableContainerBaseElement)
-        {
-          if((element as SvgDrawableContainerBaseElement).Display != SvgDisplay.None)
-            drawing = (element as SvgDrawableContainerBaseElement).Draw();
+            var geometry_group = new GeometryGroup();
+
+            foreach (var element in Children)
+                switch (element)
+                {
+                    case SvgDrawableBaseElement base_element: geometry_group.Children.Add(base_element.GetGeometry());
+                        break;
+                    case SvgDrawableContainerBaseElement base_element: geometry_group.Children.Add(base_element.GetGeometry());
+                        break;
+                }
+
+            if (Transform is not null)
+                geometry_group.Transform = Transform.ToTransform();
+
+            if (ClipPath is null) return geometry_group;
+            if (Document.Elements[ClipPath.Id] is SvgClipPathElement clip_path_element)
+                return Geometry.Combine(geometry_group, clip_path_element.GetClipGeometry(), GeometryCombineMode.Exclude, null);
+
+            return geometry_group;
         }
 
-        if(drawing != null)
-          drawing_group.Children.Add(drawing);
-      }
-
-      if(Filter != null)
-      {
-        var filter_element = Document.Elements[Filter.Id] as SvgFilterElement;
-        if(filter_element != null)
-          drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
-      }
-
-      if(ClipPath != null)
-      {
-        var clip_path_element = Document.Elements[ClipPath.Id] as SvgClipPathElement;
-        if(clip_path_element != null)
-          drawing_group.ClipGeometry= clip_path_element.GetClipGeometry();
-      }
-
-      if(Mask != null)
-      {
-        var mask_element = Document.Elements[Mask.Id] as SvgMaskElement;
-        if(mask_element != null)
+        //==========================================================================
+        public virtual Drawing Draw()
         {
-          var opacity_mask = mask_element.GetOpacityMask();
-          /*
-          if(Transform != null)
-            opacity_mask.Transform = Transform.ToTransform();
-          */
-          drawing_group.OpacityMask = opacity_mask;
-        }
-      }
-        
-      return drawing_group;
-    }
+            var drawing_group = new DrawingGroup();
 
-  } // class SvgDrawableContainerBaseElement
+            drawing_group.Opacity = Opacity.ToDouble();
+            if (Transform != null)
+                drawing_group.Transform = Transform.ToTransform();
+
+            foreach (var child_element in Children)
+            {
+                var element = child_element;
+                if (element is SvgUseElement use_element)
+                    element = use_element.GetElement();
+
+                Drawing? drawing = null;
+
+                switch (element)
+                {
+                    case SvgDrawableBaseElement drawable_base_element:
+                    {
+                        if (drawable_base_element.Display != SvgDisplay.None)
+                            drawing = drawable_base_element.Draw();
+                        break;
+                    }
+                    case SvgDrawableContainerBaseElement drawable_container_base_element:
+                    {
+                        if (drawable_container_base_element.Display != SvgDisplay.None)
+                            drawing = drawable_container_base_element.Draw();
+                        break;
+                    }
+                }
+
+                if (drawing != null)
+                    drawing_group.Children.Add(drawing);
+            }
+
+            if (Filter != null)
+            {
+                if (Document.Elements[Filter.Id] is SvgFilterElement filter_element)
+                    drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
+            }
+
+            if (ClipPath != null)
+            {
+                if (Document.Elements[ClipPath.Id] is SvgClipPathElement clip_path_element)
+                    drawing_group.ClipGeometry = clip_path_element.GetClipGeometry();
+            }
+
+            if (Mask != null)
+                if (Document.Elements[Mask.Id] is SvgMaskElement mask_element)
+                {
+                    var opacity_mask = mask_element.GetOpacityMask();
+                    /*
+                    if(Transform != null)
+                      opacity_mask.Transform = Transform.ToTransform();
+                    */
+                    drawing_group.OpacityMask = opacity_mask;
+                }
+
+            return drawing_group;
+        }
+
+    } // class SvgDrawableContainerBaseElement
 
 }

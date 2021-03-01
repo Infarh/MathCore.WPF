@@ -60,10 +60,7 @@ namespace MathCore.WPF.SVG
     ///   Specifies whether filter effects should be applied using WPF bitmap 
     ///   effects.
     /// </param>
-    public SvgReaderOptions(bool ignoreEffects)
-    {
-      m_IgnoreEffects = ignoreEffects;
-    }
+    public SvgReaderOptions(bool ignoreEffects) => m_IgnoreEffects = ignoreEffects;
 
     //==========================================================================
     /// <summary>

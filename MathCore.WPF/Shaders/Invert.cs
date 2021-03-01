@@ -11,7 +11,7 @@ namespace MathCore.WPF.Shaders
     {
         public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty(nameof(Input), typeof(Invert), 0);
 
-        private static readonly PixelShader __PixelShader = new PixelShader();
+        private static readonly PixelShader __PixelShader = new();
 
         static Invert()
         {

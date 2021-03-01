@@ -9,7 +9,7 @@ namespace MathCore.WPF.Commands
 
         public override void Execute(object? parameter)
         {
-            if(!(parameter is FrameworkElement element)) return;
+            if(parameter is not FrameworkElement element) return;
             var root = element.FindVisualRoot();
             FocusManager.SetFocusedElement(root!, element);
         }

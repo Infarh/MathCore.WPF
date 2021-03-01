@@ -40,7 +40,7 @@ namespace MathCore.WPF.SVG
     : SvgDrawableBaseElement
   {
     //==========================================================================
-    public readonly List<SvgPoint> Points = new List<SvgPoint>();
+    public readonly List<SvgPoint> Points = new();
 
 
     //==========================================================================

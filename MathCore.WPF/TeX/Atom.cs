@@ -3,7 +3,7 @@
     /// <summary>Atom (smallest unit) of TexFormula</summary>
     internal abstract class Atom
     {
-        protected Atom() { Type = TexAtomType.Ordinary; }
+        protected Atom() => Type = TexAtomType.Ordinary;
 
         public TexAtomType Type { get; set; }
 

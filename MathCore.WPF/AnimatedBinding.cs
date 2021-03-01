@@ -31,7 +31,7 @@ namespace MathCore.WPF
         public CultureInfo ConverterCulture { get; set; }
         public bool ValidatesOnExceptions { get; set; }
         public bool ValidatesOnDataErrors { get; set; }
-        public Duration Duration { get; set; } = new Duration(TimeSpan.FromSeconds(0.1));
+        public Duration Duration { get; set; } = new(TimeSpan.FromSeconds(0.1));
         public IEasingFunction EasingFunction { get; set; }
         public double SpeedRatio { get; set; } = 1;
         public double AccelerationRatio { get; set; } = 0.2;
@@ -39,7 +39,7 @@ namespace MathCore.WPF
         public bool NotifyOnTargetUpdated { get; set; }
         public bool NotifyOnSourceUpdated { get; set; }
         public UpdateSourceTrigger UpdateSourceTrigger { get; set; } = UpdateSourceTrigger.Default;
-        public Collection<ValidationRule> ValidationRules { get; } = new Collection<ValidationRule>();
+        public Collection<ValidationRule> ValidationRules { get; } = new();
         public bool IsAsync { get; set; }
         public object AsyncState { get; set; }
         public bool NotifyOnValidationError { get; set; }
@@ -53,11 +53,11 @@ namespace MathCore.WPF
         /// <inheritdoc />
         public override object ProvideValue(IServiceProvider service)
         {
-            if (!(service.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget value_provider))
+            if (service.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget value_provider)
                 throw new InvalidOperationException("Невозможно получить источник данных о цели привязки");
 
-            if (!(value_provider.TargetObject is FrameworkElement target)) throw new InvalidOperationException("Не определны сведенья о целевом объекте привязки");
-            if (!(value_provider.TargetProperty is DependencyProperty property)) throw new InvalidOperationException("Не определны сведенья о целевом свойстве привязки");
+            if (value_provider.TargetObject is not FrameworkElement target) throw new InvalidOperationException("Не определны сведенья о целевом объекте привязки");
+            if (value_provider.TargetProperty is not DependencyProperty property) throw new InvalidOperationException("Не определны сведенья о целевом свойстве привязки");
 
             var binding = new Binding
             {
@@ -80,7 +80,6 @@ namespace MathCore.WPF
                 StringFormat = StringFormat,
                 FallbackValue = FallbackValue,
                 UpdateSourceExceptionFilter = UpdateSourceExceptionFilter
-
             };
 
             if (!string.IsNullOrWhiteSpace(ElementName))
@@ -108,7 +107,7 @@ namespace MathCore.WPF
             };
             if (EasingFunction != null) animation.EasingFunction = EasingFunction;
 
-            __DoubleAnimationToPropertyDescriptor.AddValueChanged(animation, (s, e) => target.BeginAnimation(property, animation));
+            __DoubleAnimationToPropertyDescriptor.AddValueChanged(animation, (_, _) => target.BeginAnimation(property, animation));
             BindingOperations.SetBinding(animation, DoubleAnimation.ToProperty, binding);
 
             return DependencyProperty.UnsetValue;

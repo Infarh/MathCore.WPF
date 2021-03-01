@@ -75,7 +75,7 @@ namespace MathCore.WPF.ViewModels
         private Window? _DialogWindow;
 
         /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
-        private readonly Dictionary<string, object> _PropertiesDictionary = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> _PropertiesDictionary = new();
 
         /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
         protected Dictionary<string, object> PropertiesDictionary => _PropertiesDictionary;
@@ -223,7 +223,7 @@ namespace MathCore.WPF.ViewModels
         /// <remarks>В случае положительного диалогового результат переписывает значения словаря значений свойств в свойства исходного конфигурируемого объекта</remarks>
         private void OnDialogWindowClosed(object? Sender, EventArgs E)
         {
-            if (!(Sender is Window window)) return;
+            if (Sender is not Window window) return;
             var result = window.DialogResult;
             if (_Value is INotifyPropertyChanged notify_property_changed) notify_property_changed.PropertyChanged -= OnValuePropertyChanged;
             if (result != true) return;

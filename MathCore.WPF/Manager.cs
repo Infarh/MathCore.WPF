@@ -67,8 +67,8 @@ namespace MathCore.WPF
                 ResetElement();
                 return;
             }
-            var e = element as TElement;
-            if(e is null)
+
+            if(!(element is TElement e))
                 throw new ArgumentException($"Целевой объект не является объектом типа {typeof(TElement)}");
             SetElement(e);
         }
@@ -92,7 +92,7 @@ namespace MathCore.WPF
     public class ElementControllersCollection : IList<ElementController>
     {
         [NotNull]
-        private readonly List<ElementController> _Items = new List<ElementController>();
+        private readonly List<ElementController> _Items = new();
         [NotNull]
         private DependencyObject _Element;
 
@@ -241,8 +241,7 @@ namespace MathCore.WPF
         // When an event fires, check the condition and if it is true fire the actions 
         private void OnRoutedEvent(FrameworkElement element, RoutedEventArgs args)
         {
-            var sender = args.OriginalSource as FrameworkElement;
-            if(sender is null) return;
+            if(!(args.OriginalSource is FrameworkElement sender)) return;
             DataContext = element.DataContext;  // Allow data binding to access element properties
             if(ExcludedSourceNames.Any(x => x.Equals(sender.Name))) return;
             // Construct an EventTrigger containing the actions, then trigger it 

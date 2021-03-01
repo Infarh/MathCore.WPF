@@ -13,7 +13,7 @@ namespace MathCore.WPF.Behaviors
 
         private static void OnTextBoxGotFocus(object Sender, RoutedEventArgs E)
         {
-            if (!(Sender is TextBox edit)) return;
+            if (Sender is not TextBox edit) return;
             edit.CaretIndex = edit.Text.Length;
         }
     }

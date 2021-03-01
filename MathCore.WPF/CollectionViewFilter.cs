@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+
 using MathCore.Annotations;
 using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
@@ -40,9 +41,9 @@ namespace MathCore.WPF
     public static class CollectionViewFilter
     {
         /// <summary>Задействованные представления</summary>
-        private static readonly HashSet<CollectionViewSource> __Collections = new HashSet<CollectionViewSource>();
+        private static readonly HashSet<CollectionViewSource> __Collections = new();
         /// <summary>Регулярное выражение проверки корректности имени свойства</summary>
-        private static readonly Regex __PropertyNameRegex = new Regex(@"@?[a-zA-Z][\w_]*", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex __PropertyNameRegex = new(@"@?[a-zA-Z][\w_]*", RegexOptions.Compiled | RegexOptions.Singleline);
 
         #region Converter
 
@@ -179,7 +180,7 @@ namespace MathCore.WPF
         /// <param name="E">Информация об изменившемся свойстве</param>
         private static async void PropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if (!(D is CollectionViewSource view_source)) return;
+            if (D is not CollectionViewSource view_source) return;
             using (view_source.DeferRefresh())
             {
                 var enter_time = __PropertyChangedEnterTime = Environment.TickCount;
@@ -231,7 +232,7 @@ namespace MathCore.WPF
             public bool Equals(TypeProperty other) => _Type == other._Type && string.Equals(_Property, other._Property);
 
             /// <inheritdoc />
-            public override bool Equals(object? obj) => obj != null && obj is TypeProperty property && Equals(property);
+            public override bool Equals(object? obj) => obj is TypeProperty property && Equals(property);
 
             /// <inheritdoc />
             public override int GetHashCode()
@@ -244,13 +245,13 @@ namespace MathCore.WPF
         }
 
         /// <summary>Словарь свойств типов объектов</summary>
-        private static readonly Dictionary<TypeProperty, Delegate> __Properties = new Dictionary<TypeProperty, Delegate>();
+        private static readonly Dictionary<TypeProperty, Delegate> __Properties = new();
         /// <summary>Метод фильтрации элементов модели представления коллекции</summary>
         /// <param name="sender">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>
         /// <param name="e">Информация о объекте, который надо отфильтровать</param>
         private static void CollectionViewSource_OnFilter(object sender, FilterEventArgs e)
         {
-            if (!(sender is CollectionViewSource view_source)) return;
+            if (sender is not CollectionViewSource view_source) return;
             var text = GetFilterText(view_source);
             var item = e.Item;
             if (string.IsNullOrEmpty(text) || item is null) return;
@@ -301,7 +302,7 @@ namespace MathCore.WPF
         [Annotations.NotNull]
         public static CollectionViewFiltersCollection GetFilters([Annotations.NotNull] DependencyObject element)
         {
-            if (!(element.GetValue(FiltersProperty) is CollectionViewFiltersCollection filters))
+            if (element.GetValue(FiltersProperty) is not CollectionViewFiltersCollection filters)
                 SetFilters(element, filters = new CollectionViewFiltersCollection((CollectionViewSource)element));
             return filters;
         }
@@ -367,7 +368,7 @@ namespace MathCore.WPF
                 new PropertyMetadata(default(IValueConverter)));
 
         /// <summary>Конвертер фильтруемого значения</summary>
-        public IValueConverter ValueConverter { get => (IValueConverter)GetValue(ValueConverterProperty); set => SetValue(ValueConverterProperty, value); }
+        public IValueConverter? ValueConverter { get => (IValueConverter)GetValue(ValueConverterProperty); set => SetValue(ValueConverterProperty, value); }
 
         #endregion
 
@@ -382,7 +383,7 @@ namespace MathCore.WPF
                 new PropertyMetadata(default(string)));
 
         /// <summary>Имя фильтруемого свойства объекта</summary>
-        public string FiltredProperty { get => (string)GetValue(FiltredPropertyProperty); set => SetValue(FiltredPropertyProperty, value); }
+        public string? FiltredProperty { get => (string)GetValue(FiltredPropertyProperty); set => SetValue(FiltredPropertyProperty, value); }
 
         #endregion
 
@@ -414,15 +415,15 @@ namespace MathCore.WPF
 
         protected void RefreshSource() => _Source?.View?.Refresh();
 
-        private static readonly Dictionary<string, Delegate> __Getter = new Dictionary<string, Delegate>();
+        private static readonly Dictionary<string, Delegate> __Getter = new();
 
-        protected object? GetItemValue([CanBeNull] object item)
+        protected object? GetItemValue(object? item)
         {
             if (item is null) return null;
             var property = FiltredProperty;
             if (property != null)
             {
-                var value = property.IndexOf('.') >= 0 ? GetComplexPropertyValue(item, property) : GetPropertyValue(item, property);
+                var value = property.Contains('.') ? GetComplexPropertyValue(item, property) : GetPropertyValue(item, property);
                 var c = ValueConverter;
                 return c is null ? value : c.Convert(value, typeof(object), null, CultureInfo.CurrentCulture);
             }
@@ -469,7 +470,7 @@ namespace MathCore.WPF
                 new PropertyMetadata(default(IComparable), RefreshSource));
 
         /// <summary>Свойство минимального фильтруемого значения</summary>
-        public IComparable Min { get => (IComparable)GetValue(MinProperty); set => SetValue(MinProperty, value); }
+        public IComparable? Min { get => (IComparable)GetValue(MinProperty); set => SetValue(MinProperty, value); }
 
         #endregion
 
@@ -499,7 +500,7 @@ namespace MathCore.WPF
                 new PropertyMetadata(default(IComparable), RefreshSource));
 
         /// <summary>Свойство максимума фильтра</summary>
-        public IComparable Max { get => (IComparable)GetValue(MaxProperty); set => SetValue(MaxProperty, value); }
+        public IComparable? Max { get => (IComparable)GetValue(MaxProperty); set => SetValue(MaxProperty, value); }
 
         #endregion
 
@@ -555,18 +556,18 @@ namespace MathCore.WPF
 
     public class GroupsCollectionFilterItem : CollectionViewFilterItem
     {
-        public ObservableCollection<GroupCollectionFilterItem> Groups { get; } = new ObservableCollection<GroupCollectionFilterItem>();
+        public ObservableCollection<GroupCollectionFilterItem> Groups { get; } = new();
 
         private IEnumerable? _ViewSource;
 
         private void CheckView(IEnumerable? ViewSource)
         {
             if (ReferenceEquals(_ViewSource, ViewSource)) return;
-            { if (_ViewSource != null && _ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged -= OnItemsChanged; }
+            { if (_ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged -= OnItemsChanged; }
             _ViewSource = ViewSource;
             if (_ViewSource is null) return;
             UpdateGroups();
-            { if (_ViewSource != null && _ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged += OnItemsChanged; }
+            { if (_ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged += OnItemsChanged; }
         }
 
         private void OnItemsChanged(object Sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs E)
@@ -673,7 +674,7 @@ namespace MathCore.WPF
 
         public event EventHandler? EnabledChanged;
 
-        public ObservableCollection<object> Items { get; } = new ObservableCollection<object>();
+        public ObservableCollection<object> Items { get; } = new();
 
         public object Key { get; }
 
@@ -694,7 +695,7 @@ namespace MathCore.WPF
 
         private static void OnCollectionItemTypeChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if (!(D is PropertyFiltersItem filters_item)) return;
+            if (D is not PropertyFiltersItem filters_item) return;
             foreach (var filter in filters_item)
                 filter.ItemType = (Type)E.NewValue;
         }
@@ -704,7 +705,7 @@ namespace MathCore.WPF
 
         #endregion
 
-        private readonly ObservableCollection<PropertyFilterItem> _Filters = new ObservableCollection<PropertyFilterItem>();
+        private readonly ObservableCollection<PropertyFilterItem> _Filters = new();
 
         public ICommand AddNewFilterCommand { get; }
         public ICommand RemoveCommand { get; }
@@ -847,7 +848,7 @@ namespace MathCore.WPF
         public bool Enabled { get => _Enabled; set => Set(ref _Enabled, value); }
 
         private string? _Property;
-        public string Property
+        public string? Property
         {
             get => _Property;
             set
@@ -859,10 +860,8 @@ namespace MathCore.WPF
                 var properties = value.Split('.');
                 var property_chain = new List<PropertyInfo>();
 
-                for (var i = 0; i < properties.Length; i++)
+                foreach (var property_name in properties.WhereNot(string.IsNullOrWhiteSpace))
                 {
-                    var property_name = properties[i];
-                    if (string.IsNullOrWhiteSpace(property_name)) return;
                     var property_info = type.GetProperty(property_name, BindingFlags.Instance | BindingFlags.Public);
                     if (property_info is null) return;
                     property_chain.Add(property_info);
@@ -954,19 +953,17 @@ namespace MathCore.WPF
 
             var value = CollectionViewFilterItem.GetComplexPropertyValue(item, _Property);
             if (value is null) return _CanBeNull;
-            if (!(value is IComparable comparable)) return Equals(value, _Value);
+            if (value is not IComparable comparable) return Equals(value, _Value);
 
-            if (!value.GetType().IsInstanceOfType(_Value)) return false;
-
-            return _Comparison switch
+            return value.GetType().IsInstanceOfType(_Value) && _Comparison switch
             {
-                ComparisonType.Less => (comparable.CompareTo(_Value) < 0),
-                ComparisonType.LessOrEqual => (comparable.CompareTo(_Value) <= 0),
-                ComparisonType.Equal => (comparable.CompareTo(_Value) == 0),
-                ComparisonType.GreaterOrEqual => (comparable.CompareTo(_Value) >= 0),
-                ComparisonType.Greater => (comparable.CompareTo(_Value) > 0),
-                ComparisonType.NotEqual => (comparable.CompareTo(_Value) != 0),
-                _ => throw new ArgumentOutOfRangeException()
+                ComparisonType.Less => comparable.CompareTo(_Value) < 0,
+                ComparisonType.LessOrEqual => comparable.CompareTo(_Value) <= 0,
+                ComparisonType.Equal => comparable.CompareTo(_Value) == 0,
+                ComparisonType.GreaterOrEqual => comparable.CompareTo(_Value) >= 0,
+                ComparisonType.Greater => comparable.CompareTo(_Value) > 0,
+                ComparisonType.NotEqual => comparable.CompareTo(_Value) != 0,
+                _ => throw new InvalidOperationException()
             };
         }
     }

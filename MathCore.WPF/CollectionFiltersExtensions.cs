@@ -43,10 +43,8 @@ namespace MathCore.WPF
         [NotNull, ItemCanBeNull] private readonly ObservableCollection<TValue> _Collection;
         [NotNull] private readonly Func<TValue, TCriteria> _Selector;
 
-        private CollectionFilter([NotNull, ItemNotNull] ObservableCollection<CollectionFilterItem<TValue, TCriteria>> internal_collection) : base(internal_collection)
-        {
-            _InternalCollection = internal_collection;
-        }
+        private CollectionFilter([NotNull, ItemNotNull] ObservableCollection<CollectionFilterItem<TValue, TCriteria>> internal_collection) : base(internal_collection) => _InternalCollection = internal_collection;
+
         public CollectionFilter([NotNull, ItemCanBeNull] ObservableCollection<TValue> collection, [NotNull] Func<TValue, TCriteria> selector)
             : this(new ObservableCollection<CollectionFilterItem<TValue, TCriteria>>())
         {
@@ -152,7 +150,7 @@ namespace MathCore.WPF
         [NotNull, ItemCanBeNull] private readonly ICollectionView _View;
         [NotNull] private readonly Func<object, TCriteria> _Selector;
         [NotNull, ItemNotNull] private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
-        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>>();
+        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
         private bool _Enabled;
         private bool _AllFiltersDisabled = true;
         [CanBeNull] private string _Name;
@@ -285,7 +283,7 @@ namespace MathCore.WPF
         [NotNull, ItemCanBeNull] private readonly ICollectionView _View;
         [NotNull] private readonly Func<TItem, TCriteria> _Selector;
         [NotNull, ItemNotNull] private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
-        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>>();
+        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
         private bool _Enabled;
         private bool _AllFiltersDisabled = true;
         [CanBeNull] private string _Name;
@@ -405,7 +403,7 @@ namespace MathCore.WPF
 
         public void Filter([CanBeNull] object Sender, [NotNull] FilterEventArgs E)
         {
-            if (!(E.Item is TItem item) || !_Enabled || _AllFiltersDisabled) return;
+            if (E.Item is not TItem item || !_Enabled || _AllFiltersDisabled) return;
             var key = _Selector(item);
             if (!_Filters.TryGetValue(key, out var filter)) return;
             if (!filter.Enabled) E.Accepted = false;
@@ -419,7 +417,7 @@ namespace MathCore.WPF
         (
             [NotNull, ItemCanBeNull] this ObservableCollection<TValue> collection,
             [NotNull] Func<TValue, TCriteria> selector
-        ) => new CollectionFilter<TValue, TCriteria>(collection, selector);
+        ) => new(collection, selector);
 
         [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria> FilterView<TCriteria>
@@ -427,7 +425,7 @@ namespace MathCore.WPF
             [NotNull, ItemCanBeNull] this ICollectionView view,
             [NotNull] Func<object, TCriteria> selector,
             [CanBeNull] string Name = null
-        ) => new CollectionViewFilter<TCriteria>(view, selector, Name);
+        ) => new(view, selector, Name);
 
         [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria, TItem> FilterView<TItem, TCriteria>
@@ -435,7 +433,7 @@ namespace MathCore.WPF
             [NotNull, ItemCanBeNull] this ICollectionView view,
             [NotNull] Func<TItem, TCriteria> selector,
             [CanBeNull] string Name = null
-        ) => new CollectionViewFilter<TCriteria, TItem>(view, selector, Name);
+        ) => new(view, selector, Name);
 
         [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria> FilterView<TCriteria>

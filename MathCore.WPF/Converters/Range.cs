@@ -8,7 +8,7 @@ namespace MathCore.WPF.Converters
 {
     public class Range : DoubleValueConverter
     {
-        private Interval _Interval = new Interval(double.NegativeInfinity, double.PositiveInfinity);
+        private Interval _Interval = new(double.NegativeInfinity, double.PositiveInfinity);
 
         [ConstructorArgument(nameof(Min))]
         public double Min { get => _Interval.Min; set => _Interval = _Interval.SetMin(value); }

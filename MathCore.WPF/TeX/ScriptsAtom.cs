@@ -5,7 +5,7 @@ namespace MathCore.WPF.TeX
     /// <summary>Atom representing scripts to attach to other atom</summary>
     internal class ScriptsAtom : Atom
     {
-        private static readonly SpaceAtom scriptSpaceAtom = new SpaceAtom(TexUnit.Point, 0.5, 0, 0);
+        private static readonly SpaceAtom scriptSpaceAtom = new(TexUnit.Point, 0.5, 0, 0);
 
         public Atom BaseAtom { get; }
 

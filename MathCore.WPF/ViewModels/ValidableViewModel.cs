@@ -41,7 +41,7 @@ namespace MathCore.WPF.ViewModels
             public string? GetErrorMessageIfInvalid() => IsPropertyValid(out var error) ? null : error;
         }
 
-        private readonly Dictionary<string, List<PropertyValidator>> _Validators = new Dictionary<string, List<PropertyValidator>>();
+        private readonly Dictionary<string, List<PropertyValidator>> _Validators = new();
 
         protected ValidableViewModel(bool CheckDependencies = true)
             : base(CheckDependencies)

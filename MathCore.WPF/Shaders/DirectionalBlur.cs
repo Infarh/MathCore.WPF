@@ -34,7 +34,7 @@ namespace MathCore.WPF.Shaders
         /// <summary>Размер размытия</summary>
         public double BlurAmount { get => (double)GetValue(BlurAmountProperty); set => SetValue(BlurAmountProperty, value); }
 
-        private static readonly PixelShader __PixelShader = new PixelShader();
+        private static readonly PixelShader __PixelShader = new();
 
         static DirectionalBlur()
         {

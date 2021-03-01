@@ -22,8 +22,7 @@ namespace MathCore.WPF.TeX
 
         public AccentedAtom(Atom baseAtom, TexFormula accent)
         {
-            var rootSymbol = accent.RootAtom as SymbolAtom;
-            if(rootSymbol is null)
+            if(!(accent.RootAtom is SymbolAtom rootSymbol))
                 throw new ArgumentException(@"The formula for the accent is not a single symbol.", nameof(accent));
             AccentAtom = rootSymbol;
 

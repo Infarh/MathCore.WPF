@@ -20,7 +20,7 @@ namespace MathCore.WPF.Shaders
 
         public float Factor { get => (float)GetValue(FactorProperty); set => SetValue(FactorProperty, value); }
 
-        private static readonly PixelShader __PixelShader = new PixelShader();
+        private static readonly PixelShader __PixelShader = new();
 
         static GrayScale()
         {

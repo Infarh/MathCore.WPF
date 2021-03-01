@@ -223,7 +223,7 @@ namespace MathCore.WPF.Behaviors
         private ObjectMover? _ObjectMover;
         private void OnMouseLeftButtonDown([CanBeNull] object Sender, [CanBeNull] MouseButtonEventArgs E)
         {
-            if (!(Sender is FrameworkElement element)) return;
+            if (Sender is not FrameworkElement element) return;
             var parent = element.FindLogicalParent<IInputElement>();
             if (parent is null) return;
             _ObjectMover = parent switch

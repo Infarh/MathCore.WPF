@@ -9,12 +9,12 @@ namespace MathCore.WPF.Converters
     public class Arithmetic : ValueConverter
     {
         private const string __ArithmeticParseExpression = "([+\\-*/]{1,1})\\s{0,}(\\-?[\\d\\.]+)";
-        private readonly Regex _Pattern = new Regex(__ArithmeticParseExpression, RegexOptions.Compiled);
+        private readonly Regex _Pattern = new(__ArithmeticParseExpression, RegexOptions.Compiled);
 
         [CanBeNull]
         protected override object? Convert(object? v, Type t, object? p, CultureInfo c)
         {
-            if (!(v is double) || !(p is string p_str)) return null;
+            if (!(v is double) || p is not string p_str) return null;
 
             if (p_str.Length == 0) return null;
             var pattern = _Pattern.Match(p_str);
@@ -36,7 +36,7 @@ namespace MathCore.WPF.Converters
 
         protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c)
         {
-            if (!(v is double) || !(p is string p_str)) return null;
+            if (!(v is double) || p is not string p_str) return null;
 
             if (p_str.Length == 0) return null;
             var pattern = _Pattern.Match(p_str);

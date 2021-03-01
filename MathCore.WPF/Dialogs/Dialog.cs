@@ -85,7 +85,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        protected readonly object _OpenSyncRoot = new object();
+        protected readonly object _OpenSyncRoot = new();
 
         protected ICommand _OpenCommand;
 

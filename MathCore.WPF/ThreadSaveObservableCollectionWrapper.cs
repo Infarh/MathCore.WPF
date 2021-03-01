@@ -65,6 +65,6 @@ namespace MathCore.WPF
     {
         [NotNull, ItemCanBeNull]
         public static ThreadSaveObservableCollectionWrapper<T> AsThreadSave<T>([NotNull, ItemCanBeNull] this ObservableCollection<T> collection)
-            => new ThreadSaveObservableCollectionWrapper<T>(collection);
+            => new(collection);
     }
 }

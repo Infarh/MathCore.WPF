@@ -14,7 +14,7 @@ namespace MathCore.WPF.Extensions
 {
     public static class TypeExtensions
     {
-        private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), Func<object, object>> __CastersDictionary = new ConcurrentDictionary<(Type, Type), Func<object, object>>();
+        private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), Func<object, object>> __CastersDictionary = new();
 
         private static readonly ParameterExpression __ConvParameter = Expression.Parameter(typeof(object), "value");
 
@@ -33,7 +33,7 @@ namespace MathCore.WPF.Extensions
 
         public static object Cast([NotNull] this Type type, object obj) => GetCasterFrom(type, obj)(obj);
 
-        private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), Func<object, object>> __ConvertersDictionary = new ConcurrentDictionary<(Type, Type), Func<object, object>>();
+        private static readonly ConcurrentDictionary<(Type SourceType, Type TargetType), Func<object, object>> __ConvertersDictionary = new();
 
         public static Func<object, object> GetConverterTo([NotNull] this Type SourceType, [NotNull] Type TargetType)
             => TargetType.GetConverterFrom(SourceType);
@@ -47,8 +47,7 @@ namespace MathCore.WPF.Extensions
         [NotNull]
         public static Expression GetCastExpression([NotNull] this Type FromType, [NotNull] Type ToType, ref ParameterExpression? parameter)
         {
-            if (parameter is null)
-                parameter = Expression.Parameter(typeof(object), "value");
+            parameter ??= Expression.Parameter(typeof(object), "value");
             return Expression.Convert(Expression.Convert(Expression.Convert(__ConvParameter, FromType), ToType), typeof(object));
         }
 
@@ -128,8 +127,7 @@ namespace MathCore.WPF.Extensions
              where TAttribute : Attribute => T.GetCustomAttributes(typeof(TAttribute), Inherited).OfType<TAttribute>().ToArray();
 
         [DebuggerStepThrough]
-        public static object? CreateObject([NotNull] this Type type)
-        {
+        public static object? CreateObject([NotNull] this Type type) =>
             //var constructor = type.GetConstructor(new Type[] { });
             //if (constructor is null)
             //    throw new InvalidOperationException("Не найден конструктор типа " +
@@ -144,8 +142,7 @@ namespace MathCore.WPF.Extensions
             //        }));
             //return constructor.Invoke(new object[] { });
             //Contract.Requires(type != null);
-            return Activator.CreateInstance(type);
-        }
+            Activator.CreateInstance(type);
 
         [DebuggerStepThrough]
         public static T Create<T>([NotNull] this Type type) => (T)type.CreateObject()!;

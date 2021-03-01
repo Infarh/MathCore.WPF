@@ -31,8 +31,11 @@ namespace System.Threading.Tasks
             if (task is null) throw new ArgumentNullException(nameof(task));
 
             var nested_frame = new DispatcherFrame();
+#pragma warning disable CA2008 // Не создавайте задачи без передачи TaskScheduler
             _ = task.ContinueWith(_ => nested_frame.Continue = false);
+#pragma warning restore CA2008 // Не создавайте задачи без передачи TaskScheduler
             Dispatcher.PushFrame(nested_frame);
+            // ReSharper disable once AsyncConverter.AsyncWait
             task.Wait();
         }
     }

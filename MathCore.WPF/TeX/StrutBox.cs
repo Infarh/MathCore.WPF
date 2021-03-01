@@ -5,12 +5,9 @@ namespace MathCore.WPF.TeX
 {
     internal class StrutBox : Box
     {
-        private static readonly StrutBox emptyStrutBox = new StrutBox(0, 0, 0, 0);
+        private static readonly StrutBox emptyStrutBox = new(0, 0, 0, 0);
 
-        public static StrutBox Empty
-        {
-            get { return emptyStrutBox; }
-        }
+        public static StrutBox Empty => emptyStrutBox;
 
         public StrutBox(double width, double height, double depth, double shift)
         {

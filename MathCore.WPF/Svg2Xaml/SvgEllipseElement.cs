@@ -41,10 +41,10 @@ namespace MathCore.WPF.SVG
     : SvgDrawableBaseElement
   {
     //==========================================================================
-    public readonly SvgCoordinate CenterX = new SvgCoordinate(0.0);
-    public readonly SvgCoordinate CenterY = new SvgCoordinate(0.0);
-    public readonly SvgLength RadiusX = new SvgLength(0.0);
-    public readonly SvgLength RadiusY = new SvgLength(0.0);
+    public readonly SvgCoordinate CenterX = new(0.0);
+    public readonly SvgCoordinate CenterY = new(0.0);
+    public readonly SvgLength RadiusX = new(0.0);
+    public readonly SvgLength RadiusY = new(0.0);
 
     //==========================================================================
     public SvgEllipseElement(SvgDocument document, SvgBaseElement parent, XElement ellipseElement)

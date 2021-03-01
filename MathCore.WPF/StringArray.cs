@@ -14,7 +14,7 @@ namespace MathCore.WPF
         public bool RemoveEmpty { get; set; }
 
         public StringArray() { }
-        public StringArray(string Data) { _Data = Data; }
+        public StringArray(string Data) => _Data = Data;
 
         public override object ProvideValue(IServiceProvider serviceProvider) => _Data.Split(new[] { Separator }, RemoveEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
     }

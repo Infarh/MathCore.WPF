@@ -215,7 +215,7 @@ namespace MathCore.WPF.TeX
         {
             private readonly Type enumType;
 
-            public EnumParser(Type enumType) { this.enumType = enumType; }
+            public EnumParser(Type enumType) => this.enumType = enumType;
 
             public override object Parse(string value, string type) => Enum.Parse(enumType, value);
         }

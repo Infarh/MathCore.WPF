@@ -11,9 +11,9 @@ namespace MathCore.WPF.IoC
     public class ViewSystem : IViewSystem
     {
         private readonly IServiceManager _ServiceManager;
-        private readonly Dictionary<Type, Type> _ViewModelMap = new Dictionary<Type, Type>();
-        private readonly Dictionary<Type, Type> _ViewMap = new Dictionary<Type, Type>();
-        private readonly List<Window> _Views = new List<Window>();
+        private readonly Dictionary<Type, Type> _ViewModelMap = new();
+        private readonly Dictionary<Type, Type> _ViewMap = new();
+        private readonly List<Window> _Views = new();
 
         public ViewSystem(IServiceManager ServiceManager) => _ServiceManager = ServiceManager;
 
@@ -29,7 +29,7 @@ namespace MathCore.WPF.IoC
         public Window? CreateView([CanBeNull] object Model)
         {
             if (Model is null || !_ViewMap.TryGetValue(Model.GetType(), out var window_type)) return null;
-            if (!(_ServiceManager.Get(window_type) is Window window)) return null;
+            if (_ServiceManager.Get(window_type) is not Window window) return null;
             window.DataContext = Model;
             window.Loaded += OnViewLoaded;
             return window;
@@ -55,7 +55,7 @@ namespace MathCore.WPF.IoC
 
         private void OnViewLoaded(object Sender, RoutedEventArgs E)
         {
-            if (!(Sender is Window window)) return;
+            if (Sender is not Window window) return;
             window.Loaded -= OnViewLoaded;
             window.Closed += OnViewClosed;
             _Views.Add(window);
@@ -63,7 +63,7 @@ namespace MathCore.WPF.IoC
 
         private void OnViewClosed(object? Sender, EventArgs E)
         {
-            if (!(Sender is Window window)) return;
+            if (Sender is not Window window) return;
             window.Closed -= OnViewClosed;
             _Views.Remove(window);
         }

@@ -145,7 +145,7 @@ namespace MathCore.WPF.Behaviors
 
         private void OnMouseMove(object Sender, MouseEventArgs E)
         {
-            if (!(Sender is Control control)) return;
+            if (Sender is not Control control) return;
             var pos = E.GetPosition(control);
 
             var size = AreaSize;

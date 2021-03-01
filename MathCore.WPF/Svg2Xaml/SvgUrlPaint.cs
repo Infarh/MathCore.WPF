@@ -39,10 +39,7 @@ namespace MathCore.WPF.SVG
     public readonly string Url;
     
     //==========================================================================
-    public SvgUrlPaint(string url)
-    {
-      Url = url;
-    }
+    public SvgUrlPaint(string url) => Url = url;
 
     //==========================================================================
     public override Brush ToBrush(SvgBaseElement element)

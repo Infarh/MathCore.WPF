@@ -9,7 +9,7 @@ namespace MathCore.WPF.TeX
 
         public double Scale { get; }
 
-        public Size RenderSize => new Size(Box.Width * Scale, Box.TotalHeight * Scale);
+        public Size RenderSize => new(Box.Width * Scale, Box.TotalHeight * Scale);
 
         public double Baseline => Box.Height / Box.TotalHeight * Scale;
         internal TexRenderer(Box box, double scale) { Box = box; Scale = scale; }

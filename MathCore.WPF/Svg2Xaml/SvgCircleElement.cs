@@ -44,19 +44,19 @@ namespace MathCore.WPF.SVG
     /// <summary>
     ///   The x-coordinate of the circle's center.
     /// </summary>
-    public readonly SvgCoordinate CenterX = new SvgCoordinate(0);
+    public readonly SvgCoordinate CenterX = new(0);
 
     //==========================================================================
     /// <summary>
     ///   The y-coordinate of the circle's center.
     /// </summary>
-    public readonly SvgCoordinate CenterY = new SvgCoordinate(0);
+    public readonly SvgCoordinate CenterY = new(0);
 
     //==========================================================================
     /// <summary>
     ///   The circle's radius.
     /// </summary>
-    public readonly SvgLength Radius = new SvgLength(0);
+    public readonly SvgLength Radius = new(0);
 
     //==========================================================================
     public SvgCircleElement(SvgDocument document, SvgBaseElement parent, XElement circleElement)

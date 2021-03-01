@@ -212,17 +212,14 @@ namespace MathCore.WPF.TeX
         private GlyphTypeface CreateFont(string name)
         {
             GlyphTypeface glyphTypeface;
-            using(var memoryPackage = new MemoryPackage())
-            {
-                using(var fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}"))
-                {
-                    var typefaceSource = memoryPackage.CreatePart(fontStream);
+            using var memoryPackage = new MemoryPackage();
+            using var fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}");
+            var typefaceSource = memoryPackage.CreatePart(fontStream);
 
-                    glyphTypeface = new GlyphTypeface(typefaceSource);
+            glyphTypeface = new GlyphTypeface(typefaceSource);
 
-                    memoryPackage.DeletePart(typefaceSource);
-                }
-            }
+            memoryPackage.DeletePart(typefaceSource);
+
             return glyphTypeface;
         }
 
@@ -271,14 +268,11 @@ namespace MathCore.WPF.TeX
     {
         private static int packageCounter;
 
-        private readonly Uri packageUri = new Uri("payload://memorypackage" + Interlocked.Increment(ref packageCounter), UriKind.Absolute);
+        private readonly Uri packageUri = new("payload://memorypackage" + Interlocked.Increment(ref packageCounter), UriKind.Absolute);
         private readonly Package package = Package.Open(new MemoryStream(), FileMode.Create);
         private int partCounter;
 
-        public MemoryPackage()
-        {
-            PackageStore.AddPackage(this.packageUri, this.package);
-        }
+        public MemoryPackage() => PackageStore.AddPackage(this.packageUri, this.package);
 
         public Uri CreatePart(Stream stream, string contentType = "application/octet-stream")
         {

@@ -44,7 +44,7 @@ namespace MathCore.WPF.ValidationRules
                     ? valid 
                     : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
 
-            if (!(value is string str)) 
+            if (value is not string str) 
                 return AllowNotString 
                     ? valid
                     : new ValidationResult(false, NotStringErrorMessage ?? ErrorMessage ?? $"Значение {value} не является строкой");

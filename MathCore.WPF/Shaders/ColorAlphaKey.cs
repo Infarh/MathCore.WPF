@@ -14,7 +14,7 @@ namespace MathCore.WPF.Shaders
         [System.ComponentModel.Browsable(false)]
         public Brush Input { get => (Brush)GetValue(InputProperty); set => SetValue(InputProperty, value); }
 
-        private static readonly PixelShader __PixelShader = new PixelShader();
+        private static readonly PixelShader __PixelShader = new();
 
         static ColorAlphaKey()
         {

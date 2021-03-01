@@ -49,7 +49,7 @@ namespace MathCore.WPF.SVG
     }
 
     //==========================================================================
-    public Point ToPoint() => new Point(X, Y);
+    public Point ToPoint() => new(X, Y);
   } // class SvgPoint
 
 }

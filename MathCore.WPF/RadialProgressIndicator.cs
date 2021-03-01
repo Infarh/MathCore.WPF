@@ -38,12 +38,10 @@ namespace MathCore.WPF
         #region Constructors
 
         /// <summary>Static meta data registrations</summary>
-        static RadialProgressIndicator()
-        {
+        static RadialProgressIndicator() =>
             IsEnabledProperty.OverrideMetadata(typeof(RadialProgressIndicator),
                 new UIPropertyMetadata(false,
                     (o, e) => (o as RadialProgressIndicator)?.OnIsEnabledChanged((bool)e.OldValue, (bool)e.NewValue)));
-        }
 
         /// <summary>Initalizes a new instance of <see cref="RadialProgressIndicator" /></summary>
         public RadialProgressIndicator()
@@ -423,7 +421,7 @@ namespace MathCore.WPF
             {
                 Figures = new PathFigureCollection
                 {
-                    new PathFigure(location, segments, true)
+                    new(location, segments, true)
                 }
             };
         }

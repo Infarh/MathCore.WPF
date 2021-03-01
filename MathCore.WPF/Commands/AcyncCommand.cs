@@ -17,7 +17,7 @@ namespace MathCore.WPF.Commands
     public interface IAsyncTaskCommand : ICommand
     {
         [NotNull]
-        Task ExecuteTaskAsync([CanBeNull]object parameter);
+        Task ExecuteTaskAsync(object? parameter);
     }
 
     [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
@@ -31,11 +31,11 @@ namespace MathCore.WPF.Commands
 
         protected static void Invoke_OnCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
 
-        public abstract bool CanExecute([CanBeNull]object parameter);
+        public abstract bool CanExecute(object parameter);
 
         public abstract Task ExecuteTaskAsync(object parameter);
 
-        public async void Execute([CanBeNull]object parameter) => await ExecuteTaskAsync(parameter);
+        public async void Execute(object parameter) => await ExecuteTaskAsync(parameter);
     }
 
     /// <summary>Асинхронная команда</summary>
@@ -55,7 +55,7 @@ namespace MathCore.WPF.Commands
                 remove => CommandManager.RequerySuggested -= value;
             }
 
-            private CancellationTokenSource _CancellationToken = new CancellationTokenSource();
+            private CancellationTokenSource _CancellationToken = new();
             private bool _CommandExecuting;
             public CancellationToken Token => _CancellationToken.Token;
 
@@ -74,9 +74,9 @@ namespace MathCore.WPF.Commands
                 Invoke_OnCanExecuteChanged();
             }
 
-            bool ICommand.CanExecute([CanBeNull]object parameter) => _CommandExecuting && !_CancellationToken.IsCancellationRequested;
+            bool ICommand.CanExecute(object parameter) => _CommandExecuting && !_CancellationToken.IsCancellationRequested;
 
-            void ICommand.Execute([CanBeNull]object parameter)
+            void ICommand.Execute(object parameter)
             {
                 _CancellationToken.Cancel();
                 Invoke_OnCanExecuteChanged();

@@ -54,9 +54,9 @@ namespace MathCore.WPF
     [Copyright("Thomas Levesque", url = "http://www.thomaslevesque.com/2011/11/30/wpf-using-linq-to-shape-data-in-a-collectionview/")]
     public static class CollectionViewShaper
     {
-        public static CollectionViewShaper<T> ShapeView<T>(this IEnumerable<T> source) => new CollectionViewShaper<T>(CollectionViewSource.GetDefaultView(source));
+        public static CollectionViewShaper<T> ShapeView<T>(this IEnumerable<T> source) => new(CollectionViewSource.GetDefaultView(source));
 
-        public static CollectionViewShaper<T> Shape<T>(this ICollectionView view) => new CollectionViewShaper<T>(view);
+        public static CollectionViewShaper<T> Shape<T>(this ICollectionView view) => new(view);
     }
 
     public class CollectionViewShaper<T>
@@ -143,7 +143,7 @@ namespace MathCore.WPF
             var expr = expression;
             while (expr != null && !(expr is ParameterExpression) && !(expr is ConstantExpression))
             {
-                if (!(expr is MemberExpression member))
+                if (expr is not MemberExpression member)
                     throw new ArgumentException("The selector body must contain only property or field access expressions", nameof(expression));
                 names.Push(member.Member.Name);
                 expr = member.Expression;

@@ -138,7 +138,7 @@ namespace MathCore.WPF
         private void OnPropertyChanged(object sender, EventArgs e) => PropertyChanged?.Invoke(sender, e);
 
         /// <summary>Словарь свойств по имени</summary>
-        private readonly Dictionary<string, ModelProperty> _Properties = new Dictionary<string, ModelProperty>();
+        private readonly Dictionary<string, ModelProperty> _Properties = new();
 
         /// <summary>Определение свойства по имени</summary>
         /// <param name="Name">Имя требуемого свойства</param>

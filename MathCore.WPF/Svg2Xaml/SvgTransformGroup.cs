@@ -38,7 +38,7 @@ namespace MathCore.WPF.SVG
     : SvgTransform
   {
     //==========================================================================
-    public readonly List<SvgTransform> Transforms = new List<SvgTransform>();
+    public readonly List<SvgTransform> Transforms = new();
 
     //==========================================================================
     public SvgTransformGroup(SvgTransform[] transforms)

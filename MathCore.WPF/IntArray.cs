@@ -9,16 +9,14 @@ namespace MathCore.WPF
     {
         public string Data { get; set; } = "";
         public IntArray() { }
-        public IntArray(string Data) { this.Data = Data; }
+        public IntArray(string Data) => this.Data = Data;
 
-        public override object ProvideValue(IServiceProvider serviceProvider)
-        {
-            return Data.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select(s => int.TryParse(s, out int v) ? (int?)v : null)
-                        .Where(v => v.HasValue)
-                        .Select(v => v.Value)
-                        .ToArray();
-        }
+        public override object ProvideValue(IServiceProvider serviceProvider) =>
+            Data.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+               .Select(s => int.TryParse(s, out int v) ? (int?)v : null)
+               .Where(v => v.HasValue)
+               .Select(v => v.Value)
+               .ToArray();
     }
 
     [MarkupExtensionReturnType(typeof(long[]))]

@@ -3,10 +3,7 @@ namespace MathCore.WPF.TeX
 {
     internal abstract class CharSymbol : Atom
     {
-        protected CharSymbol()
-        {
-            IsTextSymbol = false;
-        }
+        protected CharSymbol() => IsTextSymbol = false;
 
         public bool IsTextSymbol
         {

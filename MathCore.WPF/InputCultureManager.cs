@@ -6,7 +6,7 @@ namespace MathCore.WPF
 {
     public class InputCultureManager
     {
-        public static InputCultureManager Current { get; } = new InputCultureManager();
+        public static InputCultureManager Current { get; } = new();
 
         private CultureInfo _Culture = InputLanguageManager.Current.CurrentInputLanguage;
         public CultureInfo Culture

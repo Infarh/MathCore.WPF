@@ -5,7 +5,7 @@
     {
         public CharFont CharFont { get; }
 
-        public FixedCharAtom(CharFont charFont) { CharFont = charFont; }
+        public FixedCharAtom(CharFont charFont) => CharFont = charFont;
 
         public override CharFont GetCharFont(ITeXFont texFont) => CharFont;
 

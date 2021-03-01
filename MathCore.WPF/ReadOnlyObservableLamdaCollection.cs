@@ -20,7 +20,7 @@ namespace MathCore.WPF
         /// <summary>Генерация исключения при вызове метода интерфейса, не поддерживаемого данной коллекцией</summary>
         /// <param name="Method">Имя вызываемого метода</param>
         /// <returns>Исключение <see cref="NotSupportedException"/></returns>
-        private static NotSupportedException NotSupported([CallerMemberName] string Method = null) => new NotSupportedException($"{Method} не поддерживается коллекцией только для чтения");
+        private static NotSupportedException NotSupported([CallerMemberName] string Method = null) => new($"{Method} не поддерживается коллекцией только для чтения");
 
         #endregion
 

@@ -24,6 +24,6 @@ namespace MathCore.WPF.TeX
             Metrics = metrics;
         }
 
-        public CharFont GetCharacterFont() => new CharFont(Character, FontId);
+        public CharFont GetCharacterFont() => new(Character, FontId);
     }
 }

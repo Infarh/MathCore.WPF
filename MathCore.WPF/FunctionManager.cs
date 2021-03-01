@@ -20,7 +20,7 @@ namespace System.Collections.Generic
 
         [NotNull] private readonly Func<T, double> _DoubleConverter;
         [NotNull] private readonly Func<double, T> _Function;
-        private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = new ObservableLinkedList<KeyValuePair<double, T>>();
+        private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = new();
         private double _Eps0;
         private double _Min = double.NaN;
         private double _Max = double.NaN;

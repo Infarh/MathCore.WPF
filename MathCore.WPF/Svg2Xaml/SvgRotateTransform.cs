@@ -41,10 +41,7 @@ namespace MathCore.WPF.SVG
     public readonly double Angle;
 
     //==========================================================================
-    public SvgRotateTransform(double angle)
-    {
-      Angle = angle;
-    }
+    public SvgRotateTransform(double angle) => Angle = angle;
 
     //==========================================================================
     public override Transform ToTransform() => new RotateTransform(Angle);

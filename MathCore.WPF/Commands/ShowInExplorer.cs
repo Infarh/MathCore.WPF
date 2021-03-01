@@ -9,19 +9,13 @@ namespace MathCore.WPF.Commands
     [MarkupExtensionReturnType(typeof(ShowInExplorer))]
     public class ShowInExplorer : Command
     {
-        public override bool CanExecute(object? parameter)
+        public override bool CanExecute(object? parameter) => parameter switch
         {
-            switch (parameter)
-            {
-                default:
-                    return false;
-
-                case string path when File.Exists(path) || Directory.Exists(path):
-                case FileSystemInfo file_or_dir when file_or_dir.Exists:
-                case DriveInfo drive when drive.IsReady:
-                    return true;
-            }
-        }
+            string path when File.Exists(path) || Directory.Exists(path) => true,
+            FileSystemInfo {Exists: true} => true,
+            DriveInfo {IsReady: true} => true,
+            _ => false
+        };
 
         public override void Execute(object? parameter)
         {
@@ -30,8 +24,8 @@ namespace MathCore.WPF.Commands
                 default: return;
                 case string path when File.Exists(path): Execute(new FileInfo(path)); break;
                 case string path when Directory.Exists(path): Execute(new DirectoryInfo(path)); break;
-                case FileSystemInfo file_or_dir when file_or_dir.Exists: file_or_dir.ShowInFileExplorer(); break;
-                case DriveInfo drive when drive.IsReady: Execute(drive.RootDirectory); break;
+                case FileSystemInfo { Exists: true } file_or_dir: file_or_dir.ShowInFileExplorer(); break;
+                case DriveInfo { IsReady: true } drive: Execute(drive.RootDirectory); break;
             }
         }
     }

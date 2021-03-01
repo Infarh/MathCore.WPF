@@ -18,16 +18,16 @@ namespace System.Collections.ObjectModel
         [NotNull]
         public static ObservableCollectionSyncWrapper<T> GetThreadSafeWrapper<T>(
             this ObservableCollection<T> collection) =>
-                new ObservableCollectionSyncWrapper<T>(collection);
+                new(collection);
 
         private abstract class CollectionConnectorBase
         {
             private static readonly List<CollectionConnectorBase> __ConnectorsPool
-                = new List<CollectionConnectorBase>();
+                = new();
 
             [NotNull]
             public static ReadOnlyCollection<CollectionConnectorBase> Pool =>
-                new ReadOnlyCollection<CollectionConnectorBase>(__ConnectorsPool);
+                new(__ConnectorsPool);
 
             protected CollectionConnectorBase() => __ConnectorsPool.Add(this);
 
@@ -41,7 +41,7 @@ namespace System.Collections.ObjectModel
             private readonly WeakReference _SourceRef;
             private readonly WeakReference _DestinationRef;
             private readonly Func<TSourceItem, TDestItem> _Converter;
-            private readonly Dictionary<object, TDestItem> _Items = new Dictionary<object, TDestItem>();
+            private readonly Dictionary<object, TDestItem> _Items = new();
 
             public TSource Source => (TSource)_SourceRef.Target!;
 
@@ -108,7 +108,7 @@ namespace System.Collections.ObjectModel
 
                 foreach (var obj in NewItems)
                 {
-                    if(!(obj is TSourceItem item)) continue;
+                    if(obj is not TSourceItem item) continue;
                     var value = _Converter(item);
                     dest.Add(value);
                     _Items.Add(item, value);
@@ -127,7 +127,7 @@ namespace System.Collections.ObjectModel
 
                 foreach (var obj in NewItems)
                 {
-                    if(!(obj is TSourceItem item) || !_Items.TryGetValue(item, out var value)) continue;
+                    if(obj is not TSourceItem item || !_Items.TryGetValue(item, out var value)) continue;
                     dest.Remove(value);
                     _Items.Remove(item);
                 }
@@ -195,7 +195,7 @@ namespace System.Collections.ObjectModel
                             ReferenceEquals(c.Destination, DestinationCollection))?.Close();
 
         private static readonly Dictionary<Type, (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged)> __ItemsDictionary = 
-            new Dictionary<Type, (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged)>();
+            new();
 
         public static void AddItemsRange<TCollection, TItem>(
             [NotNull]this TCollection collection,

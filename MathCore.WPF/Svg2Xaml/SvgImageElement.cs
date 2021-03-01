@@ -44,10 +44,10 @@ namespace MathCore.WPF.SVG
     : SvgDrawableBaseElement
   {
     //==========================================================================
-    public readonly SvgCoordinate Y = new SvgCoordinate(0.0);
-    public readonly SvgCoordinate X = new SvgCoordinate(0.0);
-    public readonly SvgLength Width = new SvgLength(0.0);
-    public readonly SvgLength Height = new SvgLength(0.0);
+    public readonly SvgCoordinate Y = new(0.0);
+    public readonly SvgCoordinate X = new(0.0);
+    public readonly SvgLength Width = new(0.0);
+    public readonly SvgLength Height = new(0.0);
 
     //==========================================================================
     public readonly string DataType;

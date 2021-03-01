@@ -29,7 +29,7 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Словарь значений индексаторов объекта</summary>
         protected readonly Dictionary<object[], object> _IndexersValues =
-            new Dictionary<object[], object>(
+            new(
                 new LambdaEqualityComparer<object[]>(
                     Comparer: (k1, k2) => k1.Length == k2.Length && !k1.Where((t, i) => !Equals(t, k2[i])).Any(),
                     HashFunction: k => k.GetComplexHashCode()));

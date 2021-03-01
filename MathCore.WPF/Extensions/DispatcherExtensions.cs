@@ -6,7 +6,7 @@ namespace System.Windows.Threading
 {
     public static class DispatcherExtensions
     {
-        [NotNull] public static DispatcherAwaiter GetAwaiter([NotNull] this Dispatcher dispatcher) => new DispatcherAwaiter(dispatcher);
+        [NotNull] public static DispatcherAwaiter GetAwaiter([NotNull] this Dispatcher dispatcher) => new(dispatcher);
 
         public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority)
         {
@@ -26,7 +26,7 @@ namespace System.Windows.Threading
             _Priority = Priority;
         }
 
-        public DispatcherAwaiter GetAwaiter() => new DispatcherAwaiter(_Dispatcher, _Priority);
+        public DispatcherAwaiter GetAwaiter() => new(_Dispatcher, _Priority);
     }
 
     public readonly struct DispatcherAwaiter : INotifyCompletion

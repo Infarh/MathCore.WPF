@@ -43,17 +43,17 @@ namespace MathCore.WPF.SVG
     {
 
         //==========================================================================
-        public readonly SvgLength Opacity = new SvgLength(1.0);
-        public readonly SvgLength FillOpacity = new SvgLength(1.0);
-        public readonly SvgLength StrokeOpacity = new SvgLength(1.0);
+        public readonly SvgLength Opacity = new(1.0);
+        public readonly SvgLength FillOpacity = new(1.0);
+        public readonly SvgLength StrokeOpacity = new(1.0);
         public readonly SvgTransform Transform;
         public readonly SvgPaint Fill = new SvgColorPaint(new SvgColor(0, 0, 0));
         public readonly SvgPaint Stroke; /* new SvgColorPaint(new SvgColor(0, 0, 0)); */
-        public readonly SvgLength StrokeWidth = new SvgLength(1);
+        public readonly SvgLength StrokeWidth = new(1);
         public readonly SvgStrokeLinecap StrokeLinecap = SvgStrokeLinecap.Butt;
         public readonly SvgStrokeLinejoin StrokeLinejoin = SvgStrokeLinejoin.Miter;
         public readonly double StrokeMiterlimit = 4;     // Double.None = inherit
-        public readonly SvgLength StrokeDashoffset = new SvgLength(0);
+        public readonly SvgLength StrokeDashoffset = new(0);
         public readonly SvgLength?[] StrokeDasharray; // null = none, Length[0] = inherit
         public readonly string ClipPath;
         public readonly string Filter;

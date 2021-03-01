@@ -34,20 +34,17 @@ namespace MathCore.WPF.TeX
 
         public DummyAtom PreviousAtom { get; set; }
         public List<Atom> Elements { get; }
-        public RowAtom() { Elements = new List<Atom>(); }
+        public RowAtom() => Elements = new List<Atom>();
 
         public RowAtom(List<TexFormula> formulaList)
-            : this()
-        {
+            : this() =>
             Elements.AddRange(formulaList.Where(f => f.RootAtom != null).Select(f => f.RootAtom));
-        }
 
         public RowAtom(Atom baseAtom)
             : this()
         {
             if(baseAtom is null) return;
-            var atom = baseAtom as RowAtom;
-            if(atom != null)
+            if(baseAtom is RowAtom atom)
                 Elements.AddRange(atom.Elements);
             else
                 Elements.Add(baseAtom);

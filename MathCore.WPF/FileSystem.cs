@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+
 using MathCore.Annotations;
 using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
@@ -20,36 +21,35 @@ namespace MathCore.WPF
     public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFinder
     {
         /// <summary>Поле паттерна синглтон</summary>
-        [CanBeNull] private static FileSystem __FileSystem;
+        private static FileSystem? __FileSystem;
 
         /// <summary>Объект слежения за дисками, подключёнными к системе</summary>
-        [NotNull]
-        public static FileSystem Watcher => __FileSystem ?? (__FileSystem = new FileSystem());
+        public static FileSystem Watcher => __FileSystem ??= new FileSystem();
 
         /// <summary>Дескриптор окна, получающего сообщения от системы о смене состояния оборудования</summary>
-        [CanBeNull] private HwndSource _WindowHandle;
+        private HwndSource? _WindowHandle;
 
         /// <summary>Кеш массива дисков системы</summary>
-        [CanBeNull, ItemNotNull] private DriveInfo[] _Drives;
+        private DriveInfo[]? _Drives;
 
         /// <summary>Диски системы</summary>
-        [CanBeNull, ItemNotNull] public DriveInfo[] Drives { get => _Drives; private set => SetValue(ref _Drives, value).Then(SetSystemRoots); }
+        public DriveInfo[]? Drives { get => _Drives; private set => SetValue(ref _Drives, value).Then(SetSystemRoots); }
 
-        [CanBeNull, ItemNotNull] private DirectoryViewModel[] _SystemRoots;
+        private DirectoryViewModel[]? _SystemRoots;
 
-        [CanBeNull, ItemNotNull] public DirectoryViewModel[] SystemRoots { get => _SystemRoots; set => Set(ref _SystemRoots, value); }
-        private void SetSystemRoots([CanBeNull, ItemNotNull] DriveInfo[] drives) => SystemRoots = drives?.Where(d => d.IsReady).Select(d => new DirectoryViewModel(d.RootDirectory)).ToArray();
+        public DirectoryViewModel[]? SystemRoots { get => _SystemRoots; set => Set(ref _SystemRoots, value); }
+        private void SetSystemRoots(DriveInfo[]? drives) => SystemRoots = drives?.Where(d => d.IsReady).Select(d => new DirectoryViewModel(d.RootDirectory)).ToArray();
 
         /// <summary>Проверка списков дисков на идентичность</summary>
         /// <param name="Old">Старый список дисков</param>
         /// <param name="New">Новый список дисков</param>
         /// <returns>Истина, если списки идентичны</returns>
-        private static bool IsDriveListEquals([CanBeNull, ItemNotNull] DriveInfo[] Old, [CanBeNull, ItemNotNull] DriveInfo[] New)
+        private static bool IsDriveListEquals(DriveInfo[]? Old, DriveInfo[]? New)
         {
             if (ReferenceEquals(Old, New)) return true;
             if (Old?.Length != New?.Length) return false;
-            for (var i = 0; i < Old.Length; i++)
-                if (Old[i].Name != New[i].Name) return false;
+            for (var i = 0; i < Old!.Length; i++)
+                if (Old[i].Name != New![i].Name) return false;
             return true;
         }
 
@@ -70,8 +70,7 @@ namespace MathCore.WPF
 
         /// <summary>обработчик события, возникающего в момент завершения загрузки окна, в котором подключается обработчик системных сообщений</summary>
         /// <param name="Sender">Окно-источник события</param>
-        /// <param name="E">Аргумент события (игнорируется)</param>
-        private void OnWindowLoaded([NotNull] object Sender, EventArgs E)
+        private void OnWindowLoaded([NotNull] object Sender, EventArgs _)
         {
             var window = (Window)Sender;
             _WindowHandle = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
@@ -91,12 +90,11 @@ namespace MathCore.WPF
         /// <returns>Результат оброботки сообщения - должен быть <see cref="IntPtr.Zero"/></returns>
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            switch (msg)
+            Drives = msg switch
             {
-                case WM_DEVICECHANGE:
-                    Drives = DriveInfo.GetDrives().Where(d => d.IsReady).ToArray();
-                    break;
-            }
+                WM_DEVICECHANGE => DriveInfo.GetDrives().Where(d => d.IsReady).ToArray(),
+                _ => Drives
+            };
 
             return IntPtr.Zero;
         }
@@ -108,7 +106,7 @@ namespace MathCore.WPF
             _WindowHandle = null;
         }
 
-        async Task<DirectoryViewModel> IFileSystemViewModelFinder.GetModelAsync(string path)
+        async Task<DirectoryViewModel?> IFileSystemViewModelFinder.GetModelAsync(string path)
         {
             await TaskEx.YieldAsync();
             if (!Path.IsPathRooted(path))
@@ -116,35 +114,34 @@ namespace MathCore.WPF
             var model = _SystemRoots?.FirstOrDefault(m => path.StartsWith(m.Directory.FullName, StringComparison.InvariantCultureIgnoreCase));
             if (model is null) return null;
             if (model.Directory.Name.Equals(path, StringComparison.InvariantCultureIgnoreCase)) return model;
-            return await ((IFileSystemViewModelFinder)model).GetModelAsync(path);
+            return await ((IFileSystemViewModelFinder)model).GetModelAsync(path).ConfigureAwait(false);
         }
     }
 
     public interface IFileSystemViewModelFinder
     {
-        [NotNull, ItemCanBeNull] Task<DirectoryViewModel> GetModelAsync([NotNull] string path);
+        [NotNull, ItemCanBeNull] Task<DirectoryViewModel?> GetModelAsync([NotNull] string path);
     }
 
     public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFinder,
-        IEnumerable<DirectoryViewModel>, IEnumerable<FileInfo>, IEnumerable<DirectoryInfo>,
+        IEnumerable<DirectoryViewModel?>, IEnumerable<FileInfo>, IEnumerable<DirectoryInfo>,
         IEquatable<DirectoryViewModel>, IEquatable<DirectoryInfo>, IEquatable<string>
     {
-        [CanBeNull] private FileSystemWatcher _Watcher;
+        private FileSystemWatcher? _Watcher;
 
-        [NotNull] public DirectoryInfo Directory { get; }
+        public DirectoryInfo Directory { get; }
 
-        [CanBeNull] private bool? _CanEnumItems;
+        private bool? _CanEnumItems;
 
         public bool CanEnumItems => (bool)(_CanEnumItems ??= (Directory.Exists/* && Directory.CanAccessToDirectoryListItems()*/));
 
 
-        [ItemNotNull] public IEnumerable<DirectoryInfo>? SubDirectories => CanEnumItems ? Directory.EnumerateDirectories() : null;
+        public IEnumerable<DirectoryInfo>? SubDirectories => CanEnumItems ? Directory.EnumerateDirectories() : null;
 
 
-        [CanBeNull, ItemNotNull] private ObservableCollection<DirectoryViewModel> _Directories;
+        private ObservableCollection<DirectoryViewModel>? _Directories;
 
-        [CanBeNull, ItemNotNull]
-        public ThreadSaveObservableCollectionWrapper<DirectoryViewModel> Directories
+        public ThreadSaveObservableCollectionWrapper<DirectoryViewModel>? Directories
         {
             get
             {
@@ -162,9 +159,8 @@ namespace MathCore.WPF
             }
         }
 
-        [CanBeNull, ItemNotNull] private ThreadSaveObservableCollectionWrapper<FileInfo> _Files;
+        private ThreadSaveObservableCollectionWrapper<FileInfo>? _Files;
 
-        [ItemNotNull]
         public ThreadSaveObservableCollectionWrapper<FileInfo>? Files => _Files != null || !CanEnumItems
             ? _Files
             : _Files = new ObservableCollection<FileInfo>(Directory.EnumerateFiles()).AsThreadSave();
@@ -174,7 +170,7 @@ namespace MathCore.WPF
         {
             get
             {
-                AuthorizationRuleCollection rules = null;
+                AuthorizationRuleCollection? rules = null;
                 try
                 {
                     rules = Directory.GetAccessControl().GetAccessRules(true, true, typeof(SecurityIdentifier));
@@ -206,7 +202,7 @@ namespace MathCore.WPF
         [CanBeNull] private ICommand _RefreshDirectoriesCommand;
 
         [CanBeNull]
-        public ICommand RefreshDirectoriesCommand => _RefreshDirectoriesCommand ?? (_RefreshDirectoriesCommand = new LambdaCommand(OnRefreshDirectoriesCommandExecutedAsync, CanUpdateCommandExecuted));
+        public ICommand RefreshDirectoriesCommand => _RefreshDirectoriesCommand ??= new LambdaCommand(OnRefreshDirectoriesCommandExecutedAsync, CanUpdateCommandExecuted);
 
         private async void OnRefreshDirectoriesCommandExecutedAsync()
         {
@@ -231,7 +227,7 @@ namespace MathCore.WPF
 
         [CanBeNull] private ICommand _RefreshFilesCommand;
 
-        [CanBeNull] public ICommand RefreshFilesCommand => _RefreshFilesCommand ?? (_RefreshFilesCommand = new LambdaCommand(OnRefreshFilesCommandExecuted, CanUpdateCommandExecuted));
+        [CanBeNull] public ICommand RefreshFilesCommand => _RefreshFilesCommand ??= new LambdaCommand(OnRefreshFilesCommandExecuted, CanUpdateCommandExecuted);
 
         private void OnRefreshFilesCommandExecuted()
         {
@@ -248,7 +244,7 @@ namespace MathCore.WPF
 
         [CanBeNull] private ICommand _RefreshCommand;
 
-        [CanBeNull] public ICommand RefreshCommand => _RefreshCommand ?? (_RefreshCommand = new LambdaCommand(OnRefreshCommandExecuted, CanUpdateCommandExecuted));
+        [CanBeNull] public ICommand RefreshCommand => _RefreshCommand ??= new LambdaCommand(OnRefreshCommandExecuted, CanUpdateCommandExecuted);
 
         private void OnRefreshCommandExecuted()
         {
@@ -318,14 +314,14 @@ namespace MathCore.WPF
                     var file = Files?.FirstOrDefault(f => string.Equals(f.FullName, path, StringComparison.InvariantCultureIgnoreCase));
                     if (file != null)
                     {
-                        Files.Remove(file);
+                        Files!.Remove(file);
                         break;
                     }
 
                     var dir = Directories?.FirstOrDefault(d => string.Equals(d.Directory.FullName, path, StringComparison.InvariantCultureIgnoreCase));
                     if (dir != null)
                     {
-                        Directories.Remove(dir);
+                        Directories!.Remove(dir);
                         OnPropertyChanged(nameof(SubDirectories));
                     }
 
@@ -335,11 +331,11 @@ namespace MathCore.WPF
 
         #region IEquatable
 
-        public bool Equals([ItemNotNull] DirectoryViewModel model) => ReferenceEquals(this, model) || string.Equals(Directory.FullName, model?.Directory.FullName, StringComparison.InvariantCultureIgnoreCase);
+        public bool Equals(DirectoryViewModel? model) => ReferenceEquals(this, model) || string.Equals(Directory.FullName, model?.Directory.FullName, StringComparison.InvariantCultureIgnoreCase);
 
-        public bool Equals(DirectoryInfo dir) => ReferenceEquals(Directory, dir) || string.Equals(Directory.FullName, dir?.FullName, StringComparison.InvariantCultureIgnoreCase);
+        public bool Equals(DirectoryInfo? dir) => ReferenceEquals(Directory, dir) || string.Equals(Directory.FullName, dir?.FullName, StringComparison.InvariantCultureIgnoreCase);
 
-        public bool Equals(string path) => string.Equals(Directory.FullName.TrimEnd('\\', '/'), path?.TrimEnd('\\', '/'), StringComparison.InvariantCultureIgnoreCase);
+        public bool Equals(string? path) => string.Equals(Directory.FullName.TrimEnd('\\', '/'), path?.TrimEnd('\\', '/'), StringComparison.InvariantCultureIgnoreCase);
 
         #endregion
 
@@ -347,29 +343,27 @@ namespace MathCore.WPF
 
         public override int GetHashCode() => Directory.GetHashCode();
 
-        public override bool Equals(object obj)
-        {
-            switch (obj)
+        public override bool Equals(object? obj) =>
+            obj switch
             {
-                default: return false;
-                case DirectoryViewModel model: return Equals(model);
-                case DirectoryInfo dir: return Equals(dir);
-                case string path: return Equals(path);
-            }
-        }
+                DirectoryViewModel model => Equals(model),
+                DirectoryInfo dir => Equals(dir),
+                string path => Equals(path),
+                _ => false
+            };
 
         /// <inheritdoc />
         void IDisposable.Dispose() => _Watcher?.Dispose();
 
         IEnumerator<DirectoryInfo> IEnumerable<DirectoryInfo>.GetEnumerator() => (SubDirectories ?? Enumerable.Empty<DirectoryInfo>()).GetEnumerator();
 
-        public IEnumerator<DirectoryViewModel> GetEnumerator() => (Directories ?? Enumerable.Empty<DirectoryViewModel>()).GetEnumerator();
+        public IEnumerator<DirectoryViewModel?> GetEnumerator() => (Directories ?? Enumerable.Empty<DirectoryViewModel?>()).GetEnumerator();
 
         IEnumerator<FileInfo> IEnumerable<FileInfo>.GetEnumerator() => (Files ?? Enumerable.Empty<FileInfo>()).GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<DirectoryViewModel>)this).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<DirectoryViewModel?>)this).GetEnumerator();
 
-        async Task<DirectoryViewModel> IFileSystemViewModelFinder.GetModelAsync(string DirectoryName)
+        async Task<DirectoryViewModel?> IFileSystemViewModelFinder.GetModelAsync(string DirectoryName)
         {
             await TaskEx.YieldAsync();
             if (!CanEnumItems) return null;
@@ -383,7 +377,7 @@ namespace MathCore.WPF
                 return null;
             }
             var sub_dirs = SubDirectories ?? throw new InvalidOperationException($"Невозможно выполнить команду обновления для дирректории {Directory}: отсутствует право на доступ для извлечения содержимого дирректории");
-            DirectoryViewModel model = null;
+            DirectoryViewModel? model = null;
             foreach (var dir in sub_dirs)
             {
                 var m = new DirectoryViewModel(dir);
@@ -395,7 +389,7 @@ namespace MathCore.WPF
             if (model is null) return null;
             if (model.Directory.FullName.Equals(DirectoryName, StringComparison.InvariantCultureIgnoreCase))
                 return model;
-            return await ((IFileSystemViewModelFinder)model).GetModelAsync(DirectoryName);
+            return await ((IFileSystemViewModelFinder)model).GetModelAsync(DirectoryName).ConfigureAwait(false);
         }
     }
 }

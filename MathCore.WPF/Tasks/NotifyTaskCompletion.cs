@@ -33,7 +33,8 @@ namespace System.Threading.Tasks
 
         /// <summary>Результат задачи</summary>
         [CanBeNull]
-        public T Result => _Task.Status == TaskStatus.RanToCompletion ? _Task.Result : default;
+        // ReSharper disable once AsyncConverter.AsyncWait
+        public T? Result => _Task.Status == TaskStatus.RanToCompletion ? _Task.Result : default;
 
         /// <summary>Статус задачи</summary>
         public TaskStatus Status => _Task.Status;
