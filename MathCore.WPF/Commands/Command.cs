@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Reactive;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
 using MathCore.Annotations;
@@ -15,6 +16,11 @@ namespace MathCore.WPF.Commands
 {
     public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object>
     {
+        public static LambdaCommand Exec(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommand<T> Exec<T>(Action<T> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommandAsync Exec(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommandAsync<T> Exec<T>(Func<T, Task> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
         #region События
 
         #region INotifyPropertyChanged
