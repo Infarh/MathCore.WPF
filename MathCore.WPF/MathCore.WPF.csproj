@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.10</Version>
+    <Version>0.0.11</Version>
     <PackageReleaseNotes>
-      Исправление логики работы LambdaCommandT + рефакторинг
+      Статические фабричные методы создания команд в классе Command
     </PackageReleaseNotes>
   </PropertyGroup>
 
