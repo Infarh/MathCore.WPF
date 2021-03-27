@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 using Point = System.Windows.Point;
 // ReSharper disable UnusedType.Global
@@ -37,7 +37,7 @@ namespace MathCore.WPF.Shaders
 
         static ZoomBlur()
         {
-            using var data_stream = typeof(ZoomBlur).Assembly.GetManifestResourceStream(typeof(ZoomBlur).FullName!);
+            using var data_stream = typeof(ZoomBlur).Assembly.GetManifestResourceStream($"{typeof(ZoomBlur).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 

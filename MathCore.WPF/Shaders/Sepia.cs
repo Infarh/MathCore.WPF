@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,7 +27,7 @@ namespace MathCore.WPF.Shaders
 
         static Sepia()
         {
-            using var data_stream = typeof(Sepia).Assembly.GetManifestResourceStream(typeof(Sepia).FullName!);
+            using var data_stream = typeof(Sepia).Assembly.GetManifestResourceStream($"{typeof(Sepia).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 

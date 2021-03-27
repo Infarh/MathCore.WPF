@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -15,7 +15,7 @@ namespace MathCore.WPF.Shaders
 
         static Invert()
         {
-            using var data_stream = typeof(Invert).Assembly.GetManifestResourceStream(typeof(Invert).FullName!);
+            using var data_stream = typeof(Invert).Assembly.GetManifestResourceStream($"{typeof(Invert).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 

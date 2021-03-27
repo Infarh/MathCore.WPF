@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,7 +27,7 @@ namespace MathCore.WPF.Shaders
 
         static BlackAndWhite()
         {
-            using var data_stream = typeof(BlackAndWhite).Assembly.GetManifestResourceStream(typeof(BlackAndWhite).FullName!);
+            using var data_stream = typeof(BlackAndWhite).Assembly.GetManifestResourceStream($"{typeof(BlackAndWhite).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 

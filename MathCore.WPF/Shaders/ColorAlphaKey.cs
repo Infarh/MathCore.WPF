@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -18,7 +18,7 @@ namespace MathCore.WPF.Shaders
 
         static ColorAlphaKey()
         {
-            using var data_stream = typeof(ColorAlphaKey).Assembly.GetManifestResourceStream(typeof(ColorAlphaKey).FullName!);
+            using var data_stream = typeof(ColorAlphaKey).Assembly.GetManifestResourceStream($"{typeof(ColorAlphaKey).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 

@@ -1,5 +1,5 @@
-﻿using System.Drawing;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Media;
 using System.Windows.Media.Effects;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -38,7 +38,7 @@ namespace MathCore.WPF.Shaders
 
         static DirectionalBlur()
         {
-            using var data_stream = typeof(DirectionalBlur).Assembly.GetManifestResourceStream(typeof(DirectionalBlur).FullName!);
+            using var data_stream = typeof(DirectionalBlur).Assembly.GetManifestResourceStream($"{typeof(DirectionalBlur).FullName}.fx.ps");
             __PixelShader.SetStreamSource(data_stream);
         }
 
