@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.12</Version>
+    <Version>0.0.12.1</Version>
     <PackageReleaseNotes>
       Обновление механизма создания команд Command.New(...)
     </PackageReleaseNotes>
