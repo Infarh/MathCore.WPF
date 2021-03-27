@@ -8,6 +8,14 @@
         xmlns:ta="clr-namespace:MathCore.WPF.TriggerActions;assembly=MathCore.WPF"
         Title="{Binding Title}"
         Width="800" Height="450">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="10" 
+                      CornerRadius="10"
+                      GlassFrameThickness="10"
+                      NonClientFrameEdges="Left" 
+                      ResizeBorderThickness="10" 
+                      UseAeroCaptionButtons="True" />
+    </WindowChrome.WindowChrome>
     <Window.InputBindings>
         <KeyBinding Key="Enter" CommandParameter="{Binding ElementName=TestElement}">
             <KeyBinding.Command>
@@ -27,5 +35,6 @@
             <TextBox VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,10" Width="160"/>
             <TextBox Name="TestElement" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="200,10" Width="160"/>
         </Grid>
+        <TextBlock Margin="10" Text="{Binding Time, StringFormat=hh\\:mm\\:ss}"/>
     </DockPanel>
 </Window>

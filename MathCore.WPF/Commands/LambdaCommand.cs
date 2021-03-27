@@ -129,8 +129,11 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
-        [NotNull] public static explicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
+        [NotNull] public static implicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
+        [NotNull] public static implicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
+
+        public static implicit operator LambdaCommand((Action Execute, Func<bool> CanExecute) info) => new(info.Execute, info.CanExecute);
+        public static implicit operator LambdaCommand((Action<object> Execute, Func<object, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 
         [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new(execute);
         [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new(execute);
@@ -193,6 +196,10 @@ namespace MathCore.WPF.Commands
         /// </summary>
         protected LambdaCommand() { }
 
+        public LambdaCommand([NotNull] Action<T> ExecuteAction, Func<bool>? CanExecute)
+            :this(ExecuteAction, CanExecute is null ? null : new Func<T, bool>(_ => CanExecute()))
+        { }
+
         public LambdaCommand([NotNull] Action<T> ExecuteAction, Func<T, bool>? CanExecute = null)
         {
             _ExecuteAction = ExecuteAction ?? throw new ArgumentNullException(nameof(ExecuteAction));
@@ -232,7 +239,7 @@ namespace MathCore.WPF.Commands
 
             if (parameter is not T value)
                 value = parameter is null 
-                    ? default 
+                    ? default! 
                     : ConvertParameter(parameter);
 
             if (!CanExecute(value)) return;
@@ -285,7 +292,9 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        [NotNull] public static explicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new(execute);
+        [NotNull] public static implicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new(execute);
+
+        public static implicit operator LambdaCommand<T>((Action<T> Execute, Func<T, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 
         #region IObservable<T>
 

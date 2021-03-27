@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.11</Version>
+    <Version>0.0.12</Version>
     <PackageReleaseNotes>
-      Статические фабричные методы создания команд в классе Command
+      Обновление механизма создания команд Command.New(...)
     </PackageReleaseNotes>
   </PropertyGroup>
 
