@@ -16,10 +16,21 @@ namespace MathCore.WPF.Commands
 {
     public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object>
     {
-        public static LambdaCommand Exec(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommand<T> Exec<T>(Action<T> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommandAsync Exec(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommandAsync<T> Exec<T>(Func<T, Task> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommand New(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        public static LambdaCommand New(Action<object?> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommand New(Action<object?> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        public static LambdaCommandAsync New(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
+        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
         #region События
 

@@ -695,7 +695,6 @@ namespace MathCore.WPF.TrayIcon
         public void ShowBalloonTip(string Title, string Message, Icon customIcon)
         {
             if (customIcon is null) throw new ArgumentNullException(nameof(customIcon));
-
             lock (this) ShowBalloonTip(Title, Message, BalloonFlags.User, customIcon.Handle);
         }
 

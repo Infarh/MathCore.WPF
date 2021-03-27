@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.11</Version>
+    <Version>0.0.12</Version>
     <PackageReleaseNotes>
-      Статические фабричные методы создания команд в классе Command
+      Обновление механизма создания команд Command.New(...)
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -30,13 +30,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.36" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="MathCore" Version="0.0.38" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -55,7 +51,7 @@
     <None Remove="Shaders\compile.bat" />
     <None Remove="Shaders\DirectionalBlur.fx.ps" />
     <None Remove="Shaders\fxc.exe" />
-    <None Remove="Shaders\Grayscale.fx.ps" />
+    <None Remove="Shaders\GrayScale.fx.ps" />
     <None Remove="Shaders\Invert.fx.ps" />
     <None Remove="Shaders\Opacity.fx.ps" />
     <None Remove="Shaders\Sepia.fx.ps" />
@@ -77,7 +73,7 @@
     <EmbeddedResource Include="Shaders\Blur.fx.ps" />
     <EmbeddedResource Include="Shaders\ColorAlphaKey.fx.ps" />
     <EmbeddedResource Include="Shaders\DirectionalBlur.fx.ps" />
-    <EmbeddedResource Include="Shaders\Grayscale.fx.ps" />
+    <EmbeddedResource Include="Shaders\GrayScale.fx.ps" />
     <EmbeddedResource Include="Shaders\Invert.fx.ps" />
     <EmbeddedResource Include="Shaders\Opacity.fx.ps" />
     <EmbeddedResource Include="Shaders\Sepia.fx.ps" />

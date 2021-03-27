@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -39,24 +40,59 @@ namespace MathCore.WPF.WindowTest.ViewModels
 
         #region Command TestCommand - Тестовая команда
 
+        private ICommand? _TestCommand;
+
         /// <summary>Тестовая команда</summary>
-        public ICommand TestCommand { get; }
+        public ICommand TestCommand => _TestCommand ??= Command.New(OnTestCommandExecuted, CanTestCommandExecute);
 
         /// <summary>Проверка возможности выполнения - Тестовая команда</summary>
-        private static bool CanTestCommandExecute() => true;
+        private static bool CanTestCommandExecute(object? p) => true;
 
         /// <summary>Логика выполнения - Тестовая команда</summary>
-        private void OnTestCommandExecuted() => Status = $"Test {DateTime.Now:hh:mm:ss.ffff}";
+        private async Task OnTestCommandExecuted(object? p) => Status = $"Test {DateTime.Now:hh:mm:ss.ffff}";
+
+        #endregion
+
+        #region Command ObjectCommandCommand - Summary
+
+        /// <summary>Summary</summary>
+        private LambdaCommand? _ObjectCommandCommand;
+
+        /// <summary>Summary</summary>
+        public ICommand ObjectCommandCommand => _ObjectCommandCommand ??= (OnObjectCommandCommandExecuted, CanObjectCommandCommandExecute);
+
+        /// <summary>Проверка возможности выполнения - Summary</summary>
+        private bool CanObjectCommandCommandExecute(object? p) => true;
+
+        /// <summary>Логика выполнения - Summary</summary>
+        private void OnObjectCommandCommandExecuted(object? p)
+        {
+            
+        }
+
+        #endregion
+
+        #region Command StringCommand : string - Summary
+
+        /// <summary>Summary</summary>
+        private LambdaCommand<string>? _StringCommand;
+
+        /// <summary>Summary</summary>
+        public ICommand StringCommand => _StringCommand ??= (OnStringCommandExecuted, CanStringCommandExecute);
+
+        /// <summary>Проверка возможности выполнения - Summary</summary>
+        private bool CanStringCommandExecute(string p) => true;
+
+        /// <summary>Проверка возможности выполнения - Summary</summary>
+        private void OnStringCommandExecuted(string p)
+        {
+            
+        }
 
         #endregion
 
         public IModelEvent StatusChangedEvent { get; }
 
-        public MainWindowViewModel()
-        {
-            TestCommand = new LambdaCommand(OnTestCommandExecuted, CanTestCommandExecute);
-
-            StatusChangedEvent = new ModelEvent(this);
-        }
+        public MainWindowViewModel() => StatusChangedEvent = new ModelEvent(this);
     }
 }

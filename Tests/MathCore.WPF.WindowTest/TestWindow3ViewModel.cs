@@ -31,6 +31,8 @@ namespace MathCore.WPF.WindowTest
            })
            .ToArray()
            .ToObservableCollection();
+
+        public TimeSpan Time => DateTime.Now.TimeOfDay;
     }
 
     class StudentInfo : ViewModel
