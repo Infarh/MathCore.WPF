@@ -7,8 +7,7 @@
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:ta="clr-namespace:MathCore.WPF.TriggerActions;assembly=MathCore.WPF"
         xmlns:shaders="clr-namespace:MathCore.WPF.Shaders;assembly=MathCore.WPF"
-        Title="{Binding Title}"
-        Width="800" Height="450">
+        Width="800" Height="450" WindowStartupLocation="CenterOwner">
     <!--<WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="10" 
                       CornerRadius="10"
@@ -17,13 +16,14 @@
                       ResizeBorderThickness="10" 
                       UseAeroCaptionButtons="True" />
     </WindowChrome.WindowChrome>-->
+    <Window.DataContext>
+        <l:TestViewModel/>
+    </Window.DataContext>
     <Grid>
-        <Rectangle VerticalAlignment="Center" HorizontalAlignment="Center" Fill="Green" Stroke="DarkRed" StrokeThickness="3" 
-                   Width="100" Height="200"/>
-        <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Height="100" Fill="Blue" Stroke="Red" StrokeThickness="3">
-            <Ellipse.Effect>
-                <shaders:ZoomBlur BlurAmount="0.2"/>
-            </Ellipse.Effect>
-        </Ellipse>
+        <Button Content="Test" 
+                VerticalAlignment="Center" 
+                HorizontalAlignment="Center"
+                Padding="50,15"
+                Command="{Binding TestCommand}"/>
     </Grid>
 </Window>

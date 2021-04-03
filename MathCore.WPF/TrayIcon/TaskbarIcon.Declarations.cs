@@ -508,7 +508,7 @@ namespace MathCore.WPF.TrayIcon
         /// the <see cref="FrameworkElement.DataContext"/> of the NotifyIcon, or the
         /// NotifyIcon itself, if no data context was assigned at all.
         /// </summary>
-        private void UpdateDataContext([CanBeNull] FrameworkElement? Element, object? OldValue, object NewValue)
+        private void UpdateDataContext([CanBeNull] FrameworkElement? Element, object? OldValue, object? NewValue)
         {
             //if there is no target or it's data context is determined through a binding
             //of its own, keep it
@@ -1297,15 +1297,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayContextMenuOpen event.
         /// </summary>
-        [CanBeNull]
-        protected RoutedEventArgs RaiseTrayContextMenuOpenEvent() => RaiseTrayContextMenuOpenEvent(this);
+        protected RoutedEventArgs? RaiseTrayContextMenuOpenEvent() => RaiseTrayContextMenuOpenEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayContextMenuOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs RaiseTrayContextMenuOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayContextMenuOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 

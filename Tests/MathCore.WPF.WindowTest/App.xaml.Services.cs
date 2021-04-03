@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using MathCore.WPF.Services;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace MathCore.WPF.WindowTest
@@ -9,7 +8,7 @@ namespace MathCore.WPF.WindowTest
     {
         private static void ConfigureServices(IServiceCollection Services)
         {
-            
+            Services.AddSingleton<IUserDialogBase, UserDialogService>();
         }
     }
 }
