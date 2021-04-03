@@ -12,6 +12,7 @@ using MathCore.Extensions.Expressions;
 
 namespace MathCore.WPF.ViewModels
 {
+    /// <summary>Модель-представления, обеспечивающая возможность валидации данных на основе атрибутов</summary>
     [MarkupExtensionReturnType(typeof(ValidableViewModel))]
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1033:Методы интерфейса должны быть доступны для вызова дочерним типам", Justification = "<Ожидание>")]
     public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDataErrorInfo
@@ -31,10 +32,10 @@ namespace MathCore.WPF.ViewModels
 
             public bool IsValid => _Validator(_Getter());
 
-            public bool IsPropertyValid(out string? ErrorMessage)
+            private bool IsPropertyValid(out string? Message)
             {
                 var is_valid = IsValid;
-                ErrorMessage = is_valid ? null : this.ErrorMessage;
+                Message = is_valid ? null : this.ErrorMessage;
                 return is_valid;
             }
 

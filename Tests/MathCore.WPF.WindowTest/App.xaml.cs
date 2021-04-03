@@ -6,14 +6,14 @@ namespace MathCore.WPF.WindowTest
 {
     public partial class App
     {
-        private IHost? _Host;
+        private static IHost? _Host;
 
-        public IHost Host => _Host ??= Microsoft.Extensions.Hosting.Host
+        public static IHost Host => _Host ??= Microsoft.Extensions.Hosting.Host
            .CreateDefaultBuilder(Environment.GetCommandLineArgs())
            .ConfigureServices(ConfigureServices)
            .Build();
 
-        public IServiceProvider Services => Host.Services;
+        public static IServiceProvider Services => Host.Services;
 
         protected override async void OnStartup(StartupEventArgs e)
         {
