@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.12.1</Version>
+    <Version>0.0.13</Version>
     <PackageReleaseNotes>
       Диалог с пользователем - сервис
       Диалог для индикации прогресса операции
