@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 using MathCore.WPF.Commands;
 // ReSharper disable EventNeverSubscribedTo.Global
 
 namespace MathCore.WPF.ViewModels
 {
+    /// <summary>Модель-представления диалога с пользователем</summary>
+    [MarkupExtensionReturnType(typeof(DialogViewModel))]
     public class DialogViewModel : TitledViewModel
     {
+        /// <summary>Событие возникает при завершении диалога</summary>
         public event EventHandler<EventArgs<bool?>>? Completed;
 
+        /// <summary>Метод генерации события завершения диалога</summary>
+        /// <param name="Result">Результат выбора</param>
         protected virtual void OnCompleted(bool? Result) => Completed?.Invoke(this, Result);
 
         #region Command CompletedCommand : bool? - Команда завершения диалога

@@ -13,6 +13,7 @@
     <PackageReleaseNotes>
       Диалог с пользователем - сервис
       Диалог для индикации прогресса операции
+      Текстовый диалог с пользователем
     </PackageReleaseNotes>
   </PropertyGroup>
 

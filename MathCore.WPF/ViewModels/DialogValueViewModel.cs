@@ -12,13 +12,13 @@
 
         #endregion
 
-        #region Result : TResult? - Результат диалога
+        #region Value : TResult? - Результат диалога
 
         /// <summary>Результат диалога</summary>
-        private TResult? _Result;
+        private TResult? _Value;
 
         /// <summary>Результат диалога</summary>
-        public TResult? Result { get => _Result; set => Set(ref _Result, value); }
+        public TResult? Value { get => _Value; set => Set(ref _Value, value); }
 
         #endregion
     }

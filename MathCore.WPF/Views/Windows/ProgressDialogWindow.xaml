@@ -6,9 +6,10 @@
         xmlns:l="clr-namespace:MathCore.WPF.Views.Windows"
         xmlns:vm="clr-namespace:MathCore.WPF.ViewModels" 
         ShowInTaskbar="False"
-        WindowStyle="ToolWindow" 
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="ToolWindow"
         Title="{Binding Title, FallbackValue='Прогресс операции'}"
-        Width="400" Height="180" WindowStartupLocation="CenterOwner">
+        Width="400" Height="180">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>

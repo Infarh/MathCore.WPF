@@ -124,7 +124,7 @@ namespace MathCore.WPF.Services
 
         /// <summary>Диалог индикации прогресса операции</summary>
         /// <param name="Title">Заголовок диалога</param>
-        /// <param name="Caption">Текст сообщения в диалоге</param>
+        /// <param name="Status">Текст сообщения в диалоге</param>
         /// <param name="Information">Информационное сообщение в окне диалога</param>
         /// <returns>Объект управления диалогом</returns>
         /// <example>
@@ -135,11 +135,11 @@ namespace MathCore.WPF.Services
         /// }
         /// </code>
         /// </example>
-        public virtual IProgressInfo Progress(string Title, string Caption, string? Information = null)
+        public virtual IProgressInfo Progress(string Title, string Status, string? Information = null)
         {
             var progress_model = new ProgressViewModel(Title)
             {
-                StatusValue = Caption,
+                StatusValue = Status,
                 InformationValue = Information
             };
             var progress_view = new ProgressDialogWindow
@@ -157,6 +157,35 @@ namespace MathCore.WPF.Services
             progress_view.Show();
 
             return progress_model;
+        }
+
+        /// <summary>Запрос ввода текста</summary>
+        /// <param name="Caption">Текст в окне диалога</param>
+        /// <param name="Title">Текст в заголовке окна диалога</param>
+        /// <param name="Default">Текстовое значение по умолчанию</param>
+        /// <returns>Введённый текст, либо null в случае отказа</returns>
+        public string? GetText(string Caption, string Title = "Введите текст", string? Default = "")
+        {
+            var view_model = new DialogTextViewModel
+            {
+                Title = Title,
+                Caption = Caption,
+                Value = Default
+            };
+            var view = new TextRequestDialogWindow
+            {
+                DataContext = view_model,
+                Owner = CurrentWindow,
+            };
+            view_model.Completed += (_, e) =>
+            {
+                view.DialogResult = e;
+                view.Close();
+            };
+
+            return view.ShowDialog() == true 
+                ? view_model.Value 
+                : null;
         }
     }
 }

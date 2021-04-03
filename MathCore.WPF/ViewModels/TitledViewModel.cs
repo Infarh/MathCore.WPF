@@ -1,5 +1,6 @@
 ﻿namespace MathCore.WPF.ViewModels
 {
+    /// <summary>Модель-представления, обладающая заголовком</summary>
     public abstract class TitledViewModel : ViewModel
     {
         #region Title : string? - Заголовок
