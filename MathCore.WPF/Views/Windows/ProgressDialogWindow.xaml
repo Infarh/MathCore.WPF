@@ -15,7 +15,7 @@
             <RowDefinition Height="3*"/>
             <RowDefinition Height="4*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="4*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
             <Rectangle DockPanel.Dock="Bottom" Height="10">
@@ -28,7 +28,7 @@
                     </LinearGradientBrush>
                 </Rectangle.Fill>
             </Rectangle>
-            <Border Background="DarkBlue" Padding="5,0">
+            <Border Background="DarkBlue" Padding="15,0">
                 <TextBlock Foreground="WhiteSmoke" Text="{Binding StatusValue, FallbackValue='Выполняется операция...'}"
                           VerticalAlignment="Center"/>
             </Border>

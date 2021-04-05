@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -32,17 +33,20 @@ namespace MathCore.WPF.WindowTest
         public ICommand TestCommand => _TestCommand ??= Command.New(OnTestCommandExecuted);
 
         /// <summary>Логика выполнения - Тестовая команда</summary>
-        private static void OnTestCommandExecuted()
+        private async Task OnTestCommandExecuted()
         {
             var service = App.Services.GetRequiredService<IUserDialogBase>();
 
-            var input_text = service.GetText("Сообщение", "Диалог", "Текст по умолчанию");
+            using var progress_dialog = service.Progress("Test", "Status");
 
-            if (input_text != null)
-                service.Information(input_text, "Введённый текст");
-            else
-                service.Warning("Текст не введён", "Предупреждение!");
+            await Task.Yield().ConfigureAwait(false);
 
+            const int max_iterations = 100;
+            for (var i = 0; i < max_iterations; i++)
+            {
+                await Task.Delay(10);
+                progress_dialog.Progress.Report((double)i / max_iterations);
+            }
         }
     }
 }
