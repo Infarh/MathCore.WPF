@@ -149,9 +149,10 @@ namespace MathCore.WPF.Services
             };
             void OnDisposed(object? s, EventArgs e)
             {
-                if(!progress_view.Dispatcher.CheckAccess())
+                if (progress_view.Dispatcher.CheckAccess())
+                    progress_view.Close();
+                else
                     progress_view.Dispatcher.Invoke(() => OnDisposed(s, e));
-                progress_view.Close();
             }
 
             progress_model.Disposed += OnDisposed;
@@ -187,17 +188,19 @@ namespace MathCore.WPF.Services
 
             void OnCompleted(object? s, EventArgs<bool?> e)
             {
-                if(!view.Dispatcher.CheckAccess())
+                if (!view.Dispatcher.CheckAccess())
                     view.Dispatcher.Invoke(() => OnCompleted(s, e));
-
-                view.DialogResult = e;
-                view.Close();
+                else
+                {
+                    view.DialogResult = e;
+                    view.Close();
+                }
             }
 
             view_model.Completed += OnCompleted;
 
-            return view.ShowDialog() == true 
-                ? view_model.Value 
+            return view.ShowDialog() == true
+                ? view_model.Value
                 : null;
         }
     }
