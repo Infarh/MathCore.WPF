@@ -149,9 +149,8 @@ namespace MathCore.WPF.Services
             };
             void OnDisposed(object? s, EventArgs e)
             {
-                var window = (Window)s!;
-                if(!window.Dispatcher.CheckAccess())
-                    window.Dispatcher.Invoke(() => OnDisposed(s, e));
+                if(!progress_view.Dispatcher.CheckAccess())
+                    progress_view.Dispatcher.Invoke(() => OnDisposed(s, e));
                 progress_view.Close();
             }
 
@@ -188,9 +187,8 @@ namespace MathCore.WPF.Services
 
             void OnCompleted(object? s, EventArgs<bool?> e)
             {
-                var window = (Window)s!;
-                if(!window.Dispatcher.CheckAccess())
-                    window.Dispatcher.Invoke(() => OnCompleted(s, e));
+                if(!view.Dispatcher.CheckAccess())
+                    view.Dispatcher.Invoke(() => OnCompleted(s, e));
 
                 view.DialogResult = e;
                 view.Close();
