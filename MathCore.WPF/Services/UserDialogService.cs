@@ -147,7 +147,15 @@ namespace MathCore.WPF.Services
                 DataContext = progress_model,
                 Owner = CurrentWindow
             };
-            progress_model.Disposed += (_, _) => progress_view.Close();
+            void OnDisposed(object? s, EventArgs e)
+            {
+                var window = (Window)s!;
+                if(!window.Dispatcher.CheckAccess())
+                    window.Dispatcher.Invoke(() => OnDisposed(s, e));
+                progress_view.Close();
+            }
+
+            progress_model.Disposed += OnDisposed;
             progress_view.Closing += (s, e) => e.Cancel = ((Window)s).DataContext is ProgressViewModel
             {
                 IsDisposed: false,
@@ -177,11 +185,18 @@ namespace MathCore.WPF.Services
                 DataContext = view_model,
                 Owner = CurrentWindow,
             };
-            view_model.Completed += (_, e) =>
+
+            void OnCompleted(object? s, EventArgs<bool?> e)
             {
+                var window = (Window)s!;
+                if(!window.Dispatcher.CheckAccess())
+                    window.Dispatcher.Invoke(() => OnCompleted(s, e));
+
                 view.DialogResult = e;
                 view.Close();
-            };
+            }
+
+            view_model.Completed += OnCompleted;
 
             return view.ShowDialog() == true 
                 ? view_model.Value 
