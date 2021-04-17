@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Markup;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
@@ -26,7 +27,7 @@ namespace MathCore.WPF.ValidationRules
 
         /// <inheritdoc />
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo CultureInfo)
+        public override ValidationResult Validate(object? value, CultureInfo CultureInfo)
         {
             if (value is null) return new ValidationResult(false, "Значение не указано");
             try

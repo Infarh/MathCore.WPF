@@ -29,7 +29,7 @@ namespace MathCore.WPF.Templates.Selectors
             this.KeySelector = KeySelector;
         }
 
-        public override DataTemplate? SelectTemplate(object item, DependencyObject container) => 
+        public override DataTemplate? SelectTemplate(object? item, DependencyObject container) => 
             item != null && _Items.TryGetValue(KeySelector(item), out var t) ? t : null;
     }
 }

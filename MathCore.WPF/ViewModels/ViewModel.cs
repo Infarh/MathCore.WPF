@@ -15,6 +15,7 @@ using MathCore.Annotations;
 
 using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable ParameterHidesMember
 
 // ReSharper disable VirtualMemberNeverOverridden.Global
 // ReSharper disable UnusedMember.Global
@@ -47,16 +48,16 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Присоединить обработчик события <see cref="PropertyChanged"/></summary>
         /// <param name="handler">Присоединяемый обработчик события <see cref="PropertyChanged"/></param>
-        protected virtual void PropertyChanged_AddHandler([NotNull] PropertyChangedEventHandler handler) => PropertyChangedEvent += handler;
+        protected virtual void PropertyChanged_AddHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent += handler;
 
         /// <summary>Отсоединить обработчик события <see cref="PropertyChanged"/></summary>
         /// <param name="handler">Отсоединяемый обработчик события <see cref="PropertyChanged"/></param>
-        protected virtual void PropertyChanged_RemoveHandler([NotNull] PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
+        protected virtual void PropertyChanged_RemoveHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
 
         /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
         public static bool IsDesignMode => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
-        [NotNull] private readonly object _PropertiesDependenciesSyncRoot = new();
+        private readonly object _PropertiesDependenciesSyncRoot = new();
 
         /// <summary>Словарь графа зависимости изменений свойств</summary>
         private Dictionary<string, List<string>>? _PropertiesDependenciesDictionary;
@@ -64,7 +65,7 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Добавить зависимости между свойствами</summary>
         /// <param name="PropertyName">Имя исходного свойства</param>
         /// <param name="Dependences">Перечисление свойств, на которые исходное свойство имеет влияние</param>
-        protected void PropertyDependence_Add([NotNull] string PropertyName, [NotNull, ItemNotNull] params string[] Dependences)
+        protected void PropertyDependence_Add(string PropertyName, params string[] Dependences)
         {
             // Если не указано имя свойства, то это ошибка
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -118,7 +119,7 @@ namespace MathCore.WPF.ViewModels
         /// <param name="invoke_stack">Стек вызова</param>
         /// <returns>Истина, если найден цикл</returns>
         [ItemNotNull, CanBeNull]
-        private Queue<string>? IsLoopDependency([NotNull] string property, [NotNull] string dependence, string? next_property = null, [ItemNotNull] Stack<string>? invoke_stack = null)
+        private Queue<string>? IsLoopDependency(string property, string dependence, string? next_property = null, [ItemNotNull] Stack<string>? invoke_stack = null)
         {
             invoke_stack ??= new Stack<string> { property };
             if (string.Equals(property, next_property))
@@ -144,7 +145,7 @@ namespace MathCore.WPF.ViewModels
         /// <param name="PropertyName">Исходное свойство</param>
         /// <param name="Dependence">Свойство, связь с которым надо разорвать</param>
         /// <returns>Истина, если связь успешно удалена, ложь - если связь отсутствовала</returns>
-        protected bool PropertyDependencies_Remove([NotNull] string PropertyName, [NotNull] string Dependence)
+        protected bool PropertyDependencies_Remove(string PropertyName, string Dependence)
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
@@ -161,7 +162,7 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Очистить граф зависимостей между свойствами для указанного свойства</summary>
         /// <param name="PropertyName">Название свойства, связи которого нао удалить</param>
-        protected bool PropertyDependencies_Clear([NotNull] string PropertyName)
+        protected bool PropertyDependencies_Clear(string PropertyName)
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
@@ -177,7 +178,7 @@ namespace MathCore.WPF.ViewModels
 
         private Dictionary<string, Action>? _PropertyChangedHandlers;
 
-        protected void PropertyChanged_AddHandler([NotNull] string PropertyName, [NotNull] Action handler)
+        protected void PropertyChanged_AddHandler(string PropertyName, Action handler)
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
@@ -189,7 +190,7 @@ namespace MathCore.WPF.ViewModels
             }
         }
 
-        protected bool PropertyChanged_RemoveHandler([NotNull] string PropertyName, [NotNull] Action handler)
+        protected bool PropertyChanged_RemoveHandler(string PropertyName, Action handler)
         {
             lock (_PropertiesDependenciesSyncRoot)
             {
@@ -204,12 +205,10 @@ namespace MathCore.WPF.ViewModels
             }
         }
 
-        protected bool PropertyChanged_ClearHandlers([NotNull] string PropertyName)
+        protected bool PropertyChanged_ClearHandlers(string PropertyName)
         {
             lock (_PropertiesDependenciesSyncRoot)
-                return _PropertyChangedHandlers != null
-                       && _PropertyChangedHandlers.Count > 0
-                       && _PropertyChangedHandlers.Remove(PropertyName);
+                return _PropertyChangedHandlers is { Count: > 0 } && _PropertyChangedHandlers.Remove(PropertyName);
         }
 
         protected virtual bool PropertyChanged_ClearHandlers()
@@ -227,7 +226,7 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Генерация события изменения значения свойства</summary>
         /// <param name="PropertyName">Имя изменившегося свойства</param>
         /// <param name="UpdateCommandsState">Обновить состояния <see cref="ICommand"/></param>
-        protected virtual void OnPropertyChanged([CallerMemberName, NotNull] string PropertyName = null, bool UpdateCommandsState = false)
+        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!, bool UpdateCommandsState = false)
         {
             if (PropertyName is null)
                 return; // Если имя свойства не указано, то выход
@@ -242,27 +241,29 @@ namespace MathCore.WPF.ViewModels
                     if (properties_dependencies_dictionary.ContainsKey(PropertyName))
                         dependencies = properties_dependencies_dictionary[PropertyName].Where(name => name != PropertyName).ToArray();
             var dependency_handlers = _PropertyChangedHandlers;
-            if (dependency_handlers != null && dependency_handlers.TryGetValue(PropertyName, out var handler)) handler?.Invoke();
+            if (dependency_handlers != null && dependency_handlers.TryGetValue(PropertyName, out var handler)) 
+                handler();
             if (dependencies != null)
             {
                 handlers?.ThreadSafeInvoke(this, dependencies.ToArray());
                 if (dependency_handlers != null)
                     foreach (var dependence in dependencies)
-                        if (dependency_handlers.TryGetValue(dependence, out handler)) handler?.Invoke();
+                        if (dependency_handlers.TryGetValue(dependence, out handler)) 
+                            handler();
             }
             if (UpdateCommandsState)
                 CommandManager.InvalidateRequerySuggested();
         }
 
         /// <summary>Словарь, хранящий время последней генерации события изменения указанного свойства в асинхронном режиме</summary>
-        [NotNull] private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = new();
+        private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = new();
 
         /// <summary>Асинхронная генерация события изменения свойства с возможностью указания таймаута ожидания повторных изменений</summary>
         /// <param name="PropertyName">Имя свойства</param>
         /// <param name="Timeout">Таймаут ожидания повторных изменений, прежде чем событие будет регенерировано</param>
         /// <param name="OnChanging">Метод, выполняемый до генерации события</param>
         /// <param name="OnChanged">Метод, выполняемый после генерации события</param>
-        protected async void OnPropertyChangedAsync([NotNull] string PropertyName, int Timeout = 0, Action? OnChanging = null, [CanBeNull] Action OnChanged = null)
+        protected async void OnPropertyChangedAsync(string PropertyName, int Timeout = 0, Action? OnChanging = null, Action? OnChanged = null)
         {
             if (Timeout == 0)
             {
@@ -305,17 +306,19 @@ namespace MathCore.WPF.ViewModels
                 {
                     var handler = type.GetMethod(changed_handler_attribute.MethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     if (handler is null) throw new InvalidOperationException(
-                        $"Для свойства {property.Name} определён атрибут {typeof(ChangedHandlerAttribute).Name}, но в классе {type.Name} отсутствует " +
+                        $"Для свойства {property.Name} определён атрибут {nameof(ChangedHandlerAttribute)}, но в классе {type.Name} отсутствует " +
                         $"указанный в атрибуте метод реакции на изменение значения свойства {changed_handler_attribute.MethodName}");
                     PropertyChanged_AddHandler(property.Name, (Action)Delegate.CreateDelegate(typeof(Action), this, handler));
                 }
             }
         }
 
-        [NotNull] private readonly Dictionary<string, object?> _ModelPropertyValues = new();
+        private readonly Dictionary<string, object?> _ModelPropertyValues = new();
 
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected bool Set<T>([CanBeNull] T value, [CallerMemberName, NotNull] string Property = null, bool UpdateCommandsState = false)
+        protected bool Set<T>(
+            T? value, 
+            [CallerMemberName] string Property = null!, 
+            bool UpdateCommandsState = false)
         {
             if (_ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property), "Имя свойства не задано"), out var old_value) && Equals(old_value, value))
                 return false;
@@ -324,12 +327,9 @@ namespace MathCore.WPF.ViewModels
             return true;
         }
 
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull"), CanBeNull]
-        protected T Get<T>([CallerMemberName, NotNull] string Property = null) =>
+        protected T? Get<T>([CallerMemberName] string Property = null!) =>
             _ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property)), out var value)
-#pragma warning disable CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
-                ? (T)value
-#pragma warning restore CS8601 // Возможно, назначение-ссылка, допускающее значение NULL.
+                ? (T?)value
                 : default;
 
         /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
@@ -340,8 +340,12 @@ namespace MathCore.WPF.ViewModels
         /// <param name="PropertyName">Имя свойства</param>
         /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public static bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] PropertyChangedEventHandler OnPropertyChanged, [CanBeNull] object Sender, [CallerMemberName, NotNull] string PropertyName = null)
+        public static bool Set<T>(
+            ref T? field, 
+            T? value, 
+            PropertyChangedEventHandler OnPropertyChanged, 
+            object? Sender, 
+            [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -349,8 +353,11 @@ namespace MathCore.WPF.ViewModels
             return true;
         }
 
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public static bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Action<object, string> OnPropertyChanged, [CanBeNull] object Sender, [CallerMemberName, NotNull] string PropertyName = null)
+        public static bool Set<T>(
+            ref T? field, 
+            T? value, 
+            Action<object?, string> OnPropertyChanged, 
+            object? Sender, [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -358,8 +365,11 @@ namespace MathCore.WPF.ViewModels
             return true;
         }
 
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public static bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Action<string> OnPropertyChanged, [CallerMemberName, NotNull] string PropertyName = null)
+        public static bool Set<T>(
+            ref T? field, 
+            T? value, 
+            Action<string> OnPropertyChanged, 
+            [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -367,11 +377,20 @@ namespace MathCore.WPF.ViewModels
             return true;
         }
 
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public static bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Func<T, bool> ValueChecker, [NotNull] PropertyChangedEventHandler OnPropertyChanged, [CanBeNull] object Sender, [CallerMemberName, NotNull] string PropertyName = null) => ValueChecker(value) && Set(ref field, value, OnPropertyChanged, Sender, PropertyName);
+        public static bool Set<T>(
+            ref T? field, 
+            T? value, 
+            Func<T?, bool> ValueChecker, 
+            PropertyChangedEventHandler OnPropertyChanged, 
+            object? Sender, 
+            [CallerMemberName] string PropertyName = null!) => 
+            ValueChecker(value) && Set(ref field, value, OnPropertyChanged, Sender, PropertyName);
 
-        [NotNull, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public SetStaticValueResult<T> SetValue<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Action<string> OnPropertyChanged, [CallerMemberName, NotNull] string PropertyName = null)
+        public SetStaticValueResult<T> SetValue<T>(
+            ref T? field, 
+            T? value, 
+            Action<string> OnPropertyChanged, 
+            [CallerMemberName] string PropertyName = null!)
         {
             if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
             if (Equals(field, value)) return new SetStaticValueResult<T>(false, field, field, OnPropertyChanged);
@@ -381,8 +400,7 @@ namespace MathCore.WPF.ViewModels
             return new SetStaticValueResult<T>(true, old_value, value, OnPropertyChanged);
         }
 
-        [NotNull, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        public static SetStaticValueResult<T> SetValue<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Func<T, bool> value_checker, [NotNull] Action<string> OnPropertyChanged, [CallerMemberName, NotNull] string PropertyName = null)
+        public static SetStaticValueResult<T> SetValue<T>(ref T? field, T? value, Func<T?, bool> value_checker, Action<string> OnPropertyChanged, [CallerMemberName] string PropertyName = null!)
         {
             if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
             if (Equals(field, value) || !value_checker(value)) return new SetStaticValueResult<T>(false, field, value, OnPropertyChanged);
@@ -410,9 +428,8 @@ namespace MathCore.WPF.ViewModels
         /// <param name="value">Значение свойства, которое надо установить</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [NotifyPropertyChangedInvocator, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"),
-         SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName, NotNull] string PropertyName = null)
+        [NotifyPropertyChangedInvocator]
+        protected virtual bool Set<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -427,8 +444,8 @@ namespace MathCore.WPF.ViewModels
         /// <param name="OldValue">Предыдущее значение</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [NotifyPropertyChangedInvocator, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CanBeNull] out T OldValue, [CallerMemberName, NotNull] string PropertyName = null)
+        [NotifyPropertyChangedInvocator]
+        protected virtual bool Set<T>(ref T? field, T? value, out T? OldValue, [CallerMemberName] string PropertyName = null!)
         {
             OldValue = field;
             if (Equals(field, value)) return false;
@@ -437,8 +454,8 @@ namespace MathCore.WPF.ViewModels
             return true;
         }
 
-        [NotifyPropertyChangedInvocator, NotNull, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual SetValueResult<T> SetValue<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName, NotNull] string PropertyName = null)
+        [NotifyPropertyChangedInvocator]
+        protected virtual SetValueResult<T> SetValue<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return new SetValueResult<T>(false, field, field, this);
             var old_value = field;
@@ -447,26 +464,26 @@ namespace MathCore.WPF.ViewModels
             return new SetValueResult<T>(true, old_value, value, this);
         }
 
-        [NotifyPropertyChangedInvocator, NotNull, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual SetValueResult<T> SetValue<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Func<T, bool> value_checker, [CallerMemberName, NotNull] string PropertyName = null)
+        [NotifyPropertyChangedInvocator]
+        protected virtual SetValueResult<T> SetValue<T>(ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
         {
-            if (Equals(field, value) || !value_checker(value)) return new SetValueResult<T>(false, field, value, this);
+            if (Equals(field, value) || !value_checker(value)) 
+                return new SetValueResult<T>(false, field, value, this);
             var old_value = field;
             field = value;
             OnPropertyChanged(PropertyName);
             return new SetValueResult<T>(true, old_value, value, this);
         }
 
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Ожидание>")]
-        public class SetValueResult<T>
+        public readonly ref struct SetValueResult<T>
         {
             private readonly bool _Result;
-            [CanBeNull] private readonly T _OldValue;
-            [CanBeNull] private readonly T _NewValue;
-            [NotNull] private readonly ViewModel _Model;
+            private readonly T? _OldValue;
+            private readonly T? _NewValue;
+            private readonly ViewModel _Model;
 
-            internal SetValueResult(bool Result, [CanBeNull] T OldValue, [NotNull] ViewModel model) : this(Result, OldValue, OldValue, model) { }
-            internal SetValueResult(bool Result, [CanBeNull] T OldValue, [CanBeNull] T NewValue, [NotNull] ViewModel model)
+            internal SetValueResult(bool Result, T? OldValue, ViewModel model) : this(Result, OldValue, OldValue, model) { }
+            internal SetValueResult(bool Result, T? OldValue, T? NewValue, ViewModel model)
             {
                 _Result = Result;
                 _OldValue = OldValue;
@@ -474,83 +491,79 @@ namespace MathCore.WPF.ViewModels
                 _Model = model;
             }
 
-            public bool Then([NotNull] Action execute)
+            public bool Then(Action execute)
             {
                 if (_Result) execute();
                 return _Result;
             }
 
-            public bool Then([NotNull] Action<object?> execute)
+            public bool Then(Action<object?> execute)
             {
                 if (_Result) execute(_NewValue);
                 return _Result;
             }
 
-            public bool Then([NotNull] Action<T> execute)
+            public bool Then(Action<T?> execute)
             {
                 if (_Result) execute(_NewValue);
                 return _Result;
             }
 
-            public bool ThenAsync([NotNull] Action execute)
+            public bool ThenAsync(Action execute)
             {
                 if (_Result) Task.Run(execute);
                 return _Result;
             }
 
-            public bool ThenAsync([NotNull] Action<T> execute)
+            public bool ThenAsync(Action<T?> execute)
             {
                 if (_Result) _NewValue.Async(execute);
                 return _Result;
             }
 
-            public bool ThenIf([NotNull] Func<T, bool> predicate, [NotNull] Action<T> execute)
+            public bool ThenIf(Func<T?, bool> predicate, Action<T?> execute)
             {
                 if (_Result && predicate(_NewValue)) execute(_NewValue);
                 return _Result;
             }
 
-            public bool ThenIfAsync([NotNull] Func<T, bool> predicate, [NotNull] Action<T> execute)
+            public bool ThenIfAsync(Func<T?, bool> predicate, Action<T?> execute)
             {
                 if (_Result && predicate(_NewValue)) _NewValue.Async(execute);
                 return _Result;
             }
 
-            [NotNull]
-            public SetValueResult<T> ThenSet([NotNull] Action<T> SetAction)
+            public SetValueResult<T> ThenSet(Action<T?> SetAction)
             {
                 if (_Result) SetAction(_NewValue);
                 return this;
             }
 
-            [NotNull]
-            public SetValueResult<T> ThenSetAsync([NotNull] Action<T> SetAction)
+            public SetValueResult<T> ThenSetAsync(Action<T?> SetAction)
             {
                 if (_Result) _NewValue.Async(SetAction);
                 return this;
             }
 
-            public bool Then([NotNull] Action<T, T> execute)
+            public bool Then(Action<T?, T?> execute)
             {
                 if (_Result) execute(_OldValue, _NewValue);
                 return _Result;
             }
 
-            public bool ThenAsync([NotNull] Action<T, T> execute)
+            public bool ThenAsync(Action<T?, T?> execute)
             {
                 if (_Result) _OldValue.Async(_NewValue, execute);
                 return _Result;
             }
 
-            [NotNull]
-            public SetValueResult<T> ThenUpdate([NotNull] string PropertyName, bool UpdateCommands = false)
+            public SetValueResult<T> ThenUpdate(string PropertyName, bool UpdateCommands = false)
             {
                 if (_Result) _Model.OnPropertyChanged(PropertyName, UpdateCommands);
                 return this;
             }
 
-            [NotNull]
-            public SetValueResult<T> ThenUpdate([NotNull, ItemNotNull] params string[] PropertyNames)
+            public SetValueResult<T> ThenUpdate(params string[] PropertyNames)
             {
                 if (!_Result) return this;
                 foreach (var property in PropertyNames)
@@ -558,8 +571,7 @@ namespace MathCore.WPF.ViewModels
                 return this;
             }
 
-            [NotNull]
-            public SetValueResult<T> ThenUpdate(bool UpdateCommands, [NotNull, ItemNotNull] params string[] PropertyNames)
+            public SetValueResult<T> ThenUpdate(bool UpdateCommands, params string[] PropertyNames)
             {
                 if (!_Result) return this;
                 foreach (var property in PropertyNames)
@@ -567,69 +579,66 @@ namespace MathCore.WPF.ViewModels
                 return this;
             }
 
-            [NotNull]
-            public SetValueResult<T> Update([NotNull] string PropertyName, bool UpdateCommands = false)
+            public SetValueResult<T> Update(string PropertyName, bool UpdateCommands = false)
             {
                 _Model.OnPropertyChanged(PropertyName, UpdateCommands);
                 return this;
             }
 
-            [NotNull]
-            public SetValueResult<T> Update([ItemNotNull, NotNull] params string[] PropertyName)
+            public SetValueResult<T> Update([ItemNotNull] params string[] PropertyName)
             {
                 foreach (var name in PropertyName) _Model.OnPropertyChanged(name);
                 return this;
             }
 
-            public bool AnywayThen([NotNull] Action execute)
+            public bool AnywayThen(Action execute)
             {
                 execute();
                 return _Result;
             }
 
-            public bool AnywayThen([NotNull] Action<bool> execute)
+            public bool AnywayThen(Action<bool> execute)
             {
                 execute(_Result);
                 return _Result;
             }
 
-            public bool AnywayThen([NotNull] Action<T> execute)
+            public bool AnywayThen(Action<T?> execute)
             {
                 execute(_NewValue);
                 return _Result;
             }
 
-            public bool AnywayThen([NotNull] Action<T, bool> execute)
+            public bool AnywayThen(Action<T?, bool> execute)
             {
                 execute(_NewValue, _Result);
                 return _Result;
             }
 
-            public bool AnywayThen([NotNull] Action<T, T> execute)
+            public bool AnywayThen(Action<T?, T?> execute)
             {
                 execute(_OldValue, _NewValue);
                 return _Result;
             }
 
-            public bool AnywayThen([NotNull] Action<T, T, bool> execute)
+            public bool AnywayThen(Action<T?, T?, bool> execute)
             {
                 execute(_OldValue, _NewValue, _Result);
                 return _Result;
             }
 
-            public static implicit operator bool([NotNull] SetValueResult<T> result) => result._Result;
+            public static implicit operator bool(SetValueResult<T> result) => result._Result;
         }
 
-        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Ожидание>")]
-        public class SetStaticValueResult<T>
+        public readonly ref struct SetStaticValueResult<T>
         {
             private readonly bool _Result;
-            [CanBeNull] private readonly T _OldValue;
-            [CanBeNull] private readonly T _NewValue;
-            [NotNull] private readonly Action<string> _OnPropertyChanged;
+            private readonly T? _OldValue;
+            private readonly T? _NewValue;
+            private readonly Action<string> _OnPropertyChanged;
 
-            internal SetStaticValueResult(bool Result, [CanBeNull] T OldValue, [NotNull] Action<string> OnPropertyChanged) : this(Result, OldValue, OldValue, OnPropertyChanged) { }
-            internal SetStaticValueResult(bool Result, [CanBeNull] T OldValue, [CanBeNull] T NewValue, [NotNull] Action<string> OnPropertyChanged)
+            internal SetStaticValueResult(bool Result, T? OldValue, Action<string> OnPropertyChanged) : this(Result, OldValue, OldValue, OnPropertyChanged) { }
+            internal SetStaticValueResult(bool Result, T? OldValue, T? NewValue, Action<string> OnPropertyChanged)
             {
                 _Result = Result;
                 _OldValue = OldValue;
@@ -637,69 +646,67 @@ namespace MathCore.WPF.ViewModels
                 _OnPropertyChanged = OnPropertyChanged;
             }
 
-            public bool Then([NotNull] Action execute)
+            public bool Then(Action execute)
             {
                 if (_Result) execute();
                 return _Result;
             }
 
-            public bool Then([NotNull] Action<T> execute)
+            public bool Then(Action<T?> execute)
             {
                 if (_Result) execute(_NewValue);
                 return _Result;
             }
 
-            public bool Then([NotNull] Action<T, T> execute)
+            public bool Then(Action<T?, T?> execute)
             {
                 if (_Result) execute(_OldValue, _NewValue);
                 return _Result;
             }
 
-            [NotNull]
-            public SetStaticValueResult<T> Update([NotNull] string PropertyName)
+            public SetStaticValueResult<T> Update(string PropertyName)
             {
                 _OnPropertyChanged(PropertyName);
                 return this;
             }
 
-            [NotNull]
-            public SetStaticValueResult<T> Update([NotNull, ItemNotNull] params string[] PropertyName)
+            public SetStaticValueResult<T> Update(params string[] PropertyName)
             {
                 foreach (var name in PropertyName) _OnPropertyChanged(name);
                 return this;
             }
 
-            public bool AnywayThen([NotNull] Action execute)
+            public bool AnywayThen(Action execute)
             {
                 execute();
                 return _Result;
             }
-            public bool AnywayThen([NotNull] Action<bool> execute)
+            public bool AnywayThen(Action<bool> execute)
             {
                 execute(_Result);
                 return _Result;
             }
-            public bool AnywayThen([NotNull] Action<T> execute)
+            public bool AnywayThen(Action<T?> execute)
             {
                 execute(_NewValue);
                 return _Result;
             }
-            public bool AnywayThen([NotNull] Action<T, bool> execute)
+            public bool AnywayThen(Action<T?, bool> execute)
             {
                 execute(_NewValue, _Result);
                 return _Result;
             }
-            public bool AnywayThen([NotNull] Action<T, T> execute)
+            public bool AnywayThen(Action<T?, T?> execute)
             {
                 execute(_OldValue, _NewValue);
                 return _Result;
             }
-            public bool AnywayThen([NotNull] Action<T, T, bool> execute)
+            public bool AnywayThen(Action<T?, T?, bool> execute)
             {
                 execute(_OldValue, _NewValue, _Result);
                 return _Result;
             }
-            public static implicit operator bool([NotNull] SetStaticValueResult<T> result) => result._Result;
+            public static implicit operator bool(SetStaticValueResult<T> result) => result._Result;
         }
 
         /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
@@ -710,9 +717,13 @@ namespace MathCore.WPF.ViewModels
         /// <param name="converter">Метод преобразования значения</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [NotifyPropertyChangedInvocator, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"),
-         SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<TField, TValue>([CanBeNull] ref TField field, [CanBeNull] TValue value, [NotNull] Func<TValue, TField> converter, [CallerMemberName, NotNull] string PropertyName = null) => Set(ref field, converter(value), PropertyName);
+        [NotifyPropertyChangedInvocator]
+        protected virtual bool Set<TField, TValue>(
+            ref TField? field, 
+            TValue? value,
+            Func<TValue?, TField?> converter,
+            [CallerMemberName] string PropertyName = null!) => 
+            Set(ref field, converter(value), PropertyName);
 
         /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
         /// <typeparam name="T">Тип значения свойства</typeparam>
@@ -721,8 +732,12 @@ namespace MathCore.WPF.ViewModels
         /// <param name="ValueChecker">Метод проверки правильности устанавливаемого значения</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [NotNull] Func<T, bool> ValueChecker, [CallerMemberName, NotNull] string PropertyName = null) => ValueChecker(value) && Set(ref field, value, PropertyName);
+        protected virtual bool Set<T>(
+            ref T? field, 
+            T? value, 
+            Func<T?, bool> ValueChecker,
+            [CallerMemberName] string PropertyName = null!) => 
+            ValueChecker(value) && Set(ref field, value, PropertyName);
 
         /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
         /// <typeparam name="TField">Тип значения свойства</typeparam>
@@ -733,9 +748,13 @@ namespace MathCore.WPF.ViewModels
         /// <param name="ValueChecker">Метод проверки правильности устанавливаемого значения</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [NotifyPropertyChangedInvocator, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"),
-         SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<TField, TValue>([CanBeNull] ref TField field, [CanBeNull] TValue value, [NotNull] Func<TValue, TField> converter, [NotNull] Func<TField, bool> ValueChecker, [CallerMemberName, NotNull] string PropertyName = null) =>
+        [NotifyPropertyChangedInvocator]
+        protected virtual bool Set<TField, TValue>(
+            ref TField? field, 
+            TValue? value, 
+            Func<TValue?, TField?> converter, 
+            Func<TField?, bool> ValueChecker,
+            [CallerMemberName] string PropertyName = null!) =>
             Set(ref field, converter(value), ValueChecker, PropertyName);
 
         /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
@@ -745,8 +764,11 @@ namespace MathCore.WPF.ViewModels
         /// <param name="UpdateCommandsState">Обновить состояния команд</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Истина, если значение свойства установлено успешно</returns>
-        [SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, bool UpdateCommandsState, [CallerMemberName, NotNull] string PropertyName = null)
+        protected virtual bool Set<T>(
+            ref T? field, 
+            T? value,
+            bool UpdateCommandsState,
+            [CallerMemberName] string PropertyName = null!)
         {
             var result = Set(ref field, value, PropertyName);
             if (result && UpdateCommandsState)
@@ -754,28 +776,23 @@ namespace MathCore.WPF.ViewModels
             return result;
         }
 
-        [NotNull] private static readonly Task<bool> __SetAsyncComplitedTask = Task.FromResult(false);
-
         /// <summary>Асинхронный метод изменения значения свойства</summary>
         /// <typeparam name="T">Тип значения свойства</typeparam>
         /// <param name="field">Поле, хранящее значение свойства</param>
         /// <param name="value">Новое значение свойства</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Задача, возвращающая истину, если свойство изменило своё значение</returns>
-        [NotNull, SuppressMessage("ReSharper", "AssignNullToNotNullAttribute"), SuppressMessage("ReSharper", "NotNullOnImplicitCanBeNull")]
-        protected virtual Task<bool> SetAsync<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName, NotNull] string PropertyName = null)
+        protected virtual ValueTask<bool> SetAsync<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null)
         {
-            if (Equals(field, value)) return __SetAsyncComplitedTask;
+            if (Equals(field, value)) return new ValueTask<bool>(false);
             field = value;
-            return InternalSetPropertyValueAsync(PropertyName);
-        }
 
-        [NotNull]
-        private async Task<bool> InternalSetPropertyValueAsync([NotNull] string PropertyName)
-        {
-            var handler = new Action<string, bool>(OnPropertyChanged);
-            await Task.Factory.FromAsync(handler.BeginInvoke, handler.EndInvoke, PropertyName, false, null).ConfigureAwait(false);
-            return true;
+            return SetPropertyAsync(PropertyName);
+            async ValueTask<bool> SetPropertyAsync(string property)
+            {
+                await Task.Factory.StartNew(s => OnPropertyChanged((string)s!), property);
+                return true;
+            }
         }
 
         /// <inheritdoc />

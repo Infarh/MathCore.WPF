@@ -127,9 +127,9 @@ namespace MathCore.WPF.Behaviors
             var data_format = DataFormat;
             if (!string.IsNullOrWhiteSpace(data_format))
             {
-                var auto_convertation = DataFormatAutoConversation;
-                if (!data.GetDataPresent(data_format, auto_convertation)) return;
-                var value = data.GetData(data_format, auto_convertation);
+                var auto_convertible = DataFormatAutoConversation;
+                if (!data.GetDataPresent(data_format, auto_convertible)) return;
+                var value = data.GetData(data_format, auto_convertible);
                 if (command.CanExecute(value))
                     command.Execute(value);
                 return;

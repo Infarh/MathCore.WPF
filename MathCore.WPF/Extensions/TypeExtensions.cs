@@ -148,7 +148,7 @@ namespace MathCore.WPF.Extensions
         public static T Create<T>([NotNull] this Type type) => (T)type.CreateObject()!;
 
         [DebuggerStepThrough]
-        public static T Create<T>([NotNull] this Type type, params object[] Params) => (T)type.CreateObject(Params);
+        public static T? Create<T>([NotNull] this Type type, params object[] Params) => (T?)type.CreateObject(Params);
 
         [DebuggerStepThrough]
         public static object? CreateObject([NotNull] this Type type, params object[] Params) => Activator.CreateInstance(type, Params);
@@ -157,10 +157,10 @@ namespace MathCore.WPF.Extensions
         public static object? CreateObject([NotNull] this Type type, BindingFlags Flags, Binder binder, params object[] Params) => Activator.CreateInstance(type, Flags, binder, Params);
 
         [DebuggerStepThrough]
-        public static T Create<T>(params object[] Params) => (T)CreateObject(typeof(T), Params)!;
+        public static T? Create<T>(params object[] Params) => (T?)CreateObject(typeof(T), Params);
 
         [DebuggerStepThrough]
-        public static T Create<T>(BindingFlags Flags, Binder binder, params object[] Params) => (T)CreateObject(typeof(T), Flags, binder, Params)!;
+        public static T? Create<T>(BindingFlags Flags, Binder binder, params object[] Params) => (T?)CreateObject(typeof(T), Flags, binder, Params);
 
         public static void AddConverter([NotNull] this Type type, Type ConverterType) => TypeDescriptor.AddAttributes(type, new TypeConverterAttribute(ConverterType));
 

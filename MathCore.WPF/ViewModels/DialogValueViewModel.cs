@@ -1,4 +1,5 @@
-﻿namespace MathCore.WPF.ViewModels
+﻿// ReSharper disable PropertyCanBeMadeInitOnly.Global
+namespace MathCore.WPF.ViewModels
 {
     public class DialogValueViewModel<TResult> : DialogViewModel
     {

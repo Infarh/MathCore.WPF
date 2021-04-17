@@ -13,6 +13,9 @@ namespace MathCore.WPF.Styles.Selectors
 
         public GenericStyleSelector([NotNull] IEnumerable<Style> Styles) => _Styles = Styles.ToDictionary(s => s.TargetType);
 
-        public override Style? SelectStyle([CanBeNull] object item, DependencyObject container) => item != null && _Styles.TryGetValue(item.GetType(), out var s) ? s : null;
+        public override Style? SelectStyle(object? item, DependencyObject container) => 
+            item != null && _Styles.TryGetValue(item.GetType(), out var s) 
+                ? s 
+                : null;
     }
 }

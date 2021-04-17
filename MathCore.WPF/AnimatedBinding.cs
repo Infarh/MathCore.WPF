@@ -9,6 +9,8 @@ using System.Windows.Markup;
 using System.Windows.Media.Animation;
 // ReSharper disable CollectionNeverUpdated.Global
 // ReSharper disable UnusedType.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace MathCore.WPF
 {
@@ -20,19 +22,19 @@ namespace MathCore.WPF
 
         [ConstructorArgument("path")]
         public PropertyPath Path { get; set; }
-        public string XPath { get; set; }
-        public string ElementName { get; set; }
-        public RelativeSource RelativeSource { get; set; }
-        public object Source { get; set; }
+        public string? XPath { get; set; }
+        public string? ElementName { get; set; }
+        public RelativeSource? RelativeSource { get; set; }
+        public object? Source { get; set; }
         public BindingMode Mode { get; set; } = BindingMode.Default;
-        public object TargetNullValue { get; set; }
-        public IValueConverter Converter { get; set; }
-        public object ConverterParameter { get; set; }
-        public CultureInfo ConverterCulture { get; set; }
+        public object? TargetNullValue { get; set; }
+        public IValueConverter? Converter { get; set; }
+        public object? ConverterParameter { get; set; }
+        public CultureInfo? ConverterCulture { get; set; }
         public bool ValidatesOnExceptions { get; set; }
         public bool ValidatesOnDataErrors { get; set; }
         public Duration Duration { get; set; } = new(TimeSpan.FromSeconds(0.1));
-        public IEasingFunction EasingFunction { get; set; }
+        public IEasingFunction? EasingFunction { get; set; }
         public double SpeedRatio { get; set; } = 1;
         public double AccelerationRatio { get; set; } = 0.2;
         public double DecelerationRatio { get; set; } = 0.8;
@@ -41,13 +43,13 @@ namespace MathCore.WPF
         public UpdateSourceTrigger UpdateSourceTrigger { get; set; } = UpdateSourceTrigger.Default;
         public Collection<ValidationRule> ValidationRules { get; } = new();
         public bool IsAsync { get; set; }
-        public object AsyncState { get; set; }
+        public object? AsyncState { get; set; }
         public bool NotifyOnValidationError { get; set; }
         public object FallbackValue { get; set; } = DependencyProperty.UnsetValue;
-        public string StringFormat { get; set; }
+        public string? StringFormat { get; set; }
         public string BindingGroupName { get; set; } = "";
         public bool BindsDirectlyToSource { get; set; }
-        public UpdateSourceExceptionFilterCallback UpdateSourceExceptionFilter { get; set; }
+        public UpdateSourceExceptionFilterCallback? UpdateSourceExceptionFilter { get; set; }
         public AnimatedBinding(PropertyPath path) => Path = path;
 
         /// <inheritdoc />

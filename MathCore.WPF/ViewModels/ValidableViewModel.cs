@@ -9,12 +9,12 @@ using System.Reflection;
 using System.Windows.Markup;
 
 using MathCore.Extensions.Expressions;
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace MathCore.WPF.ViewModels
 {
     /// <summary>Модель-представления, обеспечивающая возможность валидации данных на основе атрибутов</summary>
     [MarkupExtensionReturnType(typeof(ValidableViewModel))]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1033:Методы интерфейса должны быть доступны для вызова дочерним типам", Justification = "<Ожидание>")]
     public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDataErrorInfo
     {
         private class PropertyValidator
@@ -35,7 +35,7 @@ namespace MathCore.WPF.ViewModels
             private bool IsPropertyValid(out string? Message)
             {
                 var is_valid = IsValid;
-                Message = is_valid ? null : this.ErrorMessage;
+                Message = is_valid ? null : ErrorMessage;
                 return is_valid;
             }
 
@@ -90,8 +90,8 @@ namespace MathCore.WPF.ViewModels
 
         #region INotifyDataErrorInfo
 
-        IEnumerable INotifyDataErrorInfo.GetErrors(string PropertyName) =>
-            _Validators.TryGetValue(PropertyName, out var validators)
+        IEnumerable INotifyDataErrorInfo.GetErrors(string? PropertyName) =>
+            _Validators.TryGetValue(PropertyName ?? throw new ArgumentNullException(nameof(PropertyName)), out var validators)
                 ? validators
                    .Where(validator => !validator.IsValid)
                    .Select(validator => validator.ErrorMessage)
@@ -101,7 +101,7 @@ namespace MathCore.WPF.ViewModels
 
         protected event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-        event EventHandler<DataErrorsChangedEventArgs> INotifyDataErrorInfo.ErrorsChanged
+        event EventHandler<DataErrorsChangedEventArgs>? INotifyDataErrorInfo.ErrorsChanged
         {
             add => ErrorsChanged += value;
             remove => ErrorsChanged -= value;
@@ -111,7 +111,7 @@ namespace MathCore.WPF.ViewModels
 
         #endregion
 
-        protected override void OnPropertyChanged(string PropertyName = null, bool UpdateCommandsState = false)
+        protected override void OnPropertyChanged(string PropertyName = null!, bool UpdateCommandsState = false)
         {
             base.OnPropertyChanged(PropertyName, UpdateCommandsState);
 

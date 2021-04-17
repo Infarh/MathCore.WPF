@@ -43,17 +43,17 @@ namespace MathCore.WPF
             _WorkerResetEvent = new AutoResetEvent(false);
             _WorkItems = new ConcurrentQueue<WorkItem>();
             _Thread = new Thread(DoWork);
-            _Thread.Start(this);
+            _Thread.Start();
         }
 
-        private void DoWork(object obj)
+        private void DoWork()
         {
-            SetSynchronizationContext(obj as SynchronizationContext);
+            SetSynchronizationContext(this);
 
-            while(true)
+            while(!_Disposed)
             {
-                while(_WorkItems.TryDequeue(out var lv_WorkItem))
-                    lv_WorkItem.Execute();
+                while(_WorkItems.TryDequeue(out var work_item))
+                    work_item.Execute();
 
                 //Note: race condition here
                 _WorkerResetEvent.Reset();
@@ -61,48 +61,44 @@ namespace MathCore.WPF
             }
         }
 
-        public override void Send(SendOrPostCallback post, object state)
+        public override void Send(SendOrPostCallback post, object? state)
         {
             if(Thread.CurrentThread == _Thread) post(state);
             else
             {
                 using var reset_event = new AutoResetEvent(false);
-                var wi_execution_info = new WorkItemExecutionInfo();
-                _WorkItems.Enqueue(new SynchronousWorkItem(post, state, reset_event, ref wi_execution_info));
+                var work = new SynchronousWorkItem(post, state, reset_event);
+                _WorkItems.Enqueue(work);
                 _WorkerResetEvent.Set();
 
                 reset_event.WaitOne();
-                if(wi_execution_info.HasException)
-                    throw wi_execution_info.Exception;
+                if(work.Error is { } error)
+                    throw new InvalidOperationException("Ошибка асинхронной операции", error);
             }
         }
 
-        public override void Post(SendOrPostCallback d, object state)
+        public override void Post(SendOrPostCallback d, object? state)
         {
             _WorkItems.Enqueue(new AsynchronousWorkItem(d, state));
             _WorkerResetEvent.Set();
         }
 
+        private volatile bool _Disposed;
         public void Dispose()
         {
+            if(_Disposed) return;
             _WorkerResetEvent.Dispose();
-            _Thread.Abort();
-        }
-
-        private sealed class WorkItemExecutionInfo
-        {
-            public bool HasException => Exception != null;
-            public Exception Exception { get; set; }
+            _Disposed = true;
         }
 
         private abstract class WorkItem
         {
-            protected readonly SendOrPostCallback SendOrPostCallback;
-            protected readonly object State;
+            protected readonly SendOrPostCallback Callback;
+            protected readonly object? State;
 
-            protected WorkItem(SendOrPostCallback sendOrPostCallback, object state)
+            protected WorkItem(SendOrPostCallback Callback, object? state)
             {
-                SendOrPostCallback = sendOrPostCallback;
+                this.Callback = Callback;
                 State = state;
             }
 
@@ -112,32 +108,25 @@ namespace MathCore.WPF
         private sealed class SynchronousWorkItem : WorkItem
         {
             private readonly AutoResetEvent _SyncObject;
-            private readonly WorkItemExecutionInfo _WorkItemExecutionInfo;
 
-            public SynchronousWorkItem(SendOrPostCallback SendOrPostCallback, object state, AutoResetEvent ResetEvent,
-                ref WorkItemExecutionInfo WorkItemExecutionInfo) : base(SendOrPostCallback, state)
-            {
-                if(WorkItemExecutionInfo is null)
-                    throw new NullReferenceException(nameof(WorkItemExecutionInfo));
+            public Exception? Error { get; private set; }
 
-                _SyncObject = ResetEvent;
-                _WorkItemExecutionInfo = WorkItemExecutionInfo;
-            }
+            public SynchronousWorkItem(SendOrPostCallback Callback, object? state, AutoResetEvent Reset) : base(Callback, state) => _SyncObject = Reset;
 
             public override void Execute()
             {
-                try { SendOrPostCallback(State); } catch(Exception error) { _WorkItemExecutionInfo.Exception = error; }
+                try { Callback(State); } catch(Exception error) { Error = error; }
                 _SyncObject.Set();
             }
         }
 
         private sealed class AsynchronousWorkItem : WorkItem
         {
-            public AsynchronousWorkItem(SendOrPostCallback SendOrPostCallback, object state)
-                : base(SendOrPostCallback, state)
+            public AsynchronousWorkItem(SendOrPostCallback Callback, object? state)
+                : base(Callback, state)
             { }
 
-            public override void Execute() => SendOrPostCallback(State);
+            public override void Execute() => Callback(State);
         }
     }
 }

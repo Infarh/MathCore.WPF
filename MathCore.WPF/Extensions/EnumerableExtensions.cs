@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+// ReSharper disable once CheckNamespace
 namespace System.Collections.ObjectModel
 {
     public static class EnumerableExtensions

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Threading;
+// ReSharper disable UnusedType.Global
 
 // ReSharper disable UnusedMethodReturnValue.Global
 // ReSharper disable UnusedMember.Global
@@ -9,7 +10,7 @@ namespace System.Collections.Generic
 {
     public class DispatcheredObservableLinkedList<T> : ObservableLinkedList<T>
     {
-        protected override void OnCollectionChanged(NotifyCollectionChangedEventHandler Handler, NotifyCollectionChangedEventArgs e)
+        protected override void OnCollectionChanged(NotifyCollectionChangedEventHandler? Handler, NotifyCollectionChangedEventArgs e)
         {
             if (e is null) throw new ArgumentNullException(nameof(e));
             if (Handler is null) return;

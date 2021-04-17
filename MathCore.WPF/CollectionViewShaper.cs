@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Data;
 using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
@@ -61,8 +62,8 @@ namespace MathCore.WPF
 
     public class CollectionViewShaper<T>
     {
-        [NotNull] private readonly ICollectionView _View;
-        private Predicate<object> _Filter;
+        private readonly ICollectionView _View;
+        private Predicate<object>? _Filter;
         private readonly List<SortDescription> _SortDescriptions;
         private readonly List<GroupDescription> _GroupDescriptions;
 
@@ -141,7 +142,7 @@ namespace MathCore.WPF
         {
             var names = new Stack<string>();
             var expr = expression;
-            while (expr != null && !(expr is ParameterExpression) && !(expr is ConstantExpression))
+            while (expr is { } and not ParameterExpression and not ConstantExpression)
             {
                 if (expr is not MemberExpression member)
                     throw new ArgumentException("The selector body must contain only property or field access expressions", nameof(expression));

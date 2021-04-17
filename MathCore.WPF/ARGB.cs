@@ -35,10 +35,10 @@ namespace MathCore.WPF
         public override object ProvideValue(IServiceProvider sp)
         {
             var color = Color.FromArgb(Alpha, Red, Green, Blue);
-            var destinatio_type = sp.GetDestinationTypeProvider()?.GetDestinationType() ?? typeof(object);
+            var destination_type = sp.GetDestinationTypeProvider()?.GetDestinationType() ?? typeof(object);
 
-            if (destinatio_type.IsAssignableFrom(typeof(Color))) return color;
-            if (destinatio_type.IsAssignableFrom(typeof(Brush))) return new SolidColorBrush(color);
+            if (destination_type.IsAssignableFrom(typeof(Color))) return color;
+            if (destination_type.IsAssignableFrom(typeof(Brush))) return new SolidColorBrush(color);
             throw new NotSupportedException();
         }
     }

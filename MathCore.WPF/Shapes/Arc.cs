@@ -41,15 +41,10 @@ namespace MathCore.WPF.Shapes
                 new FrameworkPropertyMetadata(360d,
                     FrameworkPropertyMetadataOptions.AffectsRender));
 
-        protected override Geometry DefiningGeometry
-        {
-            get
-            {
-                if(_VisibleRect.IsEmpty || _VisibleRect.Width.Equals(0d) || _VisibleRect.Height.Equals(0d))
-                    return Geometry.Empty;
-                return GetGeometry(_VisibleRect, StartAngle, StopAngle, R);
-            }
-        }
+        protected override Geometry DefiningGeometry =>
+            _VisibleRect is { IsEmpty: false, Width: > 0, Height: > 0 }
+                ? GetGeometry(_VisibleRect, StartAngle, StopAngle, R)
+                : Geometry.Empty;
 
         private static Point GetPoint(double a, double r, Rect rect)
         {
@@ -75,8 +70,8 @@ namespace MathCore.WPF.Shapes
             var p2 = GetPoint(Math.Max(Start, End), Radius, rect);
 
             /* To draw the arc in perfect way instead of seeing it as Big arc */
-            double y = w / 2 * Radius;
-            double y1 = h / 2 * Radius;
+            var y = w / 2 * Radius;
+            var y1 = h / 2 * Radius;
             var arc = new Size(Math.Max(0, y), Math.Max(0, y1));
 
             var is_large = d > 180;

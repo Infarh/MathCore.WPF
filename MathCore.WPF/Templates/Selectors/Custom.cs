@@ -5,6 +5,7 @@ using System.Windows.Markup;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace MathCore.WPF.Templates.Selectors
 {

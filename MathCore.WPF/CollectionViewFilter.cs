@@ -21,6 +21,8 @@ using MathCore.WPF.ViewModels;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable VirtualMemberNeverOverridden.Global
 // ReSharper disable UnusedType.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable RedundantExtendsListEntry
 
 namespace MathCore.WPF
 {
@@ -200,7 +202,7 @@ namespace MathCore.WPF
         }
 
         /// <summary>Информация о свойстве для указанного типа</summary>
-        private struct TypeProperty : IEquatable<TypeProperty>
+        private readonly struct TypeProperty : IEquatable<TypeProperty>
         {
             /// <summary>Тип, информацию о свойстве которого требуется сохранить</summary>
             private readonly Type _Type;
@@ -308,7 +310,6 @@ namespace MathCore.WPF
         }
     }
 
-    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
     public class CollectionViewFiltersCollection : FreezableCollection<CollectionViewFilterItem>, IList
     {
         private CollectionViewSource _Source;
@@ -326,19 +327,23 @@ namespace MathCore.WPF
             return this;
         }
 
-        protected void OnCollectionChanged(object sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs e)
+        protected void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (CollectionViewFilterItem item in e.NewItems) item.SetSource(_Source);
+                    if (e.NewItems is IEnumerable<CollectionViewFilterItem> added)
+                        foreach (var item in added) item.SetSource(_Source);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (CollectionViewFilterItem item in e.OldItems) item.SetSource(null);
+                    if (e.OldItems is IEnumerable<CollectionViewFilterItem> removed)
+                        foreach (var item in removed) item.SetSource(null);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (CollectionViewFilterItem item in e.NewItems) item.SetSource(_Source);
-                    foreach (CollectionViewFilterItem item in e.OldItems) item.SetSource(null);
+                    if (e.NewItems is IEnumerable<CollectionViewFilterItem> @new)
+                        foreach (var item in @new) item.SetSource(_Source);
+                    if (e.OldItems is IEnumerable<CollectionViewFilterItem> old)
+                        foreach (var item in old) item.SetSource(null);
                     break;
             }
         }
@@ -528,12 +533,11 @@ namespace MathCore.WPF
         }
 
         /// <inheritdoc />
-        protected override void OnFilter(object Sender, [Annotations.NotNull] FilterEventArgs E)
+        protected override void OnFilter(object Sender, FilterEventArgs E)
         {
             if (!E.Accepted || !Enabled) return;
             var value = GetItemValue(E.Item);
-            var min = Min;
-            if (min != null)
+            if (Min is { } min)
             {
                 if (MinInclude)
                 {
@@ -542,8 +546,7 @@ namespace MathCore.WPF
                 else if (min.CompareTo(value) >= 0) E.Accepted = false;
             }
 
-            var max = Max;
-            if (max != null)
+            if (Max is { } max)
             {
                 if (MaxInclude)
                 {
@@ -570,19 +573,19 @@ namespace MathCore.WPF
             { if (_ViewSource is INotifyCollectionChanged notify_collection) notify_collection.CollectionChanged += OnItemsChanged; }
         }
 
-        private void OnItemsChanged(object Sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs E)
+        private void OnItemsChanged(object? Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (var item in E.NewItems) AddItem(item);
+                    if (E.NewItems is { } added) foreach (var item in added) AddItem(item);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (var item in E.OldItems) RemoveItem(item);
+                    if (E.OldItems is { } old) foreach (var item in old) RemoveItem(item);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (var item in E.OldItems) RemoveItem(item);
-                    foreach (var item in E.NewItems) AddItem(item);
+                    if (E.OldItems is { } removed) foreach (var item in removed) RemoveItem(item);
+                    if (E.NewItems is { } @new) foreach (var item in @new) AddItem(item);
                     break;
                 case NotifyCollectionChangedAction.Reset:
                     UpdateGroups();
@@ -595,7 +598,8 @@ namespace MathCore.WPF
         public void UpdateGroups()
         {
             ClearGroups();
-            foreach (var item in _ViewSource) AddItem(item);
+            if (_ViewSource is not { } view) return;
+            foreach (var item in view) AddItem(item);
         }
 
         private void AddItem(object item)
@@ -719,39 +723,45 @@ namespace MathCore.WPF
             _Filters.Add(new PropertyFilterItem());
         }
 
-        private void OnAddNewCommandExecuted(object Obj) => _Filters.Add(Obj as PropertyFilterItem ?? new PropertyFilterItem());
+        private void OnAddNewCommandExecuted(object? Obj) => _Filters.Add(Obj as PropertyFilterItem ?? new PropertyFilterItem());
 
-        private void OnRemoveCommandExecuted(object Obj)
+        private void OnRemoveCommandExecuted(object? Obj)
         {
             if (Obj is PropertyFilterItem filter) Remove(filter); else Clear();
         }
 
-        private void OnFiltersCollection_Changed(object Sender, [Annotations.NotNull] NotifyCollectionChangedEventArgs E)
+        private void OnFiltersCollection_Changed(object? Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
                 case NotifyCollectionChangedAction.Add:
-                    foreach (PropertyFilterItem? item in E.NewItems)
-                    {
-                        item!.ItemType = CollectionItemType;
-                        item.PropertyChanged += OnPropertyFilterItemChanged;
-                    }
+                    if (E.NewItems is { } added)
+                        foreach (PropertyFilterItem? item in added)
+                        {
+                            item!.ItemType = CollectionItemType;
+                            item.PropertyChanged += OnPropertyFilterItemChanged;
+                        }
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    foreach (PropertyFilterItem? item in E.OldItems) item!.PropertyChanged -= OnPropertyFilterItemChanged;
+                    if (E.OldItems is { } removed)
+                        foreach (PropertyFilterItem? item in removed)
+                            item!.PropertyChanged -= OnPropertyFilterItemChanged;
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    foreach (PropertyFilterItem? item in E.OldItems) item!.PropertyChanged -= OnPropertyFilterItemChanged;
-                    foreach (PropertyFilterItem? item in E.NewItems)
-                    {
-                        item!.ItemType = CollectionItemType;
-                        item.PropertyChanged += OnPropertyFilterItemChanged;
-                    }
+                    if (E.OldItems is { } old)
+                        foreach (PropertyFilterItem? item in old)
+                            item!.PropertyChanged -= OnPropertyFilterItemChanged;
+                    if (E.NewItems is { } @new)
+                        foreach (PropertyFilterItem? item in @new)
+                        {
+                            item!.ItemType = CollectionItemType;
+                            item.PropertyChanged += OnPropertyFilterItemChanged;
+                        }
                     break;
             }
         }
 
-        private void OnPropertyFilterItemChanged(object sender, [Annotations.NotNull] PropertyChangedEventArgs e)
+        private void OnPropertyFilterItemChanged(object? sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -768,7 +778,7 @@ namespace MathCore.WPF
 
         protected override Freezable CreateInstanceCore() => throw new NotSupportedException();
 
-        protected override void OnFilter(object Sender, [Annotations.NotNull] FilterEventArgs E)
+        protected override void OnFilter(object Sender, FilterEventArgs E)
         {
             if (!E.Accepted) return;
             if (_Filters.Any(f => !f.Filter(E.Item)))
@@ -815,7 +825,7 @@ namespace MathCore.WPF
         #region INotifyCollectionChanged
 
         /// <inheritdoc />
-        event NotifyCollectionChangedEventHandler INotifyCollectionChanged.CollectionChanged
+        event NotifyCollectionChangedEventHandler? INotifyCollectionChanged.CollectionChanged
         {
             add => _Filters.CollectionChanged += value;
             remove => _Filters.CollectionChanged -= value;
@@ -906,8 +916,8 @@ namespace MathCore.WPF
             }
         }
 
-        private Type _ItemType;
-        public Type ItemType { get => _ItemType; set => SetValue(ref _ItemType, value).Update(nameof(PropertyInfos), nameof(Properties)); }
+        private Type? _ItemType;
+        public Type? ItemType { get => _ItemType; set => SetValue(ref _ItemType, value).Update(nameof(PropertyInfos), nameof(Properties)); }
 
         private ComparisonType _Comparison = ComparisonType.Equal;
         public ComparisonType Comparison { get => _Comparison; set => Set(ref _Comparison, value); }
@@ -930,8 +940,9 @@ namespace MathCore.WPF
 
         public Type? ValueType { get => _ValueType; set => Set(ref _ValueType, value); }
 
-        private object ChangeValueType(object value)
+        private object? ChangeValueType(object? value)
         {
+            if (value is null) return null;
             var property_type = PropertyType;
             if (_PropertyChain is null || _PropertyChain.Length <= 0 || property_type is null) return value;
             try
