@@ -19,9 +19,9 @@ namespace MathCore.WPF.Converters
             var str = v as string;
             if(string.IsNullOrWhiteSpace(str)) return null;
             var converter = TypeDescriptor.GetConverter(t);
-            if(!converter.CanConvertFrom(typeof(string)))
-                throw new NotSupportedException();
-            return converter.ConvertFrom(str);
+            return converter.CanConvertFrom(typeof(string)) 
+                ? converter.ConvertFrom(str) 
+                : throw new NotSupportedException();
         }
     }
 }

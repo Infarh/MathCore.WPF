@@ -3,6 +3,7 @@ using System.Collections;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Markup;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {

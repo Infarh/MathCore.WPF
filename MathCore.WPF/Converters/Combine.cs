@@ -51,11 +51,11 @@ namespace MathCore.WPF.Converters
             if (First != null) v = First.Convert(v, t, p, c);
             if (Then != null) v = Then.Convert(v, t, p, c);
             var other = Other;
-            //if (other != null) v = other.Where(converter => converter != null).Aggregate(v, (vv, converter) => converter.Convert(vv, t, p, c));
-            if (other != null && other.Length > 0)
-                for (var i = 0; i < other.Length; i++)
-                    if (other[i] != null)
-                        v = other[i].Convert(v, t, p, c);
+            if (other is not { Length: > 0 }) return v;
+
+            for (var i = 0; i < other.Length; i++)
+                if (other[i] is { } conv)
+                    v = conv.Convert(v, t, p, c);
             return v;
         }
 
@@ -65,20 +65,17 @@ namespace MathCore.WPF.Converters
             var other = Other;
             if (other != null)
                 for (var i = other.Length - 1; i >= 0; i--)
-                {
-                    var converter = other[i];
-                    if (converter != null) 
+                    if (other[i]  is { } converter)
                         v = converter.ConvertBack(v, t, p, c);
-                }
 
-            if (other != null && other.Length > 0)
-                for (var i = other.Length-1; i >= 0; i--)
-                    if (other[i] != null)
-                        v = other[i].ConvertBack(v, t, p, c);
+            if (other is { Length: > 0 })
+                for (var i = other.Length - 1; i >= 0; i--)
+                    if (other[i] is { } conv)
+                        v = conv.ConvertBack(v, t, p, c);
 
             if (Then != null) v = Then.ConvertBack(v, t, p, c);
             if (First != null) v = First.ConvertBack(v, t, p, c);
-            
+
             return v;
         }
     }

@@ -14,7 +14,7 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
-    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object>
+    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object?>
     {
         public static LambdaCommand New(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
@@ -65,7 +65,7 @@ namespace MathCore.WPF.Commands
         protected virtual void OnCanExecuteChanged([CanBeNull] EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
 
         /// <summary>Событие возникает при изменении возможности исполнения команды</summary>
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add
             {
@@ -151,15 +151,15 @@ namespace MathCore.WPF.Commands
 
         #region ICommand
 
-        bool ICommand.CanExecute(object parameter) => CanExecute(parameter);
+        bool ICommand.CanExecute(object? parameter) => CanExecute(parameter);
 
-        void ICommand.Execute(object parameter)
+        void ICommand.Execute(object? parameter)
         {
             if (!CanExecute(parameter)) return;
             try
             {
                 Execute(parameter);
-                _Observable?.OnNext(parameter);
+                _Observable?.OnNext(parameter!);
             }
             catch (Exception error)
             {
@@ -193,10 +193,10 @@ namespace MathCore.WPF.Commands
 
         #region IObservable<object>
 
-        private SimpleObservableEx<object>? _Observable;
+        private SimpleObservableEx<object?>? _Observable;
 
-        public IDisposable Subscribe(IObserverEx<object> observer) => (_Observable ??= new SimpleObservableEx<object>()).Subscribe(observer);
-        public IDisposable Subscribe(IObserver<object> observer) => (_Observable ??= new SimpleObservableEx<object>()).Subscribe(observer);
+        public IDisposable Subscribe(IObserverEx<object?> observer) => (_Observable ??= new SimpleObservableEx<object?>()).Subscribe(observer);
+        public IDisposable Subscribe(IObserver<object?> observer) => (_Observable ??= new SimpleObservableEx<object?>()).Subscribe(observer);
 
         #endregion 
     }

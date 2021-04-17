@@ -146,21 +146,21 @@ namespace MathCore.WPF.Commands
         #endregion
 
         //Creates an EventHandler on runtime and registers that handler to the Event specified
-        public void BindEvent(DependencyObject owner, string eventName)
+        public void BindEvent(DependencyObject owner, string EventName)
         {
-            EventName = eventName;
+            this.EventName = EventName;
             Owner = owner;
-            Event = Owner.GetType().GetEvent(EventName, BindingFlags.Public | BindingFlags.Instance) ?? throw new InvalidOperationException();
-            if(Event is null)
-                throw new InvalidOperationException($"Could not resolve event name {EventName}");
+            this.Event = Owner.GetType().GetEvent(this.EventName, BindingFlags.Public | BindingFlags.Instance) ?? throw new InvalidOperationException();
+            if(this.Event is null)
+                throw new InvalidOperationException($"Could not resolve event name {this.EventName}");
 
             //Create an event handler for the event that will call the ExecuteCommand method
             EventHandler = EventHandlerGenerator.CreateDelegate(
-                Event.EventHandlerType!,
+                this.Event.EventHandlerType!,
                 typeof(CommandBehaviorBinding).GetMethod("ExecuteCommand", BindingFlags.Public | BindingFlags.Instance) ?? throw new InvalidOperationException(),
                 this);
             //Register the handler to the Event
-            Event.AddEventHandler(Owner, EventHandler);
+            this.Event.AddEventHandler(Owner, EventHandler);
         }
 
         /// <summary>Executes the command</summary>

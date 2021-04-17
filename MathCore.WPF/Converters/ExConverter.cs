@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using MathCore.Annotations;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {

@@ -3,11 +3,12 @@ using System.Collections;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters
 {
-    [MarkupExtensionReturnType(typeof(MultiValuesToCompositecollection))]
-    public class MultiValuesToCompositecollection : MultiValueValueConverter
+    [MarkupExtensionReturnType(typeof(MultiValuesToCompositeCollection))]
+    public class MultiValuesToCompositeCollection : MultiValueValueConverter
     {
         protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
         {

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Markup;
-using MathCore.Annotations;
+
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.IO
@@ -13,11 +13,17 @@ namespace MathCore.WPF.Converters.IO
     public class StringToFileInfo : ValueConverter
     {
         /// <inheritdoc />
-        [CanBeNull]
-        protected override object Convert([CanBeNull] object v, Type t, object p, CultureInfo c) => v is null ? null! : new FileInfo(v.ToString());
+        protected override object? Convert(object? v, Type t, object? p, CultureInfo c) =>
+            v switch
+            {
+                string s => new FileInfo(s),
+                FileInfo f => f,
+                { } obj when (obj.ToString() is { } str) => new FileInfo(str),
+                _ => null
+            };
 
         /// <inheritdoc />
-        [CanBeNull]
-        protected override object ConvertBack(object? v, Type t, object p, CultureInfo c) => v is FileInfo file_info ? file_info.FullName : null!;
+        protected override object? ConvertBack(object? v, Type t, object? p, CultureInfo c) => 
+            v is FileInfo file_info ? file_info.FullName : null;
     }
 }

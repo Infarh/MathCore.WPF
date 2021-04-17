@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -21,7 +22,7 @@ namespace MathCore.WPF.Converters
         /// <param name="c">Сведения о культуре</param>
         /// <returns>Преобразованное значение</returns>
         [CanBeNull]
-        protected abstract object? Convert([CanBeNull] object? v, Type t, object? p, CultureInfo c);
+        protected abstract object? Convert(object? v, Type t, object? p, CultureInfo c);
 
         /// <summary>Обратное преобразование значения</summary>
         /// <param name="v">Значение, для которого требуется выполнить обратное преобразование</param>
@@ -31,7 +32,8 @@ namespace MathCore.WPF.Converters
         /// <returns>Исходное значение</returns>
         /// <exception cref="NotSupportedException">Генерируется при отсутствии переопределения в классах наследниках</exception>
         [CanBeNull]
-        protected virtual object? ConvertBack([CanBeNull] object? v, Type t, object? p, CultureInfo c) => throw new NotSupportedException("Обратное преобразование не поддерживается");
+        protected virtual object? ConvertBack(object? v, Type t, object? p, CultureInfo c) => 
+            throw new NotSupportedException("Обратное преобразование не поддерживается");
 
         /// <inheritdoc />
         object? IValueConverter.Convert(object? v, Type t, object? p, CultureInfo c) => Convert(v, t, p, c);

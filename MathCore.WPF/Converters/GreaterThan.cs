@@ -16,6 +16,6 @@ namespace MathCore.WPF.Converters
 
         public GreaterThan(double value) => Value = value;
 
-        protected override bool? Convert(double v) => v.IsNaN() ? null : (bool?)(v > Value);
+        protected override bool? Convert(double v) => v.IsNaN() ? null : v > Value;
     }
 }

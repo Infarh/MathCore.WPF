@@ -23,7 +23,7 @@ namespace MathCore.WPF.Commands
     [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
     public abstract class AsyncTaskCommandBase : IAsyncTaskCommand
     {
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
@@ -31,11 +31,11 @@ namespace MathCore.WPF.Commands
 
         protected static void Invoke_OnCanExecuteChanged() => CommandManager.InvalidateRequerySuggested();
 
-        public abstract bool CanExecute(object parameter);
+        public abstract bool CanExecute(object? parameter);
 
-        public abstract Task ExecuteTaskAsync(object parameter);
+        public abstract Task ExecuteTaskAsync(object? parameter);
 
-        public async void Execute(object parameter) => await ExecuteTaskAsync(parameter);
+        public async void Execute(object? parameter) => await ExecuteTaskAsync(parameter);
     }
 
     /// <summary>Асинхронная команда</summary>
@@ -49,7 +49,7 @@ namespace MathCore.WPF.Commands
     {
         private sealed class CancelAsyncCommand : ICommand
         {
-            public event EventHandler CanExecuteChanged
+            public event EventHandler? CanExecuteChanged
             {
                 add => CommandManager.RequerySuggested += value;
                 remove => CommandManager.RequerySuggested -= value;
@@ -74,9 +74,9 @@ namespace MathCore.WPF.Commands
                 Invoke_OnCanExecuteChanged();
             }
 
-            bool ICommand.CanExecute(object parameter) => _CommandExecuting && !_CancellationToken.IsCancellationRequested;
+            bool ICommand.CanExecute(object? parameter) => _CommandExecuting && !_CancellationToken.IsCancellationRequested;
 
-            void ICommand.Execute(object parameter)
+            void ICommand.Execute(object? parameter)
             {
                 _CancellationToken.Cancel();
                 Invoke_OnCanExecuteChanged();
@@ -86,12 +86,12 @@ namespace MathCore.WPF.Commands
         public event PropertyChangedEventHandler? PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         [NotNull]
-        private readonly Func<object, CancellationToken, Task<TResult>> _TaskFunction;
+        private readonly Func<object?, CancellationToken, Task<TResult>> _TaskFunction;
 
-        private readonly Func<object, bool>? _CanExecute;
+        private readonly Func<object?, bool>? _CanExecute;
 
         private NotifyTaskCompletion<TResult>? _Execution;
         public NotifyTaskCompletion<TResult>? Execution
@@ -109,18 +109,18 @@ namespace MathCore.WPF.Commands
         // ReSharper disable once ConvertToAutoPropertyWhenPossible
         private CancelAsyncCommand CancelCommand { get; }
 
-        public AsyncTaskCommand([NotNull]Func<object, CancellationToken, Task<TResult>> TaskFunction, Func<object, bool>? CanExecute = null)
+        public AsyncTaskCommand([NotNull]Func<object?, CancellationToken, Task<TResult>> TaskFunction, Func<object?, bool>? CanExecute = null)
         {
             _TaskFunction = TaskFunction;
             _CanExecute = CanExecute;
             CancelCommand = new CancelAsyncCommand();
         }
 
-        public AsyncTaskCommand([NotNull]Task<TResult> task) : this(async (p, c) => await task) { }
+        public AsyncTaskCommand([NotNull]Task<TResult> task) : this(async (_, _) => await task) { }
 
-        public override bool CanExecute(object parameter) => (_CanExecute?.Invoke(parameter) ?? true) && (Execution?.IsCompleted ?? false);
+        public override bool CanExecute(object? parameter) => (_CanExecute?.Invoke(parameter) ?? true) && (Execution?.IsCompleted ?? false);
 
-        public override async Task ExecuteTaskAsync(object parameter)
+        public override async Task ExecuteTaskAsync(object? parameter)
         {
             CancelCommand.NotifyCommandStarting();
             Execution = new NotifyTaskCompletion<TResult>(_TaskFunction(parameter, CancelCommand.Token));

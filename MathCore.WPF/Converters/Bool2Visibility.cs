@@ -16,22 +16,21 @@ namespace MathCore.WPF.Converters
     {
         public bool Inverted { get; set; }
 
-        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c)
-        {
-            if (v is null) return Visibility.Collapsed;
-            if (v is bool?)
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) =>
+            v switch
             {
-                return (bool)v ? !Inverted : Inverted;
-            }
-            if (!(v is Visibility)) throw new NotSupportedException();
-            return (Visibility)v switch
-            {
-                Visibility.Visible => !Inverted,
-                Visibility.Hidden => Inverted,
-                Visibility.Collapsed => null,
-                _ => throw new NotSupportedException()
+                null => Visibility.Collapsed,
+                bool b => b ? !Inverted : Inverted,
+                _ => v is not Visibility visibility
+                    ? throw new NotSupportedException()
+                    : visibility switch
+                    {
+                        Visibility.Visible => !Inverted,
+                        Visibility.Hidden => Inverted,
+                        Visibility.Collapsed => null,
+                        _ => throw new NotSupportedException()
+                    }
             };
-        }
 
         protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => Convert(v, t, p, c);
     }

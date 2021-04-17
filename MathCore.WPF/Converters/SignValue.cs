@@ -4,6 +4,7 @@ using System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 // ReSharper disable UnusedMember.Global
 

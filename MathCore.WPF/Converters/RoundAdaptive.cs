@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Markup;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global

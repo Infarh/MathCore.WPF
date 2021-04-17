@@ -13,14 +13,20 @@ namespace MathCore.WPF.Converters
     public class AggregateArray : MultiValueValueConverter
     {
         /// <inheritdoc />
-        [CanBeNull]
-        protected override object Convert([CanBeNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.SelectMany(GetItems)!;
+        protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.SelectMany(GetItems);
 
         private static IEnumerable<object?> GetItems([CanBeNull] object? Item)
         {
-            if(Item is null) yield break;
-            if(!(Item is IEnumerable)) yield return Item;
-            else foreach(var item in (IEnumerable)Item) yield return item;
+            switch (Item)
+            {
+                case null: yield break;
+                case IEnumerable enumerable:
+                    foreach (var item in enumerable)
+                        yield return item;
+                    break;
+                default: yield return Item;
+                    break;
+            }
         }
     }
 }

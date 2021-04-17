@@ -78,7 +78,7 @@ namespace MathCore.WPF.Converters
                 parameter = null;
                 return false;
             }
-            parameter = p != null && TryConvertToDouble(p, out var pr) ? (double?)pr : null;
+            parameter = p != null && TryConvertToDouble(p, out var pr) ? pr : null;
             return true;
         }
 

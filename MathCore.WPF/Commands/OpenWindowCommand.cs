@@ -41,7 +41,7 @@ namespace MathCore.WPF.Commands
         public override bool CanExecute(object? obj) => obj is Window || _WindowType != null;
 
         /// <inheritdoc />
-        public override void Execute(object? parameter) => ShowWindow(parameter as Window ?? _WindowType.Create<Window>());
+        public override void Execute(object? parameter) => ShowWindow(parameter as Window ?? _WindowType?.Create<Window>() ?? throw new InvalidOperationException($"Неудалось создать окно типа {_WindowType}"));
 
         private void ShowWindow([NotNull] Window window)
         {
