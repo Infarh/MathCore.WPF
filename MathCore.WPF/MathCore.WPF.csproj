@@ -20,8 +20,8 @@
     <Description>Библиотека инструментов для работы с WPF</Description>
     <Copyright>shmachilin@gmail.com</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>github.com/infarh/mathcore.wpf</PackageProjectUrl>
-    <RepositoryUrl>github.com/infarh/mathcore.wpf.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/infarh/mathcore.wpf</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/infarh/mathcore.wpf.git</RepositoryUrl>
     <PackageTags>wpf, toolkit</PackageTags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>MathCoreWPFSign.snk</AssemblyOriginatorKeyFile>
