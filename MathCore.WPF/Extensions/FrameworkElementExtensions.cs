@@ -113,14 +113,13 @@ namespace System.Windows
             [NotNull] private readonly FrameworkElement _Element;
             private readonly bool _AllowX;
             private readonly bool _AllowY;
-            private readonly UIElement _Root;
+            private readonly UIElement? _Root;
             private Point _StartPoint;
             private readonly bool _ConstrainToParent;
 
-            private Transform _RenderTransform;
+            private Transform? _RenderTransform;
 
-            [CanBeNull]
-            private Transform RenderTransform
+            private Transform? RenderTransform
             {
                 get => _RenderTransform ??= GetElementTransform(_Element.RenderTransform);
                 set
@@ -130,8 +129,7 @@ namespace System.Windows
                 }
             }
 
-            [CanBeNull]
-            private static Transform GetElementTransform([CanBeNull] Transform Transform) =>
+            private static Transform? GetElementTransform([CanBeNull] Transform Transform) =>
                 Transform switch
                 {
                     ScaleTransform transform => new ScaleTransform { CenterX = transform.CenterX, CenterY = transform.CenterY, ScaleX = transform.ScaleX, ScaleY = transform.ScaleY },
@@ -180,8 +178,9 @@ namespace System.Windows
 
             private void OnMouseMove(object Sender, MouseEventArgs E) => HandleDrag(E.GetPosition(_Element));
 
-            private static Vector GetTransformVector([NotNull] GeneralTransform transform, double X, double Y)
+            private static Vector GetTransformVector(GeneralTransform? transform, double X, double Y)
             {
+                if (transform is null) return new();
                 var start_point = transform.Transform(new Point());
                 var end_point = transform.Transform(new Point(X, Y));
                 return end_point - start_point;
@@ -191,7 +190,7 @@ namespace System.Windows
             {
                 var offset_x = CurrentMousePosition.X - _StartPoint.X;
                 var offset_y = CurrentMousePosition.Y - _StartPoint.Y;
-                var element_to_root = _Element.TransformToVisual(_Root);
+                var element_to_root = _Root is null ? null : _Element.TransformToVisual(_Root);
                 var transform_vector = GetTransformVector(element_to_root, offset_x, offset_y);
                 ApplyTranslation(transform_vector);
             }
@@ -199,7 +198,7 @@ namespace System.Windows
             private void ApplyTranslation(Vector Transition)
             {
                 if (_Element.Parent is not FrameworkElement parent) return;
-                var parent_transition_transform = _Root.TransformToVisual(parent);
+                var parent_transition_transform = _Root?.TransformToVisual(parent);
                 var transition = GetTransformVector(parent_transition_transform, Transition.X, Transition.Y);
 
                 if (_ConstrainToParent)
@@ -233,7 +232,6 @@ namespace System.Windows
             {
                 var transform = RenderTransform;
                 if (transform is not TranslateTransform translate_transform)
-                {
                     switch (transform)
                     {
                         case TransformGroup transform_group:
@@ -259,7 +257,6 @@ namespace System.Windows
                             RenderTransform = new_transform_group;
                             break;
                     }
-                }
 
                 translate_transform!.X += Transition.X;
                 translate_transform.Y += Transition.Y;

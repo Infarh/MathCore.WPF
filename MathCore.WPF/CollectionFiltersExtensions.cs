@@ -6,14 +6,19 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
+
 using MathCore.Annotations;
+// ReSharper disable UnusedMember.Global
+// ReSharper disable EventNeverSubscribedTo.Global
+// ReSharper disable UnusedMethodReturnValue.Global
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF
 {
     public class CollectionFilterItem<TValue, TCriteria> : ReadOnlyObservableCollection<TValue>
     {
         [NotNull, ItemCanBeNull] private readonly ObservableCollection<TValue> _InternalCollection;
-        [CanBeNull] public TCriteria Key { get; }
+        [CanBeNull] public TCriteria? Key { get; }
 
         private bool _Enabled;
         public bool Enabled
@@ -39,13 +44,15 @@ namespace MathCore.WPF
 
     public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<CollectionFilterItem<TValue, TCriteria>>
     {
-        [NotNull, ItemNotNull] private readonly ObservableCollection<CollectionFilterItem<TValue, TCriteria>> _InternalCollection;
-        [NotNull, ItemCanBeNull] private readonly ObservableCollection<TValue> _Collection;
-        [NotNull] private readonly Func<TValue, TCriteria> _Selector;
+        private readonly ObservableCollection<CollectionFilterItem<TValue, TCriteria>> _InternalCollection;
+        private readonly ObservableCollection<TValue?>? _Collection;
+        private readonly Func<TValue, TCriteria>? _Selector;
 
-        private CollectionFilter([NotNull, ItemNotNull] ObservableCollection<CollectionFilterItem<TValue, TCriteria>> internal_collection) : base(internal_collection) => _InternalCollection = internal_collection;
+        private CollectionFilter(ObservableCollection<CollectionFilterItem<TValue, TCriteria>> internal_collection)
+            : base(internal_collection) =>
+            _InternalCollection = internal_collection;
 
-        public CollectionFilter([NotNull, ItemCanBeNull] ObservableCollection<TValue> collection, [NotNull] Func<TValue, TCriteria> selector)
+        public CollectionFilter(ObservableCollection<TValue?> collection, Func<TValue, TCriteria> selector)
             : this(new ObservableCollection<CollectionFilterItem<TValue, TCriteria>>())
         {
             _Collection = collection;
@@ -53,57 +60,60 @@ namespace MathCore.WPF
             collection.CollectionChanged += OnCollectionChanged;
         }
 
-        private void OnCollectionChanged([CanBeNull] object Sender, [NotNull] NotifyCollectionChangedEventArgs E)
+        private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
-                default: throw new ArgumentOutOfRangeException();
+                default: throw new InvalidOperationException();
                 case NotifyCollectionChangedAction.Add:
-                    AddValues(E.NewItems.Cast<TValue>());
+                    if (E.NewItems is IEnumerable<TValue> added) AddValues(added);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    RemoveValues(E.OldItems.Cast<TValue>());
+                    if (E.OldItems is IEnumerable<TValue> removed) RemoveValues(removed);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    RemoveValues(E.OldItems.Cast<TValue>());
-                    AddValues(E.NewItems.Cast<TValue>());
+                    if (E.OldItems is IEnumerable<TValue> old) RemoveValues(old);
+                    if (E.NewItems is IEnumerable<TValue> @new) AddValues(@new);
                     break;
                 case NotifyCollectionChangedAction.Move: break;
                 case NotifyCollectionChangedAction.Reset:
                     _InternalCollection.Clear();
-                    if (_Collection.Count == 0) break;
-                    foreach (var group in _Collection.GroupBy(_Selector))
+                    if (_Collection is not { Count: > 0 } collection) break;
+                    foreach (var group in collection!.GroupBy(_Selector!))
                         _InternalCollection.Add(new CollectionFilterItem<TValue, TCriteria>(group.Key, group));
                     break;
             }
         }
 
-        private void AddValues([NotNull, ItemCanBeNull] IEnumerable<TValue> values)
+        private void AddValues(IEnumerable<TValue> values)
         {
+            if(_Selector is not { } selector) return;
             foreach (var value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 var filter = _InternalCollection.FirstOrDefault(f => Equals(f.Key, key));
                 if (filter is null) _InternalCollection.Add(filter = new CollectionFilterItem<TValue, TCriteria>(key));
                 filter.Add(value);
             }
         }
 
-        private void RemoveValues([NotNull, ItemCanBeNull] IEnumerable<TValue> values)
+        private void RemoveValues(IEnumerable<TValue> values)
         {
+            if(_Selector is not { } selector) return;
             foreach (var value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 var filter = _InternalCollection.FirstOrDefault(f => Equals(f.Key, key));
                 filter?.Remove(value);
-                if (filter?.Count == 0) _InternalCollection.Remove(filter);
+                if (filter is { Count: > 0 }) _InternalCollection.Remove(filter);
             }
         }
     }
 
-    public class CollectionViewFilterItem<TCriteria> : ReadOnlyObservableCollection<object>
+    public class CollectionViewFilterItem<TCriteria> : ReadOnlyObservableCollection<object?>
     {
-        [NotNull, ItemCanBeNull] private readonly ObservableCollection<object> _InternalCollection;
+        private readonly ObservableCollection<object?> _InternalCollection;
+
         private bool _Enabled;
 
         public bool Enabled
@@ -118,7 +128,7 @@ namespace MathCore.WPF
             }
         }
 
-        public bool _ExistInView;
+        private bool _ExistInView;
 
         public bool ExistInView
         {
@@ -131,29 +141,29 @@ namespace MathCore.WPF
             }
         }
 
-        public event EventHandler EnabledChanged;
+        public event EventHandler? EnabledChanged;
 
-        [CanBeNull] public TCriteria Key { get; }
+        [CanBeNull] public TCriteria? Key { get; }
 
-        private CollectionViewFilterItem([NotNull, ItemCanBeNull] ObservableCollection<object> collection) : base(collection) => _InternalCollection = collection;
-        public CollectionViewFilterItem([CanBeNull] TCriteria key) : this(new ObservableCollection<object>()) => Key = key;
+        private CollectionViewFilterItem(ObservableCollection<object?> collection) : base(collection) => _InternalCollection = collection;
+        public CollectionViewFilterItem(TCriteria? key) : this(new ObservableCollection<object?>()) => Key = key;
 
-        public CollectionViewFilterItem([CanBeNull] TCriteria key, [NotNull] IEnumerable items) : this(new ObservableCollection<object>(items.Cast<object>())) => Key = key;
+        public CollectionViewFilterItem(TCriteria? key, IEnumerable items) : this(new ObservableCollection<object?>(items.Cast<object?>())) => Key = key;
 
-        internal void Add([CanBeNull] object value) { if (!_InternalCollection.Contains(value)) _InternalCollection.Add(value); }
+        internal void Add(object? value) { if (!_InternalCollection.Contains(value)) _InternalCollection.Add(value); }
 
-        internal bool Remove([CanBeNull] object value) => _InternalCollection.Remove(value);
+        internal bool Remove(object? value) => _InternalCollection.Remove(value);
     }
 
     public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>
     {
-        [NotNull, ItemCanBeNull] private readonly ICollectionView _View;
-        [NotNull] private readonly Func<object, TCriteria> _Selector;
-        [NotNull, ItemNotNull] private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
-        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
+        private readonly ICollectionView? _View;
+        private readonly Func<object, TCriteria>? _Selector;
+        private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
+        private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
         private bool _Enabled;
         private bool _AllFiltersDisabled = true;
-        [CanBeNull] private string _Name;
+        private string? _Name;
 
         public bool Enabled
         {
@@ -163,12 +173,11 @@ namespace MathCore.WPF
                 if (_Enabled == value) return;
                 _Enabled = value;
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
-                _View.Refresh();
+                _View?.Refresh();
             }
         }
 
-        [CanBeNull]
-        public string Name
+        public string? Name
         {
             get => _Name;
             set
@@ -178,11 +187,11 @@ namespace MathCore.WPF
                 NameChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        public event EventHandler NameChanged;
+        public event EventHandler? NameChanged;
 
-        private CollectionViewFilter([NotNull, ItemNotNull] ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
+        private CollectionViewFilter(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
 
-        public CollectionViewFilter([NotNull, ItemCanBeNull] ICollectionView view, [NotNull] Func<object, TCriteria> selector, [CanBeNull] string Name = null) : this(new ObservableCollection<CollectionViewFilterItem<TCriteria>>())
+        public CollectionViewFilter(ICollectionView view, Func<object, TCriteria> selector, string? Name = null) : this(new ObservableCollection<CollectionViewFilterItem<TCriteria>>())
         {
             _Name = Name;
             _View = view;
@@ -191,27 +200,29 @@ namespace MathCore.WPF
             view.CollectionChanged += OnViewCollectionChanged;
         }
 
-        private void OnViewCollectionChanged([CanBeNull] object Sender, [CanBeNull] NotifyCollectionChangedEventArgs E)
+        private void OnViewCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs? E)
         {
-            var keys = _View.Cast<object>().GroupBy(_Selector).Select(g => g.Key).ToList();
+            if (_View is not { } view || _Selector is not { } selector) return;
+            var keys = view.OfType<object>().GroupBy(selector).Select(g => g.Key).ToList();
             foreach (var filter in _FiltersCollection)
-                filter.ExistInView = keys.Contains(filter.Key);
+                if (filter.Key is { } key)
+                    filter.ExistInView = keys.Contains(key);
         }
 
-        private void OnCollectionChanged([CanBeNull] object Sender, [NotNull] NotifyCollectionChangedEventArgs E)
+        private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
-                default: throw new ArgumentOutOfRangeException();
+                default: throw new InvalidOperationException();
                 case NotifyCollectionChangedAction.Add:
-                    AddValues(E.NewItems);
+                    if (E.NewItems is IEnumerable<TCriteria> added) AddValues(added);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    RemoveValues(E.OldItems);
+                    if (E.OldItems is IEnumerable<TCriteria> removed) RemoveValues(removed);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    RemoveValues(E.OldItems);
-                    AddValues(E.NewItems);
+                    if (E.OldItems is IEnumerable<TCriteria> old) RemoveValues(old);
+                    if (E.NewItems is IEnumerable<TCriteria> @new) AddValues(@new);
                     break;
                 case NotifyCollectionChangedAction.Move: break;
                 case NotifyCollectionChangedAction.Reset:
@@ -219,8 +230,8 @@ namespace MathCore.WPF
                     _FiltersCollection.Clear();
                     _Filters.Clear();
 
-                    if (_View.IsEmpty) break;
-                    foreach (var group in _View.SourceCollection.Cast<object>().GroupBy(_Selector))
+                    if (_View is not { IsEmpty: false } || _Selector is not { } selector) break;
+                    foreach (var group in _View.SourceCollection.Cast<object>().GroupBy(selector))
                     {
                         var filter = new CollectionViewFilterItem<TCriteria>(group.Key, group);
                         filter.EnabledChanged += OnFilterEnableChanged;
@@ -234,9 +245,10 @@ namespace MathCore.WPF
 
         private void AddValues([NotNull, ItemCanBeNull] IEnumerable values)
         {
+            if (_Selector is not { } selector) return;
             foreach (var value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 if (!_Filters.TryGetValue(key, out var filter))
                 {
                     filter = new CollectionViewFilterItem<TCriteria>(key);
@@ -250,9 +262,10 @@ namespace MathCore.WPF
 
         private void RemoveValues([NotNull, ItemCanBeNull] IEnumerable values)
         {
+            if (_Selector is not { } selector) return;
             foreach (var value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 if (!_Filters.TryGetValue(key, out var filter)) continue;
                 filter.Remove(value);
                 if (filter.Count != 0) continue;
@@ -262,17 +275,18 @@ namespace MathCore.WPF
             }
         }
 
-        private void OnFilterEnableChanged([CanBeNull] object sender, [CanBeNull] EventArgs e)
+        private void OnFilterEnableChanged(object? sender, EventArgs? e)
         {
             _AllFiltersDisabled = !_FiltersCollection.Any(f => f.Enabled);
-            _View.Refresh();
+            _View?.Refresh();
         }
 
-        public void Filter([CanBeNull] object Sender, [NotNull] FilterEventArgs E)
+        public void Filter(object? Sender, FilterEventArgs E)
         {
+            if (_Selector is not { } selector) return;
             if (!_Enabled || _AllFiltersDisabled) return;
             var value = E.Item;
-            var key = _Selector(value);
+            var key = selector(value);
             if (!_Filters.TryGetValue(key, out var filter)) return;
             if (!filter.Enabled) E.Accepted = false;
         }
@@ -280,13 +294,13 @@ namespace MathCore.WPF
 
     public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>
     {
-        [NotNull, ItemCanBeNull] private readonly ICollectionView _View;
-        [NotNull] private readonly Func<TItem, TCriteria> _Selector;
-        [NotNull, ItemNotNull] private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
-        [NotNull] private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
+        private readonly ICollectionView? _View;
+        private readonly Func<TItem, TCriteria>? _Selector;
+        private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
+        private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
         private bool _Enabled;
         private bool _AllFiltersDisabled = true;
-        [CanBeNull] private string _Name;
+        private string? _Name;
 
         public bool Enabled
         {
@@ -296,12 +310,11 @@ namespace MathCore.WPF
                 if (_Enabled == value) return;
                 _Enabled = value;
                 OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
-                _View.Refresh();
+                _View?.Refresh();
             }
         }
 
-        [CanBeNull]
-        public string Name
+        public string? Name
         {
             get => _Name;
             set
@@ -311,11 +324,11 @@ namespace MathCore.WPF
                 NameChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        public event EventHandler NameChanged;
+        public event EventHandler? NameChanged;
 
-        private CollectionViewFilter([NotNull, ItemNotNull] ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
+        private CollectionViewFilter(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
 
-        public CollectionViewFilter([NotNull, ItemCanBeNull] ICollectionView view, [NotNull] Func<TItem, TCriteria> selector, [CanBeNull] string Name = null) : this(new ObservableCollection<CollectionViewFilterItem<TCriteria>>())
+        public CollectionViewFilter(ICollectionView view, Func<TItem, TCriteria> selector, string? Name = null) : this(new ObservableCollection<CollectionViewFilterItem<TCriteria>>())
         {
             _Name = Name;
             _View = view;
@@ -324,27 +337,29 @@ namespace MathCore.WPF
             view.CollectionChanged += OnViewCollectionChanged;
         }
 
-        private void OnViewCollectionChanged([CanBeNull] object Sender, [CanBeNull] NotifyCollectionChangedEventArgs E)
+        private void OnViewCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs? E)
         {
-            var keys = _View.OfType<TItem>().GroupBy(_Selector).Select(g => g.Key).ToList();
+            if (_View is not { } view || _Selector is not { } selector) return;
+            var keys = view.OfType<TItem>().GroupBy(selector).Select(g => g.Key).ToList();
             foreach (var filter in _FiltersCollection)
-                filter.ExistInView = keys.Contains(filter.Key);
+                if (filter.Key is { } key)
+                    filter.ExistInView = keys.Contains(key);
         }
 
-        private void OnCollectionChanged([CanBeNull] object Sender, [NotNull] NotifyCollectionChangedEventArgs E)
+        private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
             {
                 default: throw new ArgumentOutOfRangeException();
                 case NotifyCollectionChangedAction.Add:
-                    AddValues(E.NewItems);
+                    if (E.NewItems is IEnumerable<TCriteria> added) AddValues(added);
                     break;
                 case NotifyCollectionChangedAction.Remove:
-                    RemoveValues(E.OldItems);
+                    if (E.OldItems is IEnumerable<TCriteria> removed) RemoveValues(removed);
                     break;
                 case NotifyCollectionChangedAction.Replace:
-                    RemoveValues(E.OldItems);
-                    AddValues(E.NewItems);
+                    if (E.OldItems is IEnumerable<TCriteria> old) RemoveValues(old);
+                    if (E.NewItems is IEnumerable<TCriteria> @new) AddValues(@new);
                     break;
                 case NotifyCollectionChangedAction.Move: break;
                 case NotifyCollectionChangedAction.Reset:
@@ -352,8 +367,8 @@ namespace MathCore.WPF
                     _FiltersCollection.Clear();
                     _Filters.Clear();
 
-                    if (_View.IsEmpty) break;
-                    foreach (var group in _View.SourceCollection.OfType<TItem>().GroupBy(_Selector))
+                    if (_View is not { IsEmpty: false } || _Selector is not { } selector) break;
+                    foreach (var group in _View.SourceCollection.OfType<TItem>().GroupBy(selector))
                     {
                         var filter = new CollectionViewFilterItem<TCriteria>(group.Key, group);
                         filter.EnabledChanged += OnFilterEnableChanged;
@@ -365,11 +380,12 @@ namespace MathCore.WPF
             }
         }
 
-        private void AddValues([NotNull, ItemCanBeNull] IEnumerable values)
+        private void AddValues(IEnumerable values)
         {
+            if(_Selector is not { } selector) return;
             foreach (TItem value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 if (!_Filters.TryGetValue(key, out var filter))
                 {
                     filter = new CollectionViewFilterItem<TCriteria>(key);
@@ -383,9 +399,10 @@ namespace MathCore.WPF
 
         private void RemoveValues([NotNull, ItemCanBeNull] IEnumerable values)
         {
+            if(_Selector is not { } selector) return;
             foreach (TItem value in values)
             {
-                var key = _Selector(value);
+                var key = selector(value);
                 if (!_Filters.TryGetValue(key, out var filter)) continue;
                 filter.Remove(value);
                 if (filter.Count != 0) continue;
@@ -395,16 +412,16 @@ namespace MathCore.WPF
             }
         }
 
-        private void OnFilterEnableChanged([CanBeNull] object sender, [CanBeNull] EventArgs e)
+        private void OnFilterEnableChanged(object? sender, EventArgs? e)
         {
             _AllFiltersDisabled = !_FiltersCollection.Any(f => f.Enabled);
-            _View.Refresh();
+            _View?.Refresh();
         }
 
-        public void Filter([CanBeNull] object Sender, [NotNull] FilterEventArgs E)
+        public void Filter(object? Sender, FilterEventArgs E)
         {
-            if (E.Item is not TItem item || !_Enabled || _AllFiltersDisabled) return;
-            var key = _Selector(item);
+            if (E.Item is not TItem item || !_Enabled || _AllFiltersDisabled || _Selector is not { } selector) return;
+            var key = selector(item);
             if (!_Filters.TryGetValue(key, out var filter)) return;
             if (!filter.Enabled) E.Accepted = false;
         }
@@ -412,47 +429,42 @@ namespace MathCore.WPF
 
     public static class CollectionFiltersExtensions
     {
-        [NotNull, ItemNotNull]
         public static CollectionFilter<TValue, TCriteria> Filter<TValue, TCriteria>
         (
-            [NotNull, ItemCanBeNull] this ObservableCollection<TValue> collection,
-            [NotNull] Func<TValue, TCriteria> selector
+            this ObservableCollection<TValue?> collection,
+            Func<TValue, TCriteria> selector
         ) => new(collection, selector);
 
-        [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria> FilterView<TCriteria>
         (
-            [NotNull, ItemCanBeNull] this ICollectionView view,
-            [NotNull] Func<object, TCriteria> selector,
-            [CanBeNull] string Name = null
+            this ICollectionView view,
+            Func<object, TCriteria> selector,
+            string? Name = null
         ) => new(view, selector, Name);
 
-        [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria, TItem> FilterView<TItem, TCriteria>
         (
-            [NotNull, ItemCanBeNull] this ICollectionView view,
-            [NotNull] Func<TItem, TCriteria> selector,
-            [CanBeNull] string Name = null
+            this ICollectionView view,
+            Func<TItem, TCriteria> selector,
+            string? Name = null
         ) => new(view, selector, Name);
 
-        [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria> FilterView<TCriteria>
         (
-            [NotNull] this CollectionViewSource source,
-            [NotNull] Func<object, TCriteria> selector,
-            [CanBeNull] string Name = null)
+            this CollectionViewSource source,
+            Func<object, TCriteria> selector,
+            string? Name = null)
         {
             var filter = source.View.FilterView(selector, Name);
             source.Filter += filter.Filter;
             return filter;
         }
 
-        [NotNull, ItemNotNull]
         public static CollectionViewFilter<TCriteria, TItem> FilterView<TItem, TCriteria>
         (
-            [NotNull] this CollectionViewSource source,
-            [NotNull] Func<TItem, TCriteria> selector,
-            [CanBeNull] string Name = null)
+            this CollectionViewSource source,
+            Func<TItem, TCriteria> selector,
+            string? Name = null)
         {
             var filter = source.View.FilterView(selector, Name);
             source.Filter += filter.Filter;

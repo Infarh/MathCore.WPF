@@ -20,6 +20,7 @@ using MathCore.WPF.Commands;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable VirtualMemberCallInConstructor
 // ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.ViewModels
 {
@@ -41,16 +42,15 @@ namespace MathCore.WPF.ViewModels
         public override object ProvideValue(IServiceProvider Service)
         {
             if (ViewModel.IsDesignMode) return this;
-            var service = (IRootObjectProvider)Service.GetService(typeof(IRootObjectProvider));
-            _DialogWindow = service.RootObject as Window;
-            if (_DialogWindow is null)
-                throw new InvalidOperationException("В логическом дереве визуальных компонентов не найден корень в виде объекта класса Window - самого диалогового окна");
-            return this;
+            var service = (IRootObjectProvider?)Service.GetService(typeof(IRootObjectProvider));
+            _DialogWindow = service?.RootObject as Window;
+            return _DialogWindow is null
+                ? throw new InvalidOperationException("В логическом дереве визуальных компонентов не найден корень в виде объекта класса Window - самого диалогового окна")
+                : this;
         }
 
         /// <inheritdoc />
-        [NotNull]
-        public object Convert(object v, Type t, object p, CultureInfo c) => new SettingsDialogViewModel(v, _DialogWindow);
+        public object? Convert(object v, Type t, object p, CultureInfo c) => _DialogWindow is { } window ? new SettingsDialogViewModel(v, window) : null;
 
         /// <inheritdoc />
         public object ConvertBack(object v, Type t, object p, CultureInfo c) => throw new NotSupportedException();
@@ -75,10 +75,10 @@ namespace MathCore.WPF.ViewModels
         private Window? _DialogWindow;
 
         /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
-        private readonly Dictionary<string, object> _PropertiesDictionary = new();
+        private readonly Dictionary<string, object?> _PropertiesDictionary = new();
 
         /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
-        protected Dictionary<string, object> PropertiesDictionary => _PropertiesDictionary;
+        protected Dictionary<string, object?> PropertiesDictionary => _PropertiesDictionary;
 
         /// <summary>Окно диалога конфигурации</summary>
         [CanBeNull]
@@ -102,7 +102,7 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Перечень известных свойств объекта конфигурации, с которыми можно работать на чтение и на запись значений</summary>
         [NotNull]
-        public PropertyInfo[]? KnownProperties => _KnownProperties ??= _ValueObject?.GetType().GetProperties(PropertiesBindingTypes) ?? Array.Empty<PropertyInfo>();
+        public PropertyInfo[] KnownProperties => _KnownProperties ??= _ValueObject?.GetType().GetProperties(PropertiesBindingTypes) ?? Array.Empty<PropertyInfo>();
 
         /// <summary>Команда сохранения значений конфигурации и закрытия окна диалога с положительным диалоговым результатом</summary>
         public LambdaCommand<bool?> CommitCommand { get; }
@@ -114,24 +114,24 @@ namespace MathCore.WPF.ViewModels
         public LambdaCommand<bool?> CloseCommand { get; }
 
         /// <summary>Инициализация новой модели-представления окна диалога конфигурации</summary>
-        /// <param name="value">ООбъект конфигурации</param>
+        /// <param name="value">Объект конфигурации</param>
         /// <param name="window">Окно диалога конфигурации</param>
-        public SettingsDialogViewModel([CanBeNull] object value, [NotNull] Window? window) : this() => Initialize(value, window);
+        public SettingsDialogViewModel(object value, Window window) : this() => Initialize(value, window);
 
         /// <summary>Инициализация новой модели-представления окна диалога конфигурации</summary>
         /// <remarks>Создаёт все команды, но не производит инициализацию модели устанавливая конфигурируемый объект и окно диалога</remarks>
         protected SettingsDialogViewModel()
         {
-            CommitCommand = new LambdaCommand<bool?>(OnCommitCommandExecuted, o => _ValueObject != null);
-            RejectCommand = new LambdaCommand<bool?>(OnRejectCommandExecuted, o => _ValueObject != null);
-            RestoreCommand = new LambdaCommand(OnRestoreCommandExecuted, o => _ValueObject != null && HasChanges);
-            CloseCommand = new LambdaCommand<bool?>(OnCloseCommandExecuted, o => _ValueObject != null);
+            CommitCommand = new LambdaCommand<bool?>(OnCommitCommandExecuted, _ => _ValueObject != null);
+            RejectCommand = new LambdaCommand<bool?>(OnRejectCommandExecuted, _ => _ValueObject != null);
+            RestoreCommand = new LambdaCommand(OnRestoreCommandExecuted, _ => _ValueObject != null && HasChanges);
+            CloseCommand = new LambdaCommand<bool?>(OnCloseCommandExecuted, _ => _ValueObject != null);
         }
 
         /// <summary>Инициализация модели-представления диалога конфигурации</summary>
         /// <param name="value">Объект конфигурации</param>
         /// <param name="window">Окно конфигурации</param>
-        protected virtual void Initialize([CanBeNull] object value, [NotNull] Window window)
+        protected virtual void Initialize(object value, [NotNull] Window window)
         {
             if (IsDesignMode || Equals(_DialogWindow, window) && Equals(_ValueObject, value)) return;
             if (window is null) throw new ArgumentNullException(nameof(window));
@@ -145,7 +145,7 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Обработчик события изменения значения свойства динамического объекта конфигурации</summary>
         /// <param name="Sender">Источник события - динамический объект конфигурации</param>
         /// <param name="E">Аргумент события, определяющий имя изменившегося свойства</param>
-        protected virtual void OnValuePropertyChanged(object Sender, PropertyChangedEventArgs E) { }
+        protected virtual void OnValuePropertyChanged(object? Sender, PropertyChangedEventArgs? E) { }
 
         /// <summary>Обработчик вызова команды применения изменений в динамическом-конфигурационном объекте и закрытия диалогового окна с положительным диалоговым результатом</summary>
         /// <param name="DialogResult">Установленный диалоговый результат (по умолчанию - <see langword="true"/>)</param>
@@ -191,12 +191,13 @@ namespace MathCore.WPF.ViewModels
         /// <param name="value">Исходный конфигурируемый объект</param>
         /// <param name="window">Окно диалога конфигурации</param>
         /// <param name="PropertiesDictionary">Словарь, в котором следует хранить временные значения устанавливаемых свойств конфигурируемого объекта</param>
-        internal SettingsObjectManager([NotNull] object value, [NotNull] Window window, [NotNull] Dictionary<string, object> PropertiesDictionary)
+        internal SettingsObjectManager(object value, Window window, Dictionary<string, object?> PropertiesDictionary)
             : base(PropertiesDictionary)
         {
             if (window is null) throw new ArgumentNullException(nameof(window));
             _Value = value;
-            if (value is INotifyPropertyChanged notify_property_changed) notify_property_changed.PropertyChanged += OnValuePropertyChanged;
+            if (value is INotifyPropertyChanged notify_property_changed) 
+                notify_property_changed.PropertyChanged += OnValuePropertyChanged;
 
             var type = value.GetType();
             var properties = type.GetProperties(SettingsDialogViewModel.PropertiesBindingTypes);
@@ -209,9 +210,9 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Обработчик события изменений свойств конфигурируемого объекта в случае если он определяет интерфейс <see cref="INotifyPropertyChanged"/></summary>
         /// <param name="Sender">Исходный конфигурируемый объект - источник события</param>
         /// <param name="E">Аргумент события, определяющий имя изменившегося свойства</param>
-        private void OnValuePropertyChanged(object Sender, [NotNull] PropertyChangedEventArgs E)
+        private void OnValuePropertyChanged(object? Sender, PropertyChangedEventArgs E)
         {
-            var property_name = E.PropertyName;
+            if(E.PropertyName is not { } property_name) return;
             if (property_name == __Items_PropertyName)
                 _IndexersValues.Clear();
             else
@@ -265,7 +266,7 @@ namespace MathCore.WPF.ViewModels
         /// При записи значения свойства, если в исходном конфигурируемом объекте свойство с таким именем существует, 
         /// то сохраняем переданное значение в словаре, проводя предварительно преобразование типа перданного объекта в тип, поддерживаемый свойством
         /// </remarks>
-        public override bool TrySetMember(SetMemberBinder binder, object value)
+        public override bool TrySetMember(SetMemberBinder binder, object? value)
         {
             if (_Value is null)
             {
@@ -303,7 +304,7 @@ namespace MathCore.WPF.ViewModels
             return false;
         }
 
-        public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object value)
+        public override bool TrySetIndex(SetIndexBinder binder, object[] indexes, object? value)
         {
             foreach (var indexer in _ObjectIndexers.Where(i => i.CanWrite))
             {
@@ -330,7 +331,7 @@ namespace MathCore.WPF.ViewModels
         {
             if (_Value is null)
             {
-                Debug.WriteLine($"Попытка получить доступ к отсутствующей View-модели данных\r\n{string.Join("\r\n", new StackTrace().GetFrames().Select(s => s.GetMethod().ToString()))}");
+                Debug.WriteLine($"Попытка получить доступ к отсутствующей View-модели данных\r\n{string.Join("\r\n", new StackTrace().GetFrames().Select(s => s.GetMethod()?.ToString()))}");
                 return;
             }
             if (_PropertiesValues.Count > 0)

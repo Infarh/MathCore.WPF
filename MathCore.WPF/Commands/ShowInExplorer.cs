@@ -19,13 +19,26 @@ namespace MathCore.WPF.Commands
 
         public override void Execute(object? parameter)
         {
-            switch (parameter)
+            while (true)
             {
-                default: return;
-                case string path when File.Exists(path): Execute(new FileInfo(path)); break;
-                case string path when Directory.Exists(path): Execute(new DirectoryInfo(path)); break;
-                case FileSystemInfo { Exists: true } file_or_dir: file_or_dir.ShowInFileExplorer(); break;
-                case DriveInfo { IsReady: true } drive: Execute(drive.RootDirectory); break;
+                switch (parameter)
+                {
+                    default: return;
+                    case string path when File.Exists(path):
+                        parameter = new FileInfo(path);
+                        continue;
+                    case string path when Directory.Exists(path):
+                        parameter = new DirectoryInfo(path);
+                        continue;
+                    case FileSystemInfo {Exists: true} file_or_dir:
+                        file_or_dir.ShowInFileExplorer();
+                        break;
+                    case DriveInfo {IsReady: true} drive:
+                        parameter = drive.RootDirectory;
+                        continue;
+                }
+
+                break;
             }
         }
     }

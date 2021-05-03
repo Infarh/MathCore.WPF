@@ -12,6 +12,7 @@ namespace MathCore.WPF.Converters.IO
     public class FilePathToName : ValueConverter
     {
         /// <inheritdoc />
-        protected override object Convert(object v, Type t, object p, CultureInfo c) => Path.GetFileName((string)v);
+        protected override object? Convert(object? v, Type t, object? p, CultureInfo c) =>
+            v is string str ? Path.GetFileName(str) : null;
     }
 }

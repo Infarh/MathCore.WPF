@@ -4,6 +4,7 @@ using System.Linq.Reactive;
 using System.Windows.Markup;
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
+// ReSharper disable InconsistentNaming
 
 // ReSharper disable MemberCanBeProtected.Global
 
@@ -69,7 +70,7 @@ namespace MathCore.WPF.Commands
             set
             {
                 if (ReferenceEquals(_CanExecute, value)) return;
-                _CanExecute = value ?? (o => true);
+                _CanExecute = value ?? (_ => true);
                 OnPropertyChanged(nameof(CanExecuteDelegate));
             }
         }
@@ -88,11 +89,11 @@ namespace MathCore.WPF.Commands
             _CanExecute = CanExecute;
         }
 
-        public LambdaCommand([NotNull]Action<object?> ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(ExecuteAction, CanExecute is null ? (Func<object?, bool>?)null : o => CanExecute!()) { }
+        public LambdaCommand([NotNull]Action<object?> ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(ExecuteAction, CanExecute is null ? null : _ => CanExecute!()) { }
 
-        public LambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : this(o => ExecuteAction(), CanExecute) { }
+        public LambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : this(_ => ExecuteAction(), CanExecute) { }
 
-        public LambdaCommand([NotNull]Action ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(o => ExecuteAction(), CanExecute is null ? (Func<object?, bool>?)null : o => CanExecute!()) { }
+        public LambdaCommand([NotNull]Action ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(_ => ExecuteAction(), CanExecute is null ? null : _ => CanExecute!()) { }
 
         #endregion
 
@@ -133,7 +134,7 @@ namespace MathCore.WPF.Commands
         [NotNull] public static implicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
 
         public static implicit operator LambdaCommand((Action Execute, Func<bool> CanExecute) info) => new(info.Execute, info.CanExecute);
-        public static implicit operator LambdaCommand((Action<object> Execute, Func<object, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
+        public static implicit operator LambdaCommand((Action<object?> Execute, Func<object?, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 
         [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new(execute);
         [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new(execute);
@@ -143,7 +144,7 @@ namespace MathCore.WPF.Commands
     /// Типизированная лямбда-команда
     /// Позволяет быстро указывать методы для выполнения основного тела команды и определения возможности выполнения
     /// </summary>
-    public class LambdaCommand<T> : Command, IObservableEx<T>
+    public class LambdaCommand<T> : Command, IObservableEx<T?>
     {
         #region События
 
@@ -165,17 +166,17 @@ namespace MathCore.WPF.Commands
         #region Поля
 
         /// <summary>Делегат основного тела команды</summary>
-        protected Action<T>? _ExecuteAction;
+        protected Action<T?>? _ExecuteAction;
 
         /// <summary>Функция определения возможности исполнения команды</summary>
-        protected Func<T, bool>? _CanExecute;
+        protected Func<T?, bool>? _CanExecute;
 
         #endregion
 
         #region Свойства
 
         /// <summary>Функция определения возможности исполнения команды</summary>
-        public Func<T, bool>? CanExecuteDelegate
+        public Func<T?, bool>? CanExecuteDelegate
         {
             get => _CanExecute;
             set
@@ -196,14 +197,14 @@ namespace MathCore.WPF.Commands
         /// </summary>
         protected LambdaCommand() { }
 
-        public LambdaCommand([NotNull] Action<T> ExecuteAction, Func<bool>? CanExecute)
-            :this(ExecuteAction, CanExecute is null ? null : new Func<T, bool>(_ => CanExecute()))
+        public LambdaCommand([NotNull] Action<T?> ExecuteAction, Func<bool>? CanExecute)
+            :this(ExecuteAction, CanExecute is null ? null : new Func<T?, bool>(_ => CanExecute()))
         { }
 
-        public LambdaCommand([NotNull] Action<T> ExecuteAction, Func<T, bool>? CanExecute = null)
+        public LambdaCommand([NotNull] Action<T?> ExecuteAction, Func<T?, bool>? CanExecute = null)
         {
             _ExecuteAction = ExecuteAction ?? throw new ArgumentNullException(nameof(ExecuteAction));
-            _CanExecute = ViewModel.IsDesignMode ? (o => true) : CanExecute;
+            _CanExecute = ViewModel.IsDesignMode ? (_ => true) : CanExecute;
         }
 
         #endregion
@@ -259,7 +260,7 @@ namespace MathCore.WPF.Commands
             }
             catch (Exception error)
             {
-                _Orservable?.OnError(error);
+                _Observable?.OnError(error);
                 throw;
             }
             OnCompleteExecuting(new EventArgs<object?>(parameter));
@@ -273,7 +274,7 @@ namespace MathCore.WPF.Commands
             {
                 null => can_execute(default!),
                 T parameter => can_execute(parameter),
-                _ => can_execute((T)ConvertParameter(obj))
+                _ => can_execute(ConvertParameter(obj))
             };
         }
 
@@ -285,23 +286,23 @@ namespace MathCore.WPF.Commands
             if (!disposing) return;
             _ExecuteAction = null;
             _CanExecute = null;
-            _Orservable?.OnCompleted();
-            _Orservable?.Dispose();
-            _Orservable = null;
+            _Observable?.OnCompleted();
+            _Observable?.Dispose();
+            _Observable = null;
         }
 
         #endregion
 
-        [NotNull] public static implicit operator LambdaCommand<T>([NotNull] Action<T> execute) => new(execute);
+        [NotNull] public static implicit operator LambdaCommand<T?>([NotNull] Action<T?> execute) => new(execute);
 
-        public static implicit operator LambdaCommand<T>((Action<T> Execute, Func<T, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
+        public static implicit operator LambdaCommand<T?>((Action<T?> Execute, Func<T?, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 
         #region IObservable<T>
 
-        private SimpleObservableEx<T>? _Orservable;
+        private SimpleObservableEx<T?>? _Observable;
 
-        public IDisposable Subscribe(IObserverEx<T> observer) => (_Orservable ??= new SimpleObservableEx<T>()).Subscribe(observer); 
-        public IDisposable Subscribe(IObserver<T> observer) => (_Orservable ??= new SimpleObservableEx<T>()).Subscribe(observer); 
+        public IDisposable Subscribe(IObserverEx<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer); 
+        public IDisposable Subscribe(IObserver<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer); 
 
         #endregion
 

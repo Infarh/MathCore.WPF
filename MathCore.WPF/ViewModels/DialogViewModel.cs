@@ -4,6 +4,8 @@ using System.Windows.Markup;
 
 using MathCore.WPF.Commands;
 // ReSharper disable EventNeverSubscribedTo.Global
+// ReSharper disable UnusedMember.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace MathCore.WPF.ViewModels
 {

@@ -29,12 +29,12 @@ namespace MathCore.WPF.Converters
                 ? _Convert(P)
                 : v is null
                     ? null
-                    : DoubleValueConverter.TryConvertToDouble(v, out var V) ? (object?) _Convert(V) : V;
+                    : DoubleValueConverter.TryConvertToDouble(v, out var V) ? _Convert(V) : V;
 
         /// <inheritdoc />
         protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 
             v is null 
-                ? (double?)null 
+                ? null 
                 : _ConvertBack((bool)v);
     }
 }

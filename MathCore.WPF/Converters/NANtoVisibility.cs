@@ -22,7 +22,7 @@ namespace MathCore.WPF.Converters
         /// <inheritdoc />
         protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
             v is null 
-                ? (object?) null 
+                ? null 
                 : Inverted
                     ? !double.IsNaN((double)v)
                         ? (Collapse ? Visibility.Collapsed : Visibility.Hidden)

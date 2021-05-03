@@ -69,7 +69,7 @@ namespace MathCore.WPF.Commands
 
         public ParameterApplyTo ApplyTo { get; set; } = ParameterApplyTo.None;
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;
@@ -82,7 +82,7 @@ namespace MathCore.WPF.Commands
             Value = Value
         };
 
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             var target = ApplyTo == ParameterApplyTo.Target ? parameter : Target;
             if (target is null) return false;
@@ -96,7 +96,7 @@ namespace MathCore.WPF.Commands
             return true;
         }
 
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             var target = ApplyTo == ParameterApplyTo.Target ? parameter : Target;
 

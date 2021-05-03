@@ -24,7 +24,7 @@ namespace MathCore.WPF.ValidationRules
 
         /// <inheritdoc />
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo c)
+        public override ValidationResult Validate(object? value, CultureInfo c)
         {
             if (value is null) return new ValidationResult(false, "Значение не указано");
             try

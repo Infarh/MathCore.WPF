@@ -1,18 +1,19 @@
 ﻿using System.Runtime.CompilerServices;
 
 using MathCore.Annotations;
+// ReSharper disable UnusedMember.Global
 
+// ReSharper disable once CheckNamespace
 namespace System.Windows.Threading
 {
     public static class DispatcherExtensions
     {
-        [NotNull] public static DispatcherAwaiter GetAwaiter([NotNull] this Dispatcher dispatcher) => new(dispatcher);
+        public static DispatcherAwaiter GetAwaiter([NotNull] this Dispatcher dispatcher) => new(dispatcher);
 
-        public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority)
-        {
-            if (dispatcher is null) throw new ArgumentNullException(nameof(dispatcher));
-            return new PriorityDispatcherAwaiter(dispatcher, Priority);
-        }
+        public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority) => 
+            dispatcher is null 
+                ? throw new ArgumentNullException(nameof(dispatcher)) 
+                : new PriorityDispatcherAwaiter(dispatcher, Priority);
     }
 
     public readonly ref struct PriorityDispatcherAwaiter

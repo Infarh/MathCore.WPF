@@ -6,6 +6,7 @@ using System.Windows.Media;
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace MathCore.WPF
 {

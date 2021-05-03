@@ -17,7 +17,7 @@ namespace MathCore.WPF.ValidationRules
         /// <param name="c">Сведения о текущей культуре</param>
         /// <returns>Результат проверки валидный, если путь в файловой системе существует</returns>
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo c)
+        public override ValidationResult Validate(object? value, CultureInfo c)
         {
             var path = value as string;
             var exist = (AllowNull || !string.IsNullOrWhiteSpace(path))

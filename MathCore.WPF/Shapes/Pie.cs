@@ -109,15 +109,10 @@ namespace MathCore.WPF.Shapes
         private readonly CombinedGeometry _Pie;
         private Rect _Rect;
 
-        protected override Geometry DefiningGeometry
-        {
-            get
-            {
-                if(_Rect.IsEmpty || _Rect.Width.Equals(0d) || _Rect.Height.Equals(0d))
-                    return Geometry.Empty;
-                return GetGeometry(_Rect, StartAngle, StopAngle, OuterRadius, InnerRadius, IsAligned);
-            }
-        }
+        protected override Geometry DefiningGeometry =>
+            _Rect is { IsEmpty: false, Width: > 0, Height: > 0 }
+                ? GetGeometry(_Rect, StartAngle, StopAngle, OuterRadius, InnerRadius, IsAligned)
+                : Geometry.Empty;
 
         public Pie()
         {
@@ -131,9 +126,9 @@ namespace MathCore.WPF.Shapes
             return base.MeasureOverride(ConstraintSize);
         }
 
-        protected override Size ArrangeOverride(Size finalSize)
+        protected override Size ArrangeOverride(Size FinalSize)
         {
-            var size = base.ArrangeOverride(finalSize);
+            var size = base.ArrangeOverride(FinalSize);
             var t = StrokeThickness;
             var m = t / 2;
             _Rect = size.IsEmpty || size.Width.Equals(0d) || size.Height.Equals(0d)
@@ -166,19 +161,19 @@ namespace MathCore.WPF.Shapes
         private Geometry GetGeometry(Rect rect, double start, double stop, double R, double r, bool aligned)
         {
             var a = Math.Abs(stop - start);
-            if(a.Equals(0d))
+            if(a is 0d)
                 return Geometry.Empty;
             ChangeGeometry(rect, R, r, aligned);
-            if(a.Equals(0d) || Math.Abs(a) >= 360)
-                if(r.Equals(0d))
-                    return _OuterEllipse;
-                else
-                    return _Cycle;
+            if(a is 0d || Math.Abs(a) >= 360) 
+                return r is 0d 
+                    ? _OuterEllipse 
+                    : _Cycle;
+
             var geometry = new StreamGeometry();
             using(var geometry_context = geometry.Open())
                 DrawGeometry(geometry_context, rect, R, r, start, stop, aligned);
             geometry.Freeze();
-            if(r.Equals(0d)) return geometry;
+            if(r is 0d) return geometry;
             _Pie.Geometry1 = geometry;
             return _Pie;
         }
@@ -230,7 +225,7 @@ namespace MathCore.WPF.Shapes
             var a = min(start, stop);
             var b = Math.Max(start, stop);
             var d = b - a;
-            if(d.Equals(0d)) return;
+            if(d is 0d) return;
 
             if(aligned)
             {
@@ -253,11 +248,11 @@ namespace MathCore.WPF.Shapes
                 g.BeginFigure(out_arc_start, false, true);
             else
             {
-                g.BeginFigure(r.Equals(0d) ? p0 : in_arc_stop, true, true);
+                g.BeginFigure(r is 0d ? p0 : in_arc_stop, true, true);
                 g.LineTo(out_arc_start, true, true);
             }
             g.ArcTo(out_arc_stop, out_arc_size, 0, arc_isout, SweepDirection.Clockwise, true, true);
-            if(r.Equals(0d) || line_only) return;
+            if(r is 0d || line_only) return;
             g.LineTo(in_arc_start, true, true);
             g.ArcTo(in_arc_stop, in_arc_size, 0, arc_isout, SweepDirection.Counterclockwise, true, true);
         }

@@ -1,7 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
 using MathCore.WPF.ViewModels;
+// ReSharper disable UnusedType.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF
 {
@@ -21,7 +25,16 @@ namespace MathCore.WPF
             set
             {
                 if (Set(ref _Items, value))
-                    SelectedItem = value is null ? default! : value.FirstOrDefault();
+                    SelectedItem = value switch
+                    {
+                        T[] { Length: > 0 } array => array[0],
+                        List<T> { Count: > 0 } list => list[0],
+                        LinkedList<T> { First: { Value: { } first_value } } => first_value, 
+                        ObservableCollection<T> { Count: > 0 } collection => collection[0],
+                        IList<T> { Count: > 0 } list => list[0],
+                        { } items => items.FirstOrDefault(),
+                        _ => default
+                    };
             }
         }
 
@@ -30,10 +43,10 @@ namespace MathCore.WPF
         #region SelectedItem : T - Выбранный элемент
 
         /// <summary>Выбранный элемент</summary>
-        private T _SelectedItem = default!;
+        private T? _SelectedItem;
 
         /// <summary>Выбранный элемент</summary>
-        public T SelectedItem { get => _SelectedItem; set => Set(ref _SelectedItem, value); }
+        public T? SelectedItem { get => _SelectedItem; set => Set(ref _SelectedItem, value); }
 
         #endregion
 

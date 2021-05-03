@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MathCore.Annotations;
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Commands
 {
@@ -56,22 +57,22 @@ namespace MathCore.WPF.Commands
 
     public class LambdaCommandAsync<T> : Command
     {
-        private readonly Func<T, Task> _ExecuteAsync;
-        private readonly Func<T, bool>? _CanExecuteAsync;
+        private readonly Func<T?, Task> _ExecuteAsync;
+        private readonly Func<T?, bool>? _CanExecuteAsync;
 
         private volatile Task? _ExecutingTask;
 
         public LambdaCommandAsync(Func<Task> ExecuteAsync, Func<bool>? CanExecuteAsync = null)
             :this(
-                ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<T, Task>(_ => ExecuteAsync()),
-                CanExecuteAsync is null ? null : new Func<T, bool>(_ => CanExecuteAsync()))
+                ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<T?, Task>(_ => ExecuteAsync()),
+                CanExecuteAsync is null ? null : new Func<T?, bool>(_ => CanExecuteAsync()))
         { }
 
-        public LambdaCommandAsync(Func<T, Task> ExecuteAsync, Func<bool>? CanExecuteAsync = null)
-            : this(ExecuteAsync, CanExecuteAsync is null ? null : new Func<T, bool>(_ => CanExecuteAsync()))
+        public LambdaCommandAsync(Func<T?, Task> ExecuteAsync, Func<bool>? CanExecuteAsync = null)
+            : this(ExecuteAsync, CanExecuteAsync is null ? null : new Func<T?, bool>(_ => CanExecuteAsync()))
         { }
 
-        public LambdaCommandAsync([NotNull] Func<T, Task> ExecuteAsync, Func<T, bool>? CanExecuteAsync = null)
+        public LambdaCommandAsync([NotNull] Func<T?, Task> ExecuteAsync, Func<T?, bool>? CanExecuteAsync = null)
         {
             _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
             _CanExecuteAsync = CanExecuteAsync;
@@ -79,7 +80,7 @@ namespace MathCore.WPF.Commands
 
         public override bool CanExecute(object? parameter) =>
             (_ExecutingTask is null || _ExecutingTask.IsCompleted)
-            && (_CanExecuteAsync?.Invoke(LambdaCommand<T>.ConvertParameter(parameter)) ?? true);
+            && (_CanExecuteAsync?.Invoke(LambdaCommand<T?>.ConvertParameter(parameter)) ?? true);
 
         public override async void Execute(object? parameter)
         {

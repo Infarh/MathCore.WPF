@@ -23,7 +23,7 @@ namespace MathCore.WPF.Commands
         public override void Execute(object? parameter)
         {
             var window = Window ?? throw new InvalidOperationException("Отсутствует ссылка на окно");
-            window.DialogResult = parameter as bool? ?? ConvertParameter(parameter) as bool? ?? false;
+            window.DialogResult = parameter as bool? ?? ConvertParameter(parameter) ?? false;
 
             window.Close();
         }

@@ -2,6 +2,7 @@
 using System.Windows.Markup;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace MathCore.WPF.Converters
 {

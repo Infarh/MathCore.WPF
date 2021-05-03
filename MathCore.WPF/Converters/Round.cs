@@ -4,6 +4,7 @@ using System.Windows.Markup;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable UnusedType.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace MathCore.WPF.Converters
 {

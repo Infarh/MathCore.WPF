@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Data;
 using MathCore.Annotations;
 using MathCore.WPF.Converters;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable PrivateFieldCanBeConvertedToLocalVariable
 
 namespace MathCore.WPF.Values
 {
@@ -23,7 +25,7 @@ namespace MathCore.WPF.Values
                 nameof(ScreenLength),
                 typeof(double),
                 typeof(ScaleValue),
-                new PropertyMetadata(default(double), (d, e) => ((ScaleValue)d).Update()));
+                new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
 
         /// <summary>Размер экрана</summary>
         [Bindable(true)]
@@ -44,7 +46,7 @@ namespace MathCore.WPF.Values
                 nameof(ValueMin),
                 typeof(double),
                 typeof(ScaleValue),
-                new PropertyMetadata(default(double), (d, e) => ((ScaleValue)d).Update()));
+                new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
 
         /// <summary>Отображаемый минимум</summary>
         [Bindable(true)]
@@ -65,7 +67,7 @@ namespace MathCore.WPF.Values
                 nameof(ValueMax),
                 typeof(double),
                 typeof(ScaleValue),
-                new PropertyMetadata(default(double), (d, e) => ((ScaleValue)d).Update()));
+                new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
 
         /// <summary>Отображаемый максимум</summary>
         [Bindable(true)]
@@ -86,7 +88,7 @@ namespace MathCore.WPF.Values
                 nameof(ValueOffset),
                 typeof(double),
                 typeof(ScaleValue),
-                new PropertyMetadata(default(double), (d, e) => ((ScaleValue)d).Update()));
+                new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
 
         /// <summary>Смещение значения</summary>
         [Bindable(true)]
@@ -107,7 +109,7 @@ namespace MathCore.WPF.Values
                 nameof(ScreenOffset),
                 typeof(double),
                 typeof(ScaleValue),
-                new PropertyMetadata(default(double), (d, e) => ((ScaleValue)d).Update()));
+                new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
 
         /// <summary>Экранное смещение</summary>
         [Bindable(true)]
@@ -131,7 +133,7 @@ namespace MathCore.WPF.Values
                 new FrameworkPropertyMetadata(
                     default(double),
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    (d, e) => ((ScaleValue)d)._IsValueLast = true));
+                    (d, _) => ((ScaleValue)d)._IsValueLast = true));
 
         /// <summary>Значение</summary>
         [Bindable(true)]
@@ -155,7 +157,7 @@ namespace MathCore.WPF.Values
                 new FrameworkPropertyMetadata(
                     default(double),
                     FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    (d, e) => ((ScaleValue)d)._IsValueLast = false));
+                    (d, _) => ((ScaleValue)d)._IsValueLast = false));
 
         /// <summary>Экранное значение</summary>
         [Bindable(true)]
@@ -189,9 +191,9 @@ namespace MathCore.WPF.Values
 
         #region IValueConverter
 
-        [NotNull]
-        private object Convert(object v, Type t, object p, CultureInfo c)
+        private object? Convert(object? v, Type? t, object? p, CultureInfo? c)
         {
+            if (v is null) return null;
             var screen_length = ScreenLength;
             if (screen_length.Equals(0d)) return double.NaN;
             var value_min = ValueMin;
@@ -204,9 +206,9 @@ namespace MathCore.WPF.Values
             return screen_value;
         }
 
-        [NotNull]
-        private object ConvertBack(object v, Type t, object p, CultureInfo c)
+        private object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c)
         {
+            if (v is null) return null;
             var screen_length = ScreenLength;
             if (screen_length.Equals(0d)) return double.NaN;
             var value_min = ValueMin;

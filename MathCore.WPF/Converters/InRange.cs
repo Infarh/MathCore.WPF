@@ -31,6 +31,6 @@ namespace MathCore.WPF.Converters
         public InRange(Interval interval) => _Interval = interval;
 
         /// <inheritdoc />
-        protected override bool? Convert(double v) => v.IsNaN() ? null : (bool?)_Interval.Check(v);
+        protected override bool? Convert(double v) => v.IsNaN() ? null : _Interval.Check(v);
     }
 }

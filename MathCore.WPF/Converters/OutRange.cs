@@ -25,7 +25,7 @@ namespace MathCore.WPF.Converters
 
         public bool? IncludeLimits
         {
-            get => MinInclude && MaxInclude ? true : !MinInclude && !MaxInclude ? (bool?)false : null;
+            get => MinInclude && MaxInclude ? true : !MinInclude && !MaxInclude ? false : null;
             set
             {
                 switch (value)
@@ -51,6 +51,6 @@ namespace MathCore.WPF.Converters
         public OutRange(Interval interval) => _Interval = interval;
 
         /// <inheritdoc />
-        protected override bool? Convert(double v) => v.IsNaN() ? null : (bool?)!_Interval.Check(v);
+        protected override bool? Convert(double v) => v.IsNaN() ? null : !_Interval.Check(v);
     }
 }

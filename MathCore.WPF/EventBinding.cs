@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -7,7 +6,6 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class EventBinding : MarkupExtension
     {
         private EventInfo _TargetEvent;
@@ -24,12 +22,12 @@ namespace MathCore.WPF
             _TargetEvent = target_service.TargetProperty as EventInfo
                             ?? throw new InvalidOperationException("Свойство разметки XAML не определено как событие");
 
-            _Target.DataContextChanged += OnTargetDatacontextChanged;
+            _Target.DataContextChanged += OnTargetDataContextChanged;
 
             return _LastEventHandler = GetEventHandler(_Target.DataContext) ?? GetDefaultEventHandler();
         }
 
-        private void OnTargetDatacontextChanged(object Sender, DependencyPropertyChangedEventArgs E)
+        private void OnTargetDataContextChanged(object Sender, DependencyPropertyChangedEventArgs E)
         {
             if (_LastEventHandler != null)
             {

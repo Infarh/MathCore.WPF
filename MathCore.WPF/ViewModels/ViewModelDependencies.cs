@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Linq.Reactive;
 using System.Reflection;
-using System.Text;
+// ReSharper disable UnusedType.Global
+
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
 namespace MathCore.WPF.ViewModels
 {
@@ -28,7 +29,7 @@ namespace MathCore.WPF.ViewModels
                 _Model = Model ?? throw new ArgumentNullException(nameof(Model));
                 _PropertName = PropertName ?? throw new ArgumentNullException(nameof(PropertName));
                 if (string.IsNullOrWhiteSpace(PropertName)) throw new ArgumentException("Пустая строка в виде имени свойства", nameof(PropertName));
-                _Model.PropertyChanged += OnPropertyChanged;
+                _Model.PropertyChanged += OnPropertyChanged!;
             }
 
             private void OnPropertyChanged(object Sender, PropertyChangedEventArgs E)

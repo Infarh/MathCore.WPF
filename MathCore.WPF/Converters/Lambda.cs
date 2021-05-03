@@ -19,25 +19,25 @@ namespace MathCore.WPF.Converters
         public Lambda(
             [NotNull]Func<TValue, TResult> Converter, 
             [CanBeNull] Func<TResult, TValue>? BackConverter = null)
-            : this((v, t, p, c) => Converter(v), BackConverter is null ? null : (ConverterBack)((v, t, p, c) => BackConverter(v)))
+            : this((v, _, _, _) => Converter(v), BackConverter is null ? null : ((v, _, _, _) => BackConverter(v)))
         { }
 
         public Lambda([NotNull]Converter Converter, [CanBeNull] ConverterBack? BackConverter = null)
         {
             _Converter = Converter;
-            _BackConverter = BackConverter ?? ((v, t, p, c) => throw new NotSupportedException());
+            _BackConverter = BackConverter ?? ((_, _, _, _) => throw new NotSupportedException());
         }
 
         /// <inheritdoc />
         protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
             v is null 
-                ? (object?) null 
+                ? null 
                 : _Converter((TValue)v, t, p, c);
 
         /// <inheritdoc />
         protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) =>
             v is null
-                ? (object?) null
+                ? null
                 : _BackConverter((TResult) v, t, p, c);
     } 
 }

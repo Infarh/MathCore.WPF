@@ -16,7 +16,7 @@ namespace MathCore.WPF.Commands
 
         public ExecuteCommand(string Command, bool ShellExecute) : this(Command) => this.ShellExecute = ShellExecute;
 
-        public override bool CanExecute(object p) => !string.IsNullOrWhiteSpace(p as string) || !string.IsNullOrWhiteSpace(Command);
+        public override bool CanExecute(object? p) => !string.IsNullOrWhiteSpace(p as string) || !string.IsNullOrWhiteSpace(Command);
 
         public override void Execute(object? p)
         {
@@ -32,8 +32,8 @@ namespace MathCore.WPF.Commands
             else
             {
                 info = new ProcessStartInfo(Command);
-                if(p != null)
-                    info.Arguments = p.ToString();
+                if(p?.ToString() is { Length: > 0 } args)
+                    info.Arguments = args;
             }
             info.UseShellExecute = ShellExecute;
             Process.Start(info);

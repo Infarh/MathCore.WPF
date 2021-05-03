@@ -15,7 +15,7 @@ namespace MathCore.WPF.Converters
     {
         [NotNull] public override object ProvideValue(IServiceProvider sp) => this;
 
-        public object? Convert([NotNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv.Min();
+        public object? Convert([NotNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.Min();
 
         public object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => throw new NotSupportedException();
 

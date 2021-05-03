@@ -9,11 +9,10 @@ namespace MathCore.WPF.Converters
     {
         /// <inheritdoc />
         [NotNull]
-        protected override object? Convert([CanBeNull] object[]? vv, Type? t, object? p, CultureInfo? c) => 
+        protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => 
             Convert(Array.ConvertAll(vv ?? Array.Empty<object>(), DoubleValueConverter.ConvertToDouble));
 
         /// <inheritdoc />
-        [CanBeNull]
         protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) =>
             ConvertBack(DoubleValueConverter.ConvertToDouble(v))?.Cast<object>().ToArray();
 

@@ -7,12 +7,14 @@ using System.Windows.Markup;
 using MathCore.WPF.Commands;
 using MathCore.WPF.Services;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.ViewModels
 {
     /// <summary>Модель диалога прогресса</summary>
     [MarkupExtensionReturnType(typeof(ProgressViewModel))]
-    public class ProgressViewModel : ViewModel, IProgressInfo
+    public class ProgressViewModel : TitledViewModel, IProgressInfo
     {
         /// <summary>Событие возникает в момент вызова отмены операции в диалоге (вызове команды отмены)</summary>
         public event EventHandler? Cancelled;
@@ -27,19 +29,9 @@ namespace MathCore.WPF.ViewModels
 
         public ProgressViewModel() { }
 
-        public ProgressViewModel(string Title) => _Title = Title;
+        public ProgressViewModel(string Title) : base(Title) { }
 
         public event EventHandler? Disposed;
-
-        #region Title : string - Заголовок окна
-
-        /// <summary>Заголовок окна</summary>
-        private string _Title;
-
-        /// <summary>Заголовок окна</summary>
-        public string Title { get => _Title; set => Set(ref _Title, value); }
-
-        #endregion
 
         #region StatusValue : string? - Статус
 

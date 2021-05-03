@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Markup;
+// ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF
 {
@@ -15,11 +16,18 @@ namespace MathCore.WPF
 
         public override object ProvideValue(IServiceProvider sp) => _Elements.Cast<Array>().SelectMany(GetItems).ToArray();
 
-        private static IEnumerable<object> GetItems(object Item)
+        private static IEnumerable<object> GetItems(object? Item)
         {
-            if (Item is null) yield break;
-            if (!(Item is IEnumerable)) yield return Item;
-            else foreach (var item in (IEnumerable)Item) yield return item;
+            switch (Item)
+            {
+                case null: yield break;
+                case IEnumerable enumerable:
+                    foreach (var item in enumerable)
+                        yield return item;
+                    break;
+                default: yield return Item;
+                    break;
+            }
         }
     }
 }

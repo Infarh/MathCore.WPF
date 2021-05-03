@@ -19,9 +19,14 @@ namespace MathCore.WPF.Converters
             get => _Points;
             set
             {
-                if(ReferenceEquals(_Points, value)) return;
-                _Polynom = new MathCore.Interpolation.Lagrange(value.Select(p => p.X).ToArray(), value.Select(p => p.Y).ToArray()).Polynom;
+                if (ReferenceEquals(_Points, value)) return;
                 _Points = value;
+                if (value is null)
+                {
+                    _Polynom = null;
+                    return;
+                }
+                _Polynom = new MathCore.Interpolation.Lagrange(value.Select(p => p.X).ToArray(), value.Select(p => p.Y).ToArray()).Polynom;
             }
         }
 

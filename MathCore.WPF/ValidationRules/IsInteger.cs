@@ -17,7 +17,7 @@ namespace MathCore.WPF.ValidationRules
         /// <param name="c">Сведения о текущей культуре</param>
         /// <returns>Результат проверки валидный, если проверяемое значение может быть представлено в виде <see cref="int"/></returns>
         [NotNull]
-        public override ValidationResult Validate(object value, CultureInfo c)
+        public override ValidationResult Validate(object? value, CultureInfo c)
         {
             if (value is null)
                 return AllowNull

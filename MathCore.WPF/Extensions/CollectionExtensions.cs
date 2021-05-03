@@ -43,9 +43,9 @@ namespace System.Collections.ObjectModel
             private readonly Func<TSourceItem, TDestItem> _Converter;
             private readonly Dictionary<object, TDestItem> _Items = new();
 
-            public TSource Source => (TSource)_SourceRef.Target!;
+            public TSource? Source => (TSource?)_SourceRef.Target;
 
-            public TDest Destination => (TDest)_DestinationRef.Target!;
+            public TDest? Destination => (TDest?)_DestinationRef.Target;
 
             public CollectionConnector(
                 [NotNull] TSource Source,
@@ -59,7 +59,7 @@ namespace System.Collections.ObjectModel
                 Source.CollectionChanged += OnCollectionChanged;
             }
 
-            private void OnCollectionChanged(object Sender, [NotNull]NotifyCollectionChangedEventArgs E)
+            private void OnCollectionChanged(object? Sender, [NotNull]NotifyCollectionChangedEventArgs E)
             {
                 switch (E.Action)
                 {

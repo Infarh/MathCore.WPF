@@ -1,0 +1,36 @@
+name: Publish GitHub.com/packages
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    name: Update package
+    
+    steps:
+      
+      - name: Checkout repository
+        uses: actions/checkout@v1
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+        
+      - name: Building
+        run: |
+          dotnet build MathCore.WPF/MathCore.WPF.csproj --nologo
+          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj --nologo
+        
+      - name: Testing
+        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj --nologo --no-restore
+        
+      - name: Packing
+        run: dotnet pack MathCore.WPF/MathCore.WPF.csproj -c Release -v m          
+      
+      - name: Push package
+        run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/SCAC-Irkut/index.json -k ${{secrets.GITHUB_TOKEN}}

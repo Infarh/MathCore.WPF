@@ -18,6 +18,6 @@ namespace MathCore.WPF.Commands
         public override void Execute(object? parameter) => ExecuteEvent?.Invoke(parameter);
 
         /// <inheritdoc />
-        public override bool CanExecute(object parameter) => base.CanExecute(parameter) && (CanExecuteEvent?.Invoke(parameter) ?? CanExecuteIfEventNotDefined);
+        public override bool CanExecute(object? parameter) => base.CanExecute(parameter) && (CanExecuteEvent?.Invoke(parameter) ?? CanExecuteIfEventNotDefined);
     }
 }

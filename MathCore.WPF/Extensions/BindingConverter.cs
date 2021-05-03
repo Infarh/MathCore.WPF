@@ -17,13 +17,12 @@ namespace MathCore.WPF.Extensions
         public override bool CanConvertTo(ITypeDescriptorContext c, Type dt) => dt == typeof(MarkupExtension);
 
         /// <inheritdoc />
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo c, object v, Type t)
-        {
-            if (t != typeof(MarkupExtension))
-                return base.ConvertTo(context, c, v, t);
-            if (v is BindingExpression binding) return binding.ParentBinding;
-            throw new ApplicationException();
-        }
+        public override object? ConvertTo(ITypeDescriptorContext context, CultureInfo c, object v, Type t) =>
+            t == typeof(MarkupExtension)
+                ? v is not BindingExpression binding
+                    ? throw new ApplicationException()
+                    : binding.ParentBinding
+                : base.ConvertTo(context, c, v, t);
     }
 
     public static class TypeConvertersRegistrator
@@ -47,8 +46,8 @@ namespace MathCore.WPF.Extensions
         /// <inheritdoc />
         public override ICustomTypeDescriptor GetTypeDescriptor(Type ObjectType, [CanBeNull] object Instance) => 
             Instance is null 
-                ? base.GetTypeDescriptor(ObjectType, null) 
-                : new BindingCustomTypeDescriptor(base.GetTypeDescriptor(ObjectType, Instance));
+                ? base.GetTypeDescriptor(ObjectType, null)! 
+                : new BindingCustomTypeDescriptor(base.GetTypeDescriptor(ObjectType, Instance)!);
     }
 
     public class BindingCustomTypeDescriptor : CustomTypeDescriptor

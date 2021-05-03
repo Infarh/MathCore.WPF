@@ -31,5 +31,7 @@ namespace System.Windows.Threading
             var obj_dispatcher = obj.Dispatcher;
             return obj_dispatcher is null ? func(obj) : (TValue) obj_dispatcher.Invoke(func, priority, obj);
         }
+
+        public static DispatcherAwaiter SwitchToContext<T>(this T obj) where T : DispatcherObject => obj.Dispatcher.GetAwaiter();
     }
 }
