@@ -33,4 +33,4 @@ jobs:
         run: dotnet pack MathCore.WPF/MathCore.WPF.csproj -c Release -v m          
       
       - name: Push package
-        run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/SCAC-Irkut/index.json -k ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/Infarh/index.json -k ${{secrets.GITHUB_TOKEN}}
