@@ -9,11 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.13.4</Version>
+    <Version>0.0.14</Version>
     <PackageReleaseNotes>
-      Диалог с пользователем - сервис
-      Диалог для индикации прогресса операции
-      Текстовый диалог с пользователем
+      Обновление пакетов
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -32,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.42" />
+    <PackageReference Include="MathCore" Version="0.0.44.8" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
