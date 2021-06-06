@@ -20,10 +20,9 @@
         <l:TestViewModel/>
     </Window.DataContext>
     <Grid>
-        <Button Content="Test" 
-                VerticalAlignment="Center" 
-                HorizontalAlignment="Center"
-                Padding="50,15"
-                Command="{Binding TestCommand}"/>
+        <GroupBox Header="123">
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Text="{Binding Header, RelativeSource={Ancestor GroupBox}}"/>
+        </GroupBox>
     </Grid>
 </Window>
