@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.15</Version>
+    <Version>0.0.16</Version>
     <PackageReleaseNotes>
       Обновление пакетов
     </PackageReleaseNotes>
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.45" />
+    <PackageReference Include="MathCore" Version="0.0.46" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
