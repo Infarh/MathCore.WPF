@@ -11,7 +11,7 @@
   <PropertyGroup>
     <Version>0.0.17</Version>
     <PackageReleaseNotes>
-      Обновление пакетов
+      Обновление пакета MathCore
     </PackageReleaseNotes>
   </PropertyGroup>
 
