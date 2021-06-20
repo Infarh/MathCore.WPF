@@ -41,6 +41,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
+    <NoWarn>1701;1702;8618</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
