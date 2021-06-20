@@ -31,4 +31,4 @@ jobs:
         run: dotnet pack MathCore.WPF\MathCore.WPF.csproj --no-build -c Release -v q
         
       - name: Publishing
-        run: dotnet nuget push MathCore.WPF\bin\Release\*.nupkg -k ${{ secrets.NuGetApiKey }} -n --skip-duplicate -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://api.nuget.org/v3/index.json -k ${{secrets.GITHUB_TOKEN}}
