@@ -234,16 +234,19 @@ namespace MathCore.WPF.ViewModels
             // Извлекаем всех подписчиков события
             var handlers = PropertyChangedEvent;
             handlers?.ThreadSafeInvoke(this, PropertyName);
+
             string[]? dependencies = null;
             var properties_dependencies_dictionary = _PropertiesDependenciesDictionary;
             if (properties_dependencies_dictionary != null)
                 lock (properties_dependencies_dictionary)
                     if (properties_dependencies_dictionary.ContainsKey(PropertyName))
                         dependencies = properties_dependencies_dictionary[PropertyName].Where(name => name != PropertyName).ToArray();
+
             var dependency_handlers = _PropertyChangedHandlers;
             if (dependency_handlers != null && dependency_handlers.TryGetValue(PropertyName, out var handler)) 
                 handler();
-            if (dependencies != null)
+
+            if (dependencies is { Length: > 0 })
             {
                 handlers?.ThreadSafeInvoke(this, dependencies.ToArray());
                 if (dependency_handlers != null)

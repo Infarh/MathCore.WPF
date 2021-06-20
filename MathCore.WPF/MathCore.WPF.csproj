@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.17</Version>
+    <Version>0.0.18</Version>
     <PackageReleaseNotes>
-      Обновление пакета MathCore
+      Исправление ошибки асинхронного вызова события PropertyChanged для связных свойств при генерации из фонового потока
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.47" />
+    <PackageReference Include="MathCore" Version="0.0.48" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>

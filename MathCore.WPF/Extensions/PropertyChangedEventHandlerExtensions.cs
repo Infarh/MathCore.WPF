@@ -16,7 +16,9 @@ namespace System.ComponentModel
             [NotNull, ItemCanBeNull] params string[] PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
+
             if (Event is null || PropertyName.Length == 0) return;
+
             var args = PropertyName.ToArray(name => new PropertyChangedEventArgs(name));
             foreach (var d in Event.GetInvocationList())
                 switch (d.Target)
@@ -25,7 +27,7 @@ namespace System.ComponentModel
                         foreach (var arg in args) synchronize_invoke.Invoke(d, new[] { sender, arg });
                         break;
                     case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess():
-                        foreach (var arg in args) dispatcher_obj.Dispatcher.Invoke(d, arg);
+                        foreach (var arg in args) dispatcher_obj.Dispatcher.Invoke(d, sender, arg);
                         break;
                     default:
                         foreach (var arg in args) d.DynamicInvoke(sender, arg);
