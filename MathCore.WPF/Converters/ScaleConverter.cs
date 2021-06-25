@@ -4,8 +4,8 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters
 {
     [ValueConversion(typeof(double), typeof(double))]
-    [MarkupExtensionReturnType(typeof(Scale))]
-    public class Scale : DoubleValueConverter
+    [MarkupExtensionReturnType(typeof(ScaleConverter))]
+    public class ScaleConverter : DoubleValueConverter
     {
         public double MinScale { get; set; }
 
@@ -15,7 +15,7 @@ namespace MathCore.WPF.Converters
 
         public double MaxValue { get; set; } = 1;
 
-        public Scale() { }
+        public ScaleConverter() { }
 
         /// <inheritdoc />
         protected override double Convert(double v, double? p = null) => (p ?? v) * (MaxScale - MinScale) / (MaxValue - MinValue) + MinScale;
