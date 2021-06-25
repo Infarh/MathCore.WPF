@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.18</Version>
+    <Version>0.0.19</Version>
     <PackageReleaseNotes>
-      Исправление ошибки асинхронного вызова события PropertyChanged для связных свойств при генерации из фонового потока
+      Конвертер для шкал
     </PackageReleaseNotes>
   </PropertyGroup>
 
