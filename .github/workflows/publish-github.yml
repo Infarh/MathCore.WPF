@@ -23,11 +23,11 @@ jobs:
         
       - name: Building
         run: |
-          dotnet build MathCore.WPF/MathCore.WPF.csproj --nologo
-          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj --nologo
+          dotnet build MathCore.WPF/MathCore.WPF.csproj -c Release
+          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj -c Release
         
       - name: Testing
-        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj --nologo --no-restore
+        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj --nologo -c Release --no-build
         
       - name: Packing
         run: dotnet pack MathCore.WPF/MathCore.WPF.csproj -c Release -v m          

@@ -7,6 +7,7 @@
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:ta="clr-namespace:MathCore.WPF.TriggerActions;assembly=MathCore.WPF"
         xmlns:shaders="clr-namespace:MathCore.WPF.Shaders;assembly=MathCore.WPF"
+        xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         Width="800" Height="450" WindowStartupLocation="CenterOwner">
     <!--<WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="10" 
@@ -20,7 +21,10 @@
         <l:TestViewModel/>
     </Window.DataContext>
     <Grid>
-        <GroupBox Header="123">
+        <GroupBox Header="123" Background="Transparent">
+            <i:Interaction.Behaviors>
+                <b:DragWindow/>
+            </i:Interaction.Behaviors>
             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
                        Text="{Binding Header, RelativeSource={Ancestor GroupBox}}"/>
         </GroupBox>

@@ -19,7 +19,9 @@ namespace MathCore.WPF.Behaviors
 
         protected override void OnAttached()
         {
-            var window = AssociatedObject as Window ?? AssociatedObject.FindVisualParent<Window>();
+            var window = AssociatedObject as Window 
+                ?? AssociatedObject.FindVisualParent<Window>()
+                ?? AssociatedObject.FindLogicalParent<Window>();
             _WindowReference = window is null ? null : new WeakReference<Window>(window);
         }
     }
