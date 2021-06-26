@@ -25,7 +25,7 @@ jobs:
           dotnet build Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj -c Release
           
       - name: Testing
-        run: dotnet test Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj
+        run: dotnet test Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj -c Release --no-build
         
       - name: Packing
         run: dotnet pack MathCore.WPF\MathCore.WPF.csproj --no-build -c Release -v q
