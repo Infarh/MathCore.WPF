@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.19.1</Version>
+    <Version>0.0.19.2</Version>
     <PackageReleaseNotes>
-      Переименование конвертера Scale в ScaleConverter
+      Переименование конвертера ScaleConverter в Mapper, исправление логики
     </PackageReleaseNotes>
   </PropertyGroup>
 
