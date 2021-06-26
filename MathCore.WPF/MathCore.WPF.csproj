@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.19.2</Version>
+    <Version>0.0.19.3</Version>
     <PackageReleaseNotes>
-      Переименование конвертера ScaleConverter в Mapper, исправление логики
+      Исправление алгоритма обнаружения окна в WindowBehavior
     </PackageReleaseNotes>
   </PropertyGroup>
 
