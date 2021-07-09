@@ -785,7 +785,7 @@ namespace MathCore.WPF.ViewModels
         /// <param name="value">Новое значение свойства</param>
         /// <param name="PropertyName">Имя свойства</param>
         /// <returns>Задача, возвращающая истину, если свойство изменило своё значение</returns>
-        protected virtual ValueTask<bool> SetAsync<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null)
+        protected virtual ValueTask<bool> SetAsync<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
         {
             if (Equals(field, value)) return new ValueTask<bool>(false);
             field = value;
