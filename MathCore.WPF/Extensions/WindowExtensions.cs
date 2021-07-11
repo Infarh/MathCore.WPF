@@ -29,5 +29,25 @@ namespace System.Windows
             if (action is null) throw new ArgumentNullException(nameof(action));
             if (((FrameworkElement)TemplateFrameworkElement)?.TemplatedParent is Window window) action(window);
         }
+
+        public static void AddHook(this Window window, HwndSourceHook WndProc)
+        {
+            if (window.IsLoaded)
+            {
+                var hwnd = window.GetWindowHandle();
+                var source = HwndSource.FromHwnd(hwnd) ?? throw new InvalidOperationException();
+                source.AddHook(WndProc);
+            }
+            else
+                window.SourceInitialized += (_,_) => window.AddHook(WndProc);
+        }
+
+        public static void RemoveHook(this Window window, HwndSourceHook WndProc)
+        {
+            if (!window.IsLoaded) return;
+            var hwnd = window.GetWindowHandle();
+            var source = HwndSource.FromHwnd(hwnd) ?? throw new InvalidOperationException();
+            source.RemoveHook(WndProc);
+        }
     }
 }
