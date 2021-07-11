@@ -21,14 +21,14 @@ jobs:
         
       - name: Building
         run: |
-          dotnet build MathCore.WPF\MathCore.WPF.csproj -c Release
-          dotnet build Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj -c Release
+          dotnet build MathCore.WPF -c Release
+          dotnet build Tests\MathCore.WPF.Tests -c Release
           
       - name: Testing
-        run: dotnet test Tests\MathCore.WPF.Tests\MathCore.WPF.Tests.csproj -c Release --no-build
+        run: dotnet test Tests\MathCore.WPF.Tests -c Release --no-build
         
       - name: Packing
-        run: dotnet pack MathCore.WPF\MathCore.WPF.csproj --no-build -c Release -v q
+        run: dotnet pack MathCore.WPF --no-build -c Release -v q
         
       - name: Publishing
-        run: dotnet nuget push MathCore.WPF\bin\Release\*.nupkg -k ${{ secrets.NuGetApiKey }} --skip-duplicate -s https://api.nuget.org/v3/index.json
+        run: dotnet nuget push "**/*.nupkg" -k ${{ secrets.NuGetApiKey }} --skip-duplicate -s https://api.nuget.org/v3/index.json
