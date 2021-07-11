@@ -31,7 +31,7 @@ namespace MathCore.WPF.WindowTest
         /// MOD_SHIFT   0x0004
         /// MOD_WIN     0x0008
         /// </param>
-        /// <param name="vk">The virtual-key code of the hot key.</param>
+        /// <param name="key">The virtual-key code of the hot key.</param>
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, ModifierKeys modifiers, Keys key);
 

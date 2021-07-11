@@ -320,7 +320,6 @@ namespace MathCore.WPF
             ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
         }
 
-        [Annotations.NotNull]
         public CollectionViewFiltersCollection SetCollectionView(CollectionViewSource item)
         {
             _Source = item;
@@ -979,7 +978,7 @@ namespace MathCore.WPF
         }
     }
 
-    public struct PropertyDescription : IEquatable<PropertyDescription>
+    public readonly struct PropertyDescription : IEquatable<PropertyDescription>
     {
         public string Name { get; }
         public string DisplayName { get; }

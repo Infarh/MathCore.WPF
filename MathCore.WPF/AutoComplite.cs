@@ -112,13 +112,13 @@ namespace MathCore.WPF
             public override bool CanConvertTo(ITypeDescriptorContext context, Type DestinationType) => DestinationType == typeof(string) || base.CanConvertTo(context, DestinationType);
 
             public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
-                value is not string s 
+                value is not string s
                     ? base.ConvertFrom(context, culture, value)!
                     : new AutoCompleteFilterPathCollection(s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
 
             public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type DestinationType)
             {
-                if (DestinationType != typeof(string)) 
+                if (DestinationType != typeof(string))
                     return base.ConvertTo(context, culture, value, DestinationType)!;
                 var c = (AutoCompleteFilterPathCollection)value;
                 return c.Join();
@@ -129,7 +129,7 @@ namespace MathCore.WPF
 
         #region Dependency Properties
 
-        private static readonly DependencyPropertyKey AutoCompleteInstancePropertyKey = 
+        private static readonly DependencyPropertyKey AutoCompleteInstancePropertyKey =
             DependencyProperty.RegisterAttachedReadOnly(
                 "AutoCompleteInstance",
                 typeof(AutoComplete),
@@ -150,7 +150,7 @@ namespace MathCore.WPF
 
         private static void OnSourcePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(EnsureInstance(d).ViewSource is not { } view) return;
+            if (EnsureInstance(d).ViewSource is not { } view) return;
             view.Source = e.NewValue;
         }
 
@@ -172,7 +172,7 @@ namespace MathCore.WPF
         private static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.RegisterAttached(
                 "ItemTemplate",
-                typeof(DataTemplate), 
+                typeof(DataTemplate),
                 typeof(AutoComplete),
                 new FrameworkPropertyMetadata(null, OnItemTemplatePropertyChanged));
 
@@ -189,7 +189,7 @@ namespace MathCore.WPF
         private static AutoComplete EnsureInstance(DependencyObject d)
         {
             var auto_complete = GetAutoCompleteInstance(d);
-            if(auto_complete != null) return auto_complete;
+            if (auto_complete != null) return auto_complete;
             auto_complete = new AutoComplete { Control = (Control)d };
             d.SetValue(AutoCompleteInstancePropertyKey, auto_complete);
             return auto_complete;
@@ -229,7 +229,7 @@ namespace MathCore.WPF
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
             var filter_paths = GetAutoCompleteFilterProperty();
-            if(filter_paths is null) e.Accepted = TextBoxStartsWith(e.Item);
+            if (filter_paths is null) e.Accepted = TextBoxStartsWith(e.Item);
             else
             {
                 var type = e.Item.GetType();
@@ -240,19 +240,19 @@ namespace MathCore.WPF
             }
         }
 
-        private bool TextBoxStartsWith(object? value) => 
+        private bool TextBoxStartsWith(object? value) =>
             value?.ToString()?.StartsWith(_Control!.Text, StringComparison.CurrentCultureIgnoreCase) ?? false;
 
         private AutoCompleteFilterPathCollection? GetAutoCompleteFilterProperty() => GetFilterPath(_Control!.Control);
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(string.IsNullOrEmpty(_Control!.Text))
+            if (string.IsNullOrEmpty(_Control!.Text))
             {
                 _AutoCompletePopup!.IsOpen = false;
                 return;
             }
-            if(_IteratingListItems || string.IsNullOrEmpty(_Control.Text)) return;
+            if (_IteratingListItems || string.IsNullOrEmpty(_Control.Text)) return;
             var v = ViewSource!.View;
             v.Refresh();
             _AutoCompletePopup!.IsOpen = !v.IsEmpty;
@@ -260,7 +260,7 @@ namespace MathCore.WPF
 
         private void TextBox_PreviewKeyUp(object sender, KeyEventArgs e)
         {
-            if(e.Key == Key.Up || e.Key == Key.Down)
+            if (e.Key is Key.Up or Key.Down)
             {
                 _RememberedText ??= _Control!.Text;
                 _IteratingListItems = true;
@@ -281,9 +281,9 @@ namespace MathCore.WPF
             {
                 _IteratingListItems = false;
                 _RememberedText = null;
-                if(!_AutoCompletePopup!.IsOpen || (e.Key != Key.Escape && e.Key != Key.Enter)) return;
+                if (!_AutoCompletePopup!.IsOpen || (e.Key != Key.Escape && e.Key != Key.Enter)) return;
                 _AutoCompletePopup.IsOpen = false;
-                if(e.Key == Key.Enter) _Control!.SelectAll();
+                if (e.Key == Key.Enter) _Control!.SelectAll();
             }
         }
 
