@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.19.5</Version>
+    <Version>0.0.20</Version>
     <PackageReleaseNotes>
       Исправление алгоритма обнаружения окна в WindowBehavior
       Обновление пакетов
@@ -31,7 +31,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.50.1" />
+    <PackageReference Include="MathCore" Version="0.0.51" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>

@@ -17,8 +17,8 @@ jobs:
           
       - name: Building
         run: |
-          dotnet build MathCore.WPF/MathCore.WPF.csproj -c Debug
-          dotnet build Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj -c Debug
+          dotnet build MathCore.WPF -c Debug
+          dotnet build Tests/MathCore.WPF.Tests -c Debug
           
       - name: Run Tests
-        run: dotnet test Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj -c Debug --no-build
+        run: dotnet test Tests/MathCore.WPF.Tests -c Debug --no-build
