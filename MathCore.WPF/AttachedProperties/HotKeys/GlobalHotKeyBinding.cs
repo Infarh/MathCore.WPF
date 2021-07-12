@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
@@ -88,7 +87,7 @@ namespace MathCore.WPF
         #endregion
 
         internal GlobalHotKeysCollection? Host { get; private set; }
-        internal void SetHost(GlobalHotKeysCollection? Host) => this.Host = Host;
+        internal void SetHost(GlobalHotKeysCollection? HostCollection) => Host = HostCollection;
 
         private void UpdateHotkey()
         {
@@ -107,8 +106,6 @@ namespace MathCore.WPF
 
         public void Invoke()
         {
-            Debug.WriteLine("Hot key {0} invoked: {0}", HotKeyId, this);
-
             if(Command is not { } cmd) return;
             var parameter = CommandParameter;
             if (cmd.CanExecute(parameter))

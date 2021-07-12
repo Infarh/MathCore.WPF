@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -110,8 +109,6 @@ namespace MathCore.WPF
 
             var (key, modifer) = key_modifer;
             TryRegisterHotKey(key_id, handle, key, modifer);
-
-            Debug.WriteLine("Hot binding {0} registered", key_modifer);
         }
 
         private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = new();
@@ -121,9 +118,6 @@ namespace MathCore.WPF
             var (key, modifer) = Key;
             var atom_name = CreateAtomName(key, modifer);
             key_id = Kernel32.GlobalAddAtom(atom_name);
-
-            Debug.WriteLine("Atom \"{0}\" created id:{1}", atom_name, key_id);
-
             __HotKeyIds.Add(Key, key_id);
             return key_id;
         }
@@ -145,7 +139,6 @@ namespace MathCore.WPF
             }
 
             __RegistredHotKeys.Add(KeyId);
-            Debug.WriteLine("Hot key ({0}) {1} {2} registered", KeyId, Modifer, Key);
             return true;
         }
 
@@ -158,8 +151,6 @@ namespace MathCore.WPF
 
             var bindings = __HotKeyBindingLists[key_id];
 
-            Debug.WriteLine("Hot key binding ({0}) unregistered", key_id);
-            
             bindings.Remove(binding);
             if (bindings.Count == 0)
                 UnregisterHotKey(key_id);
@@ -179,8 +170,6 @@ namespace MathCore.WPF
             if (Msg.message != (int)WM.HOTKEY) return;
 
             var key_id = (ushort)Msg.wParam;
-
-            Debug.WriteLine("Kot key {0} received", key_id);
 
             if(!__HotKeyBindingLists.TryGetValue(key_id, out var bindings) || bindings is not { Count: > 0 }) return;
 

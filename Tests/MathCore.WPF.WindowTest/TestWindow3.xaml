@@ -19,6 +19,7 @@
     </WindowChrome.WindowChrome>-->
     <UI.HotKeys>
         <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="Hello world!"/>
+        <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="123!"/>
     </UI.HotKeys>
     <Window.DataContext>
         <l:TestViewModel/>
