@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -12,34 +13,6 @@ namespace MathCore.WPF
     public class GlobalHotKeyBinding : Freezable, IDisposable
     {
         //(?<=<summary>)\s*\r\n\s*/{3}\s(.*)\s*\r\n\s*/{3} (?=</summary>)
-
-        private static (Keys Key, ModifierKeys Modifer) GetModifiers(Keys Key, ModifierKeys Modifer = ModifierKeys.None)
-        {
-            var key = Key;
-            var modifers = Modifer;
-
-            if ((Key & Keys.Control) == Keys.Control)
-            {
-                modifers |= ModifierKeys.Control;
-                key ^= Keys.Control;
-            }
-
-            if ((Key & Keys.Shift) == Keys.Shift)
-            {
-                modifers |= ModifierKeys.Shift;
-                key ^= Keys.Shift;
-            }
-
-            if ((Key & Keys.Alt) == Keys.Alt)
-            {
-                modifers |= ModifierKeys.Alt;
-                key ^= Keys.Alt;
-            }
-
-            if (key is Keys.ShiftKey or Keys.ControlKey or Keys.Menu) key = Keys.None;
-
-            return (key, modifers);
-        }
 
         protected override Freezable CreateInstanceCore() => new GlobalHotKeyBinding();
 
@@ -76,6 +49,8 @@ namespace MathCore.WPF
         public ModifierKeys Modifer { get => (ModifierKeys)GetValue(ModiferProperty); set => SetValue(ModiferProperty, value); }
 
         #endregion
+
+        public (Keys Key, ModifierKeys Modifer) KeyModifer => GlobalHotKeysCollection.GetModifiers(Key, Modifer);
 
         #region Command : ICommand - Команда, привязываемая к горячей клавише
 
@@ -115,16 +90,20 @@ namespace MathCore.WPF
 
         private IntPtr _WindowHandle;
 
-        public void SetHost(Window? HostWindow)
-        {
-            if (HostWindow is null) _WindowHandle = IntPtr.Zero;
-            else if (HostWindow.IsInitialized)
-            {
-                _WindowHandle = HostWindow.GetWindowHandle();
-                UpdateHotkey();
-            }
-            else HostWindow.SourceInitialized += OnWindowInitialized;
-        }
+        //public void SetHost(Window? HostWindow)
+        //{
+        //    if (HostWindow is null) _WindowHandle = IntPtr.Zero;
+        //    else if (HostWindow.IsInitialized)
+        //    {
+        //        _WindowHandle = HostWindow.GetWindowHandle();
+        //        UpdateHotkey();
+        //    }
+        //    else HostWindow.SourceInitialized += OnWindowInitialized;
+        //}
+
+
+        internal GlobalHotKeysCollection? Host { get; private set; }
+        internal void SetHost(GlobalHotKeysCollection? Host) => this.Host = Host;
 
         private void OnWindowInitialized(object? Sender, EventArgs EventArgs)
         {
@@ -136,9 +115,15 @@ namespace MathCore.WPF
 
         private void UpdateHotkey()
         {
-            ResetHotKey();
-            SetHotKey(Key, Modifer, _WindowHandle);
+            CheckAccess();
+            GlobalHotKeysCollection.Unregister(this);
+            GlobalHotKeysCollection.Register(this);
+
+            //ResetHotKey();
+            //SetHotKey(Key, Modifer, _WindowHandle);
         }
+
+        internal ushort HotKeyId { get; set; }
 
         private ushort _HotKeyAtomId;
         private string _HotKeyAtom;
@@ -154,10 +139,10 @@ namespace MathCore.WPF
 
         private void SetHotKey(Keys key, ModifierKeys modifer, IntPtr hWnd)
         {
-            (key, modifer) = GetModifiers(key, modifer);
+            (key, modifer) = GlobalHotKeysCollection.GetModifiers(key, modifer);
             if (hWnd == IntPtr.Zero || key == Keys.None) return;
 
-            var atom_name = CreateAtomName(key, modifer);
+            var atom_name = GlobalHotKeysCollection.CreateAtomName(key, modifer);
             _HotKeyAtomId = Kernel32.GlobalAddAtom(_HotKeyAtom = atom_name);
 
             var is_registred = User32.RegisterHotKey(hWnd, _HotKeyAtomId, modifer, key);
@@ -174,16 +159,21 @@ namespace MathCore.WPF
             ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
         }
 
-        private string KeyString
+        public override string ToString()
         {
-            get
-            {
-                var (key, modifer) = GetModifiers(Key, Modifer);
-                return modifer == ModifierKeys.None ? key.ToString() : $"{modifer}+{key}";
-            }
+            var (key, modifer) = GlobalHotKeysCollection.GetModifiers(Key, Modifer);
+            return modifer == ModifierKeys.None ? key.ToString() : $"{modifer}+{key}";
         }
 
-        private static string CreateAtomName(Keys key, ModifierKeys modifer) => $"MathCore.WPF.GlobalHotKey:{modifer}+{key}";
+        public void Invoke()
+        {
+            Debug.WriteLine("Hot key {0} invoked: {0}", HotKeyId, this);
+
+            if(Command is not { } cmd) return;
+            var parameter = CommandParameter;
+            if (cmd.CanExecute(parameter))
+                cmd.Execute(parameter);
+        }
 
         private void OnFilterMessage(ref MSG Msg, ref bool Handled)
         {
@@ -195,6 +185,10 @@ namespace MathCore.WPF
             Handled = true;
         }
 
-        public void Dispose() => ResetHotKey();
+        public void Dispose()
+        {
+            //ResetHotKey();
+            GlobalHotKeysCollection.Unregister(this);
+        }
     }
 }
