@@ -9,10 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.20</Version>
+    <Version>0.0.20.1</Version>
     <PackageReleaseNotes>
-      Исправление алгоритма обнаружения окна в WindowBehavior
-      Обновление пакетов
+      Глобальные горячие клавиши
     </PackageReleaseNotes>
   </PropertyGroup>
 
