@@ -27,7 +27,13 @@
             <MenuItem Header="Test">
                 <MenuItem Header="Показать диалог" Command="{Binding ShowTestDialogCommand}"/>
             </MenuItem>
+            <MenuItem Header="Видимость" Command="{ToggleVisibilityCommand}" CommandParameter="{Binding ElementName=TestButton}"/>
         </Menu>
-        <Grid></Grid>
+        <Grid>
+            <Button Name="TestButton" 
+                    Padding="30,15"
+                    VerticalAlignment="Center" HorizontalAlignment="Center" 
+                    Content="Test button"/>
+        </Grid>
     </DockPanel>
 </Window>
