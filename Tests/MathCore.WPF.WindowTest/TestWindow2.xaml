@@ -6,11 +6,12 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        xmlns:viewModels="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         Title="{Binding Title}"
         Topmost="True"
         Width="269" Height="236">
     <Window.DataContext>
-        <l:TestWindow2ViewModel/>
+        <viewModels:TestWindow2ViewModel/>
     </Window.DataContext>
     <Grid>
         <Border BorderBrush="{StaticResource BlueBrush}"

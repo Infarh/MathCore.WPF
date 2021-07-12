@@ -1,10 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 
 using MathCore.WPF.pInvoke;
 // ReSharper disable InconsistentNaming
+// ReSharper disable PossiblyMistakenUseOfParamsMethod
 
 namespace MathCore.WPF
 {
@@ -77,8 +79,6 @@ namespace MathCore.WPF
                 typeof(GlobalHotKeyBinding),
                 new PropertyMetadata(default(object)));
 
-        private IDisposable _DisposableImplementation;
-
         /// <summary>Параметр команды</summary>
         //[Category("")]
         [Description("Параметр команды")]
@@ -106,12 +106,20 @@ namespace MathCore.WPF
 
         public void Invoke()
         {
+            Debug.WriteLine("Hot key binding {0} invoked", this);
             if(Command is not { } cmd) return;
             var parameter = CommandParameter;
             if (cmd.CanExecute(parameter))
                 cmd.Execute(parameter);
         }
 
-        public void Dispose() => GlobalHotKeysCollection.Unregister(this);
+        public void Dispose()
+        {
+            var name = ToString();
+            Debug.WriteLine("Hot key binding {0} disposing...", args: name);
+
+            GlobalHotKeysCollection.Unregister(this);
+            Debug.WriteLine("Hot key binding {0} disposed", args: name);
+        }
     }
 }

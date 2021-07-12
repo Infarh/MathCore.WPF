@@ -9,6 +9,8 @@
         <ResourceDictionary Source="Main/ConfirmButtonStyle.xaml"/>
         <ResourceDictionary Source="Main/TaggedTextBoxStyle.xaml"/>
         <ResourceDictionary Source="Main/ToggleButtonCheckBoxStyle.xaml"/>
+
+        <ResourceDictionary Source="Main/DefaultElementsStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- 
