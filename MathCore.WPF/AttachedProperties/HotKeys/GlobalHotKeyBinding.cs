@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 
 using MathCore.WPF.pInvoke;
 // ReSharper disable InconsistentNaming
@@ -88,76 +87,17 @@ namespace MathCore.WPF
 
         #endregion
 
-        private IntPtr _WindowHandle;
-
-        //public void SetHost(Window? HostWindow)
-        //{
-        //    if (HostWindow is null) _WindowHandle = IntPtr.Zero;
-        //    else if (HostWindow.IsInitialized)
-        //    {
-        //        _WindowHandle = HostWindow.GetWindowHandle();
-        //        UpdateHotkey();
-        //    }
-        //    else HostWindow.SourceInitialized += OnWindowInitialized;
-        //}
-
-
         internal GlobalHotKeysCollection? Host { get; private set; }
         internal void SetHost(GlobalHotKeysCollection? Host) => this.Host = Host;
-
-        private void OnWindowInitialized(object? Sender, EventArgs EventArgs)
-        {
-            var window = (Window)Sender!;
-            window.SourceInitialized -= OnWindowInitialized;
-            _WindowHandle = window.GetWindowHandle();
-            UpdateHotkey();
-        }
 
         private void UpdateHotkey()
         {
             CheckAccess();
             GlobalHotKeysCollection.Unregister(this);
             GlobalHotKeysCollection.Register(this);
-
-            //ResetHotKey();
-            //SetHotKey(Key, Modifer, _WindowHandle);
         }
 
         internal ushort HotKeyId { get; set; }
-
-        private ushort _HotKeyAtomId;
-        private string _HotKeyAtom;
-
-        private void ResetHotKey()
-        {
-            if (_HotKeyAtomId == 0) return;
-            User32.UnregisterHotKey(IntPtr.Zero, _HotKeyAtomId);
-            Kernel32.GlobalDeleteAtom(_HotKeyAtomId);
-            _HotKeyAtomId = 0;
-            ComponentDispatcher.ThreadPreprocessMessage -= OnFilterMessage;
-        }
-
-        private void SetHotKey(Keys key, ModifierKeys modifer, IntPtr hWnd)
-        {
-            (key, modifer) = GlobalHotKeysCollection.GetModifiers(key, modifer);
-            if (hWnd == IntPtr.Zero || key == Keys.None) return;
-
-            var atom_name = GlobalHotKeysCollection.CreateAtomName(key, modifer);
-            _HotKeyAtomId = Kernel32.GlobalAddAtom(_HotKeyAtom = atom_name);
-
-            var is_registred = User32.RegisterHotKey(hWnd, _HotKeyAtomId, modifer, key);
-
-            if (!is_registred)
-            {
-                User32.UnregisterHotKey(IntPtr.Zero, _HotKeyAtomId);
-
-                is_registred = User32.RegisterHotKey(hWnd, _HotKeyAtomId, modifer, key);
-
-                if (!is_registred) throw new Win32Exception();
-            }
-
-            ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
-        }
 
         public override string ToString()
         {
@@ -175,20 +115,6 @@ namespace MathCore.WPF
                 cmd.Execute(parameter);
         }
 
-        private void OnFilterMessage(ref MSG Msg, ref bool Handled)
-        {
-            if (Msg.message != (int)WM.HOTKEY || Msg.hwnd != _WindowHandle || Msg.wParam != (IntPtr)_HotKeyAtomId || Command is not { } cmd) return;
-            var parameter = CommandParameter;
-            if (cmd.CanExecute(parameter))
-                cmd.Execute(parameter);
-
-            Handled = true;
-        }
-
-        public void Dispose()
-        {
-            //ResetHotKey();
-            GlobalHotKeysCollection.Unregister(this);
-        }
+        public void Dispose() => GlobalHotKeysCollection.Unregister(this);
     }
 }
