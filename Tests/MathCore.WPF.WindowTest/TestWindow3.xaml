@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
-        xmlns:ta="clr-namespace:MathCore.WPF.TriggerActions;assembly=MathCore.WPF"
-        xmlns:shaders="clr-namespace:MathCore.WPF.Shaders;assembly=MathCore.WPF"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        Title="{Binding Title}"
+        DataContext="{Binding Model3, Source={StaticResource Locator}}"
         Width="800" Height="450">
     <!--<WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="10" 
@@ -17,23 +17,17 @@
                       ResizeBorderThickness="10" 
                       UseAeroCaptionButtons="True" />
     </WindowChrome.WindowChrome>-->
-    <UI.HotKeys>
+    <!--<UI.HotKeys>
         <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="Hello world!"/>
         <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="123!"/>
-    </UI.HotKeys>
-    <Window.DataContext>
-        <l:TestViewModel/>
-    </Window.DataContext>
-    <Grid>
-        <GroupBox Header="123" Background="Transparent" Margin="44,41,477,207">
-            <i:Interaction.Behaviors>
-                <b:DragWindow/>
-            </i:Interaction.Behaviors>
-            <Grid>
-                <Ellipse Fill="Blue" Stroke="Red" StrokeThickness="2"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                           Text="{Binding Header, RelativeSource={Ancestor GroupBox}}"/>
-            </Grid>
-        </GroupBox>
-    </Grid>
+    </UI.HotKeys>-->
+    
+    <DockPanel>
+        <Menu>
+            <MenuItem Header="Test">
+                <MenuItem Header="Показать диалог" Command="{Binding ShowTestDialogCommand}"/>
+            </MenuItem>
+        </Menu>
+        <Grid></Grid>
+    </DockPanel>
 </Window>

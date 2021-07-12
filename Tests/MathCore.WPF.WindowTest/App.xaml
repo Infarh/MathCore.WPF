@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="Resources/Themes/Main.xaml"/>
                 <ResourceDictionary Source="Resources/AppCommands.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <l:ServiceLocator x:Key="Locator"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

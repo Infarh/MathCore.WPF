@@ -1,0 +1,17 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.Views.TestDialogWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest.Views"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        d:DataContext="{d:DesignInstance vm:TestDialogViewModel, IsDesignTimeCreatable=True}"
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <UI.HotKeys>
+        <GlobalHotKeyBinding Key="F7" Command="{Binding ShowMessageCommand}" CommandParameter="{Binding Title}"/>
+    </UI.HotKeys>
+    <Grid>
+        
+    </Grid>
+</Window>

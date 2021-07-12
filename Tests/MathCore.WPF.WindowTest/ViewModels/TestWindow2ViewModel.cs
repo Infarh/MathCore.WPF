@@ -2,9 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.Security;
 using System.Windows.Markup;
+
 using MathCore.WPF.ViewModels;
 
-namespace MathCore.WPF.WindowTest
+namespace MathCore.WPF.WindowTest.ViewModels
 {
     [MarkupExtensionReturnType(typeof(TestWindow2ViewModel))]
     internal class TestWindow2ViewModel : ViewModel
@@ -22,7 +23,7 @@ namespace MathCore.WPF.WindowTest
         #region Registration : UserPasswordViewModel - Форма входа
 
         /// <summary>Форма входа</summary>
-        private UserPasswordViewModel _Registration = new UserPasswordViewModel();
+        private UserPasswordViewModel _Registration = new();
 
         /// <summary>Форма входа</summary>
         public UserPasswordViewModel Registration { get => _Registration; set => Set(ref _Registration, value, v => v != null); }
