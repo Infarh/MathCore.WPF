@@ -5,22 +5,44 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Commands
 {
+    /// <summary>Команда запуска процесса</summary>
     [MarkupExtensionReturnType(typeof(StartProcessCommand))]
     public class StartProcessCommand : Command
     {
+        /// <summary>Запущенный процесс</summary>
         private Process? _Process;
 
+        /// <summary>Обеспечить возможность запуска одного процесса и дождаться его завершения</summary>
         public bool SingleProcess { get; set; }
 
+        /// <summary>Путь команды запуска</summary>
         [ConstructorArgument(nameof(Path))]
         public string? Path { get; set; }
 
+        /// <summary>Аргументы командной строки</summary>
         [ConstructorArgument(nameof(CommandLineArgs))]
         public string? CommandLineArgs { get; set; }
 
+        /// <summary>Предоставить возможность оболочке интерпретировать запускаемую команду</summary>
         public bool ShellExecute { get; set; }
 
+        /// <summary>Рассматривать параметр команды как аргумент командной строки</summary>
         public bool ParameterAsArgs { get; set; }
+
+        /// <summary>Не отображать окно процесса</summary>
+        public bool NoWindow { get; set; }
+
+        /// <summary>Имя пользователя, с правами которого будет выполнен запуск процесса (если не указано, то будет использовано текущее значение)</summary>
+        public string? UserName { get; set; }
+
+        /// <summary>Пароль пользователя</summary>
+        public string? Password { get; set; }
+
+        /// <summary>Рабочий каталог процесса</summary>
+        public string? WorkingDirectory { get; set; }
+
+        /// <summary>Стиль окна процесса</summary>
+        public ProcessWindowStyle? WindowStyle { get; set; }
 
         #region ExitCode : int - Код результата операции
 
@@ -50,9 +72,18 @@ namespace MathCore.WPF.Commands
 
             var arg = ParameterAsArgs ? parameter as string ?? CommandLineArgs : CommandLineArgs;
 
-            var info = new ProcessStartInfo(path);
+            var info = new ProcessStartInfo(path)
+            {
+                CreateNoWindow = NoWindow,
+                UseShellExecute = ShellExecute,
+            };
             if (!string.IsNullOrWhiteSpace(arg))
                 info.Arguments = arg;
+
+            if (UserName is { Length: > 0 } user) info.UserName = user;
+            if (Password is { Length: > 0 } password) info.PasswordInClearText = password;
+            if (WorkingDirectory is { Length: > 0 } work_dir) info.WorkingDirectory = work_dir;
+            if (WindowStyle is { } window_style) info.WindowStyle = window_style;
 
             var process = Process.Start(info);
             if (process is null || !SingleProcess) return;

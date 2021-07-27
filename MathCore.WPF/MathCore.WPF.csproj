@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.21.1</Version>
+    <Version>0.0.21.2</Version>
     <PackageReleaseNotes>
       Команда запуска прцоесса StartProcessCommand
     </PackageReleaseNotes>
