@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.20.2</Version>
+    <Version>0.0.21</Version>
     <PackageReleaseNotes>
-      Глобальные горячие клавиши
+      Команда запуска прцоесса StartProcessCommand
     </PackageReleaseNotes>
   </PropertyGroup>
 
