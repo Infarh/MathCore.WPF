@@ -38,7 +38,7 @@ namespace MathCore.WPF.Commands
 
         public override bool CanExecute(object? parameter)
         {
-            if (_Process is null or { HasExited: false }) return false;
+            if (_Process is { HasExited: false }) return false;
             if (ParameterAsArgs) return Path is not null;
             return (parameter as string ?? Path) is not null;
         }
@@ -46,8 +46,8 @@ namespace MathCore.WPF.Commands
         public override void Execute(object? parameter)
         {
             var path = ParameterAsArgs ? Path : parameter as string ?? Path;
-            if(path is not {Length: > 0}) return;
-            
+            if (path is not { Length: > 0 }) return;
+
             var arg = ParameterAsArgs ? parameter as string ?? CommandLineArgs : CommandLineArgs;
 
             var info = new ProcessStartInfo(path);
@@ -64,7 +64,7 @@ namespace MathCore.WPF.Commands
 
         private void OnProcessExited(object? Sender, EventArgs E)
         {
-            if(Sender is not Process process) return;
+            if (Sender is not Process process) return;
             ExitCode = process.ExitCode;
             _Process = null;
             CommandManager.InvalidateRequerySuggested();

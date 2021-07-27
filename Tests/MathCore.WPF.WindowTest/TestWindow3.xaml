@@ -32,6 +32,7 @@
         <Grid>
             <Button Name="TestButton" 
                     Padding="30,15"
+                    Command="{StartProcessCommand calc}"
                     VerticalAlignment="Center" HorizontalAlignment="Center" 
                     Content="Test button"/>
         </Grid>
