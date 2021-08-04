@@ -7,6 +7,7 @@
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         Title="{Binding Title}"
+        Background="Black"
         DataContext="{Binding Model3, Source={StaticResource Locator}}"
         Width="800" Height="450">
     <!--<WindowChrome.WindowChrome>
@@ -21,20 +22,25 @@
         <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="Hello world!"/>
         <GlobalHotKeyBinding Key="F6" Modifer="Control" Command="{ShowMessageCommand}" CommandParameter="123!"/>
     </UI.HotKeys>-->
-    
+    <Window.Resources>
+        <Style TargetType="Menu" BasedOn="{StaticResource DarkMenuStyle}"/>
+        <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}"/>
+    </Window.Resources>
     <DockPanel>
-        <Menu>
-            <MenuItem Header="Test">
+        <Menu Style="{StaticResource DarkMenuStyle}">
+            <MenuItem Header="Файл">
                 <MenuItem Header="Показать диалог" Command="{Binding ShowTestDialogCommand}"/>
             </MenuItem>
-            <MenuItem Header="Видимость" Command="{ToggleVisibilityCommand}" CommandParameter="{Binding ElementName=TestButton}"/>
+            <MenuItem Header="Помощь">
+                <MenuItem Header="О программе"/>
+            </MenuItem>
         </Menu>
         <Grid>
-            <Button Name="TestButton" 
-                    Padding="30,15"
-                    Command="{StartProcessCommand calc}"
-                    VerticalAlignment="Center" HorizontalAlignment="Center" 
-                    Content="Test button"/>
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center"
+                    BorderThickness="1" CornerRadius="2" BorderBrush="DarkBlue" Padding="5">
+                <TextBox Tag="User name" Style="{StaticResource TaggedTextBoxStyle}" Width="150"/>
+            </Border>
+            <TextBox VerticalAlignment="Bottom"/>
         </Grid>
     </DockPanel>
 </Window>
