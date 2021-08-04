@@ -139,7 +139,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="ConfirmButtonStyle" TargetType="{x:Type Button}">
+    <Style x:Key="ConfirmButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
         <Setter Property="l:ConfirmButton.Animation" Value="Fade"/>
         <Setter Property="l:ConfirmButton.PopupPlacemen" Value="Right"/>
         <Setter Property="l:ConfirmButton.HorizontalPopupOffset" Value="0"/>

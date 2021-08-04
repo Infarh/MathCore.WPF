@@ -100,6 +100,7 @@
         <Setter Property="BorderBrush" Value="DarkGray"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Background" Value="Black"/>
+        <Setter Property="Foreground" Value="WhiteSmoke"/>
         <Setter Property="Template" Value="{StaticResource DarkMenuTemplate}"/>
     </Style>
 

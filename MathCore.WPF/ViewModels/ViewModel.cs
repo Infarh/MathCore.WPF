@@ -231,6 +231,12 @@ namespace MathCore.WPF.ViewModels
             if (PropertyName is null)
                 return; // Если имя свойства не указано, то выход
 
+            if (_PropertyChangedEventsSuppressor != null)
+            {
+                _PropertyChangedEventsSuppressor.RegisterEvent(PropertyName);
+                return;
+            }
+
             // Извлекаем всех подписчиков события
             var handlers = PropertyChangedEvent;
             handlers?.ThreadSafeInvoke(this, PropertyName);
@@ -268,11 +274,21 @@ namespace MathCore.WPF.ViewModels
         /// <param name="OnChanged">Метод, выполняемый после генерации события</param>
         protected async void OnPropertyChangedAsync(string PropertyName, int Timeout = 0, Action? OnChanging = null, Action? OnChanged = null)
         {
+            if (PropertyName is null)
+                return; // Если имя свойства не указано, то выход
+
             if (Timeout == 0)
             {
                 OnPropertyChanged(PropertyName);
                 return;
             }
+
+            if (_PropertyChangedEventsSuppressor != null)
+            {
+                _PropertyChangedEventsSuppressor.RegisterEvent(PropertyName);
+                return;
+            }
+
             var now = DateTime.Now;
             if (_PropertyAsyncInvokeTime.TryGetValue(PropertyName, out var last_call_time) && (now - last_call_time).TotalMilliseconds < Timeout)
             {
