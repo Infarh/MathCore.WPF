@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.22.1</Version>
+    <Version>0.0.22.2</Version>
     <PackageReleaseNotes>
       Добавлена возможность пропуска событий в модели-представления с помощью PropertyChangedEventsSuppressor
     </PackageReleaseNotes>
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.55" />
+    <PackageReference Include="MathCore" Version="0.0.56" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
