@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.22.1</Version>
+    <Version>0.0.22.2</Version>
     <PackageReleaseNotes>
       Добавлена возможность пропуска событий в модели-представления с помощью PropertyChangedEventsSuppressor
     </PackageReleaseNotes>
