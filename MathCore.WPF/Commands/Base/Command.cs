@@ -14,23 +14,68 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
+    /// <summary>Команда</summary>
     public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object?>
     {
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие с параметром, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action<object?> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие с параметром, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action<object?> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
-        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+        /// <summary>Создать команду <see cref="LambdaCommand{T}"/></summary>
+        /// <param name="OnExecute">Действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand{T}"/></returns>
+        public static LambdaCommand<T> New<T>(Action<T?> OnExecute, Func<T?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать команду <see cref="LambdaCommand{T}"/></summary>
+        /// <param name="OnExecute">Действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand{T}"/></returns>
+        public static LambdaCommand<T> New<T>(Action<T?> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
-        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/></summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> New<T>(Func<T?, Task> OnExecute, Func<T?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/></summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> New<T>(Func<T?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
         #region События
 

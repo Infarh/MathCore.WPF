@@ -15,8 +15,6 @@ namespace MathCore.WPF
 {
     public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList
     {
-        static GlobalHotKeysCollection() => ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
-
         internal static (Keys Key, ModifierKeys Modifer) GetModifiers(Keys Key, ModifierKeys Modifer = ModifierKeys.None)
         {
             var key = Key;
@@ -45,40 +43,7 @@ namespace MathCore.WPF
             return (key, modifers);
         }
 
-        private readonly Window? _HostWindow;
-        private IntPtr _Handle;
-
-        public GlobalHotKeysCollection(Window? HostWindow)
-        {
-            _HostWindow = HostWindow;
-            ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
-            if (HostWindow is null) return;
-            if (HostWindow.IsLoaded)
-                OnHostWindowSourceInitialized(HostWindow, EventArgs.Empty);
-            else
-                HostWindow.SourceInitialized += OnHostWindowSourceInitialized;
-            HostWindow.Closed += OnWindowClosed;
-        }
-
-        private void OnHostWindowSourceInitialized(object? Sender, EventArgs _)
-        {
-            if (Sender is not Window window) return;
-            window.SourceInitialized -= OnHostWindowSourceInitialized;
-            _Handle = window.GetWindowHandle();
-
-            foreach (var binding in this)
-                Register(binding);
-        }
-
-        private void OnWindowClosed(object? Sender, EventArgs E)
-        {
-            if (Sender is not Window window) return;
-            window.SourceInitialized += OnHostWindowSourceInitialized;
-            window.Closed -= OnWindowClosed;
-
-            foreach (var binding in this)
-                Unregister(binding);
-        }
+        public GlobalHotKeysCollection() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
         private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs e)
         {
@@ -103,33 +68,30 @@ namespace MathCore.WPF
 
         protected override Freezable CreateInstanceCore()
         {
-            var collection = new GlobalHotKeysCollection(_HostWindow);
+            var collection = new GlobalHotKeysCollection();
             //collection.AddItems(this.Select(f => (GlobalHotKeyBinding)f.Clone()));
             return collection;
         }
 
-        private static readonly Dictionary<ushort, HashSet<GlobalHotKeyBinding>> __HotKeyBindingLists = new();
+        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>>? __HotKeyBindingLists;
         internal static void Register(GlobalHotKeyBinding binding)
         {
-            if (binding.Host is not { _Handle: var handle } || handle == IntPtr.Zero) return;
-
-            if (Application.Current.MainWindow is { } main_window)
-            {
-                var main_window_handle = main_window.GetWindowHandle();
-                if (main_window_handle != IntPtr.Zero)
-                    handle = main_window_handle;
-            }
-
             var key_modifer = binding.KeyModifer;
             var key_id = GetHotKeyId(key_modifer);
             binding.HotKeyId = key_id;
 
+            if (__HotKeyBindingLists is null)
+            {
+                __HotKeyBindingLists = new();
+                ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
+            }
+
             __HotKeyBindingLists.GetValueOrAddNew(key_id, () => new ()).Add(binding);
 
             var (key, modifer) = key_modifer;
-            TryRegisterHotKey(key_id, handle, key, modifer);
+            TryRegisterHotKey(key_id, key, modifer);
 
-            Debug.WriteLine("Hot key binding {0} registered for handle {1} with id {2}", binding, handle, key_id);
+            Debug.WriteLine("Hot key binding {0} registered with id {1}", binding, key_id);
         }
 
         private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = new();
@@ -147,24 +109,24 @@ namespace MathCore.WPF
         }
 
         private static readonly HashSet<ushort> __RegistredHotKeys = new();
-        private static bool TryRegisterHotKey(ushort KeyId, IntPtr Handle, Keys Key, ModifierKeys Modifer)
+        private static bool TryRegisterHotKey(ushort KeyId, Keys Key, ModifierKeys Modifer)
         {
             if (__RegistredHotKeys.Contains(KeyId)) return false;
 
-            var success = User32.RegisterHotKey(Handle, KeyId, Modifer, Key);
+            var success = User32.RegisterHotKey(IntPtr.Zero, KeyId, Modifer, Key);
 
             if (!success)
             {
                 User32.UnregisterHotKey(IntPtr.Zero, KeyId);
 
-                success = User32.RegisterHotKey(Handle, KeyId, Modifer, Key);
+                success = User32.RegisterHotKey(IntPtr.Zero, KeyId, Modifer, Key);
 
                 if (!success) throw new Win32Exception();
             }
 
             __RegistredHotKeys.Add(KeyId);
 
-            Debug.WriteLine("Hot key {0} registered in system at id {1} for handle {2}", (Modifer, Key), KeyId, Handle);
+            Debug.WriteLine("Hot key {0} registered in system at id {1}", (Modifer, Key), KeyId);
 
             return true;
         }
