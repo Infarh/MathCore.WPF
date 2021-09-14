@@ -14,7 +14,7 @@ using MathCore.WPF.pInvoke;
 namespace MathCore.WPF
 {
     /// <summary>Коллекция горячих клавиш</summary>
-    public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList
+    public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList, IDisposable
     {
         /// <summary>Определение модификатора клавиши исходя из её кода</summary>
         /// <param name="Key">Код клавиши</param>
@@ -84,7 +84,20 @@ namespace MathCore.WPF
         }
 
         /// <summary>Словарь списков объектов горячих клавиш с сопоставленными им идентификаторами</summary>
-        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>>? __HotKeyBindingLists;
+        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>>? __HotKeyBindings;
+
+        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>> HotKeyBindings
+        {
+            get
+            {
+                if (__HotKeyBindings is null)
+                {
+                    __HotKeyBindings = new();
+                    ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
+                }
+                return __HotKeyBindings;
+            }
+        }
 
         /// <summary>Зарегистрировать горячую клавишу</summary>
         /// <param name="binding">Объект регистрации горячей клавиши</param>
@@ -94,13 +107,7 @@ namespace MathCore.WPF
             var key_id = GetHotKeyId(key_modifer);
             binding.HotKeyId = key_id;
 
-            if (__HotKeyBindingLists is null)
-            {
-                __HotKeyBindingLists = new();
-                ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
-            }
-
-            __HotKeyBindingLists.GetValueOrAddNew(key_id, () => new ()).Add(binding);
+            HotKeyBindings.GetValueOrAddNew(key_id, () => new()).Add(binding);
 
             var (key, modifer) = key_modifer;
             TryRegisterHotKey(key_id, key, modifer);
@@ -165,13 +172,11 @@ namespace MathCore.WPF
 
         internal static void Unregister(GlobalHotKeyBinding binding)
         {
-            if (__HotKeyBindingLists is null) 
-                throw new InvalidOperationException("Словарь клавиш не создан");
-
             var key_id = binding.HotKeyId;
-            if(!__HotKeyBindingLists.ContainsKey(key_id)) return;
+            var key_bindings = HotKeyBindings;
+            if (!key_bindings.ContainsKey(key_id)) return;
 
-            var bindings = __HotKeyBindingLists[key_id];
+            var bindings = key_bindings[key_id];
 
             Debug.WriteLine("Hot key binding {0} unregistered", binding);
 
@@ -184,10 +189,7 @@ namespace MathCore.WPF
         /// <param name="KeyId">Идентификатор клавиши</param>
         private static void UnregisterHotKey(ushort KeyId)
         {
-            if (__HotKeyBindingLists is null)
-                throw new InvalidOperationException("Словарь клавиш не создан");
-
-            __HotKeyBindingLists.Remove(KeyId);
+            HotKeyBindings.Remove(KeyId);
             User32.UnregisterHotKey(IntPtr.Zero, KeyId);
             __RegisteredHotKeys.Remove(KeyId);
 
@@ -199,17 +201,23 @@ namespace MathCore.WPF
         /// <summary>Метод обработки сообщений ОС о нажатии горячих клавиш</summary>
         private static void OnFilterMessage(ref MSG Msg, ref bool Handled)
         {
-            if (Msg.message != (int)WM.HOTKEY || __HotKeyBindingLists is null) return;
+            if (Msg.message != (int)WM.HOTKEY || __HotKeyBindings is null) return;
 
             var key_id = (ushort)Msg.wParam;
             Debug.WriteLine("Hot key {0} cached for handle {1}", key_id, Msg.hwnd);
 
-            if(!__HotKeyBindingLists.TryGetValue(key_id, out var bindings) || bindings is not { Count: > 0 }) return;
+            if (!__HotKeyBindings.TryGetValue(key_id, out var bindings) || bindings is not { Count: > 0 }) return;
 
             foreach (var binding in bindings)
                 binding.Invoke();
 
             Handled = true;
+        }
+
+        public void Dispose()
+        {
+            foreach (var binding in this)
+                Unregister(binding);
         }
     }
 }
