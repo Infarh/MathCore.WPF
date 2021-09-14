@@ -13,8 +13,13 @@ using MathCore.WPF.pInvoke;
 
 namespace MathCore.WPF
 {
+    /// <summary>Коллекция горячих клавиш</summary>
     public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList
     {
+        /// <summary>Определение модификатора клавиши исходя из её кода</summary>
+        /// <param name="Key">Код клавиши</param>
+        /// <param name="Modifer">Исходный модификатор</param>
+        /// <returns>Кортеж, содержаший очищенный от модификатора код клавиши и выделенный объединённый модификатор</returns>
         internal static (Keys Key, ModifierKeys Modifer) GetModifiers(Keys Key, ModifierKeys Modifer = ModifierKeys.None)
         {
             var key = Key;
@@ -43,8 +48,13 @@ namespace MathCore.WPF
             return (key, modifers);
         }
 
+        /// <summary>Инициализация новой коллекции горячих клавиш</summary>
         public GlobalHotKeysCollection() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
+        /// <summary>
+        /// Обработчик события изменения содержимого коллекции,
+        /// выполняющий подключение и отключение клавиш от внутренних обработчиков событий коллекции
+        /// </summary>
         private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -73,7 +83,11 @@ namespace MathCore.WPF
             return collection;
         }
 
+        /// <summary>Словарь списков объектов горячих клавиш с сопоставленными им идентификаторами</summary>
         private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>>? __HotKeyBindingLists;
+
+        /// <summary>Зарегистрировать горячую клавишу</summary>
+        /// <param name="binding">Объект регистрации горячей клавиши</param>
         internal static void Register(GlobalHotKeyBinding binding)
         {
             var key_modifer = binding.KeyModifer;
@@ -94,7 +108,12 @@ namespace MathCore.WPF
             Debug.WriteLine("Hot key binding {0} registered with id {1}", binding, key_id);
         }
 
+        /// <summary>Словарь, определяющий соответствие зарегистрированных клавиш их идентификаторам</summary>
         private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = new();
+
+        /// <summary>Метод, позволяющий получить идентификатор клавиши</summary>
+        /// <param name="Key">Определение клавиши</param>
+        /// <returns>Числовой идентификатор</returns>
         private static ushort GetHotKeyId((Keys Key, ModifierKeys Modifer) Key)
         {
             if (__HotKeyIds.TryGetValue(Key, out var key_id)) return key_id;
@@ -108,10 +127,17 @@ namespace MathCore.WPF
             return key_id;
         }
 
-        private static readonly HashSet<ushort> __RegistredHotKeys = new();
+        /// <summary>Таблица идентификаторов зарегистрированных горячих клавиш</summary>
+        private static readonly HashSet<ushort> __RegisteredHotKeys = new();
+
+        /// <summary>Зарегистрировать клавишу</summary>
+        /// <param name="KeyId">Идентификатор клавиши</param>
+        /// <param name="Key">Регистрируемая клавиша</param>
+        /// <param name="Modifer">Модификатор клавиши</param>
+        /// <returns>Истина, если клавиша успешно зарегистрирована, ложь - если клавиша занята в системе</returns>
         private static bool TryRegisterHotKey(ushort KeyId, Keys Key, ModifierKeys Modifer)
         {
-            if (__RegistredHotKeys.Contains(KeyId)) return false;
+            if (__RegisteredHotKeys.Contains(KeyId)) return false;
 
             var success = User32.RegisterHotKey(IntPtr.Zero, KeyId, Modifer, Key);
 
@@ -124,17 +150,24 @@ namespace MathCore.WPF
                 if (!success) throw new Win32Exception();
             }
 
-            __RegistredHotKeys.Add(KeyId);
+            __RegisteredHotKeys.Add(KeyId);
 
             Debug.WriteLine("Hot key {0} registered in system at id {1}", (Modifer, Key), KeyId);
 
             return true;
         }
 
+        /// <summary>Метод формирования уникального для приложения имени клавиши, зарегистрированного в системе</summary>
+        /// <param name="key">Регистрируемая клавиша</param>
+        /// <param name="modifer">Модификатор клавиши</param>
+        /// <returns>Имя клавиши, зарегистрированное в системе</returns>
         internal static string CreateAtomName(Keys key, ModifierKeys modifer) => $"MathCore.WPF.GlobalHotKey:{modifer}+{key}";
 
         internal static void Unregister(GlobalHotKeyBinding binding)
         {
+            if (__HotKeyBindingLists is null) 
+                throw new InvalidOperationException("Словарь клавиш не создан");
+
             var key_id = binding.HotKeyId;
             if(!__HotKeyBindingLists.ContainsKey(key_id)) return;
 
@@ -147,20 +180,26 @@ namespace MathCore.WPF
                 UnregisterHotKey(key_id);
         }
 
+        /// <summary>Отменить регистрацию клавиши</summary>
+        /// <param name="KeyId">Идентификатор клавиши</param>
         private static void UnregisterHotKey(ushort KeyId)
         {
+            if (__HotKeyBindingLists is null)
+                throw new InvalidOperationException("Словарь клавиш не создан");
+
             __HotKeyBindingLists.Remove(KeyId);
             User32.UnregisterHotKey(IntPtr.Zero, KeyId);
-            __RegistredHotKeys.Remove(KeyId);
+            __RegisteredHotKeys.Remove(KeyId);
 
             Kernel32.GlobalDeleteAtom(KeyId);
 
             Debug.WriteLine("Hot key {0} unregistered at system");
         }
 
+        /// <summary>Метод обработки сообщений ОС о нажатии горячих клавиш</summary>
         private static void OnFilterMessage(ref MSG Msg, ref bool Handled)
         {
-            if (Msg.message != (int)WM.HOTKEY) return;
+            if (Msg.message != (int)WM.HOTKEY || __HotKeyBindingLists is null) return;
 
             var key_id = (ushort)Msg.wParam;
             Debug.WriteLine("Hot key {0} cached for handle {1}", key_id, Msg.hwnd);

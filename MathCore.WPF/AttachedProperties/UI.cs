@@ -38,7 +38,7 @@ namespace MathCore.WPF
         public static GlobalHotKeysCollection GetHotKeys(DependencyObject element)
         {
             if (element.GetValue(HotKeysProperty) is not GlobalHotKeysCollection collection)
-                SetHotKeys(element, collection = new GlobalHotKeysCollection(element as Window));
+                SetHotKeys(element, collection = new GlobalHotKeysCollection());
             return collection;
         }
 
