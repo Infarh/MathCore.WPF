@@ -1,12 +1,11 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+
 using MathCore.Annotations;
 
 namespace MathCore.WPF
@@ -25,10 +24,10 @@ namespace MathCore.WPF
 
         /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static void SetUseDataAnnotations([NotNull] DependencyObject D, bool value) => D.SetValue(UseDataAnnotationsProperty, value);
+        public static void SetUseDataAnnotations(DependencyObject D, bool value) => D.SetValue(UseDataAnnotationsProperty, value);
 
         /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
-        public static bool GetUseDataAnnotations([NotNull] DependencyObject D) => (bool)D.GetValue(UseDataAnnotationsProperty);
+        public static bool GetUseDataAnnotations(DependencyObject D) => (bool)D.GetValue(UseDataAnnotationsProperty);
 
         private static void OnUseDataAnnotationsPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
@@ -50,10 +49,10 @@ namespace MathCore.WPF
 
         //}
 
-        private static void OnDataGridGeneratingColumn(object? Sender, [NotNull] DataGridAutoGeneratingColumnEventArgs E)
+        private static void OnDataGridGeneratingColumn(object? Sender, DataGridAutoGeneratingColumnEventArgs E)
         {
-            if(E.PropertyDescriptor is not PropertyDescriptor property_descriptor) return;
-            var item_type = property_descriptor?.ComponentType;
+            if (E.PropertyDescriptor is not PropertyDescriptor property_descriptor) return;
+            var item_type = property_descriptor.ComponentType;
             var property = item_type?.GetProperty(E.PropertyName);
             if (property is null) return;
             var column = E.Column;
@@ -77,9 +76,9 @@ namespace MathCore.WPF
                     return;
                 }
 
-                if (display_attribute.Name is {} name) column.Header = name;
+                if (display_attribute.Name is { } name) column.Header = name;
 
-                if (display_attribute.Description is {} description)
+                if (display_attribute.Description is { } description)
                 {
                     var text_block = new FrameworkElementFactory(typeof(TextBlock));
                     text_block.SetBinding(TextBlock.TextProperty, new Binding());
@@ -91,7 +90,7 @@ namespace MathCore.WPF
                 }
             }
 
-            if (property.GetCustomAttribute<DisplayFormatAttribute>() is {} format_attribute)
+            if (property.GetCustomAttribute<DisplayFormatAttribute>() is { } format_attribute)
             {
                 var text_column = column as DataGridTextColumn;
                 var value_format = format_attribute.DataFormatString;
@@ -108,7 +107,7 @@ namespace MathCore.WPF
             }
 
             var read_only = property.GetCustomAttribute<ReadOnlyAttribute>();
-            if (read_only != null) 
+            if (read_only != null)
                 column.IsReadOnly = read_only.IsReadOnly;
         }
 
@@ -126,21 +125,21 @@ namespace MathCore.WPF
 
         /// <summary>Добавить номера строк в их заголовки</summary>
         [AttachedPropertyBrowsableForType(typeof(DataGrid))]
-        public static void SetAddRowNumber([NotNull] DependencyObject D, bool value) => D.SetValue(AddRowNumberProperty, value);
+        public static void SetAddRowNumber(DependencyObject D, bool value) => D.SetValue(AddRowNumberProperty, value);
 
         /// <summary>Добавить номера строк в их заголовки</summary>
-        public static bool GetAddRowNumber([NotNull] DependencyObject D) => (bool) D.GetValue(AddRowNumberProperty);
+        public static bool GetAddRowNumber(DependencyObject D) => (bool)D.GetValue(AddRowNumberProperty);
 
         private static void OnAddRowNumberToRowHeaderPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
         {
-            if(D is not DataGrid data_grid) return;
-            if ((bool) E.NewValue)
+            if (D is not DataGrid data_grid) return;
+            if ((bool)E.NewValue)
                 data_grid.LoadingRow += OnRowLoadingAddRowNumber;
             else
                 data_grid.LoadingRow -= OnRowLoadingAddRowNumber;
         }
 
-        private static void OnRowLoadingAddRowNumber(object? Sender, [NotNull] DataGridRowEventArgs E) => E.Row.Header = (E.Row.GetIndex()) + 1;
+        private static void OnRowLoadingAddRowNumber(object? Sender, DataGridRowEventArgs E) => E.Row.Header = (E.Row.GetIndex()) + 1;
 
         #endregion
     }

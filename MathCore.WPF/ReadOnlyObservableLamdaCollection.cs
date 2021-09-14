@@ -31,12 +31,12 @@ namespace MathCore.WPF
 
         /// <summary>Генерация события изменения коллекции</summary>
         /// <param name="args">Аргументы события</param>
-        protected virtual void OnCollectionChanged([NotNull] NotifyCollectionChangedEventArgs args) => CollectionChanged?.Invoke(this, args);
+        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs args) => CollectionChanged?.Invoke(this, args);
 
         /// <summary>Обработчик событий изменения в наблюдаемой коллекции</summary>
         /// <param name="sender">Источник события - наблюдаемая коллекция</param>
         /// <param name="e">Аргумент события, определяющий тип изменеия наблюдаемой коллекции</param>
-        private void OnCollectionChanged([CanBeNull] object sender, [NotNull] NotifyCollectionChangedEventArgs e)
+        private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             NotifyCollectionChangedEventArgs new_e;
             switch (e.Action)

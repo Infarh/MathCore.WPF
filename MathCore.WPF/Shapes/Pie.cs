@@ -61,7 +61,7 @@ namespace MathCore.WPF.Shapes
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged),
                 ValidateRadius);
 
-        private static bool ValidateRadius([NotNull] object r) => (double)r >= 0 && (double)r <= 1;
+        private static bool ValidateRadius(object r) => (double)r >= 0 && (double)r <= 1;
 
         public double InnerRadius { get => (double)GetValue(InnerRadiusProperty); set => SetValue(InnerRadiusProperty, value); }
 
@@ -83,7 +83,7 @@ namespace MathCore.WPF.Shapes
                     propertyChangedCallback: OnStopAngleChanged, 
                     coerceValueCallback: null));
 
-        private static void OnStopAngleChanged([NotNull] DependencyObject o, DependencyPropertyChangedEventArgs e) =>
+        private static void OnStopAngleChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) =>
             o.SetValue(AngleProperty, (double)e.NewValue - ((Pie)o).StartAngle);
 
         public double StopAngle { get => (double)GetValue(StopAngleProperty); set => SetValue(StopAngleProperty, value); }
@@ -98,7 +98,7 @@ namespace MathCore.WPF.Shapes
                     isAnimationProhibited: false,
                     defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged));
 
-        private static void OnAngleChanged([NotNull] DependencyObject o, DependencyPropertyChangedEventArgs e) =>
+        private static void OnAngleChanged(DependencyObject o, DependencyPropertyChangedEventArgs e) =>
             o.SetValue(StopAngleProperty, (double)e.NewValue + ((Pie)o).StartAngle);
 
         public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }

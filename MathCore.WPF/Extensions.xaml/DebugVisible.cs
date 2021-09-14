@@ -16,6 +16,6 @@ namespace MathCore.WPF
         public DebugVisible() { }
         public DebugVisible(Visibility DebugVisibility) => this.DebugVisibility = DebugVisibility;
 
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => ViewModel.IsDesignMode ? DebugVisibility : Visibility;
+        public override object ProvideValue(IServiceProvider sp) => ViewModel.IsDesignMode ? DebugVisibility : Visibility;
     }
 }

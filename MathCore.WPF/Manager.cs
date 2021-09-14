@@ -53,11 +53,9 @@ namespace MathCore.WPF
         public event EventHandler<ElementController<TElement>, TElement> ElementSet;
         public event EventHandler<ElementController<TElement>, TElement> ElementReset;
 
-        [CanBeNull]
-        private TElement _Element;
+        private TElement? _Element;
 
-        [CanBeNull]
-        public TElement Element => _Element;
+        public TElement? Element => _Element;
 
         /// <inheritdoc />
         public override void SetElement(DependencyObject element)
@@ -91,9 +89,7 @@ namespace MathCore.WPF
 
     public class ElementControllersCollection : IList<ElementController>
     {
-        [NotNull]
         private readonly List<ElementController> _Items = new();
-        [NotNull]
         private DependencyObject _Element;
 
         public DependencyObject Element
@@ -112,21 +108,21 @@ namespace MathCore.WPF
         public int Count => _Items.Count;
 
         /// <inheritdoc />
-        public void Add([NotNull] ElementController controller)
+        public void Add(ElementController controller)
         {
             controller.SetElement(_Element);
             _Items.Add(controller);
         }
 
         /// <inheritdoc />
-        public bool Remove([CanBeNull] ElementController controller)
+        public bool Remove(ElementController? controller)
         {
             var remove = _Items.Remove(controller);
             if(remove) controller.ResetElement();
             return remove;
         }
 
-        public void SetElement([NotNull] DependencyObject element) => _Items.Foreach(element, (c, e) => c.SetElement(e));
+        public void SetElement(DependencyObject element) => _Items.Foreach(element, (c, e) => c.SetElement(e));
 
         public void ResetElement() => _Items.ForEach(c => c.ResetElement());
 
@@ -144,17 +140,16 @@ namespace MathCore.WPF
         bool ICollection<ElementController>.IsReadOnly => false;
 
         /// <inheritdoc />
-        [NotNull]
         ElementController IList<ElementController>.this[int index] { get => _Items[index]; set => _Items[index] = value; }
 
         /// <inheritdoc />
-        bool ICollection<ElementController>.Contains([CanBeNull] ElementController controller) => _Items.Contains(controller);
+        bool ICollection<ElementController>.Contains(ElementController? controller) => _Items.Contains(controller);
 
         /// <inheritdoc />
-        void ICollection<ElementController>.CopyTo([NotNull] ElementController[] array, int arrayIndex) => _Items.CopyTo(array, arrayIndex);
+        void ICollection<ElementController>.CopyTo(ElementController[] array, int arrayIndex) => _Items.CopyTo(array, arrayIndex);
 
         /// <inheritdoc />
-        int IList<ElementController>.IndexOf([NotNull] ElementController controller) => _Items.IndexOf(controller);
+        int IList<ElementController>.IndexOf(ElementController controller) => _Items.IndexOf(controller);
 
         /// <inheritdoc />
         void IList<ElementController>.Insert(int index, ElementController controller)
@@ -171,11 +166,9 @@ namespace MathCore.WPF
         }
 
         /// <inheritdoc />
-        [NotNull]
         IEnumerator<ElementController> IEnumerable<ElementController>.GetEnumerator() => _Items.GetEnumerator();
 
         /// <inheritdoc />
-        [NotNull]
         IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_Items).GetEnumerator();
 
         #endregion

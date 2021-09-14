@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Windows;
-
-namespace MathCore.WPF.UIEvents
+﻿namespace MathCore.WPF.UIEvents
 {
     public class ModelEventHandler
     {

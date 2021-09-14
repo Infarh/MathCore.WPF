@@ -218,7 +218,6 @@ namespace MathCore.WPF
         }
 
         /// <summary>Имя свойства модели</summary>
-        [NotNull]
         public string Name { get; set; }
 
         /// <summary>Инициализация нового свойства модели</summary>
@@ -226,12 +225,12 @@ namespace MathCore.WPF
 
         /// <summary>Инициализация нового свойства модели</summary>
         /// <param name="Name">Имя свойства модели</param>
-        public ModelProperty([NotNull] string Name) => this.Name = Name ?? throw new ArgumentNullException(nameof(Name));
+        public ModelProperty(string Name) => this.Name = Name ?? throw new ArgumentNullException(nameof(Name));
 
         /// <summary>Инициализация нового свойства модели</summary>
         /// <param name="Name">Имя свойства модели</param>
         /// <param name="Value">Значение свойства модели</param>
-        public ModelProperty([NotNull] string Name, [CanBeNull] object Value) : this(Name) => this.Value = Value;
+        public ModelProperty(string Name, object? Value) : this(Name) => this.Value = Value;
 
         /// <inheritdoc />
         protected override Freezable CreateInstanceCore() => new ModelProperty(Name);
@@ -253,7 +252,7 @@ namespace MathCore.WPF
 
         /// <summary>Инициализация нового динамического объекта доступа к свойствам модели</summary>
         /// <param name="Model"></param>
-        public ModelObject([NotNull] Model Model) => _Model = Model ?? throw new ArgumentNullException(nameof(Model));
+        public ModelObject(Model Model) => _Model = Model ?? throw new ArgumentNullException(nameof(Model));
 
         /// <summary>Уведомление динамического боъекта о том, что его свойство изменилось</summary>
         /// <param name="PropertyName">Имя изменившегося свойства</param>

@@ -23,11 +23,11 @@ namespace MathCore.WPF.Behaviors
             AssociatedObject.ForWindowFromTemplate(ResetHandler);
         }
 
-        private static void SetHandler([NotNull] Window window) => window.SourceInitialized += OnWindowOnSourceInitialized;
+        private static void SetHandler(Window window) => window.SourceInitialized += OnWindowOnSourceInitialized;
 
-        private static void ResetHandler([NotNull] Window window) => window.SourceInitialized -= OnWindowOnSourceInitialized;
+        private static void ResetHandler(Window window) => window.SourceInitialized -= OnWindowOnSourceInitialized;
 
-        private static void OnWindowOnSourceInitialized([NotNull] object? sender, [CanBeNull] EventArgs e)
+        private static void OnWindowOnSourceInitialized(object sender, EventArgs? e)
         {
             if (sender is null) throw new ArgumentNullException(nameof(sender));
             HwndSource.FromHwnd(new WindowInteropHelper((Window) sender).Handle)?.AddHook(WindowProc);

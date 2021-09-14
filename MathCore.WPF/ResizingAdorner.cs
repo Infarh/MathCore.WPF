@@ -20,7 +20,7 @@ namespace MathCore.WPF
         protected override int VisualChildrenCount => _VisualChildren.Count;
 
         /// <inheritdoc />
-        public ResizingAdorner([NotNull] UIElement AdornedElement) : base(AdornedElement)
+        public ResizingAdorner(UIElement AdornedElement) : base(AdornedElement)
         {
             _VisualChildren = new VisualCollection(this);
             BuildAdornerCorner(ref _TopLeft, Cursors.SizeNWSE);
@@ -142,7 +142,7 @@ namespace MathCore.WPF
 
         // Helper method to instantiate the corner Thumbs, set the Cursor property, 
         // set some appearance properties, and add the elements to the visual tree.
-        private void BuildAdornerCorner([NotNull] ref Thumb thumb, Cursor cursor)
+        private void BuildAdornerCorner(ref Thumb thumb, Cursor cursor)
         {
             if (thumb != null) return;
             // Set some arbitrary visual characteristics.
@@ -159,7 +159,7 @@ namespace MathCore.WPF
         // This method ensures that the Widths and Heights are initialized.  Sizing to content produces
         // Width and Height values of Double.NaN.  Because this Adorner explicitly resizes, the Width and Height
         // need to be set first.  It also sets the maximum size of the adorned element.
-        private static void EnforceSize([NotNull] FrameworkElement element)
+        private static void EnforceSize(FrameworkElement element)
         {
             if (element.Width.Equals(double.NaN))
                 element.Width = element.DesiredSize.Width;

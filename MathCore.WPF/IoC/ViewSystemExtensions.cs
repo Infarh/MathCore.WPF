@@ -6,8 +6,7 @@ namespace MathCore.WPF.IoC
 {
     public static class ViewSystemExtensions
     {
-        [NotNull]
-        public static IServiceManager AddViewSystem([NotNull] this IServiceManager Manager)
+        public static IServiceManager AddViewSystem(this IServiceManager Manager)
         {
             Manager.RegisterSingleton<IViewSystem, ViewSystem>().AllowInheritance = true;
             return Manager;

@@ -39,7 +39,7 @@ namespace MathCore.WPF.Behaviors
         }
 
         /// <summary>When mouse enters, create a new Resizing Adorner</summary>
-        private void AttachedElement_MouseEnter([NotNull] object sender, MouseEventArgs e)
+        private void AttachedElement_MouseEnter(object sender, MouseEventArgs e)
         {
             var resizing_adorner = new ResizingAdorner(sender as UIElement ?? throw new InvalidOperationException());
             resizing_adorner.MouseLeave += ResizingAdorner_MouseLeave;
@@ -47,7 +47,7 @@ namespace MathCore.WPF.Behaviors
         }
 
         /// <summary>On mouse leave for the Resizing Adorner, remove the Resizing Adorner from the AdornerLayer</summary>
-        private void ResizingAdorner_MouseLeave([CanBeNull] object sender, MouseEventArgs e)
+        private void ResizingAdorner_MouseLeave(object? sender, MouseEventArgs e)
         {
             if (sender != null)
                 _AdornerLayer!.Remove(sender as ResizingAdorner ?? throw new InvalidOperationException());

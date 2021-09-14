@@ -13,7 +13,6 @@ using System.Xaml;
 
 using MathCore.Annotations;
 
-using SuppressMessageAttribute = System.Diagnostics.CodeAnalysis.SuppressMessageAttribute;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ParameterHidesMember
 
@@ -118,8 +117,7 @@ namespace MathCore.WPF.ViewModels
         /// <param name="next_property">Следующее свойство в цепочке зависимости</param>
         /// <param name="invoke_stack">Стек вызова</param>
         /// <returns>Истина, если найден цикл</returns>
-        [ItemNotNull, CanBeNull]
-        private Queue<string>? IsLoopDependency(string property, string dependence, string? next_property = null, [ItemNotNull] Stack<string>? invoke_stack = null)
+        private Queue<string>? IsLoopDependency(string property, string dependence, string? next_property = null, Stack<string>? invoke_stack = null)
         {
             invoke_stack ??= new Stack<string> { property };
             if (string.Equals(property, next_property))
@@ -429,10 +427,9 @@ namespace MathCore.WPF.ViewModels
             return new SetStaticValueResult<T>(true, old_value, value, OnPropertyChanged);
         }
 
-        [CanBeNull]
         public static string? CheckDesignModeFilePath(
-            [CanBeNull] string? RelativeFileName,
-            [CallerFilePath, CanBeNull] string? SourceFilePath = null) =>
+            string? RelativeFileName,
+            [CallerFilePath] string? SourceFilePath = null) =>
             !IsDesignMode
             || SourceFilePath is null
             || RelativeFileName is null
@@ -604,7 +601,7 @@ namespace MathCore.WPF.ViewModels
                 return this;
             }
 
-            public SetValueResult<T> Update([ItemNotNull] params string[] PropertyName)
+            public SetValueResult<T> Update(params string[] PropertyName)
             {
                 foreach (var name in PropertyName) _Model.OnPropertyChanged(name);
                 return this;
@@ -815,7 +812,6 @@ namespace MathCore.WPF.ViewModels
         }
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider Service)
         {
             var value_target_service = Service.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;

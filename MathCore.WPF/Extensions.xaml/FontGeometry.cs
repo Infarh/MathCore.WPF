@@ -18,7 +18,7 @@ namespace MathCore.WPF
         public FlowDirection FlowDirection { get; set; } = FlowDirection.LeftToRight;
 
         // ReSharper disable once StringLiteralTypo
-        [NotNull]public FontFamily Font { get; set; } = new("Segoe UI");
+        public FontFamily Font { get; set; } = new("Segoe UI");
 
         public FontStyle Style { get; set; } = FontStyles.Normal;
 
@@ -27,14 +27,14 @@ namespace MathCore.WPF
         public FontStretch Stretch { get; set; } = FontStretches.SemiExpanded;
 
         // ReSharper disable once StringLiteralTypo
-        [NotNull] public FontFamily FallBackFontFamily { get; set; } = new("Segoe UI");
+        public FontFamily FallBackFontFamily { get; set; } = new("Segoe UI");
         public double Size { get; set; } = 16;
 
         public Point Location { get; set; } = new(0, 0);
 
         public FontGeometry() { }
 
-        public FontGeometry([NotNull] string text) => Text = text;
+        public FontGeometry(string text) => Text = text;
 
         public override object ProvideValue(IServiceProvider sp)
         {

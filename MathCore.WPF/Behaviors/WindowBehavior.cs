@@ -10,7 +10,6 @@ namespace MathCore.WPF.Behaviors
     {
         private WeakReference<Window>? _WindowReference;
 
-        [CanBeNull]
         public Window? AssociatedWindow => _WindowReference is null 
             ? null
             : _WindowReference.TryGetTarget(out var window)

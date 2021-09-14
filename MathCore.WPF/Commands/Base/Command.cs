@@ -93,7 +93,7 @@ namespace MathCore.WPF.Commands
         protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         [NotifyPropertyChangedInvocator]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName] string? PropertyName = null)
+        protected virtual bool Set<T>(ref T? field, T? value, [CallerMemberName] string? PropertyName = null)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -107,7 +107,7 @@ namespace MathCore.WPF.Commands
 
         private event EventHandler? CanExecuteChangedHandlers;
 
-        protected virtual void OnCanExecuteChanged([CanBeNull] EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
+        protected virtual void OnCanExecuteChanged(EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
 
         /// <summary>Событие возникает при изменении возможности исполнения команды</summary>
         public event EventHandler? CanExecuteChanged
@@ -140,11 +140,11 @@ namespace MathCore.WPF.Commands
         private WeakReference? _RootObjectReference;
         private WeakReference? _TargetPropertyReference;
 
-        [CanBeNull] protected object? TargetObject => _TargetObjectReference?.Target;
+        protected object? TargetObject => _TargetObjectReference?.Target;
 
-        [CanBeNull] protected object? RootObject => _RootObjectReference?.Target;
+        protected object? RootObject => _RootObjectReference?.Target;
 
-        [CanBeNull] protected object? TargetProperty => _TargetPropertyReference?.Target;
+        protected object? TargetProperty => _TargetPropertyReference?.Target;
 
         /// <summary>Признак возможности исполнения</summary>
         public bool IsCanExecute
@@ -164,7 +164,6 @@ namespace MathCore.WPF.Commands
         #region MarkupExtension
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp)
         {
             //var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));

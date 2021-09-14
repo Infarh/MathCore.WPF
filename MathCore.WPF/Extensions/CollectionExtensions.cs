@@ -15,7 +15,6 @@ namespace System.Collections.ObjectModel
 {
     public static class CollectionExtensions
     {
-        [NotNull]
         public static ObservableCollectionSyncWrapper<T> GetThreadSafeWrapper<T>(
             this ObservableCollection<T> collection) =>
                 new(collection);
@@ -25,7 +24,6 @@ namespace System.Collections.ObjectModel
             private static readonly List<CollectionConnectorBase> __ConnectorsPool
                 = new();
 
-            [NotNull]
             public static ReadOnlyCollection<CollectionConnectorBase> Pool =>
                 new(__ConnectorsPool);
 
@@ -48,9 +46,9 @@ namespace System.Collections.ObjectModel
             public TDest? Destination => (TDest?)_DestinationRef.Target;
 
             public CollectionConnector(
-                [NotNull] TSource Source,
-                [NotNull] TDest Destination,
-                [CanBeNull] Func<TSourceItem, TDestItem>? Converter = null)
+                TSource Source,
+                TDest Destination,
+                Func<TSourceItem, TDestItem>? Converter = null)
             {
                 _SourceRef = new WeakReference(Source);
                 _DestinationRef = new WeakReference(Destination);
@@ -59,7 +57,7 @@ namespace System.Collections.ObjectModel
                 Source.CollectionChanged += OnCollectionChanged;
             }
 
-            private void OnCollectionChanged(object? Sender, [NotNull]NotifyCollectionChangedEventArgs E)
+            private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
             {
                 switch (E.Action)
                 {
@@ -96,7 +94,7 @@ namespace System.Collections.ObjectModel
                     AddItems(source.ToList());
             }
 
-            private void AddItems([CanBeNull] ICollection? NewItems)
+            private void AddItems(ICollection? NewItems)
             {
                 if (NewItems is null || NewItems.Count == 0) return;
                 var dest = Destination;
@@ -115,7 +113,7 @@ namespace System.Collections.ObjectModel
                 }
             }
 
-            private void RemoveItems([CanBeNull] ICollection? NewItems)
+            private void RemoveItems(ICollection? NewItems)
             {
                 if (NewItems is null || NewItems.Count == 0) return;
                 var dest = Destination;
@@ -145,8 +143,8 @@ namespace System.Collections.ObjectModel
         }
 
         public static void SetItemSource<TDestItem, TSourceItem, TSource, TDest>(
-            [NotNull] TDest DestinationCollection,
-            [NotNull] TSource SourceCollection,
+            TDest DestinationCollection,
+            TSource SourceCollection,
             Func<TSourceItem, TDestItem>? Converter = null)
             where TDest : class, ICollection<TDestItem>, INotifyCollectionChanged
             where TSource : class, ICollection<TSourceItem>, INotifyCollectionChanged
@@ -159,8 +157,8 @@ namespace System.Collections.ObjectModel
         }
 
         public static void ConnectTo<TDestItem, TSourceItem, TSource, TDest>(
-            [NotNull] TSource SourceCollection,
-            [NotNull] TDest DestinationCollection,
+            TSource SourceCollection,
+            TDest DestinationCollection,
             Func<TSourceItem, TDestItem>? Converter = null)
             where TDest : class, ICollection<TDestItem>, INotifyCollectionChanged
             where TSource : class, ICollection<TSourceItem>, INotifyCollectionChanged
@@ -173,8 +171,8 @@ namespace System.Collections.ObjectModel
         }
 
         public static void DisconnectSource<TDestItem, TSourceItem, TSource, TDest>(
-            [NotNull] this TDest DestinationCollection,
-            [NotNull] TSource SourceCollection)
+            this TDest DestinationCollection,
+            TSource SourceCollection)
                 where TDest : class, ICollection<TDestItem>, INotifyCollectionChanged
                 where TSource : class, ICollection<TSourceItem>, INotifyCollectionChanged
             => CollectionConnectorBase.Pool.OfType<CollectionConnector<TSourceItem, TDestItem, TSource, TDest>>()
@@ -184,8 +182,8 @@ namespace System.Collections.ObjectModel
                             ReferenceEquals(c.Destination, DestinationCollection))?.Close();
 
         public static void ResetBinding<TDestItem, TSourceItem, TSource, TDest>(
-            [NotNull] this TSource SourceCollection,
-            [NotNull] TDest DestinationCollection)
+            this TSource SourceCollection,
+            TDest DestinationCollection)
                 where TDest : class, ICollection<TDestItem>, INotifyCollectionChanged
                 where TSource : class, ICollection<TSourceItem>, INotifyCollectionChanged
             => CollectionConnectorBase.Pool.OfType<CollectionConnector<TSourceItem, TDestItem, TSource, TDest>>()
@@ -198,8 +196,8 @@ namespace System.Collections.ObjectModel
             new();
 
         public static void AddItemsRange<TCollection, TItem>(
-            [NotNull]this TCollection collection,
-            [NotNull] IEnumerable<TItem> items)
+            this TCollection collection,
+            IEnumerable<TItem> items)
             where TCollection : ICollection<TItem>
         {
             if (!(collection is ObservableCollection<TItem>))
@@ -251,8 +249,8 @@ namespace System.Collections.ObjectModel
         }
 
         public static void RemoveItemsRange<TCollection, TItem>(
-            [NotNull]this TCollection collection,
-            [NotNull] IEnumerable<TItem> items)
+            this TCollection collection,
+            IEnumerable<TItem> items)
             where TCollection : ICollection<TItem>
         {
             if (!(collection is ObservableCollection<TItem>))
@@ -293,6 +291,6 @@ namespace System.Collections.ObjectModel
             }
         }
 
-        [NotNull] public static bool[] RemoveItemsRangeResult<T>([NotNull]this ICollection<T> collection, [NotNull] IEnumerable<T> items) => items.Select(collection.Remove).ToArray();
+        public static bool[] RemoveItemsRangeResult<T>(this ICollection<T> collection, IEnumerable<T> items) => items.Select(collection.Remove).ToArray();
     }
 }

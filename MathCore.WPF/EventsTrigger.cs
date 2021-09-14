@@ -76,7 +76,6 @@ namespace MathCore.WPF
         public event EventHandler Raise;
         public event EventHandler Falloff;
 
-        [NotNull]
         private readonly Func<object, bool> _Checker;
 
         private readonly object _SyncRoot = new();
@@ -86,14 +85,14 @@ namespace MathCore.WPF
 
         public bool LastState => _LastState;
 
-        public EventsTrigger([NotNull] Func<bool> Checker) : this(obj => Checker()) { }
+        public EventsTrigger(Func<bool> Checker) : this(obj => Checker()) { }
 
-        public EventsTrigger([NotNull] Func<object, bool> Checker) => _Checker = Checker;
+        public EventsTrigger(Func<object, bool> Checker) => _Checker = Checker;
 
         public bool Check() => Check(null);
 
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public bool Check([CanBeNull] object obj)
+        public bool Check(object? obj)
         {
             bool current;
             lock (_SyncRoot)

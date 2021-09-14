@@ -8,7 +8,7 @@ namespace System.Windows.Threading
 {
     public static class DispatcherExtensions
     {
-        public static DispatcherAwaiter GetAwaiter([NotNull] this Dispatcher dispatcher) => new(dispatcher);
+        public static DispatcherAwaiter GetAwaiter(this Dispatcher dispatcher) => new(dispatcher);
 
         public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority) => 
             dispatcher is null 
@@ -33,17 +33,17 @@ namespace System.Windows.Threading
     public readonly struct DispatcherAwaiter : INotifyCompletion
     {
         private readonly DispatcherPriority _Priority;
-        [NotNull] private readonly Dispatcher _Dispatcher;
+        private readonly Dispatcher _Dispatcher;
 
         public bool IsCompleted => _Dispatcher.CheckAccess();
 
-        public DispatcherAwaiter([NotNull] Dispatcher dispatcher)
+        public DispatcherAwaiter(Dispatcher dispatcher)
         {
             _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             _Priority = DispatcherPriority.Normal;
         }
 
-        public DispatcherAwaiter([NotNull] Dispatcher dispatcher, DispatcherPriority Priority)
+        public DispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
         {
             _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
             _Priority = Priority;

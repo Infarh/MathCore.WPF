@@ -158,9 +158,9 @@ namespace MathCore.WPF.Behaviors
 
         #region EventHandlers
 
-        private void OnMouseMove(object Sender, [NotNull] MouseEventArgs E) => MousePosition = E.GetPosition((FrameworkElement)Sender);
+        private void OnMouseMove(object Sender, MouseEventArgs E) => MousePosition = E.GetPosition((FrameworkElement)Sender);
 
-        private void OnSizeChanged(object Sender, [NotNull] SizeChangedEventArgs E) => ElementSize = E.NewSize;
+        private void OnSizeChanged(object Sender, SizeChangedEventArgs E) => ElementSize = E.NewSize;
 
         #endregion
     }

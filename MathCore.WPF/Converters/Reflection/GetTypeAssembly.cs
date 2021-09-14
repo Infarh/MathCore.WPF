@@ -14,7 +14,6 @@ namespace MathCore.WPF.Converters.Reflection
     public class GetTypeAssembly : ValueConverter
     {
         /// <inheritdoc />
-        [NotNull]
         protected override object Convert(object v, Type t, object p, CultureInfo c) => ((Type)v).Assembly;
     }
 }

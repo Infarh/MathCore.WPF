@@ -37,7 +37,6 @@ namespace MathCore.WPF
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp) => new ScaleTransform { ScaleX = X, ScaleY = Y, CenterX = X0, CenterY = Y0 };
 
         #endregion 

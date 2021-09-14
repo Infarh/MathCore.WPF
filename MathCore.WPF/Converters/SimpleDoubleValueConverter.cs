@@ -28,7 +28,7 @@ namespace MathCore.WPF.Converters
         protected SimpleDoubleValueConverter(double Parameter, Conversion? to = null, Conversion? from = null)
             : this(to, from) => this.Parameter = Parameter;
 
-        protected SimpleDoubleValueConverter([CanBeNull] Conversion? to = null, [CanBeNull] Conversion? from = null)
+        protected SimpleDoubleValueConverter(Conversion? to = null, Conversion? from = null)
         {
             _To = to ?? To;
             _From = from ?? From;

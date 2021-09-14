@@ -67,7 +67,7 @@ namespace MathCore.WPF
         private readonly List<SortDescription> _SortDescriptions;
         private readonly List<GroupDescription> _GroupDescriptions;
 
-        public CollectionViewShaper([NotNull] ICollectionView view)
+        public CollectionViewShaper(ICollectionView view)
         {
             _View = view ?? throw new ArgumentNullException(nameof(view));
             _Filter = view.Filter;
@@ -113,7 +113,7 @@ namespace MathCore.WPF
             return this;
         }
 
-        public CollectionViewShaper<T> Where([NotNull] Func<T, bool> predicate)
+        public CollectionViewShaper<T> Where(Func<T, bool> predicate)
         {
             _Filter = o => predicate((T)o);
             return this;

@@ -16,7 +16,7 @@ namespace MathCore.WPF.Behaviors
             SelectTreeViewItem(tree_view, model.Directory.FullName);
         }
 
-        private static bool SelectTreeViewItem([NotNull] ItemsControl Container, [NotNull] string path)
+        private static bool SelectTreeViewItem(ItemsControl Container, string path)
         {
             foreach (DirectoryViewModel? model in Container.Items)
             {

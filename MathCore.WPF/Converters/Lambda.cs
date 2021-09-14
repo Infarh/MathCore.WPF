@@ -11,18 +11,17 @@ namespace MathCore.WPF.Converters
 
         public delegate TValue ConverterBack(TResult Value, Type? SourceValueType, object? Parameter, CultureInfo? Culture);
 
-        [NotNull]
         private readonly Converter _Converter;
 
         private readonly ConverterBack _BackConverter;
 
         public Lambda(
-            [NotNull]Func<TValue, TResult> Converter, 
-            [CanBeNull] Func<TResult, TValue>? BackConverter = null)
+            Func<TValue, TResult> Converter, 
+            Func<TResult, TValue>? BackConverter = null)
             : this((v, _, _, _) => Converter(v), BackConverter is null ? null : ((v, _, _, _) => BackConverter(v)))
         { }
 
-        public Lambda([NotNull]Converter Converter, [CanBeNull] ConverterBack? BackConverter = null)
+        public Lambda(Converter Converter, ConverterBack? BackConverter = null)
         {
             _Converter = Converter;
             _BackConverter = BackConverter ?? ((_, _, _, _) => throw new NotSupportedException());

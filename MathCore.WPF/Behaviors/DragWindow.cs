@@ -19,7 +19,7 @@ namespace MathCore.WPF.Behaviors
             AssociatedObject.MouseLeftButtonDown -= OnMouseLeftButtonDown;
         }
 
-        protected virtual void OnMouseLeftButtonDown([NotNull] object Sender, [NotNull] MouseButtonEventArgs E)
+        protected virtual void OnMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             if (E.ClickCount > 1) return;
             AssociatedWindow?.DragMove();

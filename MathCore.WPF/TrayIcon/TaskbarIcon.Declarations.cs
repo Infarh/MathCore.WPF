@@ -508,7 +508,7 @@ namespace MathCore.WPF.TrayIcon
         /// the <see cref="FrameworkElement.DataContext"/> of the NotifyIcon, or the
         /// NotifyIcon itself, if no data context was assigned at all.
         /// </summary>
-        private void UpdateDataContext([CanBeNull] FrameworkElement? Element, object? OldValue, object? NewValue)
+        private void UpdateDataContext(FrameworkElement? Element, object? OldValue, object? NewValue)
         {
             //if there is no target or it's data context is determined through a binding
             //of its own, keep it
@@ -784,15 +784,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayLeftMouseDown event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayLeftMouseDownEvent() => RaiseTrayLeftMouseDownEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayLeftMouseDown event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayLeftMouseDownEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayLeftMouseDownEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -827,15 +825,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayRightMouseDown event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayRightMouseDownEvent() => RaiseTrayRightMouseDownEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayRightMouseDown event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayRightMouseDownEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayRightMouseDownEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -870,15 +866,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayMiddleMouseDown event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayMiddleMouseDownEvent() => RaiseTrayMiddleMouseDownEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayMiddleMouseDown event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayMiddleMouseDownEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayMiddleMouseDownEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -913,15 +907,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayLeftMouseUp event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayLeftMouseUpEvent() => RaiseTrayLeftMouseUpEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayLeftMouseUp event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayLeftMouseUpEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayLeftMouseUpEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -956,15 +948,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayRightMouseUp event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayRightMouseUpEvent() => RaiseTrayRightMouseUpEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayRightMouseUp event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayRightMouseUpEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayRightMouseUpEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -999,15 +989,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayMiddleMouseUp event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayMiddleMouseUpEvent() => RaiseTrayMiddleMouseUpEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayMiddleMouseUp event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayMiddleMouseUpEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayMiddleMouseUpEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1036,7 +1024,6 @@ namespace MathCore.WPF.TrayIcon
         }
 
         /// <summary>Метод генерации события TrayMouseClick</summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayMouseClickEvent()
         {
             var args = RaiseTrayMouseClickEvent(this);
@@ -1048,8 +1035,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayMouseClick event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayMouseClickEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayMouseClickEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1078,7 +1064,6 @@ namespace MathCore.WPF.TrayIcon
         }
 
         /// <summary>Метод генерации события TrayMouseDoubleClick</summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayMouseDoubleClickEvent()
         {
             var args = RaiseTrayMouseDoubleClickEvent(this);
@@ -1090,8 +1075,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayMouseDoubleClick event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayMouseDoubleClickEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayMouseDoubleClickEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1126,15 +1110,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayMouseMove event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayMouseMoveEvent() => RaiseTrayMouseMoveEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayMouseMove event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayMouseMoveEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayMouseMoveEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1169,15 +1151,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayBalloonTipShown event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayBalloonTipShownEvent() => RaiseTrayBalloonTipShownEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayBalloonTipShown event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayBalloonTipShownEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayBalloonTipShownEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1212,15 +1192,13 @@ namespace MathCore.WPF.TrayIcon
         /// <summary>
         /// A helper method to raise the TrayBalloonTipClosed event.
         /// </summary>
-        [CanBeNull]
         protected RoutedEventArgs? RaiseTrayBalloonTipClosedEvent() => RaiseTrayBalloonTipClosedEvent(this);
 
         /// <summary>
         /// A static helper method to raise the TrayBalloonTipClosed event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayBalloonTipClosedEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayBalloonTipClosedEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1261,8 +1239,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayBalloonTipClicked event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayBalloonTipClickedEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayBalloonTipClickedEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1340,8 +1317,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the PreviewTrayContextMenuOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaisePreviewTrayContextMenuOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaisePreviewTrayContextMenuOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1382,8 +1358,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayPopupOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayPopupOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayPopupOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1420,8 +1395,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the PreviewTrayPopupOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaisePreviewTrayPopupOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaisePreviewTrayPopupOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1462,8 +1436,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayToolTipOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayToolTipOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayToolTipOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1500,8 +1473,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the PreviewTrayToolTipOpen event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaisePreviewTrayToolTipOpenEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaisePreviewTrayToolTipOpenEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1542,8 +1514,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the TrayToolTipClose event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseTrayToolTipCloseEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseTrayToolTipCloseEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1580,8 +1551,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the PreviewTrayToolTipClose event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaisePreviewTrayToolTipCloseEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaisePreviewTrayToolTipCloseEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1626,8 +1596,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the PopupOpened event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaisePopupOpenedEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaisePopupOpenedEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1670,8 +1639,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the ToolTipOpened event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseToolTipOpenedEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseToolTipOpenedEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1714,8 +1682,7 @@ namespace MathCore.WPF.TrayIcon
         /// A static helper method to raise the ToolTipClose event on a target element.
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseToolTipCloseEvent([CanBeNull] DependencyObject target)
+        private static RoutedEventArgs? RaiseToolTipCloseEvent(DependencyObject? target)
         {
             if(target is null) return null;
 
@@ -1759,8 +1726,7 @@ namespace MathCore.WPF.TrayIcon
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
         /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseBalloonShowingEvent([CanBeNull] DependencyObject target, TaskbarIcon source)
+        private static RoutedEventArgs? RaiseBalloonShowingEvent(DependencyObject? target, TaskbarIcon source)
         {
             if(target is null) return null;
 
@@ -1804,8 +1770,7 @@ namespace MathCore.WPF.TrayIcon
         /// </summary>
         /// <param name="target">UIElement or ContentElement on which to raise the event</param>
         /// <param name="source">The <see cref="TaskbarIcon"/> instance that manages the balloon.</param>
-        [CanBeNull]
-        private static RoutedEventArgs? RaiseBalloonClosingEvent([CanBeNull] DependencyObject target, TaskbarIcon source)
+        private static RoutedEventArgs? RaiseBalloonClosingEvent(DependencyObject? target, TaskbarIcon source)
         {
             if(target is null) return null;
 
@@ -1839,13 +1804,13 @@ namespace MathCore.WPF.TrayIcon
         /// Gets the ParentTaskbarIcon property.  This dependency property 
         /// indicates ....
         /// </summary>
-        public static TaskbarIcon GetParentTaskbarIcon([NotNull] DependencyObject d) => (TaskbarIcon)d.GetValue(ParentTaskbarIconProperty);
+        public static TaskbarIcon GetParentTaskbarIcon(DependencyObject d) => (TaskbarIcon)d.GetValue(ParentTaskbarIconProperty);
 
         /// <summary>
         /// Sets the ParentTaskbarIcon property.  This dependency property 
         /// indicates ....
         /// </summary>
-        public static void SetParentTaskbarIcon([NotNull] DependencyObject d, TaskbarIcon? value) => d.SetValue(ParentTaskbarIconProperty, value);
+        public static void SetParentTaskbarIcon(DependencyObject d, TaskbarIcon? value) => d.SetValue(ParentTaskbarIconProperty, value);
 
         #endregion
 

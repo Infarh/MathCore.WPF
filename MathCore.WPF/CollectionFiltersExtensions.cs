@@ -17,8 +17,8 @@ namespace MathCore.WPF
 {
     public class CollectionFilterItem<TValue, TCriteria> : ReadOnlyObservableCollection<TValue>
     {
-        [NotNull, ItemCanBeNull] private readonly ObservableCollection<TValue> _InternalCollection;
-        [CanBeNull] public TCriteria? Key { get; }
+        private readonly ObservableCollection<TValue?> _InternalCollection;
+        public TCriteria? Key { get; }
 
         private bool _Enabled;
         public bool Enabled
@@ -32,14 +32,14 @@ namespace MathCore.WPF
             }
         }
 
-        public CollectionFilterItem([NotNull, ItemCanBeNull] ObservableCollection<TValue> list) : base(list) => _InternalCollection = list;
+        public CollectionFilterItem(ObservableCollection<TValue?> list) : base(list) => _InternalCollection = list;
         public CollectionFilterItem(TCriteria key) : this(new ObservableCollection<TValue>()) => Key = key;
 
-        public CollectionFilterItem([NotNull] TCriteria key, [NotNull, ItemCanBeNull] IEnumerable<TValue> items) : this(new ObservableCollection<TValue>(items)) => Key = key;
+        public CollectionFilterItem([NotNull] TCriteria key, IEnumerable<TValue?> items) : this(new ObservableCollection<TValue>(items)) => Key = key;
 
-        internal void Add([CanBeNull] TValue value) { if (!_InternalCollection.Contains(value)) _InternalCollection.Add(value); }
+        internal void Add(TValue? value) { if (!_InternalCollection.Contains(value)) _InternalCollection.Add(value); }
 
-        internal bool Remove([CanBeNull] TValue value) => _InternalCollection.Remove(value);
+        internal bool Remove(TValue? value) => _InternalCollection.Remove(value);
     }
 
     public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<CollectionFilterItem<TValue, TCriteria>>
@@ -143,7 +143,7 @@ namespace MathCore.WPF
 
         public event EventHandler? EnabledChanged;
 
-        [CanBeNull] public TCriteria? Key { get; }
+        public TCriteria? Key { get; }
 
         private CollectionViewFilterItem(ObservableCollection<object?> collection) : base(collection) => _InternalCollection = collection;
         public CollectionViewFilterItem(TCriteria? key) : this(new ObservableCollection<object?>()) => Key = key;
@@ -243,7 +243,7 @@ namespace MathCore.WPF
             }
         }
 
-        private void AddValues([NotNull, ItemCanBeNull] IEnumerable values)
+        private void AddValues([ItemCanBeNull] IEnumerable values)
         {
             if (_Selector is not { } selector) return;
             foreach (var value in values)
@@ -260,7 +260,7 @@ namespace MathCore.WPF
             }
         }
 
-        private void RemoveValues([NotNull, ItemCanBeNull] IEnumerable values)
+        private void RemoveValues([ItemCanBeNull] IEnumerable values)
         {
             if (_Selector is not { } selector) return;
             foreach (var value in values)
@@ -397,7 +397,7 @@ namespace MathCore.WPF
             }
         }
 
-        private void RemoveValues([NotNull, ItemCanBeNull] IEnumerable values)
+        private void RemoveValues([ItemCanBeNull] IEnumerable values)
         {
             if(_Selector is not { } selector) return;
             foreach (TItem value in values)

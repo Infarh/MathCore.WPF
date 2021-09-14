@@ -11,7 +11,7 @@ namespace MathCore.WPF.Templates.Selectors
     {
         private readonly Dictionary<Type, DataTemplate> _Templates;
 
-        public GenericDataTemplateSelector([NotNull] IEnumerable<DataTemplate> Styles) =>
+        public GenericDataTemplateSelector(IEnumerable<DataTemplate> Styles) =>
             _Templates = Styles.ToDictionary(t => t.DataType is Type type
                 ? type
                 : throw new InvalidCastException(

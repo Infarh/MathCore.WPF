@@ -13,13 +13,12 @@ namespace MathCore.WPF.Values
     public class ScaleValue : Freezable
     {
         private bool _IsValueLast;
-        [NotNull] private readonly Binding _ValueBinding;
-        [NotNull] private readonly BindingExpressionBase _ValueBindingExpression;
+        private readonly Binding _ValueBinding;
+        private readonly BindingExpressionBase _ValueBindingExpression;
 
         #region ScreenLength : double - Размер экрана
 
         /// <summary>Размер экрана</summary>
-        [NotNull]
         public static readonly DependencyProperty ScreenLengthProperty =
             DependencyProperty.Register(
                 nameof(ScreenLength),
@@ -40,7 +39,6 @@ namespace MathCore.WPF.Values
         #region ValueMin : double - Отображаемый минимум
 
         /// <summary>Отображаемый минимум</summary>
-        [NotNull]
         public static readonly DependencyProperty ValueMinProperty =
             DependencyProperty.Register(
                 nameof(ValueMin),
@@ -61,7 +59,6 @@ namespace MathCore.WPF.Values
         #region ValueMax : double - Отображаемый максимум
 
         /// <summary>Отображаемый максимум</summary>
-        [NotNull]
         public static readonly DependencyProperty ValueMaxProperty =
             DependencyProperty.Register(
                 nameof(ValueMax),
@@ -82,7 +79,6 @@ namespace MathCore.WPF.Values
         #region ValueOffset : double - Смещение значения
 
         /// <summary>Смещение значения</summary>
-        [NotNull]
         public static readonly DependencyProperty ValueOffsetProperty =
             DependencyProperty.Register(
                 nameof(ValueOffset),
@@ -103,7 +99,6 @@ namespace MathCore.WPF.Values
         #region ScreenOffset : double - Экранное смещение
 
         /// <summary>Экранное смещение</summary>
-        [NotNull]
         public static readonly DependencyProperty ScreenOffsetProperty =
             DependencyProperty.Register(
                 nameof(ScreenOffset),
@@ -124,7 +119,6 @@ namespace MathCore.WPF.Values
         #region Value : double - Значение
 
         /// <summary>Значение</summary>
-        [NotNull]
         public static readonly DependencyProperty ValueProperty =
             DependencyProperty.Register(
                 nameof(Value),
@@ -148,7 +142,6 @@ namespace MathCore.WPF.Values
         #region ScreenValue : double - Экранное значение
 
         /// <summary>Экранное значение</summary>
-        [NotNull]
         public static readonly DependencyProperty ScreenValueProperty =
             DependencyProperty.Register(
                 nameof(ScreenValue),

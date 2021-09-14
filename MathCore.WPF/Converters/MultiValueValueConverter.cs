@@ -11,7 +11,6 @@ namespace MathCore.WPF.Converters
     public abstract class MultiValueValueConverter : MarkupExtension, IMultiValueConverter
     {
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp) => this;
 
         /// <summary>Преобразование значений</summary>

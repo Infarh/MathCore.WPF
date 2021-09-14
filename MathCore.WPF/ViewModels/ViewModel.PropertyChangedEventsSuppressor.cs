@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using MathCore.Annotations;
-
 namespace MathCore.WPF.ViewModels
 {
     public partial class ViewModel

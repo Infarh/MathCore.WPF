@@ -16,7 +16,6 @@ namespace MathCore.WPF.Commands
     [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
     public interface IAsyncTaskCommand : ICommand
     {
-        [NotNull]
         Task ExecuteTaskAsync(object? parameter);
     }
 
@@ -88,7 +87,6 @@ namespace MathCore.WPF.Commands
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
-        [NotNull]
         private readonly Func<object?, CancellationToken, Task<TResult>> _TaskFunction;
 
         private readonly Func<object?, bool>? _CanExecute;
@@ -105,18 +103,17 @@ namespace MathCore.WPF.Commands
             }
         }
 
-        [NotNull]
         // ReSharper disable once ConvertToAutoPropertyWhenPossible
         private CancelAsyncCommand CancelCommand { get; }
 
-        public AsyncTaskCommand([NotNull]Func<object?, CancellationToken, Task<TResult>> TaskFunction, Func<object?, bool>? CanExecute = null)
+        public AsyncTaskCommand(Func<object?, CancellationToken, Task<TResult>> TaskFunction, Func<object?, bool>? CanExecute = null)
         {
             _TaskFunction = TaskFunction;
             _CanExecute = CanExecute;
             CancelCommand = new CancelAsyncCommand();
         }
 
-        public AsyncTaskCommand([NotNull]Task<TResult> task) : this(async (_, _) => await task) { }
+        public AsyncTaskCommand(Task<TResult> task) : this(async (_, _) => await task) { }
 
         public override bool CanExecute(object? parameter) => (_CanExecute?.Invoke(parameter) ?? true) && (Execution?.IsCompleted ?? false);
 

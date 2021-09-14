@@ -18,7 +18,6 @@ namespace MathCore.WPF
         #region AttachedProperties 
 
         /// <summary>Прозпачность возяного знака</summary>
-        [NotNull]
         public static readonly DependencyProperty OpacityProperty =
                     DependencyProperty.RegisterAttached(
                         "Opacity",
@@ -32,15 +31,14 @@ namespace MathCore.WPF
         /// <summary>Задать прозрачность возяного знака</summary>
         /// <param name="element">Объект, которому устанавливается прозрачность водяного знака</param>
         /// <param name="value">Значение прозрачности водяного знака</param>
-        public static void SetOpacity([NotNull] DependencyObject element, double value) => element.SetValue(OpacityProperty, value);
+        public static void SetOpacity(DependencyObject element, double value) => element.SetValue(OpacityProperty, value);
 
         /// <summary>Получить значение прозрачности водяного знака</summary>
         /// <param name="element">Элемент, прозрачность водяного знака которого надо получить</param>
         /// <returns>Значение прозрачности водяного знака</returns>
-        public static double GetOpacity([NotNull] DependencyObject element) => (double)element.GetValue(OpacityProperty);
+        public static double GetOpacity(DependencyObject element) => (double)element.GetValue(OpacityProperty);
 
         /// <summary>Значение водяного знака</summary>
-        [NotNull]
         public static readonly DependencyProperty ValueProperty =
                     DependencyProperty.RegisterAttached(
                         "Value",
@@ -56,15 +54,14 @@ namespace MathCore.WPF
         /// <summary>Задать значение водяного знака</summary>
         /// <param name="element">Элемент, которому задаётся значение водяного знака</param>
         /// <param name="value">Значение водяного знака</param>
-        public static void SetValue([NotNull] DependencyObject element, [CanBeNull] object value) => element.SetValue(ValueProperty, value);
+        public static void SetValue(DependencyObject element, object? value) => element.SetValue(ValueProperty, value);
 
         /// <summary>Получить значение водяного знака</summary>
         /// <param name="element">Элемент, значение водяного знака которого надо получить</param>
         /// <returns>Значение водяного знака</returns>
-        [CanBeNull] public static object GetValue([NotNull] DependencyObject element) => element.GetValue(ValueProperty);
+        public static object? GetValue(DependencyObject element) => element.GetValue(ValueProperty);
 
 
-        [NotNull]
         public static readonly DependencyProperty ForegroundProperty =
             DependencyProperty.RegisterAttached(
                 "Foreground",
@@ -74,10 +71,9 @@ namespace MathCore.WPF
                         FrameworkPropertyMetadataOptions.AffectsRender,
                         OnWatermarkPropertyAttached));
 
-        public static void SetForeground([NotNull] DependencyObject element, [CanBeNull] Brush value) => element.SetValue(ForegroundProperty, value);
+        public static void SetForeground(DependencyObject element, Brush? value) => element.SetValue(ForegroundProperty, value);
 
-        [CanBeNull]
-        public static Brush GetForeground([NotNull] DependencyObject element) => (Brush)element.GetValue(ForegroundProperty);
+        public static Brush? GetForeground(DependencyObject element) => (Brush)element.GetValue(ForegroundProperty);
 
         #region VerticalAlignment attached dependency property : VerticalAlignment
 
@@ -151,14 +147,14 @@ namespace MathCore.WPF
         #endregion
 
         /// <summary>Словарь объектов ItemsControls, которым установлен водяной знак</summary>
-        [NotNull] private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = new();
+        private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = new();
 
-        [NotNull] private static readonly List<Control> __AttachedControlsList = new(50);
+        private static readonly List<Control> __AttachedControlsList = new(50);
 
         /// <summary>Обработчик события изменения водяного знака</summary>
         /// <param name="d"><see cref="DependencyObject"/> - источник события</param>
         /// <param name="e"><see cref="DependencyPropertyChangedEventArgs"/> - аргумент события изменения водяного знака</param>
-        private static void OnWatermarkOpacityChanged([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnWatermarkOpacityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             OnWatermarkPropertyAttached(d, e);
             var control = (Control)d;
@@ -175,9 +171,9 @@ namespace MathCore.WPF
         /// <summary>Обработчик события изменения водяного знака</summary>
         /// <param name="d"><see cref="DependencyObject"/> - источник события</param>
         /// <param name="e"><see cref="DependencyPropertyChangedEventArgs"/> - аргумент события изменения водяного знака</param>
-        private static void OnWatermarkPropertyAttached([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e) => SetEvents((Control)d);//OnContentChanged(d, null);
+        private static void OnWatermarkPropertyAttached(DependencyObject d, DependencyPropertyChangedEventArgs e) => SetEvents((Control)d);//OnContentChanged(d, null);
 
-        private static void SetEvents([NotNull] Control control)
+        private static void SetEvents(Control control)
         {
             if (__AttachedControlsList.Contains(control)) return;
             __AttachedControlsList.Add(control);
@@ -249,12 +245,12 @@ namespace MathCore.WPF
         /// <summary>Обработчик события изменения фокуса ввода элемента</summary>
         /// <param name="sender">Объект - источник событий</param>
         /// <param name="e"><see cref="ItemsChangedEventArgs"/> - аргумент события</param>
-        private static void OnContentChanged([NotNull] object sender, [CanBeNull] RoutedEventArgs e) => (ShouldShowWatermark((Control)sender) ? (Action<Control>)ShowWatermark : RemoveWatermark)((Control)sender);
+        private static void OnContentChanged(object sender, RoutedEventArgs? e) => (ShouldShowWatermark((Control)sender) ? (Action<Control>)ShowWatermark : RemoveWatermark)((Control)sender);
 
         /// <summary>Обработчик события изменения фокуса ввода клавиатуры</summary>
         /// <param name="sender">Объект - источник событий</param>
         /// <param name="e"><see cref="RoutedEventArgs"/> - аргумент события</param>
-        private static void OnGotKeyboardFocus([NotNull] object sender, [CanBeNull] RoutedEventArgs e)
+        private static void OnGotKeyboardFocus(object sender, RoutedEventArgs? e)
         {
             if (ShouldShowWatermark((Control)sender)) RemoveWatermark((Control)sender);
         }
@@ -262,7 +258,7 @@ namespace MathCore.WPF
         /// <summary>Обработчик события загрузки компонента</summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e"><see cref="RoutedEventArgs"/> - аргумент события</param>
-        private static void OnLoaded([NotNull] object sender, [CanBeNull] RoutedEventArgs e)
+        private static void OnLoaded(object sender, RoutedEventArgs? e)
         {
             if (ShouldShowWatermark((Control)sender)) ShowWatermark((Control)sender);
         }
@@ -270,7 +266,7 @@ namespace MathCore.WPF
         /// <summary>Обработчик события изменения значения свойства Источника элементов</summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">A <see cref="EventArgs"/> - аргумент события</param>
-        private static void OnItemsSourceChanged([NotNull] object sender, [CanBeNull] EventArgs e)
+        private static void OnItemsSourceChanged(object sender, EventArgs? e)
         {
             var control = (ItemsControl)sender;
             (control.ItemsSource is null || ShouldShowWatermark(control) ? (Action<Control>)ShowWatermark : RemoveWatermark)(control);
@@ -279,7 +275,7 @@ namespace MathCore.WPF
         /// <summary>Обработчик события изменения элементов объекта</summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e"><see cref="ItemsChangedEventArgs"/> - аргумент события</param>
-        private static void OnItemsChanged([NotNull] object sender, [CanBeNull] ItemsChangedEventArgs e)
+        private static void OnItemsChanged(object sender, ItemsChangedEventArgs? e)
         {
             if (__ItemsControlsDictionary.TryGetValue(sender, out var control))
                 (ShouldShowWatermark(control) ? (Action<Control>)ShowWatermark : RemoveWatermark)(control);
@@ -287,7 +283,7 @@ namespace MathCore.WPF
 
         /// <summary>Уделить водяной знак элемента</summary>
         /// <param name="control">Элемент, водяной знак у которого надо удалить</param>
-        private static void RemoveWatermark([NotNull] UIElement control)
+        private static void RemoveWatermark(UIElement control)
         {
             var layer = AdornerLayer.GetAdornerLayer(control);
 
@@ -304,7 +300,7 @@ namespace MathCore.WPF
 
         /// <summary>Показать водяной знак для компонента</summary>
         /// <param name="control">Компонент, для которого надо показать водяной знак</param>
-        private static void ShowWatermark([NotNull] Control control)
+        private static void ShowWatermark(Control control)
         {
             if (control is null) throw new NullReferenceException(nameof(control));
 
@@ -325,7 +321,7 @@ namespace MathCore.WPF
         /// <summary>Проверка необходимости показать водяной знак компонента</summary>
         /// <param name="control"><see cref="Control"/> - компонент, для которого надо проверить видимость</param>
         /// <returns>Истина, если компонент удовлетворяет условию отображения водяного знака</returns>
-        private static bool ShouldShowWatermark([CanBeNull] Control control)
+        private static bool ShouldShowWatermark(Control? control)
         {
             switch (control)
             {
@@ -348,7 +344,7 @@ namespace MathCore.WPF
             #region Закрытые поля
 
             /// <summary><see cref="ContentPresenter"/> - объект, содержащий водяной знак</summary>
-            [NotNull] private readonly ContentPresenter _ContentPresenter;
+            private readonly ContentPresenter _ContentPresenter;
 
             #endregion
 
@@ -357,7 +353,7 @@ namespace MathCore.WPF
             /// <summary>Инициализация нового <see cref="WatermarkAdorner"/></summary>
             /// <param name="control"><see cref="UIElement"/> - компонент, которому назначается водяной знак</param>
             /// <param name="watermark">Значение водяного знака</param>
-            public WatermarkAdorner([NotNull] UIElement control, [CanBeNull] object watermark)
+            public WatermarkAdorner(UIElement control, object? watermark)
                 : base(control)
             {
                 if (control is null) throw new ArgumentNullException(nameof(control));

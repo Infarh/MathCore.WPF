@@ -12,9 +12,9 @@ namespace MathCore.WPF.Converters
     [ValueConversion(typeof(IEnumerable), typeof(object))]
     public class MaxValue : MarkupExtension, IMultiValueConverter, IValueConverter
     {
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => this;
+        public override object ProvideValue(IServiceProvider sp) => this;
 
-        public object? Convert([NotNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv.Max();
+        public object? Convert(object[] vv, Type? t, object? p, CultureInfo? c) => vv.Max();
 
         public object[] ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => throw new NotSupportedException();
 

@@ -10,7 +10,6 @@ namespace MathCore.WPF.Converters.Reflection
     [ValueConversion(typeof(Assembly), typeof(object))]
     public abstract class AssemblyConverter : ValueConverter
     {
-        [NotNull]
         protected static Func<Assembly, object?> Attribute<T>(Func<T, object?> Converter) where T : Attribute => asm =>
         {
             var a = asm.GetCustomAttributes(typeof(T), false).OfType<T>().FirstOrDefault();

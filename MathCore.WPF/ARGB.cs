@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Markup;
 using System.Windows.Media;
-using MathCore.WPF.Extensions;
+
 // ReSharper disable InconsistentNaming
 
 namespace MathCore.WPF

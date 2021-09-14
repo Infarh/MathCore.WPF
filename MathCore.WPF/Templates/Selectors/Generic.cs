@@ -17,6 +17,6 @@ namespace MathCore.WPF.Templates.Selectors
 
         public IList Templates => _Items;
 
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => new GenericDataTemplateSelector(_Items);
+        public override object ProvideValue(IServiceProvider sp) => new GenericDataTemplateSelector(_Items);
     }
 }

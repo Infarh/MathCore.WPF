@@ -30,7 +30,7 @@ namespace MathCore.WPF.Behaviors
                 AssociatedObject.RemoveHandler(UIElement.MouseDownEvent, _MouseButtonsEventHandler);
         }
 
-        private void OnResizeWindowShape_MouseDown([NotNull] object Sender, [NotNull] MouseButtonEventArgs E)
+        private void OnResizeWindowShape_MouseDown(object Sender, MouseButtonEventArgs E)
         {
             var window = _Window;
             if (window is null) return;
