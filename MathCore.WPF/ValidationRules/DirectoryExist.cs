@@ -26,7 +26,7 @@ namespace MathCore.WPF.ValidationRules
                 DirectoryInfo { Exists: true } => ValidationResult.ValidResult,
                 string dir when Directory.Exists(dir) => ValidationResult.ValidResult,
                 string { Length: 2 } str when str[1] == ':' => new ValidationResult(false, FormatErrorMessage ?? "Некорректный формат пути"),
-                string dir => new ValidationResult(false, ErrorMessage?.Contains("{0}", StringComparison.Ordinal) == true ? string.Format(c, ErrorMessage, dir) : ErrorMessage ?? $"Директория {dir} не найдена"),
+                string dir => new ValidationResult(false, ErrorMessage?.Contains("{0}") == true ? string.Format(c, ErrorMessage, dir) : ErrorMessage ?? $"Директория {dir} не найдена"),
                 _ => new ValidationResult(false, $"Тип {value.GetType()} не поддерживается")
             };
     }

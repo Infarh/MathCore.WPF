@@ -129,7 +129,7 @@ namespace MathCore.WPF.Commands
         private bool CanKillProcessTreeCommandExecute() => _Process != null;
 
         /// <summary>Логика выполнения - Принудительное завершение дерева процессов</summary>
-        private void OnKillProcessTreeCommandExecuted() => _Process?.Kill(true);
+        private void OnKillProcessTreeCommandExecuted() => _Process?.Kill();
 
         #endregion
 

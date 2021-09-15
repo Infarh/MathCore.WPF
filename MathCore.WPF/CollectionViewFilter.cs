@@ -882,9 +882,9 @@ namespace MathCore.WPF
         {
             get
             {
-                var property_type = _PropertyChain is null || _PropertyChain.Length == 0
+                var property_type = _PropertyChain is not {Length: > 0} chain
                     ? null
-                    : _PropertyChain[^1].PropertyType;
+                    : chain[chain.Length-1].PropertyType;
                 if (property_type?.IsGenericType != true) return property_type;
                 var type_argument = property_type.GetGenericArguments()[0];
                 return property_type == typeof(Nullable<>).MakeGenericType(type_argument) ? type_argument : property_type;

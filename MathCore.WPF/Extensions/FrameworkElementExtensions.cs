@@ -235,7 +235,8 @@ namespace System.Windows
                     {
                         case TransformGroup transform_group:
                             var transforms = transform_group.Children;
-                            if (transforms.Count > 0 && transforms[^1] is TranslateTransform t)
+                            var tr_count = transforms.Count;
+                            if (tr_count > 0 && transforms[tr_count-1] is TranslateTransform t)
                                 translate_transform = t;
                             else
                                 transforms.Add(translate_transform = new TranslateTransform());
