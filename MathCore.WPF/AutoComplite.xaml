@@ -1,8 +1,7 @@
 ﻿<ResourceDictionary x:Class="MathCore.WPF.AutoComplete"  
                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:MathCore.WPF"
-                    xmlns:mwt="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+                    xmlns:local="clr-namespace:MathCore.WPF">
     <Style TargetType="TextBox" x:Key="autoCompleteTextBoxStyle">
         <Style.BasedOn>
             <Style TargetType="TextBoxBase">
@@ -30,15 +29,13 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="TextBoxBase">
                             <StackPanel>
-                                <mwt:ListBoxChrome Name="Bd" 
-                                                   Background="{TemplateBinding Panel.Background}" 
-                                                   BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                   BorderThickness="{TemplateBinding Border.BorderThickness}" 
-                                                   RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" 
-                                                   RenderFocused="{TemplateBinding UIElement.IsKeyboardFocusWithin}" 
-                                                   SnapsToDevicePixels="True">
+                                <Border Name="Bd" 
+                                        Background="{TemplateBinding Panel.Background}" 
+                                        BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                                        BorderThickness="{TemplateBinding Border.BorderThickness}" 
+                                        SnapsToDevicePixels="True">
                                     <ScrollViewer Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}"/>
-                                </mwt:ListBoxChrome>
+                                </Border>
                                 <Popup x:Name="autoCompletePopup" 
                                        Placement="Bottom" 
                                        PlacementTarget="{Binding ElementName=Bd}"
@@ -93,9 +90,10 @@
                                 <Popup Name="PART_Popup" Grid.ColumnSpan="2" 
                                        IsOpen="False" AllowsTransparency="True" Placement="Bottom" 
                                        PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                                    <mwt:SystemDropShadowChrome Name="Shdw" Color="#00FFFFFF" 
-                                                                MinWidth="0" 
-                                                                MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
+                                    <Border Name="Shdw" 
+                                            Background="Transparent" 
+                                            MinWidth="0" 
+                                            MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
                                         <Border Name="DropDownBorder" 
                                                 BorderThickness="1" 
                                                 BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
@@ -105,20 +103,15 @@
                                                                 KeyboardNavigation.DirectionalNavigation="Contained" />
                                             </ScrollViewer>
                                         </Border>
-                                    </mwt:SystemDropShadowChrome>
+                                    </Border>
                                 </Popup>
-                                <mwt:ListBoxChrome Name="Border" Grid.Column="0" Grid.ColumnSpan="2"
+                                <Border Name="Border" Grid.Column="0" Grid.ColumnSpan="2"
                                                    Background="{TemplateBinding Panel.Background}" 
                                                    BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                   BorderThickness="{TemplateBinding Border.BorderThickness}" 
-                                                   RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" 
-                                                   RenderFocused="{TemplateBinding UIElement.IsKeyboardFocusWithin}"/>
+                                                   BorderThickness="{TemplateBinding Border.BorderThickness}"/>
                                 <TextBox Grid.Column="0" IsReadOnly="False" HorizontalContentAlignment="{TemplateBinding Control.HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding Control.VerticalContentAlignment}" Name="PART_EditableTextBox" Margin="{TemplateBinding Control.Padding}" xml:space="preserve">
                                     <TextBox.Style>
                                         <Style TargetType="TextBox">
-                                            <Style.Resources>
-                                                <ResourceDictionary />
-                                            </Style.Resources>
                                             <Setter Property="OverridesDefaultStyle" Value="True"/>
                                             <Setter Property="AllowDrop" Value="True"/>
                                             <Setter Property="MinWidth" Value="0"/>
@@ -150,25 +143,19 @@
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="ToggleButton">
-                                                        <mwt:ButtonChrome Name="Chrome" 
-                                                                          Background="{TemplateBinding Panel.Background}" 
-                                                                          BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                                          RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" 
-                                                                          RenderPressed="{TemplateBinding ButtonBase.IsPressed}" 
-                                                                          RoundCorners="False" 
-                                                                          Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" 
-                                                                          SnapsToDevicePixels="True">
+                                                        <Border Name="Chrome" 
+                                                                Background="{TemplateBinding Panel.Background}" 
+                                                                BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                                                                Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" 
+                                                                SnapsToDevicePixels="True">
                                                             <Path Name="Arrow" 
                                                                   Data="M0,0L3.5,4 7,0z" 
                                                                   Fill="Black" 
                                                                   Margin="0,1,0,0" 
                                                                   HorizontalAlignment="Center" 
                                                                   VerticalAlignment="Center" />
-                                                        </mwt:ButtonChrome>
+                                                        </Border>
                                                         <ControlTemplate.Triggers>
-                                                            <Trigger Property="ToggleButton.IsChecked" Value="True">
-                                                                <Setter Property="mwt:ButtonChrome.RenderPressed" TargetName="Chrome" Value="True"/>
-                                                            </Trigger>
                                                             <Trigger Property="UIElement.IsEnabled" Value="False">
                                                                 <Setter Property="Shape.Fill" TargetName="Arrow" Value="#FFAFAFAF"/>
                                                             </Trigger>
@@ -192,9 +179,6 @@
                                 <Trigger Property="UIElement.IsKeyboardFocusWithin" Value="True">
                                     <Setter Property="TextElement.Foreground" Value="Black"/>
                                 </Trigger>
-                                <Trigger Property="ComboBox.IsDropDownOpen" Value="True">
-                                    <Setter Property="mwt:ListBoxChrome.RenderFocused" TargetName="Border" Value="True"/>
-                                </Trigger>
                                 <Trigger Property="ItemsControl.HasItems" Value="False">
                                     <Setter Property="FrameworkElement.Height" TargetName="DropDownBorder" Value="95"/>
                                 </Trigger>
@@ -207,7 +191,6 @@
                                 </Trigger>
                                 <Trigger Property="Popup.HasDropShadow" SourceName="PART_Popup" Value="True">
                                     <Setter Property="FrameworkElement.Margin" TargetName="Shdw" Value="0,0,5,5"/>
-                                    <Setter Property="mwt:SystemDropShadowChrome.Color" TargetName="Shdw" Value="#71000000"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
@@ -263,10 +246,10 @@
                                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
                                AllowsTransparency="True" 
                                Margin="1">
-                            <mwt:SystemDropShadowChrome Name="Shdw" 
-                                                        Color="#00FFFFFF" 
-                                                        MinWidth="0" 
-                                                        MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
+                            <Border Name="Shdw" 
+                                    Background="Transparent" 
+                                    MinWidth="0" 
+                                    MaxHeight="{TemplateBinding ComboBox.MaxDropDownHeight}">
                                 <Border Name="DropDownBorder" 
                                         BorderThickness="1" 
                                         BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
@@ -275,7 +258,7 @@
                                         <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Border>
-                            </mwt:SystemDropShadowChrome>
+                            </Border>
                         </Popup>
                         <ToggleButton Grid.Column="0" Grid.ColumnSpan="2" 
                                       IsChecked="False" 
@@ -293,12 +276,10 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="ToggleButton">
-                                                <mwt:ButtonChrome Name="Chrome" 
-                                                                  Background="{TemplateBinding Panel.Background}" 
-                                                                  BorderBrush="{TemplateBinding Border.BorderBrush}" 
-                                                                  RenderMouseOver="{TemplateBinding UIElement.IsMouseOver}" 
-                                                                  RenderPressed="{TemplateBinding ButtonBase.IsPressed}" 
-                                                                  SnapsToDevicePixels="True">
+                                                <Border Name="Chrome" 
+                                                        Background="{TemplateBinding Panel.Background}" 
+                                                        BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                                                        SnapsToDevicePixels="True">
                                                     <Grid Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" HorizontalAlignment="Right">
                                                         <Path Name="Arrow" 
                                                               Data="M0,0L3.5,4 7,0z" 
@@ -306,11 +287,8 @@
                                                               Margin="3,1,0,0" 
                                                               HorizontalAlignment="Center" VerticalAlignment="Center" />
                                                     </Grid>
-                                                </mwt:ButtonChrome>
+                                                </Border>
                                                 <ControlTemplate.Triggers>
-                                                    <Trigger Property="ToggleButton.IsChecked" Value="True">
-                                                        <Setter Property="mwt:ButtonChrome.RenderPressed" TargetName="Chrome" Value="True"/>
-                                                    </Trigger>
                                                     <Trigger Property="UIElement.IsEnabled" Value="False">
                                                         <Setter Property="Shape.Fill" TargetName="Arrow" Value="#FFAFAFAF"/>
                                                     </Trigger>
@@ -326,7 +304,6 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Popup.HasDropShadow" SourceName="PART_Popup" Value="True">
                             <Setter Property="FrameworkElement.Margin" TargetName="Shdw" Value="0,0,5,5"/>
-                            <Setter Property="mwt:SystemDropShadowChrome.Color" TargetName="Shdw" Value="#71000000"/>
                         </Trigger>
                         <Trigger Property="ItemsControl.HasItems" Value="False">
                             <Setter Property="FrameworkElement.Height" TargetName="DropDownBorder" Value="95"/>

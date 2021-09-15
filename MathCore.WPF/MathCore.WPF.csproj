@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.22.2</Version>
+    <Version>0.0.23</Version>
     <PackageReleaseNotes>
-      Добавлена возможность пропуска событий в модели-представления с помощью PropertyChangedEventsSuppressor
+      Исправления в стиле AutoComplite, оптимизарована работа глобальных горячих клавиш
     </PackageReleaseNotes>
   </PropertyGroup>
 

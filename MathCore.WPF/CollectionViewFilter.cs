@@ -274,7 +274,7 @@ namespace MathCore.WPF
             var string_comparison = GetStringComparisonType(view_source);
             switch (compare_type)
             {
-                default: throw new ArgumentOutOfRangeException();
+                default: throw new InvalidOperationException();
                 case TextCompareType.Contains:
                     if (item_text.IndexOf(text, string_comparison) < 0) e.Accepted = false;
                     break;
