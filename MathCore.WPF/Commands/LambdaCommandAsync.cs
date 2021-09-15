@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MathCore.Annotations;
+
 // ReSharper disable UnusedMember.Global
 
 namespace MathCore.WPF.Commands
@@ -13,17 +13,17 @@ namespace MathCore.WPF.Commands
 
         private volatile Task? _ExecutingTask;
 
-        public LambdaCommandAsync([NotNull] Func<Task> ExecuteAsync, Func<bool>? CanExecute = null)
+        public LambdaCommandAsync(Func<Task> ExecuteAsync, Func<bool>? CanExecute = null)
             : this(
                 ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<object?, Task>(_ => ExecuteAsync()),
                 CanExecute is null ? null : _ => CanExecute!())
         { }
 
-        public LambdaCommandAsync([NotNull] Func<object?, Task> ExecuteAsync, Func<bool>? CanExecute = null)
+        public LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<bool>? CanExecute = null)
             : this(ExecuteAsync, CanExecute is null ? null : _ => CanExecute!())
         { }
 
-        public LambdaCommandAsync([NotNull] Func<object?, Task> ExecuteAsync, Func<object?, bool>? CanExecuteAsync = null)
+        public LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<object?, bool>? CanExecuteAsync = null)
         {
             _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
             _CanExecuteAsync = CanExecuteAsync;
@@ -72,7 +72,7 @@ namespace MathCore.WPF.Commands
             : this(ExecuteAsync, CanExecuteAsync is null ? null : new Func<T?, bool>(_ => CanExecuteAsync()))
         { }
 
-        public LambdaCommandAsync([NotNull] Func<T?, Task> ExecuteAsync, Func<T?, bool>? CanExecuteAsync = null)
+        public LambdaCommandAsync(Func<T?, Task> ExecuteAsync, Func<T?, bool>? CanExecuteAsync = null)
         {
             _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
             _CanExecuteAsync = CanExecuteAsync;

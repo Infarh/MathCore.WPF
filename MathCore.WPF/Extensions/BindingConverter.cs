@@ -44,7 +44,7 @@ namespace MathCore.WPF.Extensions
         public BindingTypeDescriptionProvider() : base(__DefaultTypeProvider) { }
 
         /// <inheritdoc />
-        public override ICustomTypeDescriptor GetTypeDescriptor(Type ObjectType, [CanBeNull] object Instance) => 
+        public override ICustomTypeDescriptor GetTypeDescriptor(Type ObjectType, object? Instance) => 
             Instance is null 
                 ? base.GetTypeDescriptor(ObjectType, null)! 
                 : new BindingCustomTypeDescriptor(base.GetTypeDescriptor(ObjectType, Instance)!);

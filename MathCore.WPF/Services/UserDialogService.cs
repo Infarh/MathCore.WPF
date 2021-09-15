@@ -92,7 +92,7 @@ namespace MathCore.WPF.Services
         /// <summary>Диалог с информацией</summary>
         /// <param name="Text">Заголовок окна диалога</param>
         /// <param name="Title">Текст в окне диалога</param>
-        public virtual void Information(string Text, string Title = "Вопрос...")
+        public virtual void Information(string Text, string Title = "Сообщение...")
         {
             if (CurrentWindow is null)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Information);
@@ -103,7 +103,7 @@ namespace MathCore.WPF.Services
         /// <summary>Диалог с предупреждением</summary>
         /// <param name="Text">Заголовок окна диалога</param>
         /// <param name="Title">Текст в окне диалога</param>
-        public virtual void Warning(string Text, string Title = "Вопрос...")
+        public virtual void Warning(string Text, string Title = "Предупреждение!")
         {
             if (CurrentWindow is null)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -114,7 +114,7 @@ namespace MathCore.WPF.Services
         /// <summary>Диалог с ошибкой</summary>
         /// <param name="Text">Заголовок окна диалога</param>
         /// <param name="Title">Текст в окне диалога</param>
-        public virtual void Error(string Text, string Title = "Вопрос...")
+        public virtual void Error(string Text, string Title = "Ошибка!")
         {
             if (CurrentWindow is null)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Error);

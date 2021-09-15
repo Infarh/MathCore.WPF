@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -56,10 +55,10 @@ namespace MathCore.WPF
                typeof(CollectionViewFilter),
                new PropertyMetadata(default(IValueConverter)));
 
-        public static void SetConverter([Annotations.NotNull] DependencyObject element, IValueConverter value) => element.SetValue(ConverterProperty, value);
+        public static void SetConverter(DependencyObject element, IValueConverter value) => element.SetValue(ConverterProperty, value);
 
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static IValueConverter GetConverter([Annotations.NotNull] DependencyObject element) => (IValueConverter)element.GetValue(ConverterProperty);
+        public static IValueConverter GetConverter(DependencyObject element) => (IValueConverter)element.GetValue(ConverterProperty);
 
         #endregion
 
@@ -76,13 +75,13 @@ namespace MathCore.WPF
         /// <summary>Установка метода сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Представление, для которой производится установка значения метода сравнения строк</param>
         /// <param name="value">Устанавливаемый метод сравнения строк</param>
-        public static void SetStringComparisonType([Annotations.NotNull] DependencyObject element, StringComparison value) => element.SetValue(StringComparisonTypeProperty, value);
+        public static void SetStringComparisonType(DependencyObject element, StringComparison value) => element.SetValue(StringComparisonTypeProperty, value);
 
         /// <summary>Получить метод сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается метод сравнения строк</param>
         /// <returns>Метод сравнения строк</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static StringComparison GetStringComparisonType([Annotations.NotNull] DependencyObject element) => (StringComparison)element.GetValue(StringComparisonTypeProperty);
+        public static StringComparison GetStringComparisonType(DependencyObject element) => (StringComparison)element.GetValue(StringComparisonTypeProperty);
 
         #endregion
 
@@ -99,13 +98,13 @@ namespace MathCore.WPF
         /// <summary>Установка способа сравнения строк для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается способ сравнения строк</param>
         /// <param name="value">Устанавливаемый способ сравнения строк</param>
-        public static void SetTextCompareType([Annotations.NotNull] DependencyObject element, TextCompareType value) => element.SetValue(TextCompareTypeProperty, value);
+        public static void SetTextCompareType(DependencyObject element, TextCompareType value) => element.SetValue(TextCompareTypeProperty, value);
 
         /// <summary>Получить способ сравнения строк для указанной модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой требуется получить способ сравнения строк</param>
         /// <returns>Способ сравнения строк</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static TextCompareType GetTextCompareType([Annotations.NotNull] DependencyObject element) => (TextCompareType)element.GetValue(TextCompareTypeProperty);
+        public static TextCompareType GetTextCompareType(DependencyObject element) => (TextCompareType)element.GetValue(TextCompareTypeProperty);
 
         #endregion
 
@@ -124,13 +123,13 @@ namespace MathCore.WPF
         /// <summary>Установить имя фильтруемого свойства для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, для которой устанавливается имя фильтруемого свойства её элемента</param>
         /// <param name="value">Имя свойства</param>
-        public static void SetPropertyName([Annotations.NotNull] DependencyObject element, string value) => element.SetValue(PropertyNameProperty, value);
+        public static void SetPropertyName(DependencyObject element, string value) => element.SetValue(PropertyNameProperty, value);
 
         /// <summary>Получить имя фильтруемого свойства для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, имя фильтруемого свойство которой требуется получить</param>
         /// <returns>Имя фильтруемого свойства элементов коллекции</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static string GetPropertyName([Annotations.NotNull] DependencyObject element) => (string)element.GetValue(PropertyNameProperty);
+        public static string GetPropertyName(DependencyObject element) => (string)element.GetValue(PropertyNameProperty);
 
         #endregion
 
@@ -147,13 +146,13 @@ namespace MathCore.WPF
         /// <summary>Установить текст фильтра для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, текст фильтра для которой требуется установить</param>
         /// <param name="value">Устанавливаемый текст фильтра</param>
-        public static void SetFilterText([Annotations.NotNull] DependencyObject element, string value) => element.SetValue(FilterTextProperty, value);
+        public static void SetFilterText(DependencyObject element, string value) => element.SetValue(FilterTextProperty, value);
 
         /// <summary>Получить значение текста фильтра для модели представления коллекции</summary>
         /// <param name="element">Модель представления коллекции, текст фильтра для которой требуется получить</param>
         /// <returns>Текст фильтра, установленный для модели представления коллекции</returns>
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static string GetFilterText([Annotations.NotNull] DependencyObject element) => (string)element.GetValue(FilterTextProperty);
+        public static string GetFilterText(DependencyObject element) => (string)element.GetValue(FilterTextProperty);
 
         #endregion
 
@@ -167,10 +166,10 @@ namespace MathCore.WPF
                 typeof(CollectionViewFilter),
                 new PropertyMetadata(500));
 
-        public static void SetDelayTime([Annotations.NotNull] DependencyObject element, int value) => element.SetValue(DelayTimeProperty, value);
+        public static void SetDelayTime(DependencyObject element, int value) => element.SetValue(DelayTimeProperty, value);
 
         [AttachedPropertyBrowsableForType(typeof(CollectionViewSource))]
-        public static int GetDelayTime([Annotations.NotNull] DependencyObject element) => (int)element.GetValue(DelayTimeProperty);
+        public static int GetDelayTime(DependencyObject element) => (int)element.GetValue(DelayTimeProperty);
 
         #endregion
 
@@ -194,7 +193,7 @@ namespace MathCore.WPF
 
         /// <summary>Инициализация новой модели представления коллекции</summary>
         /// <param name="collection_view_source">Модель представления коллекции, которую требуется инициализировать</param>
-        private static void Initialize([CanBeNull] CollectionViewSource collection_view_source)
+        private static void Initialize(CollectionViewSource? collection_view_source)
         {
             if (collection_view_source is null) return;
             __Collections.Add(collection_view_source);
@@ -212,7 +211,7 @@ namespace MathCore.WPF
             /// <summary>Инициализация новой структуры с информацией о свойстве типа объекта</summary>
             /// <param name="item">Объект, имя свойства которого требуется получить</param>
             /// <param name="property">Имя свойства объекта</param>
-            public TypeProperty([Annotations.NotNull] object item, string property)
+            public TypeProperty(object item, string property)
             {
                 _Type = item.GetType();
                 _Property = property;
@@ -220,7 +219,6 @@ namespace MathCore.WPF
 
             /// <summary>Получить делегат метод извлечения значения свойства</summary>
             /// <returns>Делегат, извлекающий значение свойства объекта</returns>
-            [Annotations.NotNull]
             public Delegate GetProperty()
             {
                 var property = _Type.GetProperty(_Property, BindingFlags.Instance | BindingFlags.Public);
@@ -276,7 +274,7 @@ namespace MathCore.WPF
             var string_comparison = GetStringComparisonType(view_source);
             switch (compare_type)
             {
-                default: throw new ArgumentOutOfRangeException();
+                default: throw new InvalidOperationException();
                 case TextCompareType.Contains:
                     if (item_text.IndexOf(text, string_comparison) < 0) e.Accepted = false;
                     break;
@@ -299,10 +297,9 @@ namespace MathCore.WPF
                 typeof(CollectionViewFilter),
                 new FrameworkPropertyMetadata(default(CollectionViewFiltersCollection)));
 
-        public static void SetFilters([Annotations.NotNull] DependencyObject element, [Annotations.NotNull] CollectionViewFiltersCollection items) => element.SetValue(FiltersProperty, items.SetCollectionView((CollectionViewSource)element));
+        public static void SetFilters(DependencyObject element, CollectionViewFiltersCollection items) => element.SetValue(FiltersProperty, items.SetCollectionView((CollectionViewSource)element));
 
-        [Annotations.NotNull]
-        public static CollectionViewFiltersCollection GetFilters([Annotations.NotNull] DependencyObject element)
+        public static CollectionViewFiltersCollection GetFilters(DependencyObject element)
         {
             if (element.GetValue(FiltersProperty) is not CollectionViewFiltersCollection filters)
                 SetFilters(element, filters = new CollectionViewFiltersCollection((CollectionViewSource)element));
@@ -359,7 +356,7 @@ namespace MathCore.WPF
     public abstract class CollectionViewFilterItem : Freezable
     {
         /// <summary>Обновить представление</summary>
-        protected static void RefreshSource([CanBeNull] DependencyObject s, DependencyPropertyChangedEventArgs e) => ((CollectionViewFilterItem)s)?.RefreshSource();
+        protected static void RefreshSource(DependencyObject? s, DependencyPropertyChangedEventArgs e) => ((CollectionViewFilterItem)s)?.RefreshSource();
 
         #region ValueConverter - конвертер фильтруемого значения
 
@@ -435,7 +432,7 @@ namespace MathCore.WPF
             return converter?.Convert(item, typeof(object), null, CultureInfo.CurrentCulture);
         }
 
-        public static object? GetPropertyValue([CanBeNull] object item, string property)
+        public static object? GetPropertyValue(object? item, string property)
         {
             if (item is null) return null;
             var type = item.GetType();
@@ -452,7 +449,7 @@ namespace MathCore.WPF
             return getter.DynamicInvoke(item);
         }
 
-        public static object? GetComplexPropertyValue(object? item, [Annotations.NotNull] string PropertyPath)
+        public static object? GetComplexPropertyValue(object? item, string PropertyPath)
         {
             var properties = PropertyPath.Split('.');
             for (var i = 0; item != null && i < properties.Length; i++)
@@ -987,7 +984,7 @@ namespace MathCore.WPF
         public string Path => $"{BaseProperty}.{Name}".TrimStart('.');
         public string DisplayPath => string.IsNullOrEmpty(BasePropertyDisplayName) ? DisplayName : $"{BasePropertyDisplayName}.{DisplayName}";
 
-        public PropertyDescription(string Name, string DisplayName, string? BaseProperty, [Annotations.NotNull] string BasePropertyDisplayName)
+        public PropertyDescription(string Name, string DisplayName, string? BaseProperty, string BasePropertyDisplayName)
         {
             this.Name = Name;
             this.DisplayName = DisplayName;

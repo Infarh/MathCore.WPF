@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Threading;
 using MathCore.Annotations;
 // ReSharper disable UnusedMember.Global
@@ -15,7 +14,6 @@ namespace System.Threading.Tasks
         /// Метод вызывает завершение работы текущего метода в текущем контексте синхронизации и возвращает задачу, результатом которой является диспетчер исходного контекста синхронизации
         /// </summary>
         /// <returns>Задача, возвращающая диспетчер исходного контекста синхронизации в одном из потоков из пула потоков</returns>
-        [ItemNotNull]
         public static async Task<Dispatcher> FromDispatcherAsync()
         {
             var dispatcher = Dispatcher.CurrentDispatcher;
@@ -26,7 +24,7 @@ namespace System.Threading.Tasks
         /// <summary>Waits for the task to complete execution, pumping in the meantime.</summary>
         /// <param name="task">The task for which to wait.</param>
         /// <remarks>This method is intended for usage with Windows Presentation Foundation.</remarks>
-        public static void WaitWithPumping([NotNull] this Task task)
+        public static void WaitWithPumping(this Task task)
         {
             if (task is null) throw new ArgumentNullException(nameof(task));
 

@@ -31,7 +31,7 @@ namespace MathCore.WPF.Commands
 
         public MultiCommand() { }
 
-        public MultiCommand([NotNull] params ICommand[] commands) => _Commands.AddItems(commands);
+        public MultiCommand(params ICommand[] commands) => _Commands.AddItems(commands);
 
         /// <inheritdoc />
         public override bool CanExecute(object? parameter)
@@ -63,7 +63,7 @@ namespace MathCore.WPF.Commands
         }
 
         /// <inheritdoc />
-        public void AddChild([NotNull] object? value)
+        public void AddChild(object value)
         {
             if(value is null) throw new ArgumentNullException(nameof(value));
             if(value is not ICommand command)

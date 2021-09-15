@@ -8,8 +8,7 @@ namespace MathCore.WPF.Converters
     public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
     {
         /// <inheritdoc />
-        [NotNull]
-        protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => 
+        protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => 
             Convert(Array.ConvertAll(vv ?? Array.Empty<object>(), DoubleValueConverter.ConvertToDouble));
 
         /// <inheritdoc />
@@ -18,7 +17,6 @@ namespace MathCore.WPF.Converters
 
         protected abstract double Convert(double[]? vv);
 
-        [CanBeNull]
         protected virtual double[]? ConvertBack(double v)
         {
             base.ConvertBack(null, null, null, null);

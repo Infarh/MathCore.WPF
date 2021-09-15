@@ -32,7 +32,6 @@ namespace System.Threading.Tasks
         public Task<T> Task => _Task;
 
         /// <summary>Результат задачи</summary>
-        [CanBeNull]
         // ReSharper disable once AsyncConverter.AsyncWait
         public T? Result => _Task.Status == TaskStatus.RanToCompletion ? _Task.Result : default;
 
@@ -58,15 +57,12 @@ namespace System.Threading.Tasks
         public AggregateException? Exception => _Task.Exception;
 
         /// <summary>Ошибка, породившая основное исключение</summary>
-        [CanBeNull]
         public Exception? InnerException => Exception?.InnerException;
 
         /// <summary>Список произошедших исключений</summary>
-        [CanBeNull]
         public ReadOnlyCollection<Exception>? InnerExceptions => Exception?.InnerExceptions;
 
         /// <summary>Сообщение об ошибке</summary>
-        [CanBeNull]
         public string? ErrorMessage => InnerException?.Message;
 
         #endregion
@@ -75,7 +71,7 @@ namespace System.Threading.Tasks
 
         /// <summary>Инициализация экземпляра объекта, следящего за выполнением задачи получения значений</summary>
         /// <param name="task">Задача получения значения</param>
-        public NotifyTaskCompletion([NotNull] Task<T> task)
+        public NotifyTaskCompletion(Task<T> task)
         {
             _Task = task;
             if (!task.IsCompleted) 

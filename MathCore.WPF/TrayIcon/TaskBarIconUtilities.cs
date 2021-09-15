@@ -92,7 +92,7 @@ namespace MathCore.WPF.TrayIcon
         /// an icon file (*.ico).</param>
         /// <returns>An icon object that can be used with the
         /// taskbar area.</returns>
-        public static Icon? ToIcon([CanBeNull] this ImageSource imageSource)
+        public static Icon? ToIcon(this ImageSource? imageSource)
         {
             if(imageSource is null) return null;
 
@@ -121,7 +121,7 @@ namespace MathCore.WPF.TrayIcon
         /// which allows to check with null values, too.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="candidates"/>
         /// is a null reference.</exception>
-        public static bool Is<T>(this T value, [CanBeNull] params T[] candidates) => candidates != null && candidates.Contains(value);
+        public static bool Is<T>(this T value, params T[]? candidates) => candidates != null && candidates.Contains(value);
 
         #endregion
 
@@ -157,7 +157,7 @@ namespace MathCore.WPF.TrayIcon
         /// <param name="commandParameter">An optional parameter that is associated with
         /// the command.</param>
         /// <param name="target">The target element on which to raise the command.</param>
-        public static void ExecuteIfEnabled([CanBeNull] this ICommand command, object commandParameter, IInputElement target)
+        public static void ExecuteIfEnabled(this ICommand? command, object commandParameter, IInputElement target)
         {
             switch (command)
             {
@@ -182,8 +182,7 @@ namespace MathCore.WPF.TrayIcon
         /// Returns a dispatcher for multi-threaded scenarios
         /// </summary>
         /// <returns></returns>
-        [CanBeNull]
-        public static Dispatcher GetDispatcher(this DispatcherObject source) =>
+        public static Dispatcher? GetDispatcher(this DispatcherObject source) =>
             //use the application's dispatcher by default
             //fallback for WinForms environments
             //ultimately use the thread's dispatcher
@@ -201,7 +200,7 @@ namespace MathCore.WPF.TrayIcon
         /// binding expression.</returns>
         /// <exception cref="ArgumentNullException">If <paramref name="element"/>
         /// is a null reference.</exception>
-        public static bool IsDataContextDataBound([NotNull] this FrameworkElement element) => 
+        public static bool IsDataContextDataBound(this FrameworkElement element) => 
             (element ?? throw new ArgumentNullException(nameof(element))).GetBindingExpression(FrameworkElement.DataContextProperty) != null;
     }
 }

@@ -14,7 +14,6 @@ namespace MathCore.WPF.Converters
     public sealed class DataLengthString : ValueConverter
     {
         /// <inheritdoc />
-        [NotNull]
         protected override object Convert(object? v, Type? t, object? p, CultureInfo? c) => 
             new DataLength(System.Convert.ToDouble(v), 1024d);
     }

@@ -20,7 +20,7 @@ namespace System.Windows
     /// <summary>Класс методов-расширений для класса FrameworkElement</summary>
     public static class FrameworkElementExtensions
     {
-        public static void RegisterForNotification([NotNull] this FrameworkElement element, string PropertyName, PropertyChangedCallback callback)
+        public static void RegisterForNotification(this FrameworkElement element, string PropertyName, PropertyChangedCallback callback)
         {
             var binding = new Binding(PropertyName) { Source = element };
             var prop = DependencyProperty.RegisterAttached($"ListenAttached{PropertyName}",
@@ -31,14 +31,13 @@ namespace System.Windows
             element.SetBinding(prop, binding);
         }
 
-        public static void Serialize([NotNull] this UIElement element, [NotNull] Stream stream) => XamlWriter.Save(element, stream);
+        public static void Serialize(this UIElement element, Stream stream) => XamlWriter.Save(element, stream);
 
-        public static void Serialize([NotNull] this UIElement element, [NotNull] TextWriter writer) => XamlWriter.Save(element, writer);
+        public static void Serialize(this UIElement element, TextWriter writer) => XamlWriter.Save(element, writer);
 
-        public static void Serialize([NotNull] this UIElement element, [NotNull] XmlWriter writer) => XamlWriter.Save(element, writer);
+        public static void Serialize(this UIElement element, XmlWriter writer) => XamlWriter.Save(element, writer);
 
-        [NotNull]
-        public static string SerializeToStr([NotNull] this UIElement element)
+        public static string SerializeToStr(this UIElement element)
         {
             var result = new StringBuilder();
             var writer_settings = new XmlWriterSettings { Indent = true, OmitXmlDeclaration = true };
@@ -49,7 +48,7 @@ namespace System.Windows
             return result.ToString();
         }
 
-        [NotNull] public static XDocument SerializeToXml([NotNull] this UIElement element) => XDocument.Parse(element.SerializeToStr());
+        public static XDocument SerializeToXml(this UIElement element) => XDocument.Parse(element.SerializeToStr());
 
         //public static XmlDocument Serialize(this UIElement element)
         //{
@@ -89,7 +88,7 @@ namespace System.Windows
 
         private class ElementDragManager : IDisposable
         {
-            private static Size GetLayoutSize([NotNull] FrameworkElement element)
+            private static Size GetLayoutSize(FrameworkElement element)
             {
                 var actual_width = element.ActualWidth;
                 var actual_height = element.ActualHeight;
@@ -110,7 +109,7 @@ namespace System.Windows
                 return new Size(width, height);
             }
 
-            [NotNull] private readonly FrameworkElement _Element;
+            private readonly FrameworkElement _Element;
             private readonly bool _AllowX;
             private readonly bool _AllowY;
             private readonly UIElement? _Root;
@@ -129,7 +128,7 @@ namespace System.Windows
                 }
             }
 
-            private static Transform? GetElementTransform([CanBeNull] Transform Transform) =>
+            private static Transform? GetElementTransform(Transform? Transform) =>
                 Transform switch
                 {
                     ScaleTransform transform => new ScaleTransform { CenterX = transform.CenterX, CenterY = transform.CenterY, ScaleX = transform.ScaleX, ScaleY = transform.ScaleY },

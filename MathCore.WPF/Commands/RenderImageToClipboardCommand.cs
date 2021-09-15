@@ -19,7 +19,7 @@ namespace MathCore.WPF.Commands
             _CanExecute = e => e != null;
         }
 
-        private static void RenderElement([NotNull] FrameworkElement? e)
+        private static void RenderElement(FrameworkElement e)
         {
             var height = e.ActualHeight;
             var width = e.ActualWidth;

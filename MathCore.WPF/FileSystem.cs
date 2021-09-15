@@ -70,7 +70,7 @@ namespace MathCore.WPF
 
         /// <summary>обработчик события, возникающего в момент завершения загрузки окна, в котором подключается обработчик системных сообщений</summary>
         /// <param name="Sender">Окно-источник события</param>
-        private void OnWindowLoaded([NotNull] object Sender, EventArgs _)
+        private void OnWindowLoaded(object Sender, EventArgs _)
         {
             var window = (Window)Sender;
             _WindowHandle = HwndSource.FromHwnd(new WindowInteropHelper(window).Handle);
@@ -120,7 +120,7 @@ namespace MathCore.WPF
 
     public interface IFileSystemViewModelFinder
     {
-        [NotNull, ItemCanBeNull] Task<DirectoryViewModel?> GetModelAsync([NotNull] string path);
+        Task<DirectoryViewModel?> GetModelAsync(string path);
     }
 
     public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFinder,
@@ -165,7 +165,6 @@ namespace MathCore.WPF
             ? _Files
             : _Files = new ObservableCollection<FileInfo>(Directory.EnumerateFiles()).AsThreadSave();
 
-        [NotNull, ItemNotNull]
         public IEnumerable<FileSystemAccessRule> AccessRules
         {
             get
@@ -199,10 +198,9 @@ namespace MathCore.WPF
 
         #region Команды
 
-        [CanBeNull] private ICommand _RefreshDirectoriesCommand;
+        private ICommand? _RefreshDirectoriesCommand;
 
-        [CanBeNull]
-        public ICommand RefreshDirectoriesCommand => _RefreshDirectoriesCommand ??= new LambdaCommand(OnRefreshDirectoriesCommandExecutedAsync, CanUpdateCommandExecuted);
+        public ICommand? RefreshDirectoriesCommand => _RefreshDirectoriesCommand ??= new LambdaCommand(OnRefreshDirectoriesCommandExecutedAsync, CanUpdateCommandExecuted);
 
         private async void OnRefreshDirectoriesCommandExecutedAsync()
         {
@@ -225,9 +223,9 @@ namespace MathCore.WPF
             to_add.Select(path => new DirectoryViewModel(path)).AddTo(dirs);
         }
 
-        [CanBeNull] private ICommand _RefreshFilesCommand;
+        private ICommand? _RefreshFilesCommand;
 
-        [CanBeNull] public ICommand RefreshFilesCommand => _RefreshFilesCommand ??= new LambdaCommand(OnRefreshFilesCommandExecuted, CanUpdateCommandExecuted);
+        public ICommand? RefreshFilesCommand => _RefreshFilesCommand ??= new LambdaCommand(OnRefreshFilesCommandExecuted, CanUpdateCommandExecuted);
 
         private void OnRefreshFilesCommandExecuted()
         {
@@ -242,9 +240,9 @@ namespace MathCore.WPF
             to_add.Select(path => new FileInfo(path)).AddTo(files);
         }
 
-        [CanBeNull] private ICommand _RefreshCommand;
+        private ICommand? _RefreshCommand;
 
-        [CanBeNull] public ICommand RefreshCommand => _RefreshCommand ??= new LambdaCommand(OnRefreshCommandExecuted, CanUpdateCommandExecuted);
+        public ICommand? RefreshCommand => _RefreshCommand ??= new LambdaCommand(OnRefreshCommandExecuted, CanUpdateCommandExecuted);
 
         private void OnRefreshCommandExecuted()
         {
@@ -256,9 +254,9 @@ namespace MathCore.WPF
 
         #endregion
 
-        public DirectoryViewModel([NotNull] string path) : this(new DirectoryInfo(path ?? throw new ArgumentNullException(nameof(path)))) { }
+        public DirectoryViewModel(string path) : this(new DirectoryInfo(path ?? throw new ArgumentNullException(nameof(path)))) { }
 
-        public DirectoryViewModel([NotNull] DirectoryInfo directory) => Directory = directory ?? throw new ArgumentNullException(nameof(directory));
+        public DirectoryViewModel(DirectoryInfo directory) => Directory = directory ?? throw new ArgumentNullException(nameof(directory));
 
         private bool CreateWatcher()
         {
@@ -278,7 +276,7 @@ namespace MathCore.WPF
             }
         }
 
-        private void OnDirectoryChanged([CanBeNull] object Sender, [NotNull] FileSystemEventArgs E)
+        private void OnDirectoryChanged(object? Sender, FileSystemEventArgs E)
         {
             var path = E.FullPath;
             switch (E.ChangeType)

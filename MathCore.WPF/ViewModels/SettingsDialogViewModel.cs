@@ -38,7 +38,6 @@ namespace MathCore.WPF.ViewModels
 
         /// <summary>Метод генерации значения, вставляемого в разметку</summary>
         /// <returns>Возвращает сам себя</returns>
-        [NotNull]
         public override object ProvideValue(IServiceProvider Service)
         {
             if (ViewModel.IsDesignMode) return this;
@@ -63,15 +62,12 @@ namespace MathCore.WPF.ViewModels
         internal const BindingFlags PropertiesBindingTypes = BindingFlags.Instance | BindingFlags.Public;
 
         /// <summary>Объект конфигурации, с которым работает окно диалога (контекст данных окна диалога)</summary>
-        [CanBeNull]
         private object? _ValueObject;
 
         /// <summary>Перечень известных свойств объекта конфигурации, с которыми можно работать на чтение и на запись значений</summary>
-        [CanBeNull]
         private PropertyInfo[]? _KnownProperties;
 
         /// <summary>Окно диалога конфигурации</summary>
-        [CanBeNull]
         private Window? _DialogWindow;
 
         /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
@@ -81,7 +77,6 @@ namespace MathCore.WPF.ViewModels
         protected Dictionary<string, object?> PropertiesDictionary => _PropertiesDictionary;
 
         /// <summary>Окно диалога конфигурации</summary>
-        [CanBeNull]
         protected Window? DialogWindow => _DialogWindow;
 
         /// <summary>Динамический объект конфигурации</summary>
@@ -94,14 +89,12 @@ namespace MathCore.WPF.ViewModels
         public SettingsObjectManager? Value { get; private set; }
 
         /// <summary>Объект конфигурации, с которым работает окно диалога (контекст данных окна диалога)</summary>
-        [CanBeNull]
         public object? ValueObject => _ValueObject;
 
         /// <summary>Признак того, что значения динамического конфигурируемого объекта и исходного объекта расходятся (имеются записи в словаре значений)</summary>
         public bool HasChanges => _PropertiesDictionary.Count > 0;
 
         /// <summary>Перечень известных свойств объекта конфигурации, с которыми можно работать на чтение и на запись значений</summary>
-        [NotNull]
         public PropertyInfo[] KnownProperties => _KnownProperties ??= _ValueObject?.GetType().GetProperties(PropertiesBindingTypes) ?? Array.Empty<PropertyInfo>();
 
         /// <summary>Команда сохранения значений конфигурации и закрытия окна диалога с положительным диалоговым результатом</summary>
@@ -131,7 +124,7 @@ namespace MathCore.WPF.ViewModels
         /// <summary>Инициализация модели-представления диалога конфигурации</summary>
         /// <param name="value">Объект конфигурации</param>
         /// <param name="window">Окно конфигурации</param>
-        protected virtual void Initialize(object value, [NotNull] Window window)
+        protected virtual void Initialize(object value, Window window)
         {
             if (IsDesignMode || Equals(_DialogWindow, window) && Equals(_ValueObject, value)) return;
             if (window is null) throw new ArgumentNullException(nameof(window));
@@ -177,10 +170,9 @@ namespace MathCore.WPF.ViewModels
     public class SettingsObjectManager : DynamicViewModel
     {
         /// <summary>Исходный конфигурируемый объект</summary>
-        [CanBeNull] private readonly object _Value;
+        private readonly object? _Value;
 
         /// <summary>Словарь дескрипторов открытых свойств исходного объекта, доступных для чтения и для записи значений</summary>
-        [NotNull]
         private readonly Dictionary<string, PropertyInfo> _ObjectProperties;
         /// <summary>Словарь дескрипторов открытых полей исходного объекта, доступных для чтения и для записи значений</summary>
         private readonly Dictionary<string, FieldInfo> _ObjectFields;

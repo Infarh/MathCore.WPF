@@ -13,7 +13,6 @@ namespace MathCore.WPF.Behaviors
         #region DropDataCommand : ICommand - Команда, вызываемая в момент получения данных
 
         /// <summary>Команда, вызываемая в момент получения данных</summary>
-        [NotNull]
         public static readonly DependencyProperty DropDataCommandProperty =
             DependencyProperty.Register(
                 nameof(DropDataCommand),
@@ -22,8 +21,7 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(ICommand)));
 
         /// <summary>Команда, вызываемая в момент получения данных</summary>
-        [CanBeNull]
-        public ICommand DropDataCommand
+        public ICommand? DropDataCommand
         {
             get => (ICommand)GetValue(DropDataCommandProperty);
             set => SetValue(DropDataCommandProperty, value);
@@ -34,7 +32,6 @@ namespace MathCore.WPF.Behaviors
         #region DataFormat : string - Предпочитаемый формат данных
 
         /// <summary>Предпочитаемый формат данных</summary>
-        [NotNull]
         public static readonly DependencyProperty DataFormatProperty =
             DependencyProperty.Register(
                 nameof(DataFormat),
@@ -43,8 +40,7 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(string)));
 
         /// <summary>Предпочитаемый формат данных</summary>
-        [CanBeNull]
-        public string DataFormat
+        public string? DataFormat
         {
             get => (string)GetValue(DataFormatProperty);
             set => SetValue(DataFormatProperty, value);
@@ -55,7 +51,6 @@ namespace MathCore.WPF.Behaviors
         #region DataFormatAutoConversation : bool - Автоматически преобразовывать данные
 
         /// <summary>Автоматически преобразовывать данные</summary>
-        [NotNull]
         public static readonly DependencyProperty DataFormatAutoConversationProperty =
             DependencyProperty.Register(
                 nameof(DataFormatAutoConversation),
@@ -75,7 +70,6 @@ namespace MathCore.WPF.Behaviors
         #region DataType : Type - Предпочитаемый тип данных
 
         /// <summary>Предпочитаемый тип данных</summary>
-        [NotNull]
         public static readonly DependencyProperty DataTypeProperty =
             DependencyProperty.Register(
                 nameof(DataType),
@@ -84,8 +78,7 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(Type)));
 
         /// <summary>Предпочитаемый тип данных</summary>
-        [CanBeNull]
-        public Type DataType
+        public Type? DataType
         {
             get => (Type)GetValue(DataTypeProperty);
             set => SetValue(DataTypeProperty, value);
@@ -109,7 +102,7 @@ namespace MathCore.WPF.Behaviors
             element.Drop -= OnDropData;
         }
 
-        private void OnDropData([NotNull] object Sender, [NotNull] DragEventArgs E)
+        private void OnDropData(object Sender, DragEventArgs E)
         {
             var command = DropDataCommand;
             if (command is null) return;

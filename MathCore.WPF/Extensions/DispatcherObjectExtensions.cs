@@ -6,7 +6,7 @@ namespace System.Windows.Threading
 {
     public static class DispatcherObjectExtensions
     {
-        public static void Invoke<T>([NotNull] this T obj, [NotNull] Action<T> action, DispatcherPriority priority = DispatcherPriority.Normal)
+        public static void Invoke<T>(this T obj, Action<T> action, DispatcherPriority priority = DispatcherPriority.Normal)
             where T : DispatcherObject
         {
             if (obj is null) throw new ArgumentNullException(nameof(obj));
@@ -20,8 +20,8 @@ namespace System.Windows.Threading
         }
 
         public static TValue GetValue<TObject, TValue>(
-            [NotNull] this TObject obj, 
-            [NotNull] Func<TObject, TValue> func,
+            this TObject obj, 
+            Func<TObject, TValue> func,
             DispatcherPriority priority = DispatcherPriority.Normal)
             where TObject : DispatcherObject
         {

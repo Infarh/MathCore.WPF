@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows;
+
 using MathCore.Annotations;
 
 // ReSharper disable FieldCanBeMadeReadOnly.Global
@@ -43,7 +43,6 @@ namespace MathCore.WPF.pInvoke
         public bool IsEmpty => Left >= Right || Top >= Bottom;
 
         /// <summary> Return a user friendly representation of this struct </summary>
-        [NotNull]
         public override string ToString() => Equals(Empty) ? "RECT {Empty}" : $"RECT {{ left : {Left} / top : {Top} / right : {Right} / bottom : {Bottom} }}";
 
         public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;

@@ -7,7 +7,6 @@ namespace MathCore.WPF.Commands
 {
     public class DialogCommand : LambdaCommand<bool?>
     {
-        [CanBeNull]
         private Window? Window
         {
             get

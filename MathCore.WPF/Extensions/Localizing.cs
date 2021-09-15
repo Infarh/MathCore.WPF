@@ -30,8 +30,7 @@ namespace MathCore.WPF.Extensions
                 }
             }
 
-            [CanBeNull]
-            public string Get([CanBeNull] string key, string? StringFormat = null)
+            public string? Get(string? key, string? StringFormat = null)
             {
                 if (_SourceManager is null || string.IsNullOrWhiteSpace(key)) return key;
                 var localized_value = _SourceManager.GetString(key) ?? $":{key}:";
@@ -67,12 +66,10 @@ namespace MathCore.WPF.Extensions
             Path = new PropertyPath(nameof(ActiveManager.SourceManager));
         }
 
-        [NotNull]
         public override string ToString() => 
             Convert(ActiveManager.SourceManager, null, Key, Thread.CurrentThread.CurrentCulture) as string ?? string.Empty;
 
-        [NotNull]
-        public override object? Convert(object? v, Type? t, object? p, CultureInfo? c)
+        public override object Convert(object? v, Type? t, object? p, CultureInfo? c)
         {
             var key = Key;
             var localized_value = v is not ResourceManager resource_manager || string.IsNullOrEmpty(key)

@@ -14,23 +14,68 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands
 {
+    /// <summary>Команда</summary>
     public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object?>
     {
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие с параметром, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action<object?> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
+        /// <param name="OnExecute">Действие с параметром, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand"/></returns>
         public static LambdaCommand New(Action<object?> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
-        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommand<T> New<T>(Action<T> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+        /// <summary>Создать команду <see cref="LambdaCommand{T}"/></summary>
+        /// <param name="OnExecute">Действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand{T}"/></returns>
+        public static LambdaCommand<T> New<T>(Action<T?> OnExecute, Func<T?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать команду <see cref="LambdaCommand{T}"/></summary>
+        /// <param name="OnExecute">Действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommand{T}"/></returns>
+        public static LambdaCommand<T> New<T>(Action<T?> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/></summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
         public static LambdaCommandAsync New(Func<object?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
-        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<T, bool>? CanExecute = null) => new(OnExecute, CanExecute);
-        public static LambdaCommandAsync<T> New<T>(Func<T, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/></summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> New<T>(Func<T?, Task> OnExecute, Func<T?, bool>? CanExecute = null) => new(OnExecute, CanExecute);
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/></summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> New<T>(Func<T?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
         #region События
 
@@ -48,7 +93,7 @@ namespace MathCore.WPF.Commands
         protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
         [NotifyPropertyChangedInvocator]
-        protected virtual bool Set<T>([CanBeNull] ref T field, [CanBeNull] T value, [CallerMemberName] string? PropertyName = null)
+        protected virtual bool Set<T>(ref T? field, T? value, [CallerMemberName] string? PropertyName = null)
         {
             if (Equals(field, value)) return false;
             field = value;
@@ -62,7 +107,7 @@ namespace MathCore.WPF.Commands
 
         private event EventHandler? CanExecuteChangedHandlers;
 
-        protected virtual void OnCanExecuteChanged([CanBeNull] EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
+        protected virtual void OnCanExecuteChanged(EventArgs? e = null) => CanExecuteChangedHandlers?.Invoke(this, e ?? EventArgs.Empty);
 
         /// <summary>Событие возникает при изменении возможности исполнения команды</summary>
         public event EventHandler? CanExecuteChanged
@@ -95,11 +140,11 @@ namespace MathCore.WPF.Commands
         private WeakReference? _RootObjectReference;
         private WeakReference? _TargetPropertyReference;
 
-        [CanBeNull] protected object? TargetObject => _TargetObjectReference?.Target;
+        protected object? TargetObject => _TargetObjectReference?.Target;
 
-        [CanBeNull] protected object? RootObject => _RootObjectReference?.Target;
+        protected object? RootObject => _RootObjectReference?.Target;
 
-        [CanBeNull] protected object? TargetProperty => _TargetPropertyReference?.Target;
+        protected object? TargetProperty => _TargetPropertyReference?.Target;
 
         /// <summary>Признак возможности исполнения</summary>
         public bool IsCanExecute
@@ -119,7 +164,6 @@ namespace MathCore.WPF.Commands
         #region MarkupExtension
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp)
         {
             //var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));

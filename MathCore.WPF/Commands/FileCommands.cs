@@ -9,7 +9,7 @@ namespace MathCore.WPF.Commands
 {
     public static class FileCommands
     {
-        [NotNull] public static ICommand ShowInExplorer => new LambdaCommand(OnShowInExplorerExecuted, OnShowInExplorerCanExecuteCheck);
+        public static ICommand ShowInExplorer => new LambdaCommand(OnShowInExplorerExecuted, OnShowInExplorerCanExecuteCheck);
 
         private static bool OnShowInExplorerCanExecuteCheck(object? file) => File.Exists(file as string) || (file as FileInfo)?.Exists == true;
 

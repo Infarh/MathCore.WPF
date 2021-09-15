@@ -18,7 +18,6 @@ namespace MathCore.WPF.ValidationRules
         /// <param name="value">Проверяемое значение</param>
         /// <param name="c">Сведения о текущей культуре</param>
         /// <returns>Результат проверки валидный, если путь к директории существует</returns>
-        [NotNull]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1062:Проверить аргументы или открытые методы", Justification = "<Ожидание>")]
         public override ValidationResult Validate(object? value, CultureInfo c) =>
             value switch

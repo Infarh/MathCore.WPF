@@ -23,11 +23,9 @@ namespace MathCore.WPF.Commands
     [MarkupExtensionReturnType(typeof(LambdaCommand))]
     public class LambdaCommand : Command
     {
-        [NotNull]
-        public static LambdaCommand OnExecute([NotNull]Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
+        public static LambdaCommand OnExecute(Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
 
-        [NotNull]
-        public static LambdaCommand OnExecute([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
+        public static LambdaCommand OnExecute(Action ExecuteAction, Func<object?, bool>? CanExecute = null) => new(ExecuteAction, CanExecute);
 
         #region События
 
@@ -38,7 +36,7 @@ namespace MathCore.WPF.Commands
 
         public event CancelEventHandler? StartExecuting;
 
-        protected virtual void OnStartExecuting([NotNull] CancelEventArgs args) => StartExecuting?.Invoke(this, args);
+        protected virtual void OnStartExecuting(CancelEventArgs args) => StartExecuting?.Invoke(this, args);
 
         public event EventHandler<EventArgs<object?>>? CompleteExecuting;
 
@@ -82,18 +80,18 @@ namespace MathCore.WPF.Commands
 
         protected LambdaCommand() { }
 
-        public LambdaCommand([NotNull]Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null)
+        public LambdaCommand(Action<object?> ExecuteAction, Func<object?, bool>? CanExecute = null)
             : this()
         {
             _ExecuteAction = ExecuteAction ?? throw new ArgumentNullException(nameof(ExecuteAction));
             _CanExecute = CanExecute;
         }
 
-        public LambdaCommand([NotNull]Action<object?> ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(ExecuteAction, CanExecute is null ? null : _ => CanExecute!()) { }
+        public LambdaCommand(Action<object?> ExecuteAction, Func<bool>? CanExecute) : this(ExecuteAction, CanExecute is null ? null : _ => CanExecute!()) { }
 
-        public LambdaCommand([NotNull]Action ExecuteAction, Func<object?, bool>? CanExecute = null) : this(_ => ExecuteAction(), CanExecute) { }
+        public LambdaCommand(Action ExecuteAction, Func<object?, bool>? CanExecute = null) : this(_ => ExecuteAction(), CanExecute) { }
 
-        public LambdaCommand([NotNull]Action ExecuteAction, [CanBeNull] Func<bool>? CanExecute) : this(_ => ExecuteAction(), CanExecute is null ? null : _ => CanExecute!()) { }
+        public LambdaCommand(Action ExecuteAction, Func<bool>? CanExecute) : this(_ => ExecuteAction(), CanExecute is null ? null : _ => CanExecute!()) { }
 
         #endregion
 
@@ -130,14 +128,14 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        [NotNull] public static implicit operator LambdaCommand([NotNull] Action execute) => ToLambdaCommand(execute);
-        [NotNull] public static implicit operator LambdaCommand([NotNull] Action<object?> execute) => ToLambdaCommand(execute);
+        public static implicit operator LambdaCommand(Action execute) => ToLambdaCommand(execute);
+        public static implicit operator LambdaCommand(Action<object?> execute) => ToLambdaCommand(execute);
 
         public static implicit operator LambdaCommand((Action Execute, Func<bool> CanExecute) info) => new(info.Execute, info.CanExecute);
         public static implicit operator LambdaCommand((Action<object?> Execute, Func<object?, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 
-        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action execute) => new(execute);
-        [NotNull] public static LambdaCommand ToLambdaCommand([NotNull] Action<object?> execute) => new(execute);
+        public static LambdaCommand ToLambdaCommand(Action execute) => new(execute);
+        public static LambdaCommand ToLambdaCommand(Action<object?> execute) => new(execute);
     }
 
     /// <summary>
@@ -155,7 +153,7 @@ namespace MathCore.WPF.Commands
 
         public event CancelEventHandler? StartExecuting;
 
-        protected virtual void OnStartExecuting([NotNull] CancelEventArgs args) => StartExecuting?.Invoke(this, args);
+        protected virtual void OnStartExecuting(CancelEventArgs args) => StartExecuting?.Invoke(this, args);
 
         public event EventHandler<EventArgs<object?>>? CompleteExecuting;
 
@@ -197,11 +195,11 @@ namespace MathCore.WPF.Commands
         /// </summary>
         protected LambdaCommand() { }
 
-        public LambdaCommand([NotNull] Action<T?> ExecuteAction, Func<bool>? CanExecute)
+        public LambdaCommand(Action<T?> ExecuteAction, Func<bool>? CanExecute)
             :this(ExecuteAction, CanExecute is null ? null : new Func<T?, bool>(_ => CanExecute()))
         { }
 
-        public LambdaCommand([NotNull] Action<T?> ExecuteAction, Func<T?, bool>? CanExecute = null)
+        public LambdaCommand(Action<T?> ExecuteAction, Func<T?, bool>? CanExecute = null)
         {
             _ExecuteAction = ExecuteAction ?? throw new ArgumentNullException(nameof(ExecuteAction));
             _CanExecute = ViewModel.IsDesignMode ? (_ => true) : CanExecute;
@@ -211,7 +209,7 @@ namespace MathCore.WPF.Commands
 
         #region Методы
 
-        public static T ConvertParameter([CanBeNull] object? parameter)
+        public static T ConvertParameter(object? parameter)
         {
             if (parameter is null) return default!;
             if (parameter is T result) return result;
@@ -293,7 +291,7 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-        [NotNull] public static implicit operator LambdaCommand<T?>([NotNull] Action<T?> execute) => new(execute);
+        public static implicit operator LambdaCommand<T?>(Action<T?> execute) => new(execute);
 
         public static implicit operator LambdaCommand<T?>((Action<T?> Execute, Func<T?, bool> CanExecute) info) => new(info.Execute, info.CanExecute);
 

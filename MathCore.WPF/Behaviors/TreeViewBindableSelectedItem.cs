@@ -10,7 +10,6 @@ namespace MathCore.WPF.Behaviors
 {
     public class TreeViewBindableSelectedItem : Behavior<TreeView>
     {
-        [NotNull]
         public static readonly DependencyProperty SelectedItemProperty =
             DependencyProperty.Register(
                 nameof(SelectedItem),
@@ -20,7 +19,7 @@ namespace MathCore.WPF.Behaviors
 
         private static void OnSelectedItemPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E) => (D as TreeViewBindableSelectedItem)?.OnSelectedItemPropertyChanged(E.NewValue);
 
-        protected virtual void OnSelectedItemPropertyChanged([CanBeNull] object item)
+        protected virtual void OnSelectedItemPropertyChanged(object? item)
         {
             if (item is null) return;
             var tree_view = AssociatedObject;
@@ -28,7 +27,7 @@ namespace MathCore.WPF.Behaviors
             SelectTreeViewItem(tree_view, item);
         }
 
-        private static bool SelectTreeViewItem([NotNull] ItemsControl ParentContainer, [NotNull] object target)
+        private static bool SelectTreeViewItem(ItemsControl ParentContainer, object target)
         {
             if (ParentContainer is null) throw new ArgumentNullException(nameof(ParentContainer));
 
@@ -89,7 +88,7 @@ namespace MathCore.WPF.Behaviors
                 tree_view.ItemContainerStyle?.Setters.Remove(_TreeViewItemStyleLoadedEventSetter);
         }
 
-        private void OnTreeViewSelectedItemChanged(object? sender, [NotNull] RoutedPropertyChangedEventArgs<object> e)
+        private void OnTreeViewSelectedItemChanged(object? sender, RoutedPropertyChangedEventArgs<object> e)
         {
             if (!ReferenceEquals(SelectedItem, e.NewValue))
                 SelectedItem = e.NewValue;

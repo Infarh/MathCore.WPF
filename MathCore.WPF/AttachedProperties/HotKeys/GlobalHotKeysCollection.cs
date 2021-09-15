@@ -13,10 +13,13 @@ using MathCore.WPF.pInvoke;
 
 namespace MathCore.WPF
 {
-    public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList
+    /// <summary>Коллекция горячих клавиш</summary>
+    public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>, IList, IDisposable
     {
-        static GlobalHotKeysCollection() => ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
-
+        /// <summary>Определение модификатора клавиши исходя из её кода</summary>
+        /// <param name="Key">Код клавиши</param>
+        /// <param name="Modifer">Исходный модификатор</param>
+        /// <returns>Кортеж, содержаший очищенный от модификатора код клавиши и выделенный объединённый модификатор</returns>
         internal static (Keys Key, ModifierKeys Modifer) GetModifiers(Keys Key, ModifierKeys Modifer = ModifierKeys.None)
         {
             var key = Key;
@@ -45,41 +48,13 @@ namespace MathCore.WPF
             return (key, modifers);
         }
 
-        private readonly Window? _HostWindow;
-        private IntPtr _Handle;
+        /// <summary>Инициализация новой коллекции горячих клавиш</summary>
+        public GlobalHotKeysCollection() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
-        public GlobalHotKeysCollection(Window? HostWindow)
-        {
-            _HostWindow = HostWindow;
-            ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
-            if (HostWindow is null) return;
-            if (HostWindow.IsLoaded)
-                OnHostWindowSourceInitialized(HostWindow, EventArgs.Empty);
-            else
-                HostWindow.SourceInitialized += OnHostWindowSourceInitialized;
-            HostWindow.Closed += OnWindowClosed;
-        }
-
-        private void OnHostWindowSourceInitialized(object? Sender, EventArgs _)
-        {
-            if (Sender is not Window window) return;
-            window.SourceInitialized -= OnHostWindowSourceInitialized;
-            _Handle = window.GetWindowHandle();
-
-            foreach (var binding in this)
-                Register(binding);
-        }
-
-        private void OnWindowClosed(object? Sender, EventArgs E)
-        {
-            if (Sender is not Window window) return;
-            window.SourceInitialized += OnHostWindowSourceInitialized;
-            window.Closed -= OnWindowClosed;
-
-            foreach (var binding in this)
-                Unregister(binding);
-        }
-
+        /// <summary>
+        /// Обработчик события изменения содержимого коллекции,
+        /// выполняющий подключение и отключение клавиш от внутренних обработчиков событий коллекции
+        /// </summary>
         private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
@@ -103,36 +78,49 @@ namespace MathCore.WPF
 
         protected override Freezable CreateInstanceCore()
         {
-            var collection = new GlobalHotKeysCollection(_HostWindow);
+            var collection = new GlobalHotKeysCollection();
             //collection.AddItems(this.Select(f => (GlobalHotKeyBinding)f.Clone()));
             return collection;
         }
 
-        private static readonly Dictionary<ushort, HashSet<GlobalHotKeyBinding>> __HotKeyBindingLists = new();
+        /// <summary>Словарь списков объектов горячих клавиш с сопоставленными им идентификаторами</summary>
+        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>>? __HotKeyBindings;
+
+        private static Dictionary<ushort, HashSet<GlobalHotKeyBinding>> HotKeyBindings
+        {
+            get
+            {
+                if (__HotKeyBindings is null)
+                {
+                    __HotKeyBindings = new();
+                    ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
+                }
+                return __HotKeyBindings;
+            }
+        }
+
+        /// <summary>Зарегистрировать горячую клавишу</summary>
+        /// <param name="binding">Объект регистрации горячей клавиши</param>
         internal static void Register(GlobalHotKeyBinding binding)
         {
-            if (binding.Host is not { _Handle: var handle } || handle == IntPtr.Zero) return;
-
-            if (Application.Current.MainWindow is { } main_window)
-            {
-                var main_window_handle = main_window.GetWindowHandle();
-                if (main_window_handle != IntPtr.Zero)
-                    handle = main_window_handle;
-            }
-
             var key_modifer = binding.KeyModifer;
             var key_id = GetHotKeyId(key_modifer);
             binding.HotKeyId = key_id;
 
-            __HotKeyBindingLists.GetValueOrAddNew(key_id, () => new ()).Add(binding);
+            HotKeyBindings.GetValueOrAddNew(key_id, () => new()).Add(binding);
 
             var (key, modifer) = key_modifer;
-            TryRegisterHotKey(key_id, handle, key, modifer);
+            TryRegisterHotKey(key_id, key, modifer);
 
-            Debug.WriteLine("Hot key binding {0} registered for handle {1} with id {2}", binding, handle, key_id);
+            Debug.WriteLine("Hot key binding {0} registered with id {1}", binding, key_id);
         }
 
+        /// <summary>Словарь, определяющий соответствие зарегистрированных клавиш их идентификаторам</summary>
         private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = new();
+
+        /// <summary>Метод, позволяющий получить идентификатор клавиши</summary>
+        /// <param name="Key">Определение клавиши</param>
+        /// <returns>Числовой идентификатор</returns>
         private static ushort GetHotKeyId((Keys Key, ModifierKeys Modifer) Key)
         {
             if (__HotKeyIds.TryGetValue(Key, out var key_id)) return key_id;
@@ -146,37 +134,49 @@ namespace MathCore.WPF
             return key_id;
         }
 
-        private static readonly HashSet<ushort> __RegistredHotKeys = new();
-        private static bool TryRegisterHotKey(ushort KeyId, IntPtr Handle, Keys Key, ModifierKeys Modifer)
-        {
-            if (__RegistredHotKeys.Contains(KeyId)) return false;
+        /// <summary>Таблица идентификаторов зарегистрированных горячих клавиш</summary>
+        private static readonly HashSet<ushort> __RegisteredHotKeys = new();
 
-            var success = User32.RegisterHotKey(Handle, KeyId, Modifer, Key);
+        /// <summary>Зарегистрировать клавишу</summary>
+        /// <param name="KeyId">Идентификатор клавиши</param>
+        /// <param name="Key">Регистрируемая клавиша</param>
+        /// <param name="Modifer">Модификатор клавиши</param>
+        /// <returns>Истина, если клавиша успешно зарегистрирована, ложь - если клавиша занята в системе</returns>
+        private static bool TryRegisterHotKey(ushort KeyId, Keys Key, ModifierKeys Modifer)
+        {
+            if (__RegisteredHotKeys.Contains(KeyId)) return false;
+
+            var success = User32.RegisterHotKey(IntPtr.Zero, KeyId, Modifer, Key);
 
             if (!success)
             {
                 User32.UnregisterHotKey(IntPtr.Zero, KeyId);
 
-                success = User32.RegisterHotKey(Handle, KeyId, Modifer, Key);
+                success = User32.RegisterHotKey(IntPtr.Zero, KeyId, Modifer, Key);
 
                 if (!success) throw new Win32Exception();
             }
 
-            __RegistredHotKeys.Add(KeyId);
+            __RegisteredHotKeys.Add(KeyId);
 
-            Debug.WriteLine("Hot key {0} registered in system at id {1} for handle {2}", (Modifer, Key), KeyId, Handle);
+            Debug.WriteLine("Hot key {0} registered in system at id {1}", (Modifer, Key), KeyId);
 
             return true;
         }
 
+        /// <summary>Метод формирования уникального для приложения имени клавиши, зарегистрированного в системе</summary>
+        /// <param name="key">Регистрируемая клавиша</param>
+        /// <param name="modifer">Модификатор клавиши</param>
+        /// <returns>Имя клавиши, зарегистрированное в системе</returns>
         internal static string CreateAtomName(Keys key, ModifierKeys modifer) => $"MathCore.WPF.GlobalHotKey:{modifer}+{key}";
 
         internal static void Unregister(GlobalHotKeyBinding binding)
         {
             var key_id = binding.HotKeyId;
-            if(!__HotKeyBindingLists.ContainsKey(key_id)) return;
+            var key_bindings = HotKeyBindings;
+            if (!key_bindings.ContainsKey(key_id)) return;
 
-            var bindings = __HotKeyBindingLists[key_id];
+            var bindings = key_bindings[key_id];
 
             Debug.WriteLine("Hot key binding {0} unregistered", binding);
 
@@ -185,30 +185,39 @@ namespace MathCore.WPF
                 UnregisterHotKey(key_id);
         }
 
+        /// <summary>Отменить регистрацию клавиши</summary>
+        /// <param name="KeyId">Идентификатор клавиши</param>
         private static void UnregisterHotKey(ushort KeyId)
         {
-            __HotKeyBindingLists.Remove(KeyId);
+            HotKeyBindings.Remove(KeyId);
             User32.UnregisterHotKey(IntPtr.Zero, KeyId);
-            __RegistredHotKeys.Remove(KeyId);
+            __RegisteredHotKeys.Remove(KeyId);
 
             Kernel32.GlobalDeleteAtom(KeyId);
 
             Debug.WriteLine("Hot key {0} unregistered at system");
         }
 
+        /// <summary>Метод обработки сообщений ОС о нажатии горячих клавиш</summary>
         private static void OnFilterMessage(ref MSG Msg, ref bool Handled)
         {
-            if (Msg.message != (int)WM.HOTKEY) return;
+            if (Msg.message != (int)WM.HOTKEY || __HotKeyBindings is null) return;
 
             var key_id = (ushort)Msg.wParam;
             Debug.WriteLine("Hot key {0} cached for handle {1}", key_id, Msg.hwnd);
 
-            if(!__HotKeyBindingLists.TryGetValue(key_id, out var bindings) || bindings is not { Count: > 0 }) return;
+            if (!__HotKeyBindings.TryGetValue(key_id, out var bindings) || bindings is not { Count: > 0 }) return;
 
             foreach (var binding in bindings)
                 binding.Invoke();
 
             Handled = true;
+        }
+
+        public void Dispose()
+        {
+            foreach (var binding in this)
+                Unregister(binding);
         }
     }
 }

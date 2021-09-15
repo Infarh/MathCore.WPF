@@ -13,7 +13,7 @@ namespace MathCore.WPF.Converters
 
         private readonly Func<bool?, double> _ConvertBack;
 
-        protected DoubleToBool([CanBeNull] Func<double, bool?>? to = null, [CanBeNull] Func<bool?, double>? from = null)
+        protected DoubleToBool(Func<double, bool?>? to = null, Func<bool?, double>? from = null)
         {
             _Convert = to ?? Convert;
             _ConvertBack = from ?? ConvertBack;

@@ -25,8 +25,7 @@ namespace MathCore.WPF.IoC
             _ServiceManager.RegisterSingleCall<TView>();
         }
 
-        [CanBeNull]
-        public Window? CreateView([CanBeNull] object Model)
+        public Window? CreateView(object? Model)
         {
             if (Model is null || !_ViewMap.TryGetValue(Model.GetType(), out var window_type)) return null;
             if (_ServiceManager.Get(window_type) is not Window window) return null;
@@ -68,8 +67,7 @@ namespace MathCore.WPF.IoC
             _Views.Remove(window);
         }
 
-        [CanBeNull]
-        private Window? GetView([CanBeNull] object? obj)
+        private Window? GetView(object? obj)
         {
             if (obj is null) return null;
             var obj_type = obj.GetType();
@@ -79,7 +77,6 @@ namespace MathCore.WPF.IoC
             return view_model is null ? null : CreateView(view_model);
         }
 
-        [CanBeNull]
         public Window? View(object obj)
         {
             var view = GetView(obj);

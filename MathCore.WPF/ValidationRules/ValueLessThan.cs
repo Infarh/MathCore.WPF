@@ -26,7 +26,6 @@ namespace MathCore.WPF.ValidationRules
         public ValueLessThan(double value) => Value = value;
 
         /// <inheritdoc />
-        [NotNull]
         public override ValidationResult Validate(object? value, CultureInfo CultureInfo)
         {
             if (value is null) return new ValidationResult(false, "Значение не указано");

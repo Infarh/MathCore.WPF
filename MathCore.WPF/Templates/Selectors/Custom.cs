@@ -19,6 +19,6 @@ namespace MathCore.WPF.Templates.Selectors
 
         public Func<object, string> KeySelector { get; set; } = o => o.GetType().Name;
 
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => new CustomDataTemplateSelector(_Items, KeySelector);
+        public override object ProvideValue(IServiceProvider sp) => new CustomDataTemplateSelector(_Items, KeySelector);
     }
 }

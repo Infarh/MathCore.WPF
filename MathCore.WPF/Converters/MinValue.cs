@@ -13,9 +13,9 @@ namespace MathCore.WPF.Converters
     [ValueConversion(typeof(IEnumerable), typeof(object))]
     public class MinValue : MarkupExtension, IMultiValueConverter, IValueConverter
     {
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => this;
+        public override object ProvideValue(IServiceProvider sp) => this;
 
-        public object? Convert([NotNull] object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.Min();
+        public object? Convert(object[] vv, Type? t, object? p, CultureInfo? c) => vv?.Min();
 
         public object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => throw new NotSupportedException();
 

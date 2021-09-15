@@ -9,7 +9,7 @@ namespace System.Windows
 {
     public static class WindowExtensions
     {
-        public static IntPtr GetWindowHandle([NotNull] this Window window) => new WindowInteropHelper(window).Handle;
+        public static IntPtr GetWindowHandle(this Window window) => new WindowInteropHelper(window).Handle;
 
         public static void ForWindowFromChild(this object ChildDependencyObject, Action<Window> action)
         {

@@ -22,7 +22,6 @@ namespace MathCore.WPF.Converters
         protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 
             GetConverters().Reverse().Aggregate(v, (value, converter) => converter.ConvertBack(To?.Convert(value, t, p, c), t, p, c));
 
-        [ItemNotNull]
         private IEnumerable<IValueConverter> GetConverters()
         {
             var converter = From;

@@ -18,6 +18,6 @@ namespace MathCore.WPF.Styles.Selectors
 
         public IList Styles => _Items;
 
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => new GenericStyleSelector(_Items);
+        public override object ProvideValue(IServiceProvider sp) => new GenericStyleSelector(_Items);
     }
 }

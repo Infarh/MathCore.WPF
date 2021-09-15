@@ -15,16 +15,15 @@ namespace MathCore.WPF
     {
         private static readonly HashSet<Thread> __RecursionProtection = new();
 
-        [CanBeNull] public static string GetDocumentXaml([NotNull] DependencyObject obj) => (string)obj.GetValue(DocumentXamlProperty);
+        public static string? GetDocumentXaml(DependencyObject obj) => (string)obj.GetValue(DocumentXamlProperty);
 
-        public static void SetDocumentXaml([NotNull] DependencyObject obj, [CanBeNull] string value)
+        public static void SetDocumentXaml(DependencyObject obj, string? value)
         {
             __RecursionProtection.Add(Thread.CurrentThread);
             obj.SetValue(DocumentXamlProperty, value);
             __RecursionProtection.Remove(Thread.CurrentThread);
         }
 
-        [NotNull]
         public static readonly DependencyProperty DocumentXamlProperty =
             DependencyProperty.RegisterAttached(
                 "DocumentXaml",
@@ -71,8 +70,7 @@ namespace MathCore.WPF
         /// If this TextPointer is between two words, the following word range is returned.
         /// If this TextPointer is at trailing word boundary, the following word range is returned.
         /// </remarks>
-        [NotNull]
-        public static TextRange GetWordRange([NotNull] this TextPointer position)
+        public static TextRange GetWordRange(this TextPointer position)
         {
             TextRange wordRange = null;
             TextPointer wordStartPosition = null;
@@ -96,8 +94,7 @@ namespace MathCore.WPF
         ///     i.e. a position with a wordBreak character (space) preceeding it.
         /// 3.  Returns null when there is no workbreak in the requested direction.
         /// </summary>
-        [CanBeNull]
-        private static TextPointer GetPositionAtWordBoundary([NotNull] this TextPointer position, LogicalDirection WordBreakDirection)
+        private static TextPointer? GetPositionAtWordBoundary(this TextPointer position, LogicalDirection WordBreakDirection)
         {
             if (!position.IsAtInsertionPosition)
                 position = position.GetInsertionPosition(WordBreakDirection);
@@ -111,7 +108,7 @@ namespace MathCore.WPF
 
         // Helper for GetPositionAtWordBoundary.
         // Returns true when passed TextPointer is next to a wordBreak in requested direction.
-        private static bool IsPositionNextToWordBreak([NotNull] this TextPointer position, LogicalDirection WordBreakDirection)
+        private static bool IsPositionNextToWordBreak(this TextPointer position, LogicalDirection WordBreakDirection)
         {
             var is_at_word_boundary = false;
 

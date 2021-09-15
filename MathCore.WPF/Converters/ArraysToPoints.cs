@@ -11,8 +11,7 @@ namespace MathCore.WPF.Converters
 {
     public class ArraysToPoints : MultiValueValueConverter
     {
-        [NotNull]
-        protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
+        protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
         {
             if(vv is null) throw new ArgumentNullException(nameof(vv));
             if(vv.Length != 2) throw new ArgumentOutOfRangeException(nameof(vv));

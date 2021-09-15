@@ -18,7 +18,7 @@ namespace MathCore.WPF.Behaviors
             AssociatedObject.MouseLeftButtonDown -= OnMouseLeftButtonDown;
         }
 
-        protected void OnMouseLeftButtonDown([NotNull] object Sender, [NotNull] MouseButtonEventArgs E)
+        protected void OnMouseLeftButtonDown(object Sender, MouseButtonEventArgs E)
         {
             E.Handled = true;
             if (E.ClickCount > 1)

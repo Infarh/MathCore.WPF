@@ -8,6 +8,6 @@ namespace MathCore.WPF.Templates.Selectors
     [MarkupExtensionReturnType(typeof(FromResourcesByTypeTemplateSelector))]
     public class FromResourcesByType : MarkupExtension
     {
-        [NotNull] public override object ProvideValue(IServiceProvider sp) => new FromResourcesByTypeTemplateSelector();
+        public override object ProvideValue(IServiceProvider sp) => new FromResourcesByTypeTemplateSelector();
     }
 }

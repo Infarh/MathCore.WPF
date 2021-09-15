@@ -33,7 +33,7 @@ namespace MathCore.WPF.Commands
         #endregion
 
         public ShowMessageCommand() { }
-        public ShowMessageCommand([CanBeNull] string Title) => this.Title = Title;
+        public ShowMessageCommand(string? Title) => this.Title = Title;
 
         public override bool CanExecute(object? parameter) => !string.IsNullOrEmpty(parameter as string);
 

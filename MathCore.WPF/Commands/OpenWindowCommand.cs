@@ -43,7 +43,7 @@ namespace MathCore.WPF.Commands
         /// <inheritdoc />
         public override void Execute(object? parameter) => ShowWindow(parameter as Window ?? _WindowType?.Create<Window>() ?? throw new InvalidOperationException($"Неудалось создать окно типа {_WindowType}"));
 
-        private void ShowWindow([NotNull] Window window)
+        private void ShowWindow(Window window)
         {
             window.SetBinding(FrameworkElement.DataContextProperty, new Binding("DataContext") { Source = TargetObject });
             if (RootObject is Window parent) window.Owner = parent;

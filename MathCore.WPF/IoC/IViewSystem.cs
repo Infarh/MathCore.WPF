@@ -12,7 +12,6 @@ namespace MathCore.WPF.IoC
 
         Window? CreateView(object Model);
 
-        [NotNull]
         Window CreateView<TWindow>() where TWindow : Window;
 
         Window? View(object obj);

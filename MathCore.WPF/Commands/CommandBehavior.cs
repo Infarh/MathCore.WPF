@@ -24,10 +24,10 @@ namespace MathCore.WPF.Commands
                 new FrameworkPropertyMetadata(default(CommandBehaviorBinding)));
 
         /// <summary>Gets the Behavior property</summary>
-        private static CommandBehaviorBinding Get__Behavior([NotNull] DependencyObject d) => (CommandBehaviorBinding)d.GetValue(__BehaviorProperty);
+        private static CommandBehaviorBinding Get__Behavior(DependencyObject d) => (CommandBehaviorBinding)d.GetValue(__BehaviorProperty);
 
         /// <summary>Sets the Behavior property</summary>
-        private static void Set__Behavior([NotNull] DependencyObject d, CommandBehaviorBinding value) => d.SetValue(__BehaviorProperty, value);
+        private static void Set__Behavior(DependencyObject d, CommandBehaviorBinding value) => d.SetValue(__BehaviorProperty, value);
 
         #endregion
 
@@ -42,13 +42,13 @@ namespace MathCore.WPF.Commands
                 new FrameworkPropertyMetadata(default(ICommand), OnCommandChanged));
 
         /// <summary>Gets the Command property</summary>
-        public static ICommand GetCommand([NotNull] DependencyObject d) => (ICommand)d.GetValue(CommandProperty);
+        public static ICommand GetCommand(DependencyObject d) => (ICommand)d.GetValue(CommandProperty);
 
         /// <summary>Sets the Command property</summary>
-        public static void SetCommand([NotNull] DependencyObject d, ICommand value) => d.SetValue(CommandProperty, value);
+        public static void SetCommand(DependencyObject d, ICommand value) => d.SetValue(CommandProperty, value);
 
         /// <summary>Handles changes to the Command property</summary>
-        private static void OnCommandChanged([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+        private static void OnCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
             FetchOrCreateBinding(d).Command = (ICommand)e.NewValue;
 
         #endregion
@@ -64,14 +64,14 @@ namespace MathCore.WPF.Commands
                 new FrameworkPropertyMetadata(default, OnCommandParameterChanged));
 
         /// <summary>Gets the CommandParameter property</summary>
-        public static object GetCommandParameter([NotNull] DependencyObject d) => d.GetValue(CommandParameterProperty);
+        public static object GetCommandParameter(DependencyObject d) => d.GetValue(CommandParameterProperty);
 
         /// <summary>Sets the CommandParameter property</summary>
-        public static void SetCommandParameter([NotNull] DependencyObject d, object value) =>
+        public static void SetCommandParameter(DependencyObject d, object value) =>
             d.SetValue(CommandParameterProperty, value);
 
         /// <summary>Handles changes to the CommandParameter property</summary>
-        private static void OnCommandParameterChanged([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e) =>
+        private static void OnCommandParameterChanged(DependencyObject d, DependencyPropertyChangedEventArgs e) =>
             FetchOrCreateBinding(d).CommandParameter = e.NewValue;
 
         #endregion
@@ -87,13 +87,13 @@ namespace MathCore.WPF.Commands
                 new FrameworkPropertyMetadata(string.Empty, OnEventChanged));
 
         /// <summary>Gets the Event property.  This dependency property indicates ....</summary>
-        public static string GetEvent([NotNull] DependencyObject d) => (string)d.GetValue(EventProperty);
+        public static string GetEvent(DependencyObject d) => (string)d.GetValue(EventProperty);
 
         /// <summary>Sets the Event property.  This dependency property indicates ....</summary>
-        public static void SetEvent([NotNull] DependencyObject d, string value) => d.SetValue(EventProperty, value);
+        public static void SetEvent(DependencyObject d, string value) => d.SetValue(EventProperty, value);
 
         /// <summary>Handles changes to the Event property</summary>
-        private static void OnEventChanged([NotNull] DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnEventChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var binding = FetchOrCreateBinding(d);
             //check if the Event is set. If yes we need to rebind the Command to the new event and unregister the old one
@@ -107,8 +107,7 @@ namespace MathCore.WPF.Commands
 
         #region Helpers
         //tries to get a CommandBehaviorBinding from the element. Creates a new instance if there is not one attached
-        [NotNull]
-        private static CommandBehaviorBinding FetchOrCreateBinding([NotNull] DependencyObject d)
+        private static CommandBehaviorBinding FetchOrCreateBinding(DependencyObject d)
         {
             var binding = Get__Behavior(d);
             if(binding != null) return binding;
@@ -203,7 +202,7 @@ namespace MathCore.WPF.Commands
         /// <param name="MethodInvoker">The object where the method resides</param>
         /// <returns>Returns a delegate with the same signature as eventHandlerType that calls the methodToInvoke inside</returns>
         /// <exception cref="ApplicationException">Delegate has a return type. This only suppress event handlers that are void</exception>
-        public static Delegate CreateDelegate([NotNull] Type EventHandlerType, MethodInfo MethodToInvoke, [NotNull] object MethodInvoker)
+        public static Delegate CreateDelegate(Type EventHandlerType, MethodInfo MethodToInvoke, object MethodInvoker)
         {
             //Get the eventHandlerType signature
             var event_handler_info = EventHandlerType.GetMethod("Invoke") ?? throw new InvalidOperationException("Method Invoke not found");

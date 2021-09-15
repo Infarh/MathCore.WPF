@@ -16,11 +16,11 @@ namespace MathCore.WPF.Behaviors
         private abstract class ObjectMover : IDisposable
         {
             private readonly Point _StartPos;
-            [NotNull] private readonly IInputElement _ParentElement;
-            [NotNull] private readonly UIElement _MovingElement;
-            [NotNull] private readonly DragBehavior _Behavior;
+            private readonly IInputElement _ParentElement;
+            private readonly UIElement _MovingElement;
+            private readonly DragBehavior _Behavior;
 
-            protected ObjectMover([NotNull] UIElement element, [NotNull] DragBehavior behavior)
+            protected ObjectMover(UIElement element, DragBehavior behavior)
             {
                 _MovingElement = element;
                 _Behavior = behavior;
@@ -31,9 +31,9 @@ namespace MathCore.WPF.Behaviors
                 element.MouseLeftButtonUp += OnLeftMouseUp;
             }
 
-            private void OnLeftMouseUp([CanBeNull] object Sender, [CanBeNull] MouseButtonEventArgs E) => Dispose();
+            private void OnLeftMouseUp(object? Sender, MouseButtonEventArgs? E) => Dispose();
 
-            private void OnMouseMove([NotNull] object Sender, [NotNull] MouseEventArgs E)
+            private void OnMouseMove(object Sender, MouseEventArgs E)
             {
                 var element = (FrameworkElement)Sender;
                 if (Equals(Mouse.Captured, element))
@@ -65,9 +65,9 @@ namespace MathCore.WPF.Behaviors
         {
 
             private readonly Thickness _StartThickness;
-            public ThicknessObjectMover([NotNull] FrameworkElement element, [NotNull] DragBehavior behavior) : base(element, behavior) => _StartThickness = element.Margin;
+            public ThicknessObjectMover(FrameworkElement element, DragBehavior behavior) : base(element, behavior) => _StartThickness = element.Margin;
 
-            protected override void OnMouseMove([NotNull] FrameworkElement element, double dx, double dy) => element.Margin = new Thickness
+            protected override void OnMouseMove(FrameworkElement element, double dx, double dy) => element.Margin = new Thickness
             (
                 _StartThickness.Left + dx,
                 _StartThickness.Top + dy,
@@ -83,7 +83,7 @@ namespace MathCore.WPF.Behaviors
             private readonly double _StartTop;
             private readonly double _StartBottom;
 
-            public CanvasObjectMover([NotNull] FrameworkElement element, [NotNull] DragBehavior behavior) : base(element, behavior)
+            public CanvasObjectMover(FrameworkElement element, DragBehavior behavior) : base(element, behavior)
             {
                 _StartLeft = Canvas.GetLeft(element);
                 _StartRight = Canvas.GetRight(element);
@@ -91,7 +91,7 @@ namespace MathCore.WPF.Behaviors
                 _StartBottom = Canvas.GetBottom(element);
             }
 
-            protected override void OnMouseMove([NotNull] FrameworkElement element, double dx, double dy)
+            protected override void OnMouseMove(FrameworkElement element, double dx, double dy)
             {
                 if (!double.IsNaN(_StartLeft)) Canvas.SetLeft(element, _StartLeft + dx);
                 if (!double.IsNaN(_StartRight)) Canvas.SetLeft(element, _StartRight - dx);
@@ -103,7 +103,6 @@ namespace MathCore.WPF.Behaviors
         #region Enabled
 
         /// <summary></summary>
-        [NotNull]
         public static readonly DependencyProperty EnabledProperty =
             DependencyProperty.Register(
                 nameof(Enabled),
@@ -123,7 +122,6 @@ namespace MathCore.WPF.Behaviors
         #region dx : double - Величина смещения по горизонтали
 
         /// <summary>Величина смещения по горизонтали</summary>
-        [NotNull]
         private static readonly DependencyPropertyKey dxPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(dx),
@@ -132,7 +130,7 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(double)));
 
         /// <summary>Величина смещения по горизонтали</summary>
-        [NotNull] public static readonly DependencyProperty dxProperty = dxPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty dxProperty = dxPropertyKey.DependencyProperty;
 
         /// <summary>Величина смещения по горизонтали</summary>
         public double dx
@@ -146,7 +144,6 @@ namespace MathCore.WPF.Behaviors
         #region dy : double - Величина смещения по вертикали
 
         /// <summary>Величина смещения по вертикали</summary>
-        [NotNull]
         private static readonly DependencyPropertyKey dyPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(dy),
@@ -155,7 +152,7 @@ namespace MathCore.WPF.Behaviors
                 new PropertyMetadata(default(double)));
 
         /// <summary>Величина смещения по вертикали</summary>
-        [NotNull] public static readonly DependencyProperty dyProperty = dyPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty dyProperty = dyPropertyKey.DependencyProperty;
 
         /// <summary>Величина смещения по вертикали</summary>
         public double dy
@@ -168,7 +165,6 @@ namespace MathCore.WPF.Behaviors
 
         #region Radius
 
-        [NotNull]
         private static readonly DependencyPropertyKey RadiusPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Radius),
@@ -176,7 +172,7 @@ namespace MathCore.WPF.Behaviors
                 typeof(DragBehavior),
                 new PropertyMetadata(default(double)));
 
-        [NotNull] public static readonly DependencyProperty RadiusProperty = RadiusPropertyKey.DependencyProperty;
+        public static readonly DependencyProperty RadiusProperty = RadiusPropertyKey.DependencyProperty;
 
         public double Radius
         {
@@ -188,7 +184,6 @@ namespace MathCore.WPF.Behaviors
 
         #region Angle
 
-        [NotNull]
         private static readonly DependencyPropertyKey AnglePropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Angle),
@@ -196,7 +191,7 @@ namespace MathCore.WPF.Behaviors
                 typeof(DragBehavior),
                 new PropertyMetadata(default(double)));
 
-        [NotNull] public static readonly DependencyProperty AngleProperty = AnglePropertyKey.DependencyProperty;
+        public static readonly DependencyProperty AngleProperty = AnglePropertyKey.DependencyProperty;
 
         public double Angle
         {
@@ -221,7 +216,7 @@ namespace MathCore.WPF.Behaviors
         }
 
         private ObjectMover? _ObjectMover;
-        private void OnMouseLeftButtonDown([CanBeNull] object Sender, [CanBeNull] MouseButtonEventArgs E)
+        private void OnMouseLeftButtonDown(object? Sender, MouseButtonEventArgs? E)
         {
             if (Sender is not FrameworkElement element) return;
             var parent = element.FindLogicalParent<IInputElement>();

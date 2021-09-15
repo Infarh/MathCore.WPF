@@ -15,7 +15,7 @@ namespace MathCore.WPF.Converters
         /// <inheritdoc />
         protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => vv?.SelectMany(GetItems);
 
-        private static IEnumerable<object?> GetItems([CanBeNull] object? Item)
+        private static IEnumerable<object?> GetItems(object? Item)
         {
             switch (Item)
             {

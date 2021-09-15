@@ -18,7 +18,6 @@ namespace MathCore.WPF.Converters
         private readonly IList<IValueConverter> _Converters = new List<IValueConverter>();
 
         /// <summary>Коллекция конвертеров</summary>
-        [NotNull]
         public IList<IValueConverter> Converters => _Converters;
 
         #region IValueConverter

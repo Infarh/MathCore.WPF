@@ -31,7 +31,6 @@ namespace MathCore.WPF.ValidationRules
         public StringLength(int Length) => this.Length = Length;
 
         /// <inheritdoc />
-        [NotNull]
         public override ValidationResult Validate(object? value, CultureInfo c)
         {
             var valid = ValidationResult.ValidResult;

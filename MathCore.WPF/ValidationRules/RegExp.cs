@@ -36,7 +36,6 @@ namespace MathCore.WPF.ValidationRules
         /// <param name="value">Проверяемое значение</param>
         /// <param name="c">Сведения о текущей культуре</param>
         /// <returns>Валидный результат в случае если значение удовлетворяет указанному регулярному выражению</returns>
-        [NotNull]
         public override ValidationResult Validate(object? value, CultureInfo c)
         {
             if(Expression is not { Length: > 0 } expr) return ValidationResult.ValidResult;

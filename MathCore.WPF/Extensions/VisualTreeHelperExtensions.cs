@@ -11,8 +11,7 @@ namespace System.Windows
 {
     public static class VisualTreeHelperExtensions
     {
-        [CanBeNull]
-        public static T? FindVisualParent<T>([CanBeNull] this DependencyObject obj) where T : class
+        public static T? FindVisualParent<T>(this DependencyObject? obj) where T : class
         {
             if (obj is null) return null;
             var target = obj;
@@ -20,8 +19,7 @@ namespace System.Windows
             return target as T;
         }
 
-        [CanBeNull]
-        public static DependencyObject? FindLogicalRoot([CanBeNull] this DependencyObject obj)
+        public static DependencyObject? FindLogicalRoot(this DependencyObject? obj)
         {
             if (obj is null) return null;
             do
@@ -32,8 +30,7 @@ namespace System.Windows
             } while (true);
         }
 
-        [CanBeNull]
-        public static DependencyObject? FindVisualRoot([CanBeNull] this DependencyObject obj)
+        public static DependencyObject? FindVisualRoot(this DependencyObject? obj)
         {
             if (obj is null) return null;
             do
@@ -44,8 +41,7 @@ namespace System.Windows
             } while (true);
         }
 
-        [CanBeNull]
-        public static T? FindLogicalParent<T>([CanBeNull] this DependencyObject obj) where T : class
+        public static T? FindLogicalParent<T>(this DependencyObject? obj) where T : class
         {
             if (obj is null) return null;
             var target = obj;
@@ -53,7 +49,7 @@ namespace System.Windows
             return target as T;
         }
 
-        public static IEnumerable<DependencyObject> GetAllVisualChilds([CanBeNull] this DependencyObject obj)
+        public static IEnumerable<DependencyObject> GetAllVisualChilds(this DependencyObject? obj)
         {
             if (obj is null) yield break;
             var to_process = new Stack<DependencyObject>(obj.GetVisualChilds());
@@ -65,15 +61,14 @@ namespace System.Windows
             } while (to_process.Count > 0);
         }
 
-        [ItemNotNull]
-        public static IEnumerable<DependencyObject> GetVisualChilds([CanBeNull] this DependencyObject obj)
+        public static IEnumerable<DependencyObject> GetVisualChilds(this DependencyObject? obj)
         {
             if (obj is null) yield break;
             for (int i = 0, count = VisualTreeHelper.GetChildrenCount(obj); i < count; i++)
                 yield return VisualTreeHelper.GetChild(obj, i);
         }
         //Child
-        public static IEnumerable<DependencyObject> GetAllLogicalChilds([CanBeNull] this DependencyObject obj)
+        public static IEnumerable<DependencyObject> GetAllLogicalChilds(this DependencyObject? obj)
         {
             if (obj is null) yield break;
             var to_process = new Stack<DependencyObject>(obj.GetLogicalChilds());
@@ -85,8 +80,7 @@ namespace System.Windows
             } while (to_process.Count > 0);
         }
 
-        [NotNull]
-        public static IEnumerable<DependencyObject> GetLogicalChilds([CanBeNull] this DependencyObject obj) => obj is null
+        public static IEnumerable<DependencyObject> GetLogicalChilds(this DependencyObject? obj) => obj is null
             ? Enumerable.Empty<DependencyObject>()
             : LogicalTreeHelper.GetChildren(obj).OfType<DependencyObject>();
     }

@@ -17,7 +17,7 @@ namespace MathCore.WPF.Converters
 
         private readonly ConverterBack? _BackConversation;
 
-        public LambdaMultiConverter(Func<object[]?, object?> SimpleConverter, [CanBeNull] Func<object?, object[]?>? SimpleBackConverter = null)
+        public LambdaMultiConverter(Func<object[]?, object?> SimpleConverter, Func<object?, object[]?>? SimpleBackConverter = null)
             : this(
                 (v,_,_,_) => SimpleConverter(v), 
                 SimpleBackConverter is null ? null : ((v, _, _, _) => SimpleBackConverter!(v)))

@@ -29,7 +29,6 @@ namespace MathCore.WPF
         #region Overrides of MarkupExtension
 
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp) => new TranslateTransform { X = X, Y = Y };
 
         #endregion 

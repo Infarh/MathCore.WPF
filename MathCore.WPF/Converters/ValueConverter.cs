@@ -12,7 +12,6 @@ namespace MathCore.WPF.Converters
     public abstract class ValueConverter : MarkupExtension, IValueConverter
     {
         /// <inheritdoc />
-        [NotNull]
         public override object ProvideValue(IServiceProvider sp) => this;
 
         /// <summary>Преобразование значения</summary>
@@ -21,7 +20,6 @@ namespace MathCore.WPF.Converters
         /// <param name="p">Параметр преобразования</param>
         /// <param name="c">Сведения о культуре</param>
         /// <returns>Преобразованное значение</returns>
-        [CanBeNull]
         protected abstract object? Convert(object? v, Type t, object? p, CultureInfo c);
 
         /// <summary>Обратное преобразование значения</summary>
@@ -31,7 +29,6 @@ namespace MathCore.WPF.Converters
         /// <param name="c">Сведения о культуре</param>
         /// <returns>Исходное значение</returns>
         /// <exception cref="NotSupportedException">Генерируется при отсутствии переопределения в классах наследниках</exception>
-        [CanBeNull]
         protected virtual object? ConvertBack(object? v, Type t, object? p, CultureInfo c) => 
             throw new NotSupportedException("Обратное преобразование не поддерживается");
 

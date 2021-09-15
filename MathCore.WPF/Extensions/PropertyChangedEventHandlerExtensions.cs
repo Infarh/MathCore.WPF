@@ -13,7 +13,7 @@ namespace System.ComponentModel
         public static void ThreadSafeInvoke(
             this PropertyChangedEventHandler? Event,
             object? sender,
-            [NotNull, ItemCanBeNull] params string[] PropertyName)
+            params string?[] PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
 
@@ -38,7 +38,6 @@ namespace System.ComponentModel
         public static void ThreadSafeInvoke(
             this PropertyChangedEventHandler? Handler,
             object? Sender,
-            [NotNull]
             string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -64,7 +63,7 @@ namespace System.ComponentModel
         public static void ThreadSafeBeginInvoke(
             this PropertyChangedEventHandler? Handler,
             object? Sender,
-            [NotNull] string PropertyName)
+            string PropertyName)
         {
             if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
             if (Handler is null || PropertyName.Length == 0) return;
@@ -97,7 +96,7 @@ namespace System.Collections.Specialized
         public static void ThreadSafeInvoke(
             this NotifyCollectionChangedEventHandler? Handler,
             object? Sender,
-            [NotNull] NotifyCollectionChangedEventArgs E)
+            NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
             if (Handler is null) return;
@@ -124,7 +123,7 @@ namespace System.Collections.Specialized
         public static void ThreadSafeBeginInvoke(
             this NotifyCollectionChangedEventHandler? Handler,
             object? Sender,
-            [NotNull] NotifyCollectionChangedEventArgs E)
+            NotifyCollectionChangedEventArgs E)
         {
             if (E is null) throw new ArgumentNullException(nameof(E));
             if (Handler is null) return;

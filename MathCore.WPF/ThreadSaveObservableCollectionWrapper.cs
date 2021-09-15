@@ -10,9 +10,9 @@ namespace MathCore.WPF
     {
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-        [NotNull] private readonly ObservableCollection<T> _Collection;
+        private readonly ObservableCollection<T> _Collection;
 
-        public ThreadSaveObservableCollectionWrapper([NotNull] ObservableCollection<T> collection)
+        public ThreadSaveObservableCollectionWrapper(ObservableCollection<T> collection)
         {
             _Collection = collection;
             collection.CollectionChanged += OnCollectionChanged;
@@ -63,8 +63,7 @@ namespace MathCore.WPF
 
     public static class ThreadSaveObservableCollectionExtentions
     {
-        [NotNull, ItemCanBeNull]
-        public static ThreadSaveObservableCollectionWrapper<T> AsThreadSave<T>([NotNull, ItemCanBeNull] this ObservableCollection<T> collection)
+        public static ThreadSaveObservableCollectionWrapper<T?> AsThreadSave<T>(this ObservableCollection<T?> collection)
             => new(collection);
     }
 }

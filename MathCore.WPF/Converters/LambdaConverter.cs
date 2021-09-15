@@ -12,11 +12,11 @@ namespace MathCore.WPF.Converters
 
         public delegate object? ConverterBack(object? Value, Type? SourceValueType, object? Parameter, CultureInfo? Culture);
 
-        [NotNull] private readonly Converter _To;
+        private readonly Converter _To;
 
         private readonly ConverterBack? _From;
 
-        public LambdaConverter([NotNull] Converter To, ConverterBack? From = null)
+        public LambdaConverter(Converter To, ConverterBack? From = null)
         {
             _To = To;
             _From = From;

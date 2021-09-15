@@ -92,9 +92,9 @@ namespace MathCore.WPF.Shapes
             });
         }
 
-        public static void SetStart([NotNull] DependencyObject element, Point value) => element.SetValue(StartProperty, value);
+        public static void SetStart(DependencyObject element, Point value) => element.SetValue(StartProperty, value);
 
-        public static Point GetStart([NotNull] DependencyObject element) => (Point)element.GetValue(StartProperty);
+        public static Point GetStart(DependencyObject element) => (Point)element.GetValue(StartProperty);
 
         public static readonly DependencyProperty EndProperty = DependencyProperty.RegisterAttached(
             "End",
@@ -124,8 +124,8 @@ namespace MathCore.WPF.Shapes
             });
         }
 
-        public static void SetEnd([NotNull] DependencyObject element, Point value) => element.SetValue(EndProperty, value);
+        public static void SetEnd(DependencyObject element, Point value) => element.SetValue(EndProperty, value);
 
-        public static Point GetEnd([NotNull] DependencyObject element) => (Point)element.GetValue(EndProperty);
+        public static Point GetEnd(DependencyObject element) => (Point)element.GetValue(EndProperty);
     }
 }
