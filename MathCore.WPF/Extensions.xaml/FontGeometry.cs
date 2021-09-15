@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+
 using MathCore.Annotations;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -38,15 +39,27 @@ namespace MathCore.WPF
 
         public override object ProvideValue(IServiceProvider sp)
         {
+#if NET461
+            var num = new NumberSubstitution(NumberCultureSource.Override, CultureInfo.InvariantCulture, NumberSubstitutionMethod.AsCulture);
+            var text = new FormattedText(
+                Text ?? string.Empty,
+                CultureInfo.CurrentCulture,
+                FlowDirection,
+                new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
+                Size,
+                Brushes.Black,
+                num);
+#else
             const double default_dip = 1.25;
             var text = new FormattedText(
                 Text,
                 CultureInfo.CurrentCulture,
                 FlowDirection,
-                new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily), 
-                Size, 
+                new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
+                Size,
                 Brushes.Black,
                 default_dip);
+#endif
             return text.BuildGeometry(Location);
         }
     }
