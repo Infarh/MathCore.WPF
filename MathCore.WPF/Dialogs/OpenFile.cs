@@ -23,7 +23,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(SelectedFile),
                 typeof(FileInfo),
                 typeof(OpenFile),
-                new PropertyMetadata(default(FileInfo), (d, e) => d.SetValue(SelectedFileNameProperty, e.NewValue is FileInfo f ? f.FullName : null)), v => v is null or FileInfo);
+                new PropertyMetadata(default(FileInfo), (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)), v => v is null or FileInfo);
 
         public FileInfo SelectedFile
         {
