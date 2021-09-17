@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        xmlns:dialogs="clr-namespace:MathCore.WPF.Dialogs;assembly=MathCore.WPF"
         Title="{Binding Title}"
         Background="Black"
         DataContext="{Binding Model3, Source={StaticResource Locator}}"
@@ -25,12 +26,15 @@
     <Window.Resources>
         <Style TargetType="Menu" BasedOn="{StaticResource DarkMenuStyle}"/>
         <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}"/>
+
+        <dialogs:SelectDirectory x:Key="SelectDirectoryDialog"/>
     </Window.Resources>
     <DockPanel>
         <Menu Style="{StaticResource DarkMenuStyle}">
             <MenuItem Header="Файл">
                 <MenuItem Header="Показать диалог" Command="{Binding ShowTestDialogCommand}"/>
             </MenuItem>
+            <MenuItem Header="Dialog" Command="{Binding Source={StaticResource SelectDirectoryDialog}}"/>
             <MenuItem Header="Помощь">
                 <MenuItem Header="О программе"/>
             </MenuItem>
