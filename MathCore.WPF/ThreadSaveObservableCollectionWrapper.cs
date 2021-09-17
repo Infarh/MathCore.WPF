@@ -8,9 +8,9 @@ namespace MathCore.WPF
 {
     public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollectionChanged
     {
-        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
-        private readonly ObservableCollection<T> _Collection;
+        private ObservableCollection<T> _Collection;
 
         public ThreadSaveObservableCollectionWrapper(ObservableCollection<T> collection)
         {
@@ -18,7 +18,7 @@ namespace MathCore.WPF
             collection.CollectionChanged += OnCollectionChanged;
         }
 
-        private void OnCollectionChanged(object Sender, NotifyCollectionChangedEventArgs E) => CollectionChanged?.ThreadSafeInvoke(_Collection, E);
+        private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E) => CollectionChanged?.ThreadSafeInvoke(_Collection, E);
 
 
         /// <inheritdoc />
@@ -59,6 +59,18 @@ namespace MathCore.WPF
 
         /// <inheritdoc />
         public T this[int index] { get => _Collection[index]; set => _Collection[index] = value; }
+
+        public void Reset(IEnumerable<T> items)
+        {
+            var collection = new ObservableCollection<T>(items);
+            //var old_collection = _Collection;
+            _Collection = collection;
+            OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        }
+
+        public static implicit operator ThreadSaveObservableCollectionWrapper<T>(ObservableCollection<T> collection) => new(collection);
+
+        public static implicit operator ObservableCollection<T>(ThreadSaveObservableCollectionWrapper<T> collection) => collection._Collection;
     }
 
     public static class ThreadSaveObservableCollectionExtentions

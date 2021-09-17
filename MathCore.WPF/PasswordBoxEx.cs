@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace MathCore.WPF
 {
@@ -101,6 +102,44 @@ namespace MathCore.WPF
         public static void SetWaterMarkText(DependencyObject element, string value) => element.SetValue(WaterMarkTextProperty, value);
 
         public static string GetWaterMarkText(DependencyObject element) => (string)element.GetValue(WaterMarkTextProperty);
+
+        #endregion
+
+        #region Attached property WatermarkOpacity : double - Прозрачность водяного знака
+
+        /// <summary>Прозрачность водяного знака</summary>
+        public static readonly DependencyProperty WatermarkOpacityProperty =
+            DependencyProperty.RegisterAttached(
+                "WatermarkOpacity",
+                typeof(double),
+                typeof(PasswordBoxEx),
+                new PropertyMetadata(0.8));
+
+        /// <summary>Прозрачность водяного знака</summary>
+        [AttachedPropertyBrowsableForType(typeof(PasswordBox))]
+        public static void SetWatermarkOpacity(DependencyObject d, double value) => d.SetValue(WatermarkOpacityProperty, value);
+
+        /// <summary>Прозрачность водяного знака</summary>
+        public static double GetWatermarkOpacity(DependencyObject d) => (double)d.GetValue(WatermarkOpacityProperty);
+
+        #endregion
+
+        #region Attached property WatermarkTextBrush : Brush - Кисть рисования текста водяного знака
+
+        /// <summary>Кисть рисования текста водяного знака</summary>
+        public static readonly DependencyProperty WatermarkTextBrushProperty =
+            DependencyProperty.RegisterAttached(
+                "WatermarkTextBrush",
+                typeof(Brush),
+                typeof(PasswordBoxEx),
+                new PropertyMetadata(Brushes.DarkGray));
+
+        /// <summary>Кисть рисования текста водяного знака</summary>
+        [AttachedPropertyBrowsableForType(typeof(PasswordBoxEx))]
+        public static void SetWatermarkTextBrush(DependencyObject d, Brush value) => d.SetValue(WatermarkTextBrushProperty, value);
+
+        /// <summary>Кисть рисования текста водяного знака</summary>
+        public static Brush GetWatermarkTextBrush(DependencyObject d) => (Brush)d.GetValue(WatermarkTextBrushProperty);
 
         #endregion
     }

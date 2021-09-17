@@ -95,8 +95,9 @@ namespace MathCore.WPF
                     ? File.OpenRead(file_path) 
                     : throw new FileNotFoundException("Файл не найден", file_path);
 
-            var client = new HttpClient();
-            return await client.GetStreamAsync(uri);
+            throw new NotSupportedException("Чтение не из файлового потока не поддерживается");
+            //var client = new HttpClient();
+            //return await client.GetStreamAsync(uri);
         }
     }
 }

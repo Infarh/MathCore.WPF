@@ -44,7 +44,7 @@
                     BorderThickness="1" CornerRadius="2" BorderBrush="DarkBlue" Padding="5">
                 <TextBox Tag="User name" Style="{StaticResource TaggedTextBoxStyle}" Width="150"/>
             </Border>
-            <TextBox VerticalAlignment="Bottom"/>
+            <TextBox VerticalAlignment="Bottom" Text="{Binding SelectedDirectoryPath, Source={StaticResource SelectDirectoryDialog}}"/>
         </Grid>
     </DockPanel>
 </Window>
