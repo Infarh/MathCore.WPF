@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.25</Version>
+    <Version>0.0.25.1</Version>
     <PackageReleaseNotes>
       Доработка диалогов выбора файлов и директорий
     </PackageReleaseNotes>
@@ -30,7 +30,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.57" />
+    <PackageReference Include="MathCore" Version="0.0.57.1" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
