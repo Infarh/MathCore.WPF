@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
+
 using Microsoft.Win32;
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -20,7 +23,7 @@ namespace MathCore.WPF.Dialogs
                 nameof(SelectedFile),
                 typeof(FileInfo),
                 typeof(OpenFile),
-                new PropertyMetadata(default(FileInfo)), v => v is null || v is FileInfo);
+                new PropertyMetadata(default(FileInfo), (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)), v => v is null or FileInfo);
 
         public FileInfo SelectedFile
         {
@@ -29,6 +32,36 @@ namespace MathCore.WPF.Dialogs
         }
 
         #endregion
+
+        #region SelectedFileName : string - Путь к выбранному файлу
+
+        /// <summary>Путь к выбранному файлу</summary>
+        public static readonly DependencyProperty SelectedFileNameProperty =
+            DependencyProperty.Register(
+                nameof(SelectedFileName),
+                typeof(string),
+                typeof(OpenFile),
+                new PropertyMetadata(default(string), OnSelectedFileNameChanged));
+
+        private static void OnSelectedFileNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var path = (string)e.NewValue;
+            var old_file = (FileInfo?)d.GetValue(SelectedFileProperty);
+            if (old_file is null || !string.Equals(old_file.FullName, path, StringComparison.Ordinal))
+                d.SetValue(SelectedFileProperty, path is { Length: > 0 } str ? new FileInfo(str) : null);
+        }
+
+        /// <summary>Путь к выбранному файлу</summary>
+        //[Category("")]
+        [Description("Путь к выбранному файлу")]
+        public string SelectedFileName
+        {
+            get => (string)GetValue(SelectedFileNameProperty);
+            set => SetValue(SelectedFileNameProperty, value);
+        }
+
+        #endregion
+
 
         #region SelectedFiles readonly dependency property : FileInfo[]
 
@@ -327,15 +360,15 @@ namespace MathCore.WPF.Dialogs
                 ValidateNames = ValidateNames
             };
             var title = Title;
-            if(title != null) dialog.Title = Title;
+            if (title != null) dialog.Title = Title;
             var initial_directory = InitialDirectory;
-            if(initial_directory != null) dialog.InitialDirectory = initial_directory;
+            if (initial_directory != null) dialog.InitialDirectory = initial_directory;
             var custom_places = CustomPlaces;
-            if(custom_places != null) dialog.CustomPlaces = custom_places;
+            if (custom_places != null) dialog.CustomPlaces = custom_places;
 
             var result = dialog.ShowDialog();
 
-            if(result != true && !UpdateIfResultFalse) return;
+            if (result != true && !UpdateIfResultFalse) return;
             SelectedFiles = dialog.FileNames.Select(f => new FileInfo(f)).ToArray();
             SelectedFile = new FileInfo(dialog.FileName);
         }
