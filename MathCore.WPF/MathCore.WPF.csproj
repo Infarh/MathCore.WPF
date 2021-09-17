@@ -22,7 +22,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/infarh/mathcore.wpf</PackageProjectUrl>
     <RepositoryUrl>https://github.com/infarh/mathcore.wpf.git</RepositoryUrl>
-    <PackageTags>wpf, toolkit</PackageTags>
+    <PackageTags>wpf;toolkit</PackageTags>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>MathCoreWPFSign.snk</AssemblyOriginatorKeyFile>
     <IncludeSymbols>true</IncludeSymbols>
