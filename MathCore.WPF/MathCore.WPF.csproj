@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.25.1</Version>
+    <Version>0.0.26</Version>
     <PackageReleaseNotes>
-      Доработка диалогов выбора файлов и директорий
+      Доработка диалогов
     </PackageReleaseNotes>
   </PropertyGroup>
 
