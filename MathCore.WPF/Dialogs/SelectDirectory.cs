@@ -13,12 +13,14 @@ using MathCore.IoC;
 
 namespace MathCore.WPF.Dialogs
 {
+    /// <summary>Диалог выбора директории</summary>
     public class SelectDirectory : Dialog
     {
         #region Dependency properties
 
-        #region SelectedDirectory property : DirectoryInfo
+        #region SelectedDirectory : DirectoryInfo - Выбранная директория
 
+        /// <summary>Выбранная директория</summary>
         public static readonly DependencyProperty SelectedDirectoryProperty =
             DependencyProperty.Register(
                 nameof(SelectedDirectory),
@@ -26,6 +28,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(SelectDirectory),
                 new PropertyMetadata(default(DirectoryInfo?), (d, e) => d.SetValue(SelectedDirectoryPathProperty, ((DirectoryInfo?)e.NewValue)?.FullName)));
 
+        /// <summary>Выбранная директория</summary>
         public DirectoryInfo? SelectedDirectory
         {
             get => (DirectoryInfo?)GetValue(SelectedDirectoryProperty);
@@ -76,7 +79,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region RootFolder property : Environment.SpecialFloder default = Desctop
+        #region RootFolder property : Environment.SpecialFloder default = Desktop
 
         public static readonly DependencyProperty RootFolderProperty =
             DependencyProperty.Register(
@@ -146,7 +149,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        protected override void OpenDialog(object p)
+        protected override void OpenDialog(object? p)
         {
             //var dialog = new FolderBrowserDialog();
             //var description = Title;
@@ -178,6 +181,7 @@ namespace MathCore.WPF.Dialogs
         // for all .NET
         public virtual bool? ShowDialog(IntPtr OwnerHandle, bool ThrowOnError = false)
         {
+            // ReSharper disable once SuspiciousTypeConversion.Global
             var dialog = (IFileOpenDialog)new FileOpenDialog();
             var input_path = SelectedDirectoryPath;
             if (!string.IsNullOrEmpty(input_path))
