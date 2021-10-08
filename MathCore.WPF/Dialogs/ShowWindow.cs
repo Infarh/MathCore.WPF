@@ -10,10 +10,12 @@ using MathCore.WPF.Commands;
 
 namespace MathCore.WPF.Dialogs
 {
+    /// <summary>Открытие окна в диалоговом режиме</summary>
     public class ShowWindow : Dialog
     {
-        #region IsModal property : bool
+        #region IsModal : bool - Отобразить окно как модальное
 
+        /// <summary>Отобразить окно как модальное</summary>
         public static readonly DependencyProperty IsModalProperty =
             DependencyProperty.Register(
                 nameof(IsModal),
@@ -21,6 +23,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(bool)));
 
+        /// <summary>Отобразить окно как модальное</summary>
         public bool IsModal
         {
             get => (bool)GetValue(IsModalProperty);
@@ -29,8 +32,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region DialogResult property : bool
+        #region DialogResult : bool? - Результат диалога
 
+        /// <summary>Результат диалога</summary>
         public static readonly DependencyProperty DialogResultProperty =
             DependencyProperty.Register(
                 nameof(DialogResult),
@@ -38,6 +42,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(bool?)));
 
+        /// <summary>Результат диалога</summary>
         public bool? DialogResult
         {
             get => (bool?)GetValue(DialogResultProperty);
@@ -46,8 +51,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Style property : bool
+        #region Style : bool - Стиль окна
 
+        /// <summary>Стиль окна</summary>
         public static readonly DependencyProperty StyleProperty =
             DependencyProperty.Register(
                 nameof(Style),
@@ -60,6 +66,7 @@ namespace MathCore.WPF.Dialogs
                             || ((Style)s).TargetType == typeof(Window)
                             || ((Style)s).TargetType.IsSubclassOf(typeof(Window)));*/
 
+        /// <summary>Стиль окна</summary>
         public Style Style
         {
             get => (Style)GetValue(StyleProperty);
@@ -90,8 +97,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region ContentTemplate property : DataTemplate
+        #region ContentTemplate : DataTemplate - Шаблон содержимого окна
 
+        /// <summary>Шаблон содержимого окна</summary>
         public static readonly DependencyProperty ContentTemplateProperty =
             DependencyProperty.Register(
                 nameof(ContentTemplate),
@@ -99,6 +107,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(DataTemplate)));
 
+        /// <summary>Шаблон содержимого окна</summary>
         public DataTemplate ContentTemplate
         {
             get => (DataTemplate)GetValue(ContentTemplateProperty);
@@ -107,8 +116,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Width property : double
+        #region Width : double - Ширина окна
 
+        /// <summary>Ширина окна</summary>
         public static readonly DependencyProperty WidthProperty =
             DependencyProperty.Register(
                 nameof(Width),
@@ -116,6 +126,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(double)), w => (double)w >= 0);
 
+        /// <summary>Ширина окна</summary>
         public double Width
         {
             get => (double)GetValue(WidthProperty);
@@ -124,8 +135,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Height property : double
+        #region Height : double - Высота окна
 
+        /// <summary>Высота окна</summary>
         public static readonly DependencyProperty HeightProperty =
             DependencyProperty.Register(
                 nameof(Height),
@@ -133,6 +145,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(double)), h => (double)h >= 0);
 
+        /// <summary>Высота окна</summary>
         public double Height
         {
             get => (double)GetValue(HeightProperty);
@@ -141,7 +154,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region MaxWidth dependency property : double
+        #region MaxWidth : double - Максимальная ширина окна
 
         /// <summary>Максимальная ширина окна</summary>
         public static readonly DependencyProperty MaxWidthProperty =
@@ -160,7 +173,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region MaxHeight dependency property : double
+        #region MaxHeight : double - Максимальная высота окна
 
         /// <summary>Максимальная высота окна</summary>
         public static readonly DependencyProperty MaxHeightProperty =
@@ -179,8 +192,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region DataContext property : object
+        #region DataContext : object - Контекст данных окна
 
+        /// <summary>Контекст данных окна</summary>
         public static readonly DependencyProperty DataContextProperty =
             DependencyProperty.Register(
                 nameof(DataContext),
@@ -188,6 +202,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(object)));
 
+        /// <summary>Контекст данных окна</summary>
         public object DataContext
         {
             get => GetValue(DataContextProperty);
@@ -196,8 +211,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Content property : object
+        #region Content : object - Содержимое окна
 
+        /// <summary>Содержимое окна</summary>
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(
                 nameof(Content),
@@ -205,6 +221,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(ShowWindow),
                 new PropertyMetadata(default(object)));
 
+        /// <summary>Содержимое окна</summary>
         public object Content
         {
             get => GetValue(ContentProperty);
@@ -213,7 +230,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Icon dependency property : ImageSource
+        #region Icon : ImageSource - Иконка окна
 
         /// <summary>Иконка окна</summary>
         public static readonly DependencyProperty IconProperty =
@@ -232,17 +249,19 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Window readonly dependency property : Window
+        #region Window : Window - Объект окна
 
+        /// <summary>Объект окна</summary>
         private static readonly DependencyPropertyKey __WindowPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Window),
                 typeof(Window),
                 typeof(ShowWindow),
-                new FrameworkPropertyMetadata(default(Window)), v => v is null || v is Window);
+                new FrameworkPropertyMetadata(default(Window)), v => v is null or System.Windows.Window);
 
         public static readonly DependencyProperty WindowProperty = __WindowPropertyKey.DependencyProperty;
 
+        /// <summary>Объект окна</summary>
         public Window? Window
         {
             get => (Window?)GetValue(WindowProperty);
@@ -251,7 +270,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Topmost dependency property : bool
+        #region Topmost : bool - Окно является окном верхнего уровня
 
         /// <summary>Окно является окном верхнего уровня</summary>
         public static readonly DependencyProperty TopmostProperty =
@@ -270,7 +289,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Owner dependency property : Window
+        #region Owner : Window - Окно - владелец
 
         /// <summary>Окно - владелец</summary>
         public static readonly DependencyProperty OwnerProperty =
@@ -289,7 +308,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region WindowState dependency property : WindowState
+        #region WindowState : WindowState - Состояние окна
 
         /// <summary>Состояние окна</summary>
         public static readonly DependencyProperty WindowStateProperty =
@@ -308,7 +327,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region StartupLocation dependency property : WindowStartupLocation
+        #region StartupLocation : WindowStartupLocation - Начальное положение окна
 
         /// <summary>Начальное положение окна</summary>
         public static readonly DependencyProperty StartupLocationProperty =
@@ -327,7 +346,7 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region SizeToContent dependency property : SizeToContent
+        #region SizeToContent : SizeToContent - Принцип автоматического изменения размеров окна
 
         /// <summary>Принцип автоматического изменения размеров окна</summary>
         public static readonly DependencyProperty SizeToContentProperty =

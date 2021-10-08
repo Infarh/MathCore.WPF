@@ -12,12 +12,14 @@ using Microsoft.Win32;
 
 namespace MathCore.WPF.Dialogs
 {
+    /// <summary>Диалог выбора файла</summary>
     public class OpenFile : Dialog
     {
         #region Dependency properties
 
-        #region SelectedFile dependency property : FileInfo
+        #region SelectedFile : FileInfo - Выбранный файл
 
+        /// <summary>Выбранный файл</summary>
         public static readonly DependencyProperty SelectedFileProperty =
             DependencyProperty.Register(
                 nameof(SelectedFile),
@@ -25,6 +27,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(OpenFile),
                 new PropertyMetadata(default(FileInfo), (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)), v => v is null or FileInfo);
 
+        /// <summary>Выбранный файл</summary>
         public FileInfo SelectedFile
         {
             get => (FileInfo)GetValue(SelectedFileProperty);
@@ -43,6 +46,7 @@ namespace MathCore.WPF.Dialogs
                 typeof(OpenFile),
                 new PropertyMetadata(default(string), OnSelectedFileNameChanged));
 
+        /// <summary>Обработчик события изменения свойства <see cref="SelectedFileName"/></summary>
         private static void OnSelectedFileNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var path = (string)e.NewValue;

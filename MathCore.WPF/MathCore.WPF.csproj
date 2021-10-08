@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <!-- https://stackoverflow.com/questions/42747977/how-do-you-multi-target-a-net-core-class-library-with-csproj -->
     <TargetFrameworks>net5.0-windows;netcoreapp3.1-windows;net4.6.1-windows;net4.7-windows;net4.8-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
@@ -9,9 +10,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.25.1</Version>
+    <Version>0.0.26</Version>
     <PackageReleaseNotes>
-      Доработка диалогов выбора файлов и директорий
+      Доработка диалогов
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -30,9 +31,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.57.1" />
+    <PackageReference Include="MathCore" Version="0.0.58" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.31" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
