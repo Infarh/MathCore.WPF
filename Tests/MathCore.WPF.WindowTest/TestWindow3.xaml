@@ -28,6 +28,8 @@
         <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}"/>
 
         <dialogs:SelectDirectory x:Key="SelectDirectoryDialog"/>
+
+        <dialogs:OpenFile x:Key="OpenFile" Title="123" Enabled="True"/>
     </Window.Resources>
     <DockPanel>
         <Menu Style="{StaticResource DarkMenuStyle}">
@@ -36,7 +38,7 @@
             </MenuItem>
             <MenuItem Header="Dialog" Command="{Binding Source={StaticResource SelectDirectoryDialog}}"/>
             <MenuItem Header="Помощь">
-                <MenuItem Header="О программе"/>
+                <MenuItem Header="О программе" Command="{StaticResource OpenFile}"/>
             </MenuItem>
         </Menu>
         <Grid>

@@ -40,8 +40,9 @@ namespace MathCore.WPF.Dialogs
                 nameof(IsOpened),
                 typeof(bool),
                 typeof(Dialog),
-                new FrameworkPropertyMetadata(default(bool),
-                    (d, e) => CommandManager.InvalidateRequerySuggested()));
+                new FrameworkPropertyMetadata(
+                    default(bool), 
+                    (_,_) => CommandManager.InvalidateRequerySuggested()));
 
         /// <summary>Диалог в данный момент открыт</summary>
         public static readonly DependencyProperty IsOpenedProperty = __IsOpenedPropertyKey.DependencyProperty;
@@ -99,12 +100,16 @@ namespace MathCore.WPF.Dialogs
                 nameof(Enabled),
                 typeof(bool),
                 typeof(Dialog),
-                new PropertyMetadata(true));
+                new PropertyMetadata(default(bool)));
 
         /// <summary>Включить диалог</summary>
         //[Category("")]
         [Description("Включить диалог")]
-        public bool Enabled { get => (bool)GetValue(EnabledProperty); set => SetValue(EnabledProperty, value); }
+        public bool Enabled
+        {
+            get => (bool)GetValue(EnabledProperty); 
+            set => SetValue(EnabledProperty, value);
+        }
 
         #endregion
 
