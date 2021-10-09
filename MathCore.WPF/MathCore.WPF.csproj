@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.26</Version>
+    <Version>0.0.26.1</Version>
     <PackageReleaseNotes>
       Доработка диалогов
     </PackageReleaseNotes>

@@ -25,12 +25,14 @@ namespace MathCore.WPF.Dialogs
                 nameof(SelectedFile),
                 typeof(FileInfo),
                 typeof(OpenFile),
-                new PropertyMetadata(default(FileInfo), (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)), v => v is null or FileInfo);
+                new PropertyMetadata(
+                    default(FileInfo), 
+                    (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)));
 
         /// <summary>Выбранный файл</summary>
-        public FileInfo SelectedFile
+        public FileInfo? SelectedFile
         {
-            get => (FileInfo)GetValue(SelectedFileProperty);
+            get => (FileInfo?)GetValue(SelectedFileProperty);
             set => SetValue(SelectedFileProperty, value);
         }
 
@@ -66,9 +68,9 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
+        #region SelectedFiles : FileInfo[] - Массив выбранный файлов диалога
 
-        #region SelectedFiles readonly dependency property : FileInfo[]
-
+        /// <summary>Массив выбранный файлов диалога</summary>
         private static readonly DependencyPropertyKey __SelectedFilesPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(SelectedFiles),
@@ -78,6 +80,7 @@ namespace MathCore.WPF.Dialogs
 
         public static readonly DependencyProperty SelectedFilesProperty = __SelectedFilesPropertyKey.DependencyProperty;
 
+        /// <summary>Массив выбранный файлов диалога</summary>
         public FileInfo[] SelectedFiles
         {
             get => (FileInfo[])GetValue(SelectedFilesProperty);
@@ -86,15 +89,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Filter dependency property : string
+        #region Filter : string - Фильтр в формате - Текст (*.*)|*.* - маска файлов фильтра
 
+        /// <summary>Фильтр в формате - Текст (*.*)|*.* - маска файлов фильтра</summary>
         public static readonly DependencyProperty FilterProperty =
             DependencyProperty.Register(
                 nameof(Filter),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata("*.*|*.*"), v => v is null || v is string);
+                new PropertyMetadata("*.*|*.*"));
 
+        /// <summary>Фильтр в формате - Текст (*.*)|*.* - маска файлов фильтра</summary>
         public string Filter
         {
             get => (string)GetValue(FilterProperty);
@@ -103,17 +108,19 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Result readonly dependency property : bool?
+        #region Result : bool? - Результат последнего выбора пользователя в диалоге
 
+        /// <summary>Результат последнего выбора пользователя в диалоге</summary>
         private static readonly DependencyPropertyKey __ResultPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 nameof(Result),
                 typeof(bool?),
                 typeof(OpenFile),
-                new FrameworkPropertyMetadata(default(bool?)), v => v is bool?);
+                new FrameworkPropertyMetadata(default(bool?)));
 
         public static readonly DependencyProperty ResultProperty = __ResultPropertyKey.DependencyProperty;
 
+        /// <summary>Результат последнего выбора пользователя в диалоге</summary>
         public bool? Result
         {
             get => (bool?)GetValue(ResultProperty);
@@ -122,15 +129,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region Multiselect dependency property : bool
+        #region Multiselect : bool - Разрешить множественный выбор
 
+        /// <summary>Разрешить множественный выбор</summary>
         public static readonly DependencyProperty MultiSelectProperty =
             DependencyProperty.Register(
                 nameof(MultiSelect),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Разрешить множественный выбор</summary>
         public bool MultiSelect
         {
             get => (bool)GetValue(MultiSelectProperty);
@@ -139,15 +148,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region AddExtension dependency property : bool
+        #region AddExtension : bool - Добавлять расширение
 
+        /// <summary>Добавлять расширение</summary>
         public static readonly DependencyProperty AddExtensionProperty =
             DependencyProperty.Register(
                 nameof(AddExtension),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Добавлять расширение</summary>
         public bool AddExtension
         {
             get => (bool)GetValue(AddExtensionProperty);
@@ -156,15 +167,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region CheckFileExists dependency property : bool
+        #region CheckFileExists : bool - Проверять что файл существует
 
+        /// <summary>Проверять что файл существует</summary>
         public static readonly DependencyProperty CheckFileExistsProperty =
             DependencyProperty.Register(
                 nameof(CheckFileExists),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Проверять что файл существует</summary>
         public bool CheckFileExists
         {
             get => (bool)GetValue(CheckFileExistsProperty);
@@ -173,15 +186,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region CheckPathExists dependency property : bool
+        #region CheckPathExists : bool - Проверять что путь существует
 
+        /// <summary>Проверять что путь существует</summary>
         public static readonly DependencyProperty CheckPathExistsProperty =
             DependencyProperty.Register(
                 nameof(CheckPathExists),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Проверять что путь существует</summary>
         public bool CheckPathExists
         {
             get => (bool)GetValue(CheckPathExistsProperty);
@@ -190,15 +205,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region DefaultExt dependency property : string
+        #region DefaultExt : string - Расширение по умолчанию
 
+        /// <summary>Расширение по умолчанию</summary>
         public static readonly DependencyProperty DefaultExtProperty =
             DependencyProperty.Register(
                 nameof(DefaultExt),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata(default(string)), v => v is null || v is string);
+                new PropertyMetadata(default(string)));
 
+        /// <summary>Расширение по умолчанию</summary>
         public string DefaultExt
         {
             get => (string)GetValue(DefaultExtProperty);
@@ -207,14 +224,14 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region DereferenceLinks dependency property : bool
+        #region DereferenceLinks : bool
 
         public static readonly DependencyProperty DereferenceLinksProperty =
             DependencyProperty.Register(
                 nameof(DereferenceLinks),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
         public bool DereferenceLinks
         {
@@ -224,15 +241,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region FilterIndex dependency property : int
+        #region FilterIndex : int - Выбранный индекс фильтра
 
+        /// <summary>Выбранный индекс фильтра</summary>
         public static readonly DependencyProperty FilterIndexProperty =
             DependencyProperty.Register(
                 nameof(FilterIndex),
                 typeof(int),
                 typeof(OpenFile),
-                new PropertyMetadata(default(int)), v => v is int value && value >= 0);
+                new PropertyMetadata(default(int)), v => v is >= 0);
 
+        /// <summary>Выбранный индекс фильтра</summary>
         public int FilterIndex
         {
             get => (int)GetValue(FilterIndexProperty);
@@ -241,15 +260,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region InitialDirectory dependency property : string
+        #region InitialDirectory : string - Начальная директория
 
+        /// <summary>Начальная директория</summary>
         public static readonly DependencyProperty InitialDirectoryProperty =
             DependencyProperty.Register(
                 nameof(InitialDirectory),
                 typeof(string),
                 typeof(OpenFile),
-                new PropertyMetadata(default(string)), v => v is null || v is string);
+                new PropertyMetadata(default(string)));
 
+        /// <summary>Начальная директория</summary>
         public string InitialDirectory
         {
             get => (string)GetValue(InitialDirectoryProperty);
@@ -258,15 +279,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region ReadOnlyChecked dependency property : bool
+        #region ReadOnlyChecked : bool - Выбран режим - Только для чтения
 
+        /// <summary>Выбран режим - Только для чтения</summary>
         public static readonly DependencyProperty ReadOnlyCheckedProperty =
             DependencyProperty.Register(
                 nameof(ReadOnlyChecked),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Выбран режим - Только для чтения</summary>
         public bool ReadOnlyChecked
         {
             get => (bool)GetValue(ReadOnlyCheckedProperty);
@@ -275,15 +298,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region RestoreDirectory dependency property : bool
+        #region RestoreDirectory : bool - Восстанавливать директорию
 
+        /// <summary>Восстанавливать директорию</summary>
         public static readonly DependencyProperty RestoreDirectoryProperty =
             DependencyProperty.Register(
                 nameof(RestoreDirectory),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Восстанавливать директорию</summary>
         public bool RestoreDirectory
         {
             get => (bool)GetValue(RestoreDirectoryProperty);
@@ -292,15 +317,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region ShowReadOnly dependency property : bool
+        #region ShowReadOnly: bool - Показать кнопку ReadOnly
 
+        /// <summary>Показать кнопку ReadOnly</summary>
         public static readonly DependencyProperty ShowReadOnlyProperty =
             DependencyProperty.Register(
                 nameof(ShowReadOnly),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(true), v => v is bool);
+                new PropertyMetadata(true));
 
+        /// <summary>Показать кнопку ReadOnly</summary>
         public bool ShowReadOnly
         {
             get => (bool)GetValue(ShowReadOnlyProperty);
@@ -309,15 +336,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region ValidateNames dependency property : bool
+        #region ValidateNames : bool - Проверять имена файлов
 
+        /// <summary>Проверять имена файлов</summary>
         public static readonly DependencyProperty ValidateNamesProperty =
             DependencyProperty.Register(
                 nameof(ValidateNames),
                 typeof(bool),
                 typeof(OpenFile),
-                new PropertyMetadata(default(bool)), v => v is bool);
+                new PropertyMetadata(default(bool)));
 
+        /// <summary>Проверять имена файлов</summary>
         public bool ValidateNames
         {
             get => (bool)GetValue(ValidateNamesProperty);
@@ -326,15 +355,17 @@ namespace MathCore.WPF.Dialogs
 
         #endregion
 
-        #region CustomPlaces dependency property : IList<FileDialogCustomPlace>
+        #region CustomPlaces : IList<FileDialogCustomPlace> - Собственные расположения
 
+        /// <summary></summary>
         public static readonly DependencyProperty CustomPlacesProperty =
             DependencyProperty.Register(
                 nameof(CustomPlaces),
                 typeof(IList<FileDialogCustomPlace>),
                 typeof(OpenFile),
-                new PropertyMetadata(default(IList<FileDialogCustomPlace>)), v => v is null || v is IList<FileDialogCustomPlace>);
+                new PropertyMetadata(default(IList<FileDialogCustomPlace>)));
 
+        /// <summary>Собственные расположения</summary>
         public IList<FileDialogCustomPlace> CustomPlaces
         {
             get => (IList<FileDialogCustomPlace>)GetValue(CustomPlacesProperty);
@@ -363,12 +394,9 @@ namespace MathCore.WPF.Dialogs
                 ShowReadOnly = ShowReadOnly,
                 ValidateNames = ValidateNames
             };
-            var title = Title;
-            if (title != null) dialog.Title = Title;
-            var initial_directory = InitialDirectory;
-            if (initial_directory != null) dialog.InitialDirectory = initial_directory;
-            var custom_places = CustomPlaces;
-            if (custom_places != null) dialog.CustomPlaces = custom_places;
+            if (Title is { } title) dialog.Title = title;
+            if (InitialDirectory is { } initial_directory) dialog.InitialDirectory = initial_directory;
+            if (CustomPlaces is { } custom_places) dialog.CustomPlaces = custom_places;
 
             var result = dialog.ShowDialog();
 
