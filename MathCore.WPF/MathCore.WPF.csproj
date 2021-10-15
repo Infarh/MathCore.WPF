@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.27</Version>
+    <Version>0.0.27.1</Version>
     <PackageReleaseNotes>
       Фоновые асинхронные лямбда-команды
     </PackageReleaseNotes>

@@ -38,12 +38,14 @@ namespace MathCore.WPF.Commands
 
         public override async void Execute(object? parameter)
         {
-            if (!CanExecute(parameter)) return;
+            var background = Background;
 
-            if (Background)
-                await Task.Yield().ConfigureAwait(false);
+            var can_execute = background 
+                ? await Task.Run(() => CanExecute(parameter))
+                : CanExecute(parameter);
+            if (!can_execute) return;
 
-            var execute_async = _ExecuteAsync(parameter);
+            var execute_async = background ? Task.Run(() => _ExecuteAsync(parameter)) : _ExecuteAsync(parameter);
             _ = Interlocked.Exchange(ref _ExecutingTask, execute_async);
             _ExecutingTask = execute_async;
             OnCanExecuteChanged();
@@ -93,17 +95,24 @@ namespace MathCore.WPF.Commands
 
         public override async void Execute(object? parameter)
         {
-            if (Background)
-                await Task.Yield().ConfigureAwait(false);
-
+            var background = Background;
             if (parameter is not T value)
                 value = parameter is null
                     ? default!
-                    : LambdaCommand<T>.ConvertParameter(parameter);
+                    : background 
+                        ? await Task.Run(() => LambdaCommand<T>.ConvertParameter(parameter)) 
+                        : LambdaCommand<T>.ConvertParameter(parameter);
 
-            if (!CanExecute(value)) return;
+            var can_execute = background
+                ? await Task.Run(() => CanExecute(value))
+                : CanExecute(value);
 
-            var execute_async = _ExecuteAsync(value!);
+            if (!can_execute) return;
+
+            var execute_async = background
+                ? Task.Run(() => _ExecuteAsync(value!)) 
+                : _ExecuteAsync(value!);
+
             _ = Interlocked.Exchange(ref _ExecutingTask, execute_async);
             _ExecutingTask = execute_async;
             OnCanExecuteChanged();
