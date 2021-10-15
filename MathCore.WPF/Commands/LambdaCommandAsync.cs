@@ -13,6 +13,9 @@ namespace MathCore.WPF.Commands
 
         private volatile Task? _ExecutingTask;
 
+        /// <summary>Выполнять задачу принудительно в фоновом потоке</summary>
+        public bool Background { get; set; }
+
         public LambdaCommandAsync(Func<Task> ExecuteAsync, Func<bool>? CanExecute = null)
             : this(
                 ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<object?, Task>(_ => ExecuteAsync()),
@@ -36,6 +39,9 @@ namespace MathCore.WPF.Commands
         public override async void Execute(object? parameter)
         {
             if (!CanExecute(parameter)) return;
+
+            if (Background)
+                await Task.Yield().ConfigureAwait(false);
 
             var execute_async = _ExecuteAsync(parameter);
             _ = Interlocked.Exchange(ref _ExecutingTask, execute_async);
@@ -62,6 +68,9 @@ namespace MathCore.WPF.Commands
 
         private volatile Task? _ExecutingTask;
 
+        /// <summary>Выполнять задачу принудительно в фоновом потоке</summary>
+        public bool Background { get; set; }
+
         public LambdaCommandAsync(Func<Task> ExecuteAsync, Func<bool>? CanExecuteAsync = null)
             :this(
                 ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<T?, Task>(_ => ExecuteAsync()),
@@ -84,6 +93,9 @@ namespace MathCore.WPF.Commands
 
         public override async void Execute(object? parameter)
         {
+            if (Background)
+                await Task.Yield().ConfigureAwait(false);
+
             if (parameter is not T value)
                 value = parameter is null
                     ? default!
