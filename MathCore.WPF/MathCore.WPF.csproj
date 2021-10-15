@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.26.1</Version>
+    <Version>0.0.27</Version>
     <PackageReleaseNotes>
-      Доработка диалогов
+      Фоновые асинхронные лямда-команды
     </PackageReleaseNotes>
   </PropertyGroup>
 

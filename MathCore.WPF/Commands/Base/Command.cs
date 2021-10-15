@@ -77,6 +77,36 @@ namespace MathCore.WPF.Commands
         /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
         public static LambdaCommandAsync<T> New<T>(Func<T?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute);
 
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/>, выполняемую в фоновом потоке</summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
+        public static LambdaCommandAsync NewBackground(Func<Task> OnExecute, Func<bool>? CanExecute = null) => new(OnExecute, CanExecute) { Background = true };
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/>, выполняемую в фоновом потоке</summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
+        public static LambdaCommandAsync NewBackground(Func<object?, Task> OnExecute, Func<object?, bool>? CanExecute = null) => new(OnExecute, CanExecute) { Background = true };
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync"/>, выполняемую в фоновом потоке</summary>
+        /// <param name="OnExecute">Асинхронное действие, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync"/></returns>
+        public static LambdaCommandAsync NewBackground(Func<object?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute) { Background = true };
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/>, выполняемую в фоновом потоке</summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> NewBackground<T>(Func<T?, Task> OnExecute, Func<T?, bool>? CanExecute = null) => new(OnExecute, CanExecute) { Background = true };
+
+        /// <summary>Создать асинхронную команду <see cref="LambdaCommandAsync{T}"/>, выполняемую в фоновом потоке</summary>
+        /// <param name="OnExecute">Асинхронное действие с параметром <typeparamref name="T"/>, выполняемое командой</param>
+        /// <param name="CanExecute">Функция проверки возможности выполнения действия</param>
+        /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
+        public static LambdaCommandAsync<T> NewBackground<T>(Func<T?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute) { Background = true };
+
         #region События
 
         #region INotifyPropertyChanged
