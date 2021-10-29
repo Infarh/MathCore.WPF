@@ -15,20 +15,18 @@ namespace MathCore.WPF.Converters
     [ValueConversion(typeof(double), typeof(Visibility))]
     public class NaNtoVisibility : ValueConverter
     {
-        public bool Collapse { get; set; }
-
         public bool Inverted { get; set; }
+
+        public bool Collapsed { get; set; }
+
+        private Visibility Hidden => Collapsed ? Visibility.Collapsed : Visibility.Hidden;
 
         /// <inheritdoc />
         protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
             v is null 
                 ? null 
                 : Inverted
-                    ? !double.IsNaN((double)v)
-                        ? (Collapse ? Visibility.Collapsed : Visibility.Hidden)
-                        : Visibility.Visible
-                    : double.IsNaN((double)v)
-                        ? (Collapse ? Visibility.Collapsed : Visibility.Hidden)
-                        : Visibility.Visible;
+                    ? !double.IsNaN((double)v) ? Hidden : Visibility.Visible
+                    : double.IsNaN((double)v) ? Hidden : Visibility.Visible;
     }
 }
