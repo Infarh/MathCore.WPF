@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-using MathCore.WPF.ViewModels;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Tests.ViewModels
 {

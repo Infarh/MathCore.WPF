@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <!-- https://stackoverflow.com/questions/42747977/how-do-you-multi-target-a-net-core-class-library-with-csproj -->
-    <TargetFrameworks>net5.0-windows;netcoreapp3.1-windows;net4.6.1-windows;net4.7-windows;net4.8-windows</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net5.0-windows;netcoreapp3.1-windows;net4.6.1-windows;net4.7-windows;net4.8-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>

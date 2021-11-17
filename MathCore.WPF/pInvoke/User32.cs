@@ -71,5 +71,15 @@ namespace MathCore.WPF.pInvoke
         /// </param>
         [DllImport(FileName, CharSet = CharSet.Auto, SetLastError = true)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        [DllImport(FileName)]
+        public static extern int ShowWindow(IntPtr hwnd, int command);
+
+        [DllImport(FileName, SetLastError = true)]
+        public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetWindowRect(IntPtr hWnd, ref Rect lpRect);
     }
 }

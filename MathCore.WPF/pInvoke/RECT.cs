@@ -10,7 +10,7 @@ using MathCore.Annotations;
 namespace MathCore.WPF.pInvoke
 {
     [StructLayout(LayoutKind.Sequential, Pack = 0), System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
-    internal struct Rect : IEquatable<Rect>
+    public struct Rect : IEquatable<Rect>
     {
         public int Left;
         public int Top;
