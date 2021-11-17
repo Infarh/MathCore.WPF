@@ -103,15 +103,15 @@ namespace MathCore.WPF.ViewModels
 
         private Progress<double>? _Progress;
 
-        public IProgress<double> Progress => _Progress ??= Application.Current.Dispatcher.Invoke(() => new Progress<double>(SetProgress));
+        public IProgress<double> Progress => _Progress ??= (Progress<double>)Application.Current.Dispatcher.Invoke(() => new Progress<double>(SetProgress));
 
         private Progress<string>? _Information;
 
-        public IProgress<string> Information => _Information ??= Application.Current.Dispatcher.Invoke(() => new Progress<string>(SetInformation));
+        public IProgress<string> Information => _Information ??= (Progress<string>)Application.Current.Dispatcher.Invoke(() => new Progress<string>(SetInformation));
 
         private Progress<string>? _Status;
 
-        public IProgress<string> Status => _Status ??= Application.Current.Dispatcher.Invoke(() => new Progress<string>(SetStatus));
+        public IProgress<string> Status => _Status ??= (Progress<string>)Application.Current.Dispatcher.Invoke(() => new Progress<string>(SetStatus));
 
         private CancellationTokenSource? _Cancellation;
 
