@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FontAwesome5" Version="2.1.4" />
+    <PackageReference Include="FontAwesome5" Version="2.1.5" />
     <PackageReference Include="MathCore" Version="0.0.58" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
