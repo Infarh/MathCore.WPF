@@ -5,14 +5,15 @@
     <TargetFrameworks>net6.0-windows;net5.0-windows;netcoreapp3.1-windows;net4.6.1-windows;net4.7-windows;net4.8-windows</TargetFrameworks>
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <!--<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>-->
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.27.1</Version>
+    <Version>0.0.28</Version>
     <PackageReleaseNotes>
-      Фоновые асинхронные лямбда-команды
+      Обновление платформы и пакетов
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -28,10 +29,11 @@
     <AssemblyOriginatorKeyFile>MathCoreWPFSign.snk</AssemblyOriginatorKeyFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.58" />
+    <PackageReference Include="MathCore" Version="0.0.59" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
