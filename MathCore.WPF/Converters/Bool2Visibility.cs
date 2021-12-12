@@ -18,13 +18,15 @@ namespace MathCore.WPF.Converters
 
         public bool Collapsed { get; set; }
 
+        private Visibility Hidden => Collapsed ? Visibility.Collapsed : Visibility.Hidden;
+
         protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) =>
             v switch
             {
                 null => null,
                 Visibility => v,
-                true => !Inverted ? Visibility.Visible : Collapsed ? Visibility.Collapsed : Visibility.Hidden,
-                false => Inverted ? Visibility.Visible : Collapsed ? Visibility.Collapsed : Visibility.Hidden,
+                true => !Inverted ? Visibility.Visible : Hidden,
+                false => Inverted ? Visibility.Visible : Hidden,
                 _ => throw new NotSupportedException()
             };
 

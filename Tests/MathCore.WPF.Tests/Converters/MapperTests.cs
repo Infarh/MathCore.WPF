@@ -3,8 +3,6 @@ using System.Windows.Data;
 
 using MathCore.WPF.Converters;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace MathCore.WPF.Tests.Converters
 {
     [TestClass]

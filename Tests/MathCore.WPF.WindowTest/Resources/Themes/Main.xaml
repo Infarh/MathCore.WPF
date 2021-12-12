@@ -11,6 +11,7 @@
         <ResourceDictionary Source="Main/ToggleButtonCheckBoxStyle.xaml"/>
 
         <ResourceDictionary Source="Main/DefaultElementsStyles.xaml"/>
+        <ResourceDictionary Source="Main/Grids.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <!-- 

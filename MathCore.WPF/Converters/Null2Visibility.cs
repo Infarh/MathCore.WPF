@@ -15,7 +15,14 @@ namespace MathCore.WPF.Converters
     {
         public bool Inverted { get; set; }
 
+        public bool Collapsed { get; set; }
+
+        private Visibility Hidden => Collapsed ? Visibility.Collapsed : Visibility.Hidden;
+
         /// <inheritdoc />
-        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => v is null ? !Inverted : Inverted;
+        protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => v is null 
+            ? !Inverted ? Visibility.Visible : Hidden
+            : Inverted ? Hidden : Visibility.Visible;
+
     }
 }

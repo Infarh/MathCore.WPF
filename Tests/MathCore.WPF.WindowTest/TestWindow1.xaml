@@ -1,0 +1,39 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindow1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        xmlns:oxy="http://oxyplot.org/wpf/contrib"
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <Window.DataContext>
+        <vm:PolynomProjectionViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <GroupBox Header="График" Grid.Column="1">
+            <oxy:Plot>
+                <oxy:Plot.Axes>
+                    <oxy:LinearAxis Position="Bottom" 
+                                    MajorGridlineColor="Gray" MinorGridlineColor="LightGray"
+                                    MinorGridlineStyle="Dot" MajorGridlineStyle="Dash"
+                                    MinorTickSize="1" MajorTickSize="1"
+                    />
+                    <oxy:LinearAxis Position="Left"
+                                    MajorGridlineColor="Gray" MinorGridlineColor="LightGray"
+                                    MinorGridlineStyle="Dot" MajorGridlineStyle="Dash"
+                                    MinorTickSize="1" MajorTickSize="1"/>
+                </oxy:Plot.Axes>
+                <oxy:LineSeries ItemsSource="{Binding Points}" DataFieldX="X" DataFieldY="Y" Color="Red"/>
+            </oxy:Plot>
+        </GroupBox>
+
+        <GridSplitter HorizontalAlignment="Right"/>
+    </Grid>
+</Window>

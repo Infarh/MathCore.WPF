@@ -14,6 +14,7 @@ namespace MathCore.WPF
     [MarkupExtensionReturnType(typeof(Geometry))]
     public class FontGeometry : MarkupExtension
     {
+        [ConstructorArgument(nameof(Text))]
         public string? Text { get; set; }
 
         public FlowDirection FlowDirection { get; set; } = FlowDirection.LeftToRight;
@@ -29,18 +30,22 @@ namespace MathCore.WPF
 
         // ReSharper disable once StringLiteralTypo
         public FontFamily FallBackFontFamily { get; set; } = new("Segoe UI");
+
         public double Size { get; set; } = 16;
 
         public Point Location { get; set; } = new(0, 0);
 
         public FontGeometry() { }
 
-        public FontGeometry(string text) => Text = text;
+        public FontGeometry(string Text) => this.Text = Text;
 
         public override object ProvideValue(IServiceProvider sp)
         {
+            var numbers_format = new NumberSubstitution(
+                NumberCultureSource.Override, 
+                CultureInfo.CurrentCulture, 
+                NumberSubstitutionMethod.AsCulture);
 #if NET461
-            var num = new NumberSubstitution(NumberCultureSource.Override, CultureInfo.InvariantCulture, NumberSubstitutionMethod.AsCulture);
             var text = new FormattedText(
                 Text ?? string.Empty,
                 CultureInfo.CurrentCulture,
@@ -48,16 +53,17 @@ namespace MathCore.WPF
                 new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
                 Size,
                 Brushes.Black,
-                num);
+                numbers_format);
 #else
             const double default_dip = 1.25;
             var text = new FormattedText(
-                Text,
+                Text ?? string.Empty,
                 CultureInfo.CurrentCulture,
                 FlowDirection,
                 new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
                 Size,
                 Brushes.Black,
+                numbers_format,
                 default_dip);
 #endif
             return text.BuildGeometry(Location);

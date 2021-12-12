@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
+
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
 // ReSharper disable VirtualMemberNeverOverridden.Global
@@ -15,7 +16,7 @@ using MathCore.WPF.ViewModels;
 namespace MathCore.WPF.Commands
 {
     /// <summary>Команда</summary>
-    public abstract class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object?>
+    public abstract partial class Command : MarkupExtension, ICommand, INotifyPropertyChanged, IDisposable, IObservableEx<object?>
     {
         /// <summary>Создать команду <see cref="LambdaCommand"/></summary>
         /// <param name="OnExecute">Действие, выполняемое командой</param>
