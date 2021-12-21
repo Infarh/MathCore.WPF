@@ -9,7 +9,6 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Качество кода", "IDE0051:Удалите неиспользуемые закрытые члены", Justification = "<Ожидание>")]
     public class Resize : Behavior<Control>
     {
         #region AreaSize : double - Размер области
@@ -154,11 +153,23 @@ namespace MathCore.WPF.Behaviors
             _InBottom = BottomResizing && control.Height - pos.Y <= size;
             _InRight = RightResizing && control.Width - pos.X <= size;
 
-            if ((_InLeft && _InTop) || (_InRight && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollWE;
-            else if ((_InRight && _InTop) || (_InLeft && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollNE;
-            else if (_InTop || _InBottom) Mouse.OverrideCursor = Cursors.ScrollNS;
-            else if (_InLeft || _InRight) Mouse.OverrideCursor = Cursors.ScrollWE;
-            else Mouse.OverrideCursor = Cursors.Arrow;
+
+            Mouse.OverrideCursor = (Left: _InLeft, Top: _InTop, Right: _InRight, Bottom: _InBottom) switch
+            {
+                (Left: true, Top: true, Right: _, Bottom: _) => Mouse.OverrideCursor = Cursors.ScrollWE,
+                (Left: _, Top: _, Right: true, Bottom: true) => Mouse.OverrideCursor = Cursors.ScrollWE,
+                (Left: _, Top: true, Right: _, Bottom: _) => Mouse.OverrideCursor = Cursors.ScrollNS,
+                (Left: _, Top: _, Right: _, Bottom: true) => Mouse.OverrideCursor = Cursors.ScrollNS,
+                (Left: true, Top: _, Right: _, Bottom: _) => Mouse.OverrideCursor = Cursors.ScrollWE,
+                (Left: _, Top: _, Right: true, Bottom: _) => Mouse.OverrideCursor = Cursors.ScrollWE,
+                _ => Cursors.Arrow
+            };
+
+            //if ((_InLeft && _InTop) || (_InRight && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollWE;
+            //else if ((_InRight && _InTop) || (_InLeft && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollNE;
+            //else if (_InTop || _InBottom) Mouse.OverrideCursor = Cursors.ScrollNS;
+            //else if (_InLeft || _InRight) Mouse.OverrideCursor = Cursors.ScrollWE;
+            //else Mouse.OverrideCursor = Cursors.Arrow;
         }
     }
 }

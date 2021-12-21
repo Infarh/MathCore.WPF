@@ -3,13 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         Title="{Binding Title}"
         Width="800" Height="450">
     <Window.DataContext>
-        <vm:PolynomProjectionViewModel/>
+        <vm:TestWindow1ViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -18,22 +20,14 @@
         </Grid.ColumnDefinitions>
 
         <GroupBox Header="График" Grid.Column="1">
-            <oxy:Plot>
-                <oxy:Plot.Axes>
-                    <oxy:LinearAxis Position="Bottom" 
-                                    MajorGridlineColor="Gray" MinorGridlineColor="LightGray"
-                                    MinorGridlineStyle="Dot" MajorGridlineStyle="Dash"
-                                    MinorTickSize="1" MajorTickSize="1"
-                    />
-                    <oxy:LinearAxis Position="Left"
-                                    MajorGridlineColor="Gray" MinorGridlineColor="LightGray"
-                                    MinorGridlineStyle="Dot" MajorGridlineStyle="Dash"
-                                    MinorTickSize="1" MajorTickSize="1"/>
-                </oxy:Plot.Axes>
-                <oxy:LineSeries ItemsSource="{Binding Points}" DataFieldX="X" DataFieldY="Y" Color="Red"/>
-            </oxy:Plot>
+            <i:Interaction.Behaviors>
+                <behaviors:ActualSizeBinding ActualWidth="{Binding ElementWidth, Mode=OneWayToSource}"
+                                             ActualHeight="{Binding ElementHeight, Mode=OneWayToSource}"/>
+            </i:Interaction.Behaviors>
+            <TextBlock Text="{Binding TextSize}" FontSize="30"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </GroupBox>
 
-        <GridSplitter HorizontalAlignment="Right"/>
+        <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
     </Grid>
 </Window>
