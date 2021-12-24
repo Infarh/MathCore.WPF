@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.29</Version>
+    <Version>0.0.30</Version>
     <PackageReleaseNotes>
-      ActualSizeBinding
+      Добавлены свойства с кистями для ControlEx для разных состояний элемента управления
     </PackageReleaseNotes>
   </PropertyGroup>
 
