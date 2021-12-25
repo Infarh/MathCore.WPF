@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-using MathCore.Annotations;
+using MathCore.WPF.DataAnnotations;
 
 namespace MathCore.WPF
 {
@@ -51,10 +50,13 @@ namespace MathCore.WPF
 
         private static void OnDataGridGeneratingColumn(object? Sender, DataGridAutoGeneratingColumnEventArgs E)
         {
+            if (Sender is not DataGrid grid) return;
             if (E.PropertyDescriptor is not PropertyDescriptor property_descriptor) return;
-            var item_type = property_descriptor.ComponentType;
-            var property = item_type?.GetProperty(E.PropertyName);
-            if (property is null) return;
+            if (property_descriptor.ComponentType.GetProperty(E.PropertyName) is not { } property) return;
+
+            if (property.DeclaringType?.GetCustomAttribute<ReadOnlyAttribute>() is { IsReadOnly: var type_readonly })
+                grid.IsReadOnly = type_readonly;
+
             var column = E.Column;
 
             //if (property.PropertyType == typeof(DateTime))
@@ -68,26 +70,26 @@ namespace MathCore.WPF
             //    column = E.Column;
             //}
 
-            if (property.GetCustomAttribute<DisplayAttribute>() is { } display_attribute)
+            var display_attribute = property.GetCustomAttribute<DisplayAttribute>();
+
+            if(display_attribute?.GetAutoGenerateField() == false)
             {
-                if (display_attribute.GetAutoGenerateField() == false)
-                {
-                    E.Cancel = true;
-                    return;
-                }
+                E.Cancel = true;
+                return;
+            }
 
-                if (display_attribute.Name is { } name) column.Header = name;
+            if((display_attribute?.Name ?? property.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName) is { } name)
+                column.Header = name;
 
-                if (display_attribute.Description is { } description)
-                {
-                    var text_block = new FrameworkElementFactory(typeof(TextBlock));
-                    text_block.SetBinding(TextBlock.TextProperty, new Binding());
-                    text_block.SetValue(FrameworkElement.ToolTipProperty, description);
+            if (display_attribute?.Name is { } description)
+            {
+                var text_block = new FrameworkElementFactory(typeof(TextBlock));
+                text_block.SetBinding(TextBlock.TextProperty, new Binding());
+                text_block.SetValue(FrameworkElement.ToolTipProperty, description);
 
-                    var header_template = new DataTemplate(typeof(string)) { VisualTree = text_block };
+                var header_template = new DataTemplate(typeof(string)) { VisualTree = text_block };
 
-                    column.HeaderTemplate = header_template;
-                }
+                column.HeaderTemplate = header_template;
             }
 
             if (property.GetCustomAttribute<DisplayFormatAttribute>() is { } format_attribute)
@@ -106,9 +108,22 @@ namespace MathCore.WPF
                     text_column.Binding.TargetNullValue = null_value_text;
             }
 
-            var read_only = property.GetCustomAttribute<ReadOnlyAttribute>();
-            if (read_only != null)
-                column.IsReadOnly = read_only.IsReadOnly;
+            if (property.GetCustomAttribute<ReadOnlyAttribute>() is { IsReadOnly: var column_readonly })
+                column.IsReadOnly = column_readonly;
+
+            if (property.GetCustomAttribute<ColumnWidthAttribute>() is
+                {
+                    Width: var col_width, 
+                    Auto: var col_auto, 
+                    Adaptive: var col_adaptive
+                })
+                column.Width = (col_width, col_auto, col_adaptive) switch
+                {
+                    (not double.NaN and var width, false, false) => new DataGridLength(width),
+                    (var width, false, true) => new DataGridLength(width, DataGridLengthUnitType.Star),
+                    (var width, true, _) => new DataGridLength(width, DataGridLengthUnitType.Auto),
+                    _ => new DataGridLength()
+                };
         }
 
         #endregion
