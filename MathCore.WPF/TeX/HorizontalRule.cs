@@ -13,7 +13,7 @@ namespace MathCore.WPF.TeX
             Shift = shift;
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y) => drawingContext.DrawRectangle(Brushes.Black, null, new Rect(
+        public override void Draw(DrawingContext Context, double scale, double x, double y) => Context.DrawRectangle(Brushes.Black, null, new Rect(
             x * scale, (y - Height) * scale, Width * scale, Height * scale));
 
         public override int GetLastFontId() => TexFontUtilities.NoFontId;

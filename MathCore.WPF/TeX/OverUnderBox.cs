@@ -33,9 +33,9 @@ namespace MathCore.WPF.TeX
                          (!over && scriptBox is null ? 0 : scriptBox.Height + scriptBox.Depth + kern);
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public override void Draw(DrawingContext Context, double scale, double x, double y)
         {
-            BaseBox.Draw(drawingContext, scale, x, y);
+            BaseBox.Draw(Context, scale, x, y);
 
             if(Over)
             {
@@ -44,15 +44,15 @@ namespace MathCore.WPF.TeX
                 var translationX = x + DelimeterBox.Width / 2;
                 var translationY = centerY + DelimeterBox.Width / 2;
 
-                drawingContext.PushTransform(new TranslateTransform(translationX * scale, translationY * scale));
-                drawingContext.PushTransform(new RotateTransform(90));
-                DelimeterBox.Draw(drawingContext, scale, -DelimeterBox.Width / 2,
+                Context.PushTransform(new TranslateTransform(translationX * scale, translationY * scale));
+                Context.PushTransform(new RotateTransform(90));
+                DelimeterBox.Draw(Context, scale, -DelimeterBox.Width / 2,
                     -DelimeterBox.Depth + DelimeterBox.Width / 2);
-                drawingContext.Pop();
-                drawingContext.Pop();
+                Context.Pop();
+                Context.Pop();
 
                 // Draw script box as superscript.
-                ScriptBox?.Draw(drawingContext, scale, x, centerY - Kern - ScriptBox.Depth);
+                ScriptBox?.Draw(Context, scale, x, centerY - Kern - ScriptBox.Depth);
             }
             else
             {
@@ -61,15 +61,15 @@ namespace MathCore.WPF.TeX
                 var translationX = x + DelimeterBox.Width / 2;
                 var translationY = centerY - DelimeterBox.Width / 2;
 
-                drawingContext.PushTransform(new TranslateTransform(translationX * scale, translationY * scale));
-                drawingContext.PushTransform(new RotateTransform(90));
-                DelimeterBox.Draw(drawingContext, scale, -DelimeterBox.Width / 2,
+                Context.PushTransform(new TranslateTransform(translationX * scale, translationY * scale));
+                Context.PushTransform(new RotateTransform(90));
+                DelimeterBox.Draw(Context, scale, -DelimeterBox.Width / 2,
                     -DelimeterBox.Depth + DelimeterBox.Width / 2);
-                drawingContext.Pop();
-                drawingContext.Pop();
+                Context.Pop();
+                Context.Pop();
 
                 // Draw script box as subscript.
-                ScriptBox?.Draw(drawingContext, scale, x, centerY + Kern + ScriptBox.Height);
+                ScriptBox?.Draw(Context, scale, x, centerY + Kern + ScriptBox.Height);
             }
 
         }

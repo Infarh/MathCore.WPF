@@ -24,7 +24,7 @@ namespace MathCore.WPF.TeX
             private set;
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public override void Draw(DrawingContext Context, double scale, double x, double y)
         {
         }
 

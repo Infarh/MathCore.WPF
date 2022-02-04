@@ -47,14 +47,14 @@ namespace MathCore.WPF.TeX
             Depth = Math.Max(Children.Count == 0 ? double.NegativeInfinity : Depth, box.Depth + box.Shift);
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public override void Draw(DrawingContext Context, double scale, double x, double y)
         {
-            base.Draw(drawingContext, scale, x, y);
+            base.Draw(Context, scale, x, y);
 
             var curX = x;
             foreach(var box in Children)
             {
-                box.Draw(drawingContext, scale, curX, y + box.Shift);
+                box.Draw(Context, scale, curX, y + box.Shift);
                 curX += box.Width;
             }
         }

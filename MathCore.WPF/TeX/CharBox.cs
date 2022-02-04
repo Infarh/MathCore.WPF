@@ -1,5 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+// ReSharper disable ArgumentsStyleLiteral
+// ReSharper disable ArgumentsStyleOther
+// ReSharper disable ArgumentsStyleNamedExpression
 
 // Box representing single character.
 namespace MathCore.WPF.TeX
@@ -17,15 +20,31 @@ namespace MathCore.WPF.TeX
             Depth = charInfo.Metrics.Depth;
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public override void Draw(DrawingContext Context, double scale, double x, double y)
         {
             // Draw character at given position.
             var typeface = Character.Font;
-            var glyphIndex = typeface.CharacterToGlyphMap[Character.Character];
-            var glyphRun = new GlyphRun(typeface, 0, false, Character.Size * scale,
-                new[] { glyphIndex }, new Point(x * scale, y * scale),
-                new[] { typeface.AdvanceWidths[glyphIndex] }, null, null, null, null, null, null);
-            drawingContext.DrawGlyphRun(Foreground ?? Brushes.Black, glyphRun);
+            var glyph_index = typeface.CharacterToGlyphMap[Character.Character];
+
+            var glyph_run = new GlyphRun(
+                    glyphTypeface: typeface,
+                    bidiLevel: 0,
+                    isSideways: false,
+                    renderingEmSize: Character.Size * scale,
+#if NET5_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+                    pixelsPerDip: 96,
+#endif
+                    glyphIndices: new[] { glyph_index },
+                    baselineOrigin: new Point(x * scale, y * scale),
+                    advanceWidths: new[] { typeface.AdvanceWidths[glyph_index] },
+                    glyphOffsets: null,
+                    characters: null,
+                    deviceFontName: null,
+                    clusterMap: null,
+                    caretStops: null,
+                    language: null);
+
+            Context.DrawGlyphRun(Foreground ?? Brushes.Black, glyph_run);
         }
 
         public override int GetLastFontId() => Character.FontId;

@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.Views.Windows"
-        FocusManager.FocusedElement="{Binding ElementName=TextInput}"
+        FocusManager.FocusedElement="{Binding ElementName=InputText}"
         WindowStyle="ToolWindow"
         ShowInTaskbar="False" 
         WindowStartupLocation="CenterOwner"
@@ -33,7 +33,7 @@
                     Command="{Binding CancelCommand}"/>
         </UniformGrid>
         <GroupBox Header="{Binding Caption, FallbackValue=Сообщение}" Padding="0,5,0,0">
-            <TextBox x:Name="TextInput"
+            <TextBox x:Name="InputText"
                      Text="{Binding Value, FallbackValue=Текст}"
                      AcceptsReturn="True"
                      AcceptsTab="True">
