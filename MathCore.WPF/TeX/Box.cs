@@ -38,11 +38,11 @@ namespace MathCore.WPF.TeX
             Background = background;
         }
 
-        public virtual void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public virtual void Draw(DrawingContext Context, double scale, double x, double y)
         {
             if(Background is null) return;
             // Fill background of box with color.
-            drawingContext.DrawRectangle(Background, null, new Rect(x * scale, (y - Height) * scale,
+            Context.DrawRectangle(Background, null, new Rect(x * scale, (y - Height) * scale,
                 Width * scale, (Height + Depth) * scale));
         }
 

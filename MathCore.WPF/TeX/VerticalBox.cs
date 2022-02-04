@@ -69,15 +69,15 @@ namespace MathCore.WPF.TeX
             Width = rightMostPos - leftMostPos;
         }
 
-        public override void Draw(DrawingContext drawingContext, double scale, double x, double y)
+        public override void Draw(DrawingContext Context, double scale, double x, double y)
         {
-            base.Draw(drawingContext, scale, x, y);
+            base.Draw(Context, scale, x, y);
 
             var curY = y - Height;
             foreach(var child in Children)
             {
                 curY += child.Height;
-                child.Draw(drawingContext, scale, x + child.Shift - leftMostPos, curY);
+                child.Draw(Context, scale, x + child.Shift - leftMostPos, curY);
                 curY += child.Depth;
             }
         }

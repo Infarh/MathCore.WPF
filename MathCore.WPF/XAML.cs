@@ -88,11 +88,11 @@ namespace MathCore.WPF
             return result;
         }
 
-        private static async Task<Stream> GetDataStreamAsync(Uri uri)
+        private static Task<Stream> GetDataStreamAsync(Uri uri)
         {
             if(uri.IsFile && uri.ToString() is var file_path)
                 return File.Exists(file_path) 
-                    ? File.OpenRead(file_path) 
+                    ? Task.FromResult<Stream>(File.OpenRead(file_path)) 
                     : throw new FileNotFoundException("Файл не найден", file_path);
 
             throw new NotSupportedException("Чтение не из файлового потока не поддерживается");

@@ -493,10 +493,14 @@ namespace MathCore.WPF.ViewModels
 
         public readonly ref struct SetValueResult<T>
         {
+            private readonly ViewModel _Model;
             private readonly bool _Result;
             private readonly T? _OldValue;
             private readonly T? _NewValue;
-            private readonly ViewModel _Model;
+
+            public bool Result => _Result;
+            public T? OldValue => _OldValue;
+            public T? NewValue => _NewValue;
 
             internal SetValueResult(bool Result, T? OldValue, ViewModel model) : this(Result, OldValue, OldValue, model) { }
             internal SetValueResult(bool Result, T? OldValue, T? NewValue, ViewModel model)
@@ -515,13 +519,13 @@ namespace MathCore.WPF.ViewModels
 
             public bool Then(Action<object?> execute)
             {
-                if (_Result) execute(_NewValue);
+                if (_Result) execute(NewValue);
                 return _Result;
             }
 
             public bool Then(Action<T?> execute)
             {
-                if (_Result) execute(_NewValue);
+                if (_Result) execute(NewValue);
                 return _Result;
             }
 
@@ -533,43 +537,43 @@ namespace MathCore.WPF.ViewModels
 
             public bool ThenAsync(Action<T?> execute)
             {
-                if (_Result) _NewValue.Async(execute);
+                if (_Result) NewValue.Async(execute);
                 return _Result;
             }
 
             public bool ThenIf(Func<T?, bool> predicate, Action<T?> execute)
             {
-                if (_Result && predicate(_NewValue)) execute(_NewValue);
+                if (_Result && predicate(NewValue)) execute(NewValue);
                 return _Result;
             }
 
             public bool ThenIfAsync(Func<T?, bool> predicate, Action<T?> execute)
             {
-                if (_Result && predicate(_NewValue)) _NewValue.Async(execute);
+                if (_Result && predicate(NewValue)) NewValue.Async(execute);
                 return _Result;
             }
 
             public SetValueResult<T> ThenSet(Action<T?> SetAction)
             {
-                if (_Result) SetAction(_NewValue);
+                if (_Result) SetAction(NewValue);
                 return this;
             }
 
             public SetValueResult<T> ThenSetAsync(Action<T?> SetAction)
             {
-                if (_Result) _NewValue.Async(SetAction);
+                if (_Result) NewValue.Async(SetAction);
                 return this;
             }
 
             public bool Then(Action<T?, T?> execute)
             {
-                if (_Result) execute(_OldValue, _NewValue);
+                if (_Result) execute(OldValue, NewValue);
                 return _Result;
             }
 
             public bool ThenAsync(Action<T?, T?> execute)
             {
-                if (_Result) _OldValue.Async(_NewValue, execute);
+                if (_Result) OldValue.Async(NewValue, execute);
                 return _Result;
             }
 
@@ -621,25 +625,25 @@ namespace MathCore.WPF.ViewModels
 
             public bool AnywayThen(Action<T?> execute)
             {
-                execute(_NewValue);
+                execute(NewValue);
                 return _Result;
             }
 
             public bool AnywayThen(Action<T?, bool> execute)
             {
-                execute(_NewValue, _Result);
+                execute(NewValue, _Result);
                 return _Result;
             }
 
             public bool AnywayThen(Action<T?, T?> execute)
             {
-                execute(_OldValue, _NewValue);
+                execute(OldValue, NewValue);
                 return _Result;
             }
 
             public bool AnywayThen(Action<T?, T?, bool> execute)
             {
-                execute(_OldValue, _NewValue, _Result);
+                execute(OldValue, NewValue, _Result);
                 return _Result;
             }
 
