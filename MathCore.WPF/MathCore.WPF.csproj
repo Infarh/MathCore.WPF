@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.30.2</Version>
+    <Version>0.0.31</Version>
     <PackageReleaseNotes>
-      Добавлены свойства с кистями для ControlEx для разных состояний элемента управления
+      Доработка фильтров CollectionViewSource
     </PackageReleaseNotes>
   </PropertyGroup>
 
