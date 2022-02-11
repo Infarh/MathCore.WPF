@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.31</Version>
+    <Version>0.0.32</Version>
     <PackageReleaseNotes>
-      Доработка фильтров CollectionViewSource
+      NestedBinding
     </PackageReleaseNotes>
   </PropertyGroup>
 
