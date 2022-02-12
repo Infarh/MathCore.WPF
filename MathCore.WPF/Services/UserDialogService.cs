@@ -142,10 +142,11 @@ namespace MathCore.WPF.Services
                 StatusValue = Status,
                 InformationValue = Information
             };
+            var current_window = CurrentWindow;
             var progress_view = new ProgressDialogWindow
             {
                 DataContext = progress_model,
-                Owner = CurrentWindow
+                Owner = current_window
             };
             void OnDisposed(object? s, EventArgs e)
             {
