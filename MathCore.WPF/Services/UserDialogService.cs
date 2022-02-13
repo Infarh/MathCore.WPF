@@ -34,7 +34,7 @@ namespace MathCore.WPF.Services
             {
                 Title = Title,
                 RestoreDirectory = true,
-                Filter = Filter ?? throw new ArgumentNullException(nameof(Filter)),
+                Filter = Filter ?? throw new ArgumentNullException(nameof(Filter))
             };
             if (DefaultFilePath is { Length: > 0 })
                 dialog.FileName = DefaultFilePath;
@@ -71,9 +71,9 @@ namespace MathCore.WPF.Services
         /// <returns>Истина, если был сделан выбор Yes</returns>
         public virtual bool YesNoQuestion(string Text, string Title = "Вопрос...")
         {
-            var result = CurrentWindow is null
+            var result = CurrentWindow is not { } window
                 ? MessageBox.Show(Text, Title, MessageBoxButton.YesNo, MessageBoxImage.Question)
-                : MessageBox.Show(CurrentWindow, Text, Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                : MessageBox.Show(window, Text, Title, MessageBoxButton.YesNo, MessageBoxImage.Question);
             return result == MessageBoxResult.Yes;
         }
 
@@ -83,9 +83,9 @@ namespace MathCore.WPF.Services
         /// <returns>Истина, если был сделан выбор Ok</returns>
         public virtual bool OkCancelQuestion(string Text, string Title = "Вопрос...")
         {
-            var result = CurrentWindow is null
+            var result = CurrentWindow is not { } window
                 ? MessageBox.Show(Text, Title, MessageBoxButton.OKCancel, MessageBoxImage.Question)
-                : MessageBox.Show(CurrentWindow, Text, Title, MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                : MessageBox.Show(window, Text, Title, MessageBoxButton.OKCancel, MessageBoxImage.Question);
             return result == MessageBoxResult.OK;
         }
 
@@ -94,10 +94,10 @@ namespace MathCore.WPF.Services
         /// <param name="Title">Текст в окне диалога</param>
         public virtual void Information(string Text, string Title = "Сообщение...")
         {
-            if (CurrentWindow is null)
+            if (CurrentWindow is not { } window)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Information);
             else
-                MessageBox.Show(CurrentWindow, Text, Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show(window, Text, Title, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         /// <summary>Диалог с предупреждением</summary>
@@ -105,10 +105,10 @@ namespace MathCore.WPF.Services
         /// <param name="Title">Текст в окне диалога</param>
         public virtual void Warning(string Text, string Title = "Предупреждение!")
         {
-            if (CurrentWindow is null)
+            if (CurrentWindow is not { } window)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Warning);
             else
-                MessageBox.Show(CurrentWindow, Text, Title, MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(window, Text, Title, MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         /// <summary>Диалог с ошибкой</summary>
@@ -116,10 +116,10 @@ namespace MathCore.WPF.Services
         /// <param name="Title">Текст в окне диалога</param>
         public virtual void Error(string Text, string Title = "Ошибка!")
         {
-            if (CurrentWindow is null)
+            if (CurrentWindow is not { } window)
                 MessageBox.Show(Text, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             else
-                MessageBox.Show(CurrentWindow, Text, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(window, Text, Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         /// <summary>Диалог индикации прогресса операции</summary>
@@ -181,10 +181,11 @@ namespace MathCore.WPF.Services
                 Caption = Caption,
                 Value = Default
             };
+            var current_window = CurrentWindow;
             var view = new TextRequestDialogWindow
             {
                 DataContext = view_model,
-                Owner = CurrentWindow,
+                Owner = current_window,
             };
 
             void OnCompleted(object? s, EventArgs<bool?> e)
