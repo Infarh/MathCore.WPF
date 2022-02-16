@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.32.3</Version>
+    <Version>0.0.32.4</Version>
     <PackageReleaseNotes>
-      NestedBinding
+      Исправление конвертера Round
     </PackageReleaseNotes>
   </PropertyGroup>
 
