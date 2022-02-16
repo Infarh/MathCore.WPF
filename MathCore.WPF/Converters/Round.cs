@@ -24,7 +24,9 @@ namespace MathCore.WPF.Converters
         public Round(int Digits, MidpointRounding Rounding) : this(Digits) => this.Rounding = Rounding;
 
         /// <inheritdoc />
-        protected override double Convert(double v, double? p = null) => Math.Round(v);
+        protected override double Convert(double v, double? p = null) => Digits > 0 
+            ? Math.Round(v, Digits) 
+            : Math.Round(v);
 
         /// <inheritdoc />
         protected override double ConvertBack(double v, double? p = null) => v;
