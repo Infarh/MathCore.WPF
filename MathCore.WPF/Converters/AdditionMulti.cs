@@ -1,14 +1,15 @@
 ﻿using System.Linq;
 using System.Windows.Markup;
 
+using MathCore.WPF.Converters.Base;
+
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Converters
+namespace MathCore.WPF.Converters;
+
+[MarkupExtensionReturnType(typeof(AdditionMulti))]
+public class AdditionMulti : MultiDoubleValueValueConverter
 {
-    [MarkupExtensionReturnType(typeof(AdditionMulti))]
-    public class AdditionMulti : MultiDoubleValueValueConverter
-    {
-        /// <inheritdoc />
-        protected override double Convert(double[]? vv) => vv?.Sum() ?? double.NaN;
-    }
+    /// <inheritdoc />
+    protected override double Convert(double[]? vv) => vv?.Sum() ?? double.NaN;
 }
