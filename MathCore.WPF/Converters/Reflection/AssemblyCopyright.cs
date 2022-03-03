@@ -2,11 +2,10 @@
 using System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Converters.Reflection
+namespace MathCore.WPF.Converters.Reflection;
+
+[MarkupExtensionReturnType(typeof(AssemblyCompany))]
+public class AssemblyCopyright : AssemblyConverter
 {
-    [MarkupExtensionReturnType(typeof(AssemblyCompany))]
-    public class AssemblyCopyright : AssemblyConverter
-    {
-        public AssemblyCopyright() : base(Attribute<AssemblyCopyrightAttribute>(a => a.Copyright)) { }
-    }
+    public AssemblyCopyright() : base(Attribute<AssemblyCopyrightAttribute>(a => a.Copyright)) { }
 }

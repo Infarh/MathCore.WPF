@@ -2,11 +2,10 @@
 using System.Windows.Markup;
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Converters.Reflection
+namespace MathCore.WPF.Converters.Reflection;
+
+[MarkupExtensionReturnType(typeof(AssemblyFileVersion))]
+public class AssemblyFileVersion : AssemblyConverter
 {
-    [MarkupExtensionReturnType(typeof(AssemblyFileVersion))]
-    public class AssemblyFileVersion : AssemblyConverter
-    {
-        public AssemblyFileVersion() : base(Attribute<AssemblyFileVersionAttribute>(a => a.Version)) { }
-    }
+    public AssemblyFileVersion() : base(Attribute<AssemblyFileVersionAttribute>(a => a.Version)) { }
 }

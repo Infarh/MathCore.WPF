@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Markup;
+
+using MathCore.WPF.Converters.Base;
+
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Converters
+namespace MathCore.WPF.Converters;
+
+[MarkupExtensionReturnType(typeof(LessThanOrEqual))]
+[ValueConversion(typeof(double), typeof(bool?))]
+public class LessThanOrEqual : DoubleToBool
 {
-    [MarkupExtensionReturnType(typeof(LessThanOrEqual))]
-    [ValueConversion(typeof(double), typeof(bool?))]
-    public class LessThanOrEqual : DoubleToBool
-    {
-        public double Value { get; set; } = double.PositiveInfinity;
+    public double Value { get; set; } = double.PositiveInfinity;
 
-        public LessThanOrEqual() { }
+    public LessThanOrEqual() { }
 
-        public LessThanOrEqual(double value) => Value = value;
+    public LessThanOrEqual(double value) => Value = value;
 
-        protected override bool? Convert(double v) => v.IsNaN() ? null : v <= Value;
-    }
+    protected override bool? Convert(double v) => v.IsNaN() ? null : v <= Value;
 }

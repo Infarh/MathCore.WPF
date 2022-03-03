@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Windows.Data;
 using System.Windows.Markup;
+
+using MathCore.WPF.Converters.Base;
+
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace MathCore.WPF.Converters
+namespace MathCore.WPF.Converters;
+
+[MarkupExtensionReturnType(typeof(IsNaN))]
+[ValueConversion(typeof(double), typeof(bool?))]
+public class IsNaN : DoubleToBool
 {
-    [MarkupExtensionReturnType(typeof(IsNaN))]
-    [ValueConversion(typeof(double), typeof(bool?))]
-    public class IsNaN : DoubleToBool
-    {
-        public bool Inverted { get; set; }
+    public bool Inverted { get; set; }
 
-        public IsNaN() { }
+    public IsNaN() { }
 
-        public IsNaN(bool inverted) => Inverted = inverted;
+    public IsNaN(bool inverted) => Inverted = inverted;
 
-        /// <inheritdoc />
-        protected override bool? Convert(double v) => Inverted ^ v.IsNaN();
-    }
+    /// <inheritdoc />
+    protected override bool? Convert(double v) => Inverted ^ v.IsNaN();
 }
