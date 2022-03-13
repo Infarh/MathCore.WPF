@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Windows.Media;
 
 using MathCore.WPF.Converters.Base;
 
@@ -15,9 +16,9 @@ namespace MathCore.WPF.Converters;
 public class Interpolation : DoubleValueConverter
 {
     private Polynom? _Polynom;
-    private Point[]? _Points;
+    private PointCollection? _Points;
 
-    public Point[]? Points
+    public PointCollection? Points
     {
         get => _Points;
         set

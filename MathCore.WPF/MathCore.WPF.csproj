@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.32.6</Version>
+    <Version>0.0.32.7</Version>
     <PackageReleaseNotes>
       Обновление пакетов, рефакторинг конвертеров
     </PackageReleaseNotes>
@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.65" />
+    <PackageReference Include="MathCore" Version="0.0.66" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

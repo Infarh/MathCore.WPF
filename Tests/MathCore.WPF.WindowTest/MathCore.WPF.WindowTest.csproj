@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.6" />
-    <PackageReference Include="MathCore" Version="0.0.65" />
+    <PackageReference Include="MathCore" Version="0.0.66" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="OxyPlot.Contrib.Wpf" Version="2.1.0" />
