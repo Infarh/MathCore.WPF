@@ -50,7 +50,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     protected virtual void PropertyChanged_RemoveHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
 
     /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
-    public static bool IsDesignMode => LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+    public static bool IsDesignMode { get; set; } = LicenseManager.UsageMode == LicenseUsageMode.Designtime;
 
     private readonly object _PropertiesDependenciesSyncRoot = new();
 
