@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq.Reactive;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -108,6 +109,8 @@ namespace MathCore.WPF.Commands
         /// <returns>Новая <see cref="LambdaCommandAsync{T}"/></returns>
         public static LambdaCommandAsync<T> NewBackground<T>(Func<T?, Task> OnExecute, Func<bool>? CanExecute) => new(OnExecute, CanExecute) { Background = true };
 
+        public static DialogWindowCommand Dialog() => new();
+
         #region События
 
         #region INotifyPropertyChanged
@@ -156,6 +159,24 @@ namespace MathCore.WPF.Commands
         }
 
         #endregion
+
+        public event ExceptionEventHandler<Exception>? Error;
+
+        protected bool HasErrorHandlers => Error is { };
+
+        protected virtual void OnError(Exception error) => Error?.Invoke(this, new(error));
+
+        public Command TraceErrors() => OnError((s, e) => Trace.TraceError("Ошибка при выполнении {0}: {1}", s, e));
+
+        public Command SkipErrors() => OnError((_, _) => { });
+
+        public Command OnError(Action<Exception> Handler) => OnError((_, e) => Handler(e));
+
+        public Command OnError(ExceptionEventHandler<Exception> Handler)
+        {
+            Error += Handler;
+            return this;
+        }
 
         #endregion
 

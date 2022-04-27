@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Reactive;
 using System.Windows.Markup;
+
 using MathCore.Annotations;
 using MathCore.WPF.ViewModels;
 // ReSharper disable InconsistentNaming
@@ -44,7 +45,6 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-
         #region Поля
 
         /// <summary>Делегат основного тела команды</summary>
@@ -55,7 +55,6 @@ namespace MathCore.WPF.Commands
         protected Func<object?, bool>? _CanExecute;
 
         #endregion
-
 
         #region Свойства
 
@@ -74,7 +73,6 @@ namespace MathCore.WPF.Commands
         }
 
         #endregion
-
 
         #region Конструкторы
 
@@ -95,7 +93,6 @@ namespace MathCore.WPF.Commands
 
         #endregion
 
-
         #region Методы
 
         /// <summary>Выполнение команды</summary>
@@ -112,15 +109,24 @@ namespace MathCore.WPF.Commands
                 OnCancelled(cancel_args);
                 if (cancel_args.Cancel) return;
             }
-            _ExecuteAction(parameter);
+
+            try
+            {
+                _ExecuteAction(parameter);
+            }
+            catch (Exception e) when (HasErrorHandlers)
+            {
+                OnError(e);
+            }
+
             OnCompleteExecuting(new EventArgs<object?>(parameter));
         }
 
         /// <summary>Проверка возможности выполнения команды</summary>
         /// <param name="parameter">Параметр процесса выполнения команды</param>
         /// <returns>Истина, если команда может быть выполнена</returns>
-        public override bool CanExecute(object? parameter) => 
-            ViewModel.IsDesignMode 
+        public override bool CanExecute(object? parameter) =>
+            ViewModel.IsDesignMode
             || IsCanExecute && (_CanExecute?.Invoke(parameter) ?? true);
 
         /// <summary>Проверка возможности выполнения команды</summary>
@@ -196,7 +202,7 @@ namespace MathCore.WPF.Commands
         protected LambdaCommand() { }
 
         public LambdaCommand(Action<T?> ExecuteAction, Func<bool>? CanExecute)
-            :this(ExecuteAction, CanExecute is null ? null : new Func<T?, bool>(_ => CanExecute()))
+            : this(ExecuteAction, CanExecute is null ? null : new Func<T?, bool>(_ => CanExecute()))
         { }
 
         public LambdaCommand(Action<T?> ExecuteAction, Func<T?, bool>? CanExecute = null)
@@ -233,12 +239,12 @@ namespace MathCore.WPF.Commands
 
         public override void Execute(object? parameter)
         {
-            var execute_action = _ExecuteAction 
+            var execute_action = _ExecuteAction
                     ?? throw new InvalidOperationException(@"Метод выполнения команды не определён");
 
             if (parameter is not T value)
-                value = parameter is null 
-                    ? default! 
+                value = parameter is null
+                    ? default!
                     : ConvertParameter(parameter);
 
             if (!CanExecute(value)) return;
@@ -259,7 +265,10 @@ namespace MathCore.WPF.Commands
             catch (Exception error)
             {
                 _Observable?.OnError(error);
-                throw;
+                if (!HasErrorHandlers)
+                    throw;
+
+                OnError(error);
             }
             OnCompleteExecuting(new EventArgs<object?>(parameter));
         }
@@ -299,8 +308,8 @@ namespace MathCore.WPF.Commands
 
         private SimpleObservableEx<T?>? _Observable;
 
-        public IDisposable Subscribe(IObserverEx<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer); 
-        public IDisposable Subscribe(IObserver<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer); 
+        public IDisposable Subscribe(IObserverEx<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer);
+        public IDisposable Subscribe(IObserver<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer);
 
         #endregion
 

@@ -16,7 +16,7 @@ public abstract class DoubleValueConverter : ValueConverter
     /// <returns>Значение вещественного типа, если преобразование прошло успешно, и NaN в противном случае</returns>
     public static double ConvertToDouble(object? obj)
     {
-        if (obj is null || Equals(obj, DependencyProperty.UnsetValue)) return double.NaN;
+        if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue)) return double.NaN;
         try
         {
             return System.Convert.ToDouble(obj);
@@ -34,7 +34,7 @@ public abstract class DoubleValueConverter : ValueConverter
     /// <returns>Результат успешности преобразования</returns>
     public static bool TryConvertToDouble(object? obj, out double value)
     {
-        if (obj is null)
+        if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue))
         {
             value = double.NaN;
             return false;

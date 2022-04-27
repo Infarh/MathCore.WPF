@@ -111,9 +111,9 @@ namespace MathCore.WPF.ViewModels
 
         #endregion
 
-        protected override void OnPropertyChanged(string PropertyName = null!, bool UpdateCommandsState = false)
+        protected override void OnPropertyChanged(string PropertyName = null!, bool UpdateCommandsState = false, bool ThreadSafe = true)
         {
-            base.OnPropertyChanged(PropertyName, UpdateCommandsState);
+            base.OnPropertyChanged(PropertyName, UpdateCommandsState, ThreadSafe);
 
             Validate(PropertyName);
         }

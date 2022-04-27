@@ -13,21 +13,34 @@ namespace MathCore.WPF.Converters;
 public class Linear : DoubleValueConverter
 {
     /// <summary>Линейный множитель (тангенс угла наклона)</summary>
+    [ConstructorArgument(nameof(K))]
     public double K { get; set; }
 
     /// <summary>Аддитивное смещение</summary>
+    [ConstructorArgument(nameof(B))]
     public double B { get; set; }
+
+    /// <summary>Инвертировать преобразование</summary>
+    public bool Inverted { get; set; }
 
     public Linear() : this(1, 0) { }
 
-    public Linear(double k) => K = k;
+    public Linear(double K) => this.K = K;
 
-    public Linear(double k, double b ) : this(k) => B = b;
+    public Linear(double K, double B) : this(K) => this.B = B;
 
+    private static double To(double x, double k, double b) => k * x + b;
+    private static double From(double x, double k, double b) => (x - b) / k;
 
     /// <inheritdoc />
-    protected override double Convert(double v, double? p = null) => (p ?? v) * K + B;
+    protected override double Convert(double v, double? p = null) =>
+        Inverted
+            ? From(p ?? v, K, B)
+            : To(p ?? v, K, B);
 
     /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => (v - B) / K;
+    protected override double ConvertBack(double v, double? p = null) =>
+        Inverted
+            ? To(v, K, B)
+            : From(v, K, B);
 }

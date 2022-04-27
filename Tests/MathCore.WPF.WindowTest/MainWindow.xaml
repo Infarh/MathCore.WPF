@@ -3,10 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:cvf="clr-namespace:MathCore.WPF.WindowTest.Samples.CollectionViewFilter"
         xmlns:events="clr-namespace:MathCore.WPF.UIEvents;assembly=MathCore.WPF"
+        xmlns:behaviors="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         mc:Ignorable="d"
         Title="{Binding Title}"
         Width="800" Height="450">
@@ -20,7 +22,7 @@
                              From="1" To="0.3" Duration="0:0:0.05" 
                              FillBehavior="Stop" AutoReverse="True" RepeatBehavior="0:0:0.5"/>-->
             <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" 
-                            From="White" To="Red" Duration="0:0:0.1" 
+                            From="White" To="Red" Duration="0:0:0.08" 
                             FillBehavior="Stop" AutoReverse="True" RepeatBehavior="5x" 
                             EasingFunction="{StaticResource CubicEase_InOut}">
             </ColorAnimation>
@@ -43,7 +45,23 @@
                 </Button>
             </StatusBarItem>
             <StatusBarItem Content="{Binding Status}"/>
+            <StatusBarItem>
+                <DockPanel>
+                    <Button Content="Show" Padding="10,0"
+                            Command="{Binding  ProgressShowCommand}"/>
+                    <TextBox Width="200" Margin="3,0" 
+                             Text=""/>
+                    <Slider Width="200" Margin="5,0,0,0"
+                            Value="0"
+                            Minimum="0" Maximum="1"/>
+                </DockPanel>
+            </StatusBarItem>
         </StatusBar>
         <cvf:CollectionViewFilterView/>
+        <ListBox>
+            <i:Interaction.Behaviors>
+                <behaviors:ListBoxItemsSelectionBinder SelectedItems="{Binding SelectedItems}"/>
+            </i:Interaction.Behaviors>
+        </ListBox>
     </DockPanel>
 </Window>

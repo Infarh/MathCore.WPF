@@ -11,5 +11,8 @@ namespace MathCore.WPF.Converters;
 public class AdditionMulti : MultiDoubleValueValueConverter
 {
     /// <inheritdoc />
-    protected override double Convert(double[]? vv) => vv?.Sum() ?? double.NaN;
+    protected override double Convert(double[]? vv) =>
+        vv is { Length: > 0 } values 
+            ? values.Sum() 
+            : double.NaN;
 }

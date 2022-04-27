@@ -6,8 +6,12 @@ using System.Windows.Input;
 using System.Windows.Markup;
 
 using MathCore.WPF.Commands;
+using MathCore.WPF.Services;
 using MathCore.WPF.UIEvents;
 using MathCore.WPF.ViewModels;
+using MathCore.WPF.WindowTest.Services.Interfaces;
+
+using Microsoft.Extensions.DependencyInjection;
 
 namespace MathCore.WPF.WindowTest.ViewModels
 {
@@ -91,6 +95,35 @@ namespace MathCore.WPF.WindowTest.ViewModels
 
         #endregion
 
+        private IProgressInfo? _Progress;
+
+        #region Command ProgressShowCommand - Показать прогресс
+
+        /// <summary>Показать прогресс</summary>
+        private LambdaCommand? _ProgressShowCommand;
+
+        /// <summary>Показать прогресс</summary>
+        public ICommand ProgressShowCommand => _ProgressShowCommand
+            ??= new(OnProgressShowCommandExecuted);
+
+        /// <summary>Логика выполнения - Показать прогресс</summary>
+        private void OnProgressShowCommandExecuted()
+        {
+            if (_Progress is null)
+            {
+                var user_dialog = App.Services.GetRequiredService<IUserDialog>();
+
+                _Progress = user_dialog.Progress("Прогресс", "Статус");
+                Task.Delay(5000).ContinueWith(_ => OnProgressShowCommandExecuted());
+            }
+            else
+            {
+                _Progress.Dispose();
+                _Progress = null;
+            }
+        }
+
+        #endregion
         public IModelEvent StatusChangedEvent { get; }
 
         public MainWindowViewModel() => StatusChangedEvent = new ModelEvent(this);
