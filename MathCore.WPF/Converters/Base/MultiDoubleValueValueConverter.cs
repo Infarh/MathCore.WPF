@@ -6,7 +6,7 @@ public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
 {
     /// <inheritdoc />
     protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c) => 
-        Convert(Array.ConvertAll(vv ?? Array.Empty<object>(), DoubleValueConverter.ConvertToDouble));
+        Convert(Array.ConvertAll(vv ?? Array.Empty<object>(), x => DoubleValueConverter.ConvertToDouble(x)));
 
     /// <inheritdoc />
     protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) =>
