@@ -1,87 +1,84 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Globalization;
 using System.Resources;
-using System.Threading;
 using System.Windows;
-using MathCore.Annotations;
+
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace MathCore.WPF.Extensions
+namespace MathCore.WPF.Extensions;
+
+public class Localizing : BindingExtension
 {
-    public class Localizing : BindingExtension
+    public sealed class Manager : INotifyPropertyChanged
     {
-        public sealed class Manager : INotifyPropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private ResourceManager? _SourceManager;
+
+        public ResourceManager? SourceManager
         {
-            public event PropertyChangedEventHandler? PropertyChanged;
-
-            private ResourceManager? _SourceManager;
-
-            public ResourceManager? SourceManager
+            get => _SourceManager;
+            set
             {
-                get => _SourceManager;
-                set
-                {
-                    _SourceManager = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceManager)));
-                }
-            }
-
-            public string? Get(string? key, string? StringFormat = null)
-            {
-                if (_SourceManager is null || string.IsNullOrWhiteSpace(key)) return key;
-                var localized_value = _SourceManager.GetString(key) ?? $":{key}:";
-                return string.IsNullOrEmpty(StringFormat)
-                    ? localized_value
-                    : string.Format(StringFormat, localized_value);
+                _SourceManager = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceManager)));
             }
         }
 
-        public enum CharCases
+        public string? Get(string? key, string? StringFormat = null)
         {
-            Default,
-            Lower,
-            Upper
+            if (_SourceManager is null || string.IsNullOrWhiteSpace(key)) return key;
+            var localized_value = _SourceManager.GetString(key) ?? $":{key}:";
+            return string.IsNullOrEmpty(StringFormat)
+                ? localized_value
+                : string.Format(StringFormat, localized_value);
         }
+    }
 
-        public static readonly Manager ActiveManager = new();
+    public enum CharCases
+    {
+        Default,
+        Lower,
+        Upper
+    }
 
-        public string? Key { get; set; }
+    public static readonly Manager ActiveManager = new();
 
-        public CharCases CharCase { get; set; }
+    public string? Key { get; set; }
 
-        public Localizing()
+    public CharCases CharCase { get; set; }
+
+    public Localizing()
+    {
+        Source = ActiveManager;
+        Path = new PropertyPath(nameof(ActiveManager.SourceManager));
+    }
+
+    public Localizing(string key)
+    {
+        Key = key;
+        Source = ActiveManager;
+        Path = new PropertyPath(nameof(ActiveManager.SourceManager));
+    }
+
+    public override string ToString() => 
+        Convert(ActiveManager.SourceManager, null, Key, Thread.CurrentThread.CurrentCulture) as string ?? string.Empty;
+
+    public override object Convert(object? v, Type? t, object? p, CultureInfo? c)
+    {
+        var key = Key;
+        var localized_value = v is not ResourceManager resource_manager || string.IsNullOrEmpty(key)
+            ? $":{key}:"
+            : resource_manager.GetString(key) ?? $":{key}:";
+
+        return CharCase switch
         {
-            Source = ActiveManager;
-            Path = new PropertyPath(nameof(ActiveManager.SourceManager));
-        }
-
-        public Localizing(string key)
-        {
-            Key = key;
-            Source = ActiveManager;
-            Path = new PropertyPath(nameof(ActiveManager.SourceManager));
-        }
-
-        public override string ToString() => 
-            Convert(ActiveManager.SourceManager, null, Key, Thread.CurrentThread.CurrentCulture) as string ?? string.Empty;
-
-        public override object Convert(object? v, Type? t, object? p, CultureInfo? c)
-        {
-            var key = Key;
-            var localized_value = v is not ResourceManager resource_manager || string.IsNullOrEmpty(key)
-                ? $":{key}:"
-                : resource_manager.GetString(key) ?? $":{key}:";
-
-            return CharCase switch
-            {
-                CharCases.Lower => localized_value.ToLower(),
-                CharCases.Upper => localized_value.ToUpper(),
-                _ => localized_value
-            };
-        }
+            CharCases.Lower => localized_value.ToLower(),
+            CharCases.Upper => localized_value.ToUpper(),
+            _ => localized_value
+        };
     }
 }

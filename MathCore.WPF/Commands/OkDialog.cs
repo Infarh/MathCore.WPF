@@ -1,8 +1,7 @@
 ﻿// ReSharper disable UnusedType.Global
-namespace MathCore.WPF.Commands
+namespace MathCore.WPF.Commands;
+
+public class OkDialog : DialogCommand
 {
-    public class OkDialog : DialogCommand
-    {
-        public override void Execute(object? parameter) => base.Execute(parameter ?? true);
-    }
+    public override void Execute(object? parameter) => base.Execute(parameter ?? true);
 }

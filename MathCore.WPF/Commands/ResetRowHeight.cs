@@ -4,10 +4,9 @@ using System.Windows.Controls;
 
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Commands
+namespace MathCore.WPF.Commands;
+
+public class ResetRowHeight : LambdaCommand<RowDefinition>
 {
-    public class ResetRowHeight : LambdaCommand<RowDefinition>
-    {
-        public ResetRowHeight() : base(row => row.Height = GridLength.Auto, row => row != null) { }
-    }
+    public ResetRowHeight() : base(row => row.Height = GridLength.Auto, row => row != null) { }
 }
