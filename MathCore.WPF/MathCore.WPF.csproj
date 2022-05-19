@@ -53,7 +53,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
     <NoWarn>
-      1574;
+      1573;1574;
       1701;1702;8618;1591;
       0436;
       8600;8601;8602;8603;8604;8605;8606;8607;8612;8618;8619;8620;8621;8622;8625;8629;
