@@ -1,62 +1,60 @@
 ﻿using System.Runtime.CompilerServices;
 
-using MathCore.Annotations;
 // ReSharper disable UnusedMember.Global
 
 // ReSharper disable once CheckNamespace
-namespace System.Windows.Threading
+namespace System.Windows.Threading;
+
+public static class DispatcherExtensions
 {
-    public static class DispatcherExtensions
-    {
-        public static DispatcherAwaiter GetAwaiter(this Dispatcher dispatcher) => new(dispatcher);
+    public static DispatcherAwaiter GetAwaiter(this Dispatcher dispatcher) => new(dispatcher);
 
-        public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority) => 
-            dispatcher is null 
-                ? throw new ArgumentNullException(nameof(dispatcher)) 
-                : new PriorityDispatcherAwaiter(dispatcher, Priority);
+    public static PriorityDispatcherAwaiter AwaitWithPriority(this Dispatcher dispatcher, DispatcherPriority Priority) => 
+        dispatcher is null 
+            ? throw new ArgumentNullException(nameof(dispatcher)) 
+            : new PriorityDispatcherAwaiter(dispatcher, Priority);
+}
+
+public readonly ref struct PriorityDispatcherAwaiter
+{
+    private readonly Dispatcher _Dispatcher;
+    private readonly DispatcherPriority _Priority;
+
+    public PriorityDispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
+    {
+        _Dispatcher = dispatcher;
+        _Priority = Priority;
     }
 
-    public readonly ref struct PriorityDispatcherAwaiter
+    public DispatcherAwaiter GetAwaiter() => new(_Dispatcher, _Priority);
+}
+
+public readonly struct DispatcherAwaiter : INotifyCompletion
+{
+    private readonly DispatcherPriority _Priority;
+    private readonly Dispatcher _Dispatcher;
+
+    public bool IsCompleted => _Dispatcher.CheckAccess();
+
+    public DispatcherAwaiter(Dispatcher dispatcher)
     {
-        private readonly Dispatcher _Dispatcher;
-        private readonly DispatcherPriority _Priority;
-
-        public PriorityDispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
-        {
-            _Dispatcher = dispatcher;
-            _Priority = Priority;
-        }
-
-        public DispatcherAwaiter GetAwaiter() => new(_Dispatcher, _Priority);
+        _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+        _Priority = DispatcherPriority.Normal;
     }
 
-    public readonly struct DispatcherAwaiter : INotifyCompletion
+    public DispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
     {
-        private readonly DispatcherPriority _Priority;
-        private readonly Dispatcher _Dispatcher;
-
-        public bool IsCompleted => _Dispatcher.CheckAccess();
-
-        public DispatcherAwaiter(Dispatcher dispatcher)
-        {
-            _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-            _Priority = DispatcherPriority.Normal;
-        }
-
-        public DispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
-        {
-            _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-            _Priority = Priority;
-        }
-
-        public void OnCompleted(Action continuation)
-        {
-            if (_Priority == DispatcherPriority.Normal)
-                _Dispatcher.Invoke(continuation);
-            else
-                _Dispatcher.Invoke(continuation, _Priority);
-        }
-
-        public void GetResult() { }
+        _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+        _Priority = Priority;
     }
+
+    public void OnCompleted(Action continuation)
+    {
+        if (_Priority == DispatcherPriority.Normal)
+            _Dispatcher.Invoke(continuation);
+        else
+            _Dispatcher.Invoke(continuation, _Priority);
+    }
+
+    public void GetResult() { }
 }

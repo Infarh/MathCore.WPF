@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.33</Version>
+    <Version>0.0.33.1</Version>
     <PackageReleaseNotes>
       Добавлены новые конвертеры, добавлена возможность обработки ошибок при вызове команд
     </PackageReleaseNotes>
@@ -33,7 +33,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.69.1" />
+    <PackageReference Include="MathCore" Version="0.0.72" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -55,7 +55,7 @@
     <NoWarn>
       1701;1702;8618;1591;
       0436;
-      8600;8601;8602;8603;8604;8605;8612;8618;8619;8620;8621;8622;8625;8629;
+      8600;8601;8602;8603;8604;8605;8606;8607;8612;8618;8619;8620;8621;8622;8625;8629;
       8714;8765;8767;8768;8769
     </NoWarn>
   </PropertyGroup>

@@ -4,42 +4,41 @@ using System.Windows.Markup;
 
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Commands
+namespace MathCore.WPF.Commands;
+
+[MarkupExtensionReturnType(typeof(ShowInExplorer))]
+public class ShowInExplorer : Command
 {
-    [MarkupExtensionReturnType(typeof(ShowInExplorer))]
-    public class ShowInExplorer : Command
+    public override bool CanExecute(object? parameter) => parameter switch
     {
-        public override bool CanExecute(object? parameter) => parameter switch
-        {
-            string path when File.Exists(path) || Directory.Exists(path) => true,
-            FileSystemInfo { Exists: true } => true,
-            DriveInfo { IsReady: true } => true,
-            _ => false
-        };
+        string path when File.Exists(path) || Directory.Exists(path) => true,
+        FileSystemInfo { Exists: true } => true,
+        DriveInfo { IsReady: true } => true,
+        _ => false
+    };
 
-        public override void Execute(object? parameter)
+    public override void Execute(object? parameter)
+    {
+        while (true)
         {
-            while (true)
+            switch (parameter)
             {
-                switch (parameter)
-                {
-                    default: return;
-                    case string path when File.Exists(path):
-                        parameter = new FileInfo(path);
-                        continue;
-                    case string path when Directory.Exists(path):
-                        parameter = new DirectoryInfo(path);
-                        continue;
-                    case FileSystemInfo { Exists: true } file_or_dir:
-                        file_or_dir.ShowInExplorer();
-                        break;
-                    case DriveInfo { IsReady: true } drive:
-                        parameter = drive.RootDirectory;
-                        continue;
-                }
-
-                break;
+                default: return;
+                case string path when File.Exists(path):
+                    parameter = new FileInfo(path);
+                    continue;
+                case string path when Directory.Exists(path):
+                    parameter = new DirectoryInfo(path);
+                    continue;
+                case FileSystemInfo { Exists: true } file_or_dir:
+                    file_or_dir.ShowInExplorer();
+                    break;
+                case DriveInfo { IsReady: true } drive:
+                    parameter = drive.RootDirectory;
+                    continue;
             }
+
+            break;
         }
     }
 }

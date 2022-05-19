@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Threading;
-using MathCore.Annotations;
+﻿using System.Windows.Threading;
 using System.ComponentModel;
 
 // ReSharper disable UnusedType.Global
