@@ -1,12 +1,20 @@
 ﻿using System.Diagnostics;
+using System.Windows.Markup;
+
 // ReSharper disable UnusedType.Global
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace MathCore.WPF.Commands;
 
+/// <summary>Команда выполнения процесса в ОС, заданного командной строкой</summary>
 public class ExecuteCommand : LambdaCommand
 {
+    /// <summary>Выполняемая командная строка</summary>
+    [ConstructorArgument(nameof(Command))]
     public string? Command { get; set; }
+
+    /// <summary>Использовать интерпретацию ОС</summary>
+    [ConstructorArgument(nameof(ShellExecute))]
     public bool ShellExecute { get; set; }
 
     public ExecuteCommand() { }

@@ -4,6 +4,7 @@ using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.Commands;
 
+/// <summary>Команда кнопок окна диалога</summary>
 public class DialogCommand : LambdaCommand<bool?>
 {
     private Window? Window

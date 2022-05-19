@@ -8,11 +8,19 @@ namespace MathCore.WPF.Commands;
 
 public abstract partial class Command
 {
+    /// <summary>Построитель команды</summary>
     public readonly ref struct Builder
     {
+        /// <summary>Название команды</summary>
         public string? Name { get; init; }
+
+        /// <summary>Описание команды</summary>
         public string? Description { get; init; }
+
+        /// <summary>Выполняемый командой делегат</summary>
         public Action<object?> Execute { get; init; }
+
+        /// <summary>Делегат проверки возможности выполнения команды</summary>
         public Func<object?, bool>? CanExecute { get; init; }
 
         public Builder(Action Execute, Func<bool>? CanExecute = null, string? Name = null, string? Description = null)
@@ -26,7 +34,14 @@ public abstract partial class Command
             this.Description = Description;
         }
 
+        /// <summary>Добавить выполняемый делегат в конец</summary>
+        /// <param name="Execute">Выполняемый командой делегат</param>
+        /// <returns>Построитель команды</returns>
         public Builder Invoke(Action<object?> Execute) => this with { Execute = this.Execute + Execute };
+
+        /// <summary>Добавить выполняемый делегат в начало</summary>
+        /// <param name="Execute">Выполняемый командой делегат</param>
+        /// <returns>Построитель команды</returns>
         public Builder InvokeBefore(Action<object?> Execute) => this with { Execute = Execute + this.Execute };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Использовать локальную функцию", Justification = "Структура не может быть захвачена")]
