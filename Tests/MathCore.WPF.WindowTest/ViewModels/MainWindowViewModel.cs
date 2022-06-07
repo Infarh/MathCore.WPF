@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 
+using MathCore.WPF.Attributes;
 using MathCore.WPF.Commands;
 using MathCore.WPF.Services;
 using MathCore.WPF.UIEvents;
@@ -16,7 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace MathCore.WPF.WindowTest.ViewModels
 {
     [MarkupExtensionReturnType(typeof(MainWindowViewModel))]
-    class MainWindowViewModel : ViewModel
+    internal partial class MainWindowViewModel : ViewModel
     {
         #region Title : string - Заголовок
 
@@ -125,6 +126,13 @@ namespace MathCore.WPF.WindowTest.ViewModels
 
         #endregion
         public IModelEvent StatusChangedEvent { get; }
+
+        [Command]
+        private void OnGeneratedCommandExecuted(object? p)
+        {
+            Debug.WriteLine("Generated command executed");
+            MessageBox.Show("Generated command executed");
+        }
 
         public MainWindowViewModel() => StatusChangedEvent = new ModelEvent(this);
     }

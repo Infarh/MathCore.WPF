@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.33.1</Version>
+    <Version>0.0.34</Version>
     <PackageReleaseNotes>
-      Добавлены новые конвертеры, добавлена возможность обработки ошибок при вызове команд
+      Динамическая модель-представления DynamicModel
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -33,12 +33,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.72" />
+    <PackageReference Include="MathCore" Version="0.0.78.1" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -53,6 +58,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
     <NoWarn>
+      1573;1574;
       1701;1702;8618;1591;
       0436;
       8600;8601;8602;8603;8604;8605;8606;8607;8612;8618;8619;8620;8621;8622;8625;8629;
