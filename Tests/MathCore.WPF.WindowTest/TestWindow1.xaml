@@ -14,20 +14,23 @@
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <GroupBox Header="График" Grid.Column="1">
-            <i:Interaction.Behaviors>
-                <behaviors:ActualSizeBinding ActualWidth="{Binding ElementWidth, Mode=OneWayToSource}"
-                                             ActualHeight="{Binding ElementHeight, Mode=OneWayToSource}"/>
-            </i:Interaction.Behaviors>
-            <TextBlock Text="{Binding TextSize}" FontSize="30"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Grid.DataContext>
+            <DynamicModel>
+                <DynamicModelField Name="Value1" Value="123"/>
+                <DynamicModelField Name="Value2">
+                    qwe
+                </DynamicModelField>
+            </DynamicModel>
+        </Grid.DataContext>
+        <GroupBox Header="Values" DataContext="{Binding Model}">
+            <StackPanel>
+                <TextBlock Text="{Binding Value1}"/>
+                <TextBlock Text="{Binding Value2}"/>
+            </StackPanel>
         </GroupBox>
-
-        <GridSplitter Grid.Column="0" HorizontalAlignment="Right"/>
+        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" MinWidth="200" Margin="20" MaxWidth="350">
+            <TextBox Text="{Binding [Value1].Value, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Text="{Binding [Value2].Value, UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
     </Grid>
 </Window>
