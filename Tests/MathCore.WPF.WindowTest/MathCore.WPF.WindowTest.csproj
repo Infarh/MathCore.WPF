@@ -10,6 +10,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Using Include="System" />
+    <Using Include="System.Threading.Tasks"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="MathCore" Version="0.0.78.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
