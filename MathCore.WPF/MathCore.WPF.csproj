@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.34.1</Version>
+    <Version>0.0.34.2</Version>
     <PackageReleaseNotes>
       Динамическая модель-представления DynamicModel
     </PackageReleaseNotes>
@@ -31,6 +31,11 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Using Include="System"/>
+    <Using Include="System.Threading.Tasks"/>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MathCore" Version="0.0.78.1" />

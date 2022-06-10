@@ -3,11 +3,66 @@ using System.ComponentModel;
 using System.Dynamic;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Markup;
 
 using MathCore.Annotations;
 
 namespace MathCore.WPF;
+
+public class DynamicModelContent : Decorator
+{
+    #region Attached property Model : DynamicModel - Модель
+
+    /// <summary>Модель</summary>
+    [AttachedPropertyBrowsableForType(typeof(DynamicModelContent))]
+    public static void SetModel(DependencyObject d, DynamicModel value) => d.SetValue(ModelProperty, value);
+
+    /// <summary>Модель</summary>
+    public static DynamicModel GetModel(DependencyObject d)
+    {
+        if(d.GetValue(ModelProperty) is DynamicModel model) return model;
+        model = new(); 
+        SetModel(d, model);
+        return model;
+    }
+
+    /// <summary>Модель</summary>
+    public static readonly DependencyProperty ModelProperty =
+        DependencyProperty.RegisterAttached(
+            "ModelShadow",
+            typeof(DynamicModel),
+            typeof(DynamicModelContent),
+            new PropertyMetadata(default(DynamicModel)));
+
+    #endregion
+
+    protected override void OnVisualChildrenChanged(DependencyObject? VisualAdded, DependencyObject? VisualRemoved)
+    {
+        if (VisualRemoved is not null)
+            BindingOperations.ClearBinding(VisualRemoved, DataContextProperty);
+
+        if (VisualAdded is { })
+        {
+            /*"(DynamicModelContent.ModelShadow).Model"*/
+            var pr = ModelProperty;
+            var n = pr.Name;
+            BindingOperations.SetBinding(
+                VisualAdded, 
+                DataContextProperty, new Binding($"({nameof(DynamicModelContent)}.{ModelProperty.Name}).{nameof(DynamicModel.Model)}")
+                {
+                    Source = this,
+                    //Path = new PropertyPath("({0}.{1}).{2}",
+                    //    nameof(DynamicModelContent), 
+                    //    ModelProperty.Name, 
+                    //    nameof(DynamicModel.Model))
+                });
+        }
+
+        base.OnVisualChildrenChanged(VisualAdded, VisualRemoved);
+    }
+}
 
 public class DynamicModel : FreezableCollection<DynamicModelField>
 {
@@ -83,7 +138,7 @@ public class DynamicModelField : Freezable, INotifyPropertyChanged
     public override string ToString() => $"Field[{Name}]={Value}";
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    [NotifyPropertyChangedInvocator] 
+    [NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 }
 
@@ -91,7 +146,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    [NotifyPropertyChangedInvocator] 
+    [NotifyPropertyChangedInvocator]
     private void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
     private readonly DynamicModel _Fields;
@@ -105,7 +160,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
 
     private void OnFieldsCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
     {
-        if(Sender is not DynamicModel fields) return;
+        if (Sender is not DynamicModel fields) return;
 
         switch (E.Action)
         {
@@ -151,7 +206,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
 
     private void OnFieldPropertyChanged(object? Sender, PropertyChangedEventArgs E)
     {
-        if (E.PropertyName == nameof(DynamicModelField.Value) && Sender is DynamicModelField field) 
+        if (E.PropertyName == nameof(DynamicModelField.Value) && Sender is DynamicModelField field)
             OnPropertyChanged(field.Name);
     }
 

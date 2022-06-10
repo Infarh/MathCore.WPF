@@ -16,15 +16,15 @@ namespace MathCore.WPF.WindowTest.Models
 
         public TitledCommand(Action Execute) => _Execute = Execute;
         
-        bool ICommand.CanExecute(object parameter)
+        bool ICommand.CanExecute(object? parameter)
         {
             Debug.WriteLine($"{Title}-{CanExecute}");
             return CanExecute;
         }
 
-        void ICommand.Execute(object parameter) => _Execute();
+        void ICommand.Execute(object? parameter) => _Execute();
 
-        public event EventHandler CanExecuteChanged
+        public event EventHandler? CanExecuteChanged
         {
             add => CommandManager.RequerySuggested += value;
             remove => CommandManager.RequerySuggested -= value;

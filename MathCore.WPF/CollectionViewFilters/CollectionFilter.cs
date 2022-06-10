@@ -53,7 +53,7 @@ public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<
         _InternalCollection.Clear();
         if (_Collection.Count == 0) return;
         foreach (var group in _Collection!.GroupBy(_Selector))
-            _InternalCollection.Add(new CollectionFilterItem<TValue, TCriteria>(group.Key, group));
+            _InternalCollection.Add(new CollectionFilterItem<TValue, TCriteria>(group.Key!, group));
     }
 
     private void AddValues(IEnumerable<TValue> values)
