@@ -9,101 +9,13 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF;
 
-[ContentProperty(nameof(Fields))]
-public class DynamicModel : Freezable//, IList, IEnumerable
-{
-    //private readonly Dictionary<string, DynamicModelField> _Fields = new();
-
-    public DynamicModelField this[string FieldName] => Fields[FieldName];
-
-    public DynamicModelFieldsCollection Fields { get; } = new();
-
-    private DynamicModelObject? _Model;
-
-    public INotifyPropertyChanged Model => _Model ??= new(Fields);
-
-    protected override Freezable CreateInstanceCore() => new DynamicModel();
-
-    //#region IList
-
-    //bool IList.IsFixedSize => false;
-    //bool IList.IsReadOnly => false;
-
-    //int ICollection.Count => _Fields.Count;
-
-    //bool ICollection.IsSynchronized => false;
-
-    //object ICollection.SyncRoot { get; } = new();
-
-    //object? IList.this[int index]
-    //{
-    //    get => _Fields.Values.Select((v, i) => (v, i)).FirstOrDefault(v => v.i == index).v;
-    //    set => throw new NotSupportedException();
-    //}
-
-    //int IList.Add(object? value)
-    //{
-    //    switch (value)
-    //    {
-    //        case null: throw new ArgumentNullException(nameof(value));
-    //        default:
-    //            throw new ArgumentException($"Значение типа {value.GetType()} не поддерживается. Требуется значение типа {typeof(DynamicModelField)}", nameof(value));
-    //        case DynamicModelField { Name: { Length: > 0 } field_name } field:
-    //            _Fields[field_name] = field;
-    //            return _Fields.Count - 1;
-    //        case DynamicModelField:
-    //            throw new InvalidOperationException("Полю модели не задано имя");
-    //    }
-    //}
-
-    //void IList.Clear() => _Fields.Clear();
-
-    //bool IList.Contains(object? value) => value switch
-    //{
-    //    string name => _Fields.ContainsKey(name),
-    //    DynamicModelField { Name: { Length: > 0 } name } => _Fields.ContainsKey(name),
-    //    DynamicModelField => false,
-    //    _ => throw new ArgumentException($"Значение типа {value.GetType()} не поддерживается. Требуется значение типа {typeof(DynamicModelField)}, либо {typeof(string)}", nameof(value))
-    //};
-
-    //int IList.IndexOf(object? value) => throw new NotSupportedException();
-
-    //void IList.Insert(int index, object? value) => throw new NotSupportedException();
-
-    //void IList.Remove(object? value)
-    //{
-    //    switch (value)
-    //    {
-    //        case null: throw new ArgumentNullException(nameof(value));
-    //        default:
-    //            throw new ArgumentException($"Значение типа {value.GetType()} не поддерживается. Требуется значение типа {typeof(DynamicModelField)}", nameof(value));
-    //        case DynamicModelField { Name: { Length: > 0 } field_name }:
-    //            _Fields.Remove(field_name);
-    //            break;
-    //        case DynamicModelField:
-    //            throw new InvalidOperationException("Полю модели не задано имя");
-    //        case string { Length: > 0 } name:
-    //            _Fields.Remove(name);
-    //            break;
-    //        case string: throw new InvalidOperationException("Имя должно быть строкой ненулевой длины");
-    //    }
-    //}
-
-    //void IList.RemoveAt(int index) => throw new NotImplementedException();
-    //void ICollection.CopyTo(Array array, int index) => throw new NotImplementedException();
-
-    //IEnumerator IEnumerable.GetEnumerator() => _Fields.Values.GetEnumerator();
-
-    //#endregion
-}
-
-public class DynamicModelFieldsCollection : FreezableCollection<DynamicModelField>
+public class DynamicModel : FreezableCollection<DynamicModelField>
 {
     private readonly Dictionary<string, DynamicModelField> _Fields = new();
 
     public DynamicModelField this[string FieldName] => _Fields[FieldName];
 
-    public DynamicModelFieldsCollection() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
+    public DynamicModel() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
     public bool ContainsField(string FieldName) => _Fields.ContainsKey(FieldName);
 
@@ -134,6 +46,10 @@ public class DynamicModelFieldsCollection : FreezableCollection<DynamicModelFiel
             default: throw new NotSupportedException($"Действие {E.Action} с коллекцией полей динамической модели не поддерживается");
         }
     }
+
+    private DynamicModelObject? _Model;
+
+    public INotifyPropertyChanged Model => _Model ??= new(this);
 }
 
 [ContentProperty(nameof(Value))]
@@ -178,9 +94,9 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
     [NotifyPropertyChangedInvocator] 
     private void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
-    private readonly DynamicModelFieldsCollection _Fields;
+    private readonly DynamicModel _Fields;
 
-    public DynamicModelObject(DynamicModelFieldsCollection Fields)
+    public DynamicModelObject(DynamicModel Fields)
     {
         _Fields = Fields;
         ((INotifyCollectionChanged)Fields).CollectionChanged += OnFieldsCollectionChanged;
@@ -189,7 +105,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
 
     private void OnFieldsCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E)
     {
-        if(Sender is not DynamicModelFieldsCollection fields) return;
+        if(Sender is not DynamicModel fields) return;
 
         switch (E.Action)
         {
@@ -201,7 +117,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
                 AddEventHandler(fields);
                 break;
 
-            default: throw new NotSupportedException($"Действие {E.Action} с коллекцией {typeof(DynamicModelFieldsCollection)} не поддерживается");
+            default: throw new NotSupportedException($"Действие {E.Action} с коллекцией {typeof(DynamicModel)} не поддерживается");
         }
     }
 

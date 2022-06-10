@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.34</Version>
+    <Version>0.0.34.1</Version>
     <PackageReleaseNotes>
       Динамическая модель-представления DynamicModel
     </PackageReleaseNotes>

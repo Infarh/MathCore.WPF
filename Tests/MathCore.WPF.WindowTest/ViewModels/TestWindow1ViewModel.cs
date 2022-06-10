@@ -41,4 +41,24 @@ public class TestWindow1ViewModel : TitledViewModel
     [DependencyOn(nameof(ElementWidth))]
     [DependencyOn(nameof(ElementHeight))]
     public string TextSize => $"({_ElementWidth:0.00} x {_ElementHeight:0.00})";
+
+    #region Value1 : int - Значение 1
+
+    /// <summary>Значение 1</summary>
+    private int _Value1 = 42;
+
+    /// <summary>Значение 1</summary>
+    public int Value1 { get => _Value1; set => Set(ref _Value1, value); }
+
+    #endregion
+
+    #region Value2 : string - Значение 2
+
+    /// <summary>Значение 2</summary>
+    private string _Value2 = "Test-1";
+
+    /// <summary>Значение 2</summary>
+    public string Value2 { get => _Value2; set => Set(ref _Value2, value); }
+
+    #endregion
 }

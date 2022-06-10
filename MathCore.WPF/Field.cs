@@ -1,15 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Windows;
 
 namespace MathCore.WPF
 {
     /// <summary>Поле данных</summary>
-    [SuppressMessage("ReSharper", "RedundantExtendsListEntry")]
-    public class Field : FreezableCollection<FieldValue>, IList
+    public class Field : FreezableCollection<FieldValue>
     {
         #region Value
 

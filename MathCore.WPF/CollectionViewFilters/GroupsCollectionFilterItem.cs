@@ -90,7 +90,7 @@ public class GroupsCollectionFilterItem : CollectionViewFilterItem
 
         if (Groups.FirstOrDefault(g => Equals(g.Key, value)) is not { } group) 
             CreateGroup(out group, value);
-
+        
         group.Items.Add(item);
     }
 
