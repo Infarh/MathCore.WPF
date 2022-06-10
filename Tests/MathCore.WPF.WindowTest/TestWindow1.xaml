@@ -13,33 +13,27 @@
     <Window.DataContext>
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <Grid.Resources>
-            <DynamicModel x:Key="ValuesModel">
+    <DockPanel Margin="5">
+        <StackPanel DockPanel.Dock="Right" Width="120">
+            <TextBox Text="{Binding Value1}"/>
+            <TextBox Text="{Binding Value2}"/>
+        </StackPanel>
+        <DynamicModelContent>
+            <DynamicModelContent.Model>
                 <DynamicModelField Name="V1" Value="{Binding Value1}"/>
                 <DynamicModelField Name="V2" Value="{Binding Value2}"/>
-            </DynamicModel>
-        </Grid.Resources>
-        <Grid DataContext="{StaticResource ValuesModel}">
-            <GroupBox Header="Values" DataContext="{Binding}">
-                <DockPanel>
-                    <TextBlock Text="{Binding Model.V1}" DockPanel.Dock="Top"/>
-                    <TextBlock Text="{Binding Model.V2}" DockPanel.Dock="Top"/>
-                    <ListBox ItemsSource="{Binding}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock>
-                                    Field[<TextBlock Text="{Binding Name}"/>] = <TextBlock Text="{Binding Value}"/>
-                                </TextBlock>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </DockPanel>
-            </GroupBox>
-        </Grid>
-        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" MinWidth="200" Margin="20" MaxWidth="350">
-            <TextBox Text="{Binding Value1, UpdateSourceTrigger=PropertyChanged}"/>
-            <TextBox Text="{Binding Value2, UpdateSourceTrigger=PropertyChanged}"/>
-        </StackPanel>
-    </Grid>
+            </DynamicModelContent.Model>
+            <Grid>
+                <StackPanel>
+                    <TextBlock Text="{Binding}"/>
+                    <TextBlock Text="{Binding V1}"/>
+                    <TextBlock Text="{Binding V2}">
+                        <TextBlock.InputBindings>
+                            <MouseBinding MouseAction="LeftClick" Command="{Binding}"/>
+                        </TextBlock.InputBindings>
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+        </DynamicModelContent>
+    </DockPanel>
 </Window>

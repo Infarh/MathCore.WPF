@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -417,7 +418,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return new SetStaticValueResult<T>(true, old_value, value, OnPropertyChanged);
     }
 
-    public static SetStaticValueResult<T> SetValue<T>(ref T? field, T? value, Func<T?, bool> value_checker, Action<string> OnPropertyChanged, [CallerMemberName] string PropertyName = null!)
+    public static SetStaticValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, Func<T?, bool> value_checker, Action<string> OnPropertyChanged, [CallerMemberName] string PropertyName = null!)
     {
         if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
         if (Equals(field, value) || !value_checker(value)) return new SetStaticValueResult<T>(false, field, value, OnPropertyChanged);
@@ -445,7 +446,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
+    protected virtual bool Set<T>([Attributes.NotNullIfNotNull("field")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value)) return false;
         field = value;
@@ -461,7 +462,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<T>(ref T? field, T? value, out T? OldValue, [CallerMemberName] string PropertyName = null!)
+    protected virtual bool Set<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, out T? OldValue, [CallerMemberName] string PropertyName = null!)
     {
         OldValue = field;
         if (Equals(field, value)) return false;
@@ -471,7 +472,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     }
 
     [NotifyPropertyChangedInvocator]
-    protected virtual SetValueResult<T> SetValue<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
+    protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value)) return new SetValueResult<T>(false, field, field, this);
         var old_value = field;
@@ -481,7 +482,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     }
 
     [NotifyPropertyChangedInvocator]
-    protected virtual SetValueResult<T> SetValue<T>(ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
+    protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value) || !value_checker(value))
             return new SetValueResult<T>(false, field, value, this);
@@ -739,7 +740,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     [NotifyPropertyChangedInvocator]
     protected virtual bool Set<TField, TValue>(
-        ref TField? field,
+        [Attributes.NotNullIfNotNull("value")] ref TField? field,
         TValue? value,
         Func<TValue?, TField?> converter,
         [CallerMemberName] string PropertyName = null!) =>
@@ -753,7 +754,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     protected virtual bool Set<T>(
-        ref T? field,
+        [Attributes.NotNullIfNotNull("value")] ref T? field,
         T? value,
         Func<T?, bool> ValueChecker,
         [CallerMemberName] string PropertyName = null!) =>
@@ -770,7 +771,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     [NotifyPropertyChangedInvocator]
     protected virtual bool Set<TField, TValue>(
-        ref TField? field,
+        [Attributes.NotNullIfNotNull("value")] ref TField? field,
         TValue? value,
         Func<TValue?, TField?> converter,
         Func<TField?, bool> ValueChecker,
@@ -785,7 +786,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     protected virtual bool Set<T>(
-        ref T? field,
+        [Attributes.NotNullIfNotNull("value")] ref T? field,
         T? value,
         bool UpdateCommandsState,
         [CallerMemberName] string PropertyName = null!)
@@ -802,7 +803,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="value">Новое значение свойства</param>
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Задача, возвращающая истину, если свойство изменило своё значение</returns>
-    protected virtual ValueTask<bool> SetAsync<T>(ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
+    protected virtual ValueTask<bool> SetAsync<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value)) return new ValueTask<bool>(false);
         field = value;
@@ -835,7 +836,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     public void Dispose()
     {
         Dispose(true);
-        GC.SuppressFinalize(this);
+        //GC.SuppressFinalize(this);
     }
 
     /// <summary>Признак того, что объект уже уничтожен</summary>
