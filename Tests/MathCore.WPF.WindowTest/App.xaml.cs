@@ -16,7 +16,6 @@ namespace MathCore.WPF.WindowTest
 
         public static IServiceProvider Services => Host.Services;
 
-
         protected override async void OnStartup(StartupEventArgs e)
         {
             var host = Host;

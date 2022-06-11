@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -51,7 +50,8 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     protected virtual void PropertyChanged_RemoveHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
 
     /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
-    public static bool IsDesignMode { get; set; } = LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+    //public static bool IsDesignMode { get; set; } = LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+    public static bool IsDesignMode { get; set; } = DesignerProperties.GetIsInDesignMode(new());
 
     private readonly object _PropertiesDependenciesSyncRoot = new();
 
@@ -446,7 +446,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="PropertyName">Имя свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<T>([Attributes.NotNullIfNotNull("field")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
+    protected virtual bool Set<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value)) return false;
         field = value;

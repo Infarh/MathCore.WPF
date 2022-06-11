@@ -31,7 +31,7 @@ namespace MathCore.WPF.TeX
                     bidiLevel: 0,
                     isSideways: false,
                     renderingEmSize: Character.Size * scale,
-#if NET5_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#if NET47 || NET48 || NET5_0_OR_GREATER || NETCOREAPP3_1_OR_GREATER
                     pixelsPerDip: 96,
 #endif
                     glyphIndices: new[] { glyph_index },
@@ -43,6 +43,8 @@ namespace MathCore.WPF.TeX
                     clusterMap: null,
                     caretStops: null,
                     language: null);
+
+
 
             Context.DrawGlyphRun(Foreground ?? Brushes.Black, glyph_run);
         }

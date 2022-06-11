@@ -13,7 +13,7 @@ namespace MathCore.WPF.TeX
 
         public ReadOnlyCollection<Box> Children => childrenReadOnly;
 
-        public Brush Foreground { get; set; }
+        public Brush? Foreground { get; set; }
 
         public Brush Background { get; set; }
 
@@ -26,6 +26,7 @@ namespace MathCore.WPF.TeX
         public double Depth { get; set; }
 
         public double Shift { get; set; }
+
         internal Box(TexEnvironment environment) : this(environment.Foreground, environment.Background) { }
 
         protected Box() : this(null, null) { }

@@ -61,4 +61,6 @@ public class TestWindow1ViewModel : TitledViewModel
     public string Value2 { get => _Value2; set => Set(ref _Value2, value); }
 
     #endregion
+
+    public bool IsInDesignTime { get; } = IsDesignMode;
 }
