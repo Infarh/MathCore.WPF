@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 
+using MathCore.WPF.Dialogs;
 using MathCore.WPF.ViewModels;
 using MathCore.WPF.Views.Windows;
 
@@ -15,13 +16,13 @@ namespace MathCore.WPF.Services
     public class UserDialogService : IUserDialogBase
     {
         /// <summary>Активное окно приложения</summary>
-        protected static Window? ActiveWindow => Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsActive);
+        public static Window? ActiveWindow => Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsActive);
 
         /// <summary>Окно с фокусом ввода</summary>
-        protected static Window? FocusedWindow => Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsFocused);
+        public static Window? FocusedWindow => Application.Current.Windows.Cast<Window>().FirstOrDefault(w => w.IsFocused);
 
         /// <summary>Текущее окно приложения</summary>
-        protected static Window? CurrentWindow => FocusedWindow ?? ActiveWindow;
+        public static Window? CurrentWindow => FocusedWindow ?? ActiveWindow;
 
         /// <summary>Открыть диалога выбора файла для чтения</summary>
         /// <param name="Title">Заголовок диалогового окна</param>
@@ -135,38 +136,7 @@ namespace MathCore.WPF.Services
         /// }
         /// </code>
         /// </example>
-        public virtual IProgressInfo Progress(string Title, string Status, string? Information = null)
-        {
-            var progress_model = new ProgressViewModel(Title)
-            {
-                StatusValue = Status,
-                InformationValue = Information
-            };
-            var current_window = CurrentWindow;
-            var progress_view = new ProgressDialogWindow
-            {
-                DataContext = progress_model,
-                Owner = current_window
-            };
-            void OnDisposed(object? s, EventArgs e)
-            {
-                if (progress_view.Dispatcher.CheckAccess())
-                    progress_view.Close();
-                else
-                    progress_view.Dispatcher.Invoke(() => OnDisposed(s, e));
-            }
-
-            progress_model.Disposed += OnDisposed;
-            progress_view.Closing += (s, e) => e.Cancel = ((Window)s).DataContext is ProgressViewModel
-            {
-                IsDisposed: false,
-                Cancellable: false,
-            };
-            progress_view.Closed += (_, _) => progress_model.CancelCommand.Execute(default);
-            progress_view.Show();
-
-            return progress_model;
-        }
+        public virtual IProgressInfo Progress(string Title, string Status, string? Information = null) => ProgressDialog.Show(Title, Status, Information);
 
         /// <summary>Запрос ввода текста</summary>
         /// <param name="Caption">Текст в окне диалога</param>

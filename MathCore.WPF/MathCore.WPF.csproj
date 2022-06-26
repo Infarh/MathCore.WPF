@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.34.3</Version>
+    <Version>0.0.35</Version>
     <PackageReleaseNotes>
-      Динамическая модель-представления DynamicModel
+      Диалог прогресса
     </PackageReleaseNotes>
   </PropertyGroup>
 

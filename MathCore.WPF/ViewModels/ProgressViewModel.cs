@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -25,6 +23,14 @@ namespace MathCore.WPF.ViewModels
         {
             if (!_IsDisposed)
                 Cancelled?.Invoke(this, e ?? EventArgs.Empty);
+        }
+
+        public event EventHandler? ShowDialog;
+
+        public virtual void OnShowDialog(EventArgs? e)
+        {
+            if (!_IsDisposed)
+                ShowDialog?.Invoke(this, e ?? EventArgs.Empty);
         }
 
         public ProgressViewModel() { }
@@ -125,6 +131,8 @@ namespace MathCore.WPF.ViewModels
                 return _Cancellation!.Token;
             }
         }
+
+        public void Show() => OnShowDialog(EventArgs.Empty);
 
         #region IsDisposed : bool - Модель разрушена
 
