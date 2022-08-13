@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.35</Version>
+    <Version>0.0.36</Version>
     <PackageReleaseNotes>
-      Диалог прогресса
+      Исправление конвертеров
     </PackageReleaseNotes>
   </PropertyGroup>
 

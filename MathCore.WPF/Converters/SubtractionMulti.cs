@@ -1,4 +1,5 @@
-﻿using System.Windows.Markup;
+﻿using System.Globalization;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,31 +8,21 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(SubtractionMulti))]
-public class SubtractionMulti : MultiDoubleValueValueConverter
+public class SubtractionMulti : MultiValueValueConverter
 {
-    /// <inheritdoc />
-    protected override double Convert(double[]? vv)
+    protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
-        if (vv is not { Length: > 0 and var length } values)
-            return double.NaN;
+        if (vv is null) return null;
+        if (vv.Length == 1 && vv[0] is null) return double.NaN;
 
-        var result = values[0];
+        var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
 
-        for (var i = 0; i < length; i++)
-            result -= values[i];
+        for (var i = 1; i < vv.Length; i++)
+        {
+            if (vv[i] is null) return double.NaN;
+            v -= vv[i] is double dv ? dv : System.Convert.ToDouble(vv[i]);
+        }
 
-        return result;
+        return v;
     }
-}
-
-[MarkupExtensionReturnType(typeof(TemperatureF2C))]
-public class TemperatureF2C : Linear
-{
-    public TemperatureF2C() : base(1.8, 32) { }
-}
-
-[MarkupExtensionReturnType(typeof(TemperatureC2F))]
-public class TemperatureC2F : Linear
-{
-    public TemperatureC2F() : base(1 / 1.8, - 32 / 1.8) { }
 }
