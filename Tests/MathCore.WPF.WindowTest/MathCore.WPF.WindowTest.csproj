@@ -11,12 +11,21 @@
 
   <ItemGroup>
     <Using Include="System" />
-    <Using Include="System.Threading.Tasks"/>
+    <Using Include="System.Threading.Tasks" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <NoWarn>
+      0219;0649;
+      1701;1702;
+      8601;8602;8604;8607;8618;8619;8622;8625;8632;
+      8794
+    </NoWarn>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
-    <PackageReference Include="MathCore" Version="0.0.79.1" />
+    <PackageReference Include="MathCore" Version="0.0.80" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="OxyPlot.Contrib.Wpf" Version="2.1.0" />
