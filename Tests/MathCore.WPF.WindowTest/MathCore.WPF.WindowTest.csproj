@@ -14,6 +14,15 @@
     <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <NoWarn>
+      0219;0649;
+      1701;1702;
+      8601;8602;8604;8607;8618;8619;8622;8625;8632;
+      8794
+    </NoWarn>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="MathCore" Version="0.0.80" />

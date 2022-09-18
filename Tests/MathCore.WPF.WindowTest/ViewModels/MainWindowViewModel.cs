@@ -54,7 +54,11 @@ namespace MathCore.WPF.WindowTest.ViewModels
         private static bool CanTestCommandExecute(object? p) => true;
 
         /// <summary>Логика выполнения - Тестовая команда</summary>
-        private async Task OnTestCommandExecuted(object? p) => Status = $"Test {DateTime.Now:hh:mm:ss.ffff}";
+        private Task OnTestCommandExecuted(object? p)
+        {
+            Status = $"Test {DateTime.Now:hh:mm:ss.ffff}";
+            return Task.CompletedTask;
+        }
 
         #endregion
 
