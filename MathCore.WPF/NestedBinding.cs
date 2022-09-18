@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -12,6 +7,7 @@ namespace MathCore.WPF;
 
 [Copyright("adeptuss", url = "https://habr.com/ru/post/277157/")]
 [ContentProperty(nameof(Bindings))]
+[MarkupExtensionReturnType(typeof(object))]
 public class NestedBinding : MarkupExtension
 {
     public NestedBinding() => Bindings = new Collection<BindingBase>();

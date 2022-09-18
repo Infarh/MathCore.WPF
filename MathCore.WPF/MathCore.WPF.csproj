@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.36</Version>
+    <Version>0.0.37</Version>
     <PackageReleaseNotes>
-      Исправление конвертеров
+      Обноление пакетов
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -33,12 +33,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="System"/>
-    <Using Include="System.Threading.Tasks"/>
+    <Using Include="System" />
+    <Using Include="System.Threading.Tasks" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.79.1" />
+    <PackageReference Include="MathCore" Version="0.0.80" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
