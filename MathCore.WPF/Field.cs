@@ -29,8 +29,10 @@ namespace MathCore.WPF
 
         #endregion
 
+        /// <summary>Инициализация нового поля</summary>
         public Field() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
+        /// <summary>При изменении поля</summary>
         private void OnCollectionChanged(object Sender, NotifyCollectionChangedEventArgs E)
         {
             switch (E.Action)
