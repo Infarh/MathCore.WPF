@@ -11,9 +11,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.37</Version>
+    <Version>0.0.37.1</Version>
     <PackageReleaseNotes>
-      Обноление пакетов
+      Обновление пакетов
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.80" />
+    <PackageReference Include="MathCore" Version="0.0.80.1" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
@@ -50,6 +50,7 @@
     <DocumentationFile></DocumentationFile>
     <NoWarn>
       0436;
+      1570;
       8600;8601;8602;8603;8604;8605;8612;8618;8619;8620;8621;8622;8625;8629;
       8714;8765;8767;8768;8769
     </NoWarn>
@@ -58,7 +59,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
     <NoWarn>
-      1573;1574;
+      1570;1573;1574;
       1701;1702;8618;1591;
       0436;
       8600;8601;8602;8603;8604;8605;8606;8607;8612;8618;8619;8620;8621;8622;8625;8629;
