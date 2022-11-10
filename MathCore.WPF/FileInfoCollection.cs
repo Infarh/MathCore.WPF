@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
 
-namespace MathCore.WPF
-{
-    [Serializable]
-    public class FileInfoCollection : ObservableCollection<FileInfo> { }
-}
+namespace MathCore.WPF;
+
+[Serializable]
+public class FileInfoCollection : ObservableCollection<FileInfo> { }

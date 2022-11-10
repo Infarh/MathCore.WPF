@@ -26,18 +26,15 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgStrokeLinejoin
-  {
+//****************************************************************************
+enum SvgStrokeLinejoin
+{
 
     Miter,
     Round,
     Bevel,
     Inherit
 
-  } // enum SvgStrokeLinejoin
-
-}
+} // enum SvgStrokeLinejoin

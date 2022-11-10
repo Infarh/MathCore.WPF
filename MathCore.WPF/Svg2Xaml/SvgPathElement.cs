@@ -29,32 +29,27 @@
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;path&gt; element.
-  /// </summary>
-  class SvgPathElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;path&gt; element.</summary>
+class SvgPathElement
     : SvgDrawableBaseElement
-  {
+{
     //==========================================================================
     public readonly string Data;
     
     //==========================================================================
-    public SvgPathElement(SvgDocument document, SvgBaseElement parent, XElement pathElement)
-      : base(document, parent, pathElement)
+    public SvgPathElement(SvgDocument document, SvgBaseElement parent, XElement PathElement)
+        : base(document, parent, PathElement)
     {
-      var d_attribute = pathElement.Attribute("d");
-      if(d_attribute != null)
-        Data = d_attribute.Value;
-      else
-        Data = null;
+        var d_attribute = PathElement.Attribute("d");
+        if(d_attribute != null)
+            Data = d_attribute.Value;
+        else
+            Data = null;
     }
 
     //==========================================================================
     public override Geometry GetBaseGeometry() => Geometry.Parse(Data).Clone();
-  } // class SvgPathElement
-
-}
+} // class SvgPathElement

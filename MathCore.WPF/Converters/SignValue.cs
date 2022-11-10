@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;

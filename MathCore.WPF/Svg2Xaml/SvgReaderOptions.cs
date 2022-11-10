@@ -29,38 +29,33 @@
 
 using System.Windows.Media.Effects;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>
+///   Defines a set of options to customize rendering repspectively reading 
+///   of SVG documents.
+/// </summary>
+public class SvgReaderOptions
 {
 
-  //****************************************************************************
-  /// <summary>
-  ///   Defines a set of options to customize rendering repspectively reading 
-  ///   of SVG documents.
-  /// </summary>
-  public class SvgReaderOptions
-  {
+    //==========================================================================
+    private bool _MIgnoreEffects;
 
     //==========================================================================
-    private bool m_IgnoreEffects;
-
-    //==========================================================================
-    /// <summary>
-    ///   Initializes a new <see cref="SvgReaderOptions"/> instance.
-    /// </summary>
+    /// <summary>  Initializes a new <see cref="SvgReaderOptions"/> instance.</summary>
     public SvgReaderOptions()
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
-    /// <summary>
-    ///   Initializes a new <see cref="SvgReaderOptions"/> instance.
-    /// </summary>
-    /// <param name="ignoreEffects">
+    /// <summary>  Initializes a new <see cref="SvgReaderOptions"/> instance.</summary>
+    /// <param name="IgnoreEffects">
     ///   Specifies whether filter effects should be applied using WPF bitmap 
     ///   effects.
     /// </param>
-    public SvgReaderOptions(bool ignoreEffects) => m_IgnoreEffects = ignoreEffects;
+    public SvgReaderOptions(bool IgnoreEffects) => _MIgnoreEffects = IgnoreEffects;
 
     //==========================================================================
     /// <summary>
@@ -69,11 +64,9 @@ namespace MathCore.WPF.SVG
     /// </summary>
     public bool IgnoreEffects 
     {
-      get => m_IgnoreEffects;
+        get => _MIgnoreEffects;
 
-        set => m_IgnoreEffects = value;
+        set => _MIgnoreEffects = value;
     }
 
-  } // class SvgReaderOptions
-
-}
+} // class SvgReaderOptions

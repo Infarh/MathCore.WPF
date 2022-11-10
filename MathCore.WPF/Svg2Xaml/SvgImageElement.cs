@@ -26,23 +26,20 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.IO;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;image&gt; element.
-  /// </summary>
-  class SvgImageElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;image&gt; element.</summary>
+class SvgImageElement
     : SvgDrawableBaseElement
-  {
+{
     //==========================================================================
     public readonly SvgCoordinate Y = new(0.0);
     public readonly SvgCoordinate X = new(0.0);
@@ -54,92 +51,92 @@ namespace MathCore.WPF.SVG
     public readonly byte[] Data;
 
     //==========================================================================
-    public SvgImageElement(SvgDocument document, SvgBaseElement parent, XElement imageElement)
-      : base(document, parent, imageElement)
+    public SvgImageElement(SvgDocument document, SvgBaseElement parent, XElement ImageElement)
+        : base(document, parent, ImageElement)
     {
-      var x_attribute = imageElement.Attribute("x");
-      if(x_attribute != null)
-        X = SvgCoordinate.Parse(x_attribute.Value);
+        var x_attribute = ImageElement.Attribute("x");
+        if(x_attribute != null)
+            X = SvgCoordinate.Parse(x_attribute.Value);
 
-      var y_attribute = imageElement.Attribute("y");
-      if(y_attribute != null)
-        Y = SvgCoordinate.Parse(y_attribute.Value);
+        var y_attribute = ImageElement.Attribute("y");
+        if(y_attribute != null)
+            Y = SvgCoordinate.Parse(y_attribute.Value);
 
-      var width_attribute = imageElement.Attribute("width");
-      if(width_attribute != null)
-        Width = SvgLength.Parse(width_attribute.Value);
+        var width_attribute = ImageElement.Attribute("width");
+        if(width_attribute != null)
+            Width = SvgLength.Parse(width_attribute.Value);
 
-      var height_attribute = imageElement.Attribute("height");
-      if(height_attribute != null)
-        Height = SvgLength.Parse(height_attribute.Value);
+        var height_attribute = ImageElement.Attribute("height");
+        if(height_attribute != null)
+            Height = SvgLength.Parse(height_attribute.Value);
 
-      var href_attribute = imageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
-      if(href_attribute != null)
-      {
-        var reference = href_attribute.Value.TrimStart();
-        if(reference.StartsWith("data:"))
+        var href_attribute = ImageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
+        if(href_attribute != null)
         {
-          reference = reference.Substring(5).TrimStart();
-          var index = reference.IndexOf(";");
-          if(index > -1)
-          {
-            var type = reference.Substring(0, index).Trim();
-            reference = reference.Substring(index + 1);
-
-            index = reference.IndexOf(",");
-            var encoding = reference.Substring(0, index).Trim();
-            reference = reference.Substring(index + 1).TrimStart();
-
-            switch(encoding)
-            { 
-              case "base64":
-                Data = Convert.FromBase64String(reference);
-                break;
-
-              default:
-                throw new NotSupportedException($"Unsupported encoding: {encoding}");
-            }
-
-            var type_tokens = type.Split('/');
-            if(type_tokens.Length != 2)
-              throw new NotSupportedException($"Unsupported type: {type}");
-
-            type_tokens[0] = type_tokens[0].Trim();
-            if(type_tokens[0] != "image")
-              throw new NotSupportedException($"Unsupported type: {type}");
-
-            switch(type_tokens[1].Trim())
+            var reference = href_attribute.Value.TrimStart();
+            if(reference.StartsWith("data:"))
             {
-              case "jpeg":
-                DataType = "jpeg";
-                break;
+                reference = reference[5..].TrimStart();
+                var index = reference.IndexOf(";", StringComparison.Ordinal);
+                if(index > -1)
+                {
+                    var type = reference[..index].Trim();
+                    reference = reference[(index + 1)..];
 
-              case "png":
-                DataType = "png";
-                break;
+                    index = reference.IndexOf(",", StringComparison.Ordinal);
+                    var encoding = reference[..index].Trim();
+                    reference = reference[(index + 1)..].TrimStart();
 
-              default:
-                throw new NotSupportedException($"Unsupported type: {type}");
+                    switch(encoding)
+                    { 
+                        case "base64":
+                            Data = Convert.FromBase64String(reference);
+                            break;
+
+                        default:
+                            throw new NotSupportedException($"Unsupported encoding: {encoding}");
+                    }
+
+                    var type_tokens = type.Split('/');
+                    if(type_tokens.Length != 2)
+                        throw new NotSupportedException($"Unsupported type: {type}");
+
+                    type_tokens[0] = type_tokens[0].Trim();
+                    if(type_tokens[0] != "image")
+                        throw new NotSupportedException($"Unsupported type: {type}");
+
+                    switch(type_tokens[1].Trim())
+                    {
+                        case "jpeg":
+                            DataType = "jpeg";
+                            break;
+
+                        case "png":
+                            DataType = "png";
+                            break;
+
+                        default:
+                            throw new NotSupportedException($"Unsupported type: {type}");
+                    }
+                }
             }
-          }
         }
-      }
     }
 
     //==========================================================================
     public override Drawing GetBaseDrawing()
     {
-      if(Data is null)
-        return null;
+        if(Data is null)
+            return null;
 
-      var temp_file = Path.GetTempFileName();
-      using(var file_stream = new FileStream(temp_file, FileMode.Create, FileAccess.Write))
-      using(var writer = new BinaryWriter(file_stream))
-        writer.Write(Data);
+        var temp_file = Path.GetTempFileName();
+        using(var file_stream = new FileStream(temp_file, FileMode.Create, FileAccess.Write))
+        using(var writer = new BinaryWriter(file_stream))
+            writer.Write(Data);
 
-      return new ImageDrawing(new BitmapImage(new Uri(temp_file)), new Rect(
-        new Point(X.ToDouble(), Y.ToDouble()),
-        new Size(Width.ToDouble(), Height.ToDouble())
+        return new ImageDrawing(new BitmapImage(new Uri(temp_file)), new Rect(
+            new Point(X.ToDouble(), Y.ToDouble()),
+            new Size(Width.ToDouble(), Height.ToDouble())
         ));
     }
 
@@ -147,7 +144,5 @@ namespace MathCore.WPF.SVG
     public override Geometry GetBaseGeometry() => new RectangleGeometry(new Rect(
         new Point(X.ToDouble(), Y.ToDouble()),
         new Size(Width.ToDouble(), Height.ToDouble())
-        ));
-  } // class SvgImageElement
-
-}
+    ));
+} // class SvgImageElement

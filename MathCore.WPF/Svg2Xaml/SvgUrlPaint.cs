@@ -26,36 +26,28 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgUrlPaint
+//****************************************************************************
+class SvgUrlPaint
     : SvgPaint
-  {
+{
     public readonly string Url;
     
     //==========================================================================
     public SvgUrlPaint(string url) => Url = url;
 
     //==========================================================================
-    public override Brush ToBrush(SvgBaseElement element)
-    {
-      if (!element.Document.Elements.ContainsKey(Url))
-        return null;
-
-      var reference = element.Document.Elements[Url];
-      if (reference is SvgGradientBaseElement)
-        return (reference as SvgGradientBaseElement).ToBrush();
-      else if (reference is SvgPatternElement)
-        return (reference as SvgPatternElement).ToBrush();
-
-      throw new NotImplementedException();
-    }
-
-  } // class SvgUrlPaint
-
-}
+    public override Brush ToBrush(SvgBaseElement element) =>
+        !element.Document.Elements.ContainsKey(Url)
+            ? null
+            : element.Document.Elements[Url] switch
+            {
+                SvgGradientBaseElement base_element => base_element.ToBrush(),
+                SvgPatternElement pattern_element   => pattern_element.ToBrush(),
+                _                                   => throw new NotImplementedException()
+            };
+} // class SvgUrlPaint

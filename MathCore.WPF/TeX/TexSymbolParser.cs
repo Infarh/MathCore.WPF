@@ -1,57 +1,55 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Xml.Linq;
 
 // Parse definitions of symbols from XML files.
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+internal class TexSymbolParser
 {
-    internal class TexSymbolParser
+    private static readonly Dictionary<string, TexAtomType> __TypeMappings;
+
+    static TexSymbolParser()
     {
-        private static readonly Dictionary<string, TexAtomType> typeMappings;
+        __TypeMappings = new Dictionary<string, TexAtomType>();
 
-        static TexSymbolParser()
+        SetTypeMappings();
+    }
+
+    private static void SetTypeMappings()
+    {
+        __TypeMappings.Add("ord", TexAtomType.Ordinary);
+        __TypeMappings.Add("op", TexAtomType.BigOperator);
+        __TypeMappings.Add("bin", TexAtomType.BinaryOperator);
+        __TypeMappings.Add("rel", TexAtomType.Relation);
+        __TypeMappings.Add("open", TexAtomType.Opening);
+        __TypeMappings.Add("close", TexAtomType.Closing);
+        __TypeMappings.Add("punct", TexAtomType.Punctuation);
+        __TypeMappings.Add("acc", TexAtomType.Accent);
+    }
+
+    private readonly XElement _RootElement;
+
+    public TexSymbolParser()
+    {
+        var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(
+            $"{TexUtilities.ResourcesStylesNamespace}TexSymbols.xml"));
+        _RootElement = doc.Root;
+    }
+
+    public Dictionary<string, SymbolAtom> GetSymbols()
+    {
+        var result = new Dictionary<string, SymbolAtom>();
+
+        foreach(var symbol_element in _RootElement.Elements("Symbol"))
         {
-            typeMappings = new Dictionary<string, TexAtomType>();
+            var symbol_name        = symbol_element.AttributeValue("name");
+            var symbol_type        = symbol_element.AttributeValue("type");
+            var symbol_is_delimeter = symbol_element.AttributeBooleanValue("del", false);
 
-            SetTypeMappings();
+            result.Add(symbol_name, new SymbolAtom(symbol_name, __TypeMappings[symbol_type],
+                symbol_is_delimeter));
         }
 
-        private static void SetTypeMappings()
-        {
-            typeMappings.Add("ord", TexAtomType.Ordinary);
-            typeMappings.Add("op", TexAtomType.BigOperator);
-            typeMappings.Add("bin", TexAtomType.BinaryOperator);
-            typeMappings.Add("rel", TexAtomType.Relation);
-            typeMappings.Add("open", TexAtomType.Opening);
-            typeMappings.Add("close", TexAtomType.Closing);
-            typeMappings.Add("punct", TexAtomType.Punctuation);
-            typeMappings.Add("acc", TexAtomType.Accent);
-        }
-
-        private readonly XElement rootElement;
-
-        public TexSymbolParser()
-        {
-            var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                $"{TexUtilities.ResourcesStylesNamespace}TexSymbols.xml"));
-            rootElement = doc.Root;
-        }
-
-        public Dictionary<string, SymbolAtom> GetSymbols()
-        {
-            var result = new Dictionary<string, SymbolAtom>();
-
-            foreach(var symbolElement in rootElement.Elements("Symbol"))
-            {
-                var symbolName = symbolElement.AttributeValue("name");
-                var symbolType = symbolElement.AttributeValue("type");
-                var symbolIsDelimeter = symbolElement.AttributeBooleanValue("del", false);
-
-                result.Add(symbolName, new SymbolAtom(symbolName, typeMappings[symbolType],
-                    symbolIsDelimeter));
-            }
-
-            return result;
-        }
+        return result;
     }
 }

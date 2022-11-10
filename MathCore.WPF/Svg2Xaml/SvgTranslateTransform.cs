@@ -26,41 +26,38 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Globalization;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgTranslateTransform
+//****************************************************************************
+class SvgTranslateTransform
     : SvgTransform
-  {
+{
     public readonly double X;
     public readonly double Y;
     
     //==========================================================================
     public SvgTranslateTransform(double x, double y)
     {
-      X = x;
-      Y = y;
+        X = x;
+        Y = y;
     }
 
     //==========================================================================
     public override Transform ToTransform() => new TranslateTransform(X, Y);
 
-      //==========================================================================
+    //==========================================================================
     public static new SvgTranslateTransform Parse(string transform)
     {
-      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-      if(tokens.Length != 2)
-        throw new FormatException("A translate transformation must have two values");
+        var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        if(tokens.Length != 2)
+            throw new FormatException("A translate transformation must have two values");
 
-      return new SvgTranslateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
-                                       double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+        return new SvgTranslateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+            double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat));
     }
 
-  } // class SvgTranslateTransform
-
-}
+} // class SvgTranslateTransform

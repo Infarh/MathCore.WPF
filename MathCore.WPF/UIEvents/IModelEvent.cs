@@ -1,11 +1,8 @@
-﻿using System;
+﻿namespace MathCore.WPF.UIEvents;
 
-namespace MathCore.WPF.UIEvents
+public interface IModelEvent
 {
-    public interface IModelEvent
-    {
-        event EventHandler<ModelEventArgs> Event;
+    event EventHandler<ModelEventArgs> Event;
 
-        void Invoke(object? parameter = null);
-    }
+    void Invoke(object? parameter = null);
 }

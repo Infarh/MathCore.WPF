@@ -73,7 +73,7 @@ public static class FrameworkElementExtensions
 
         element.PreviewMouseUp += OnMouseUp;
 
-        timer.Tick += (s, e) =>
+        timer.Tick += (_, _) =>
         {
             timer.Start();
             element.PreviewMouseUp -= OnMouseUp;
@@ -90,7 +90,7 @@ public static class FrameworkElementExtensions
         {
             var actual_width = element.ActualWidth;
             var actual_height = element.ActualHeight;
-            if (element is Image || element is MediaElement)
+            if (element is Image or MediaElement)
                 if (element.Parent is Canvas)
                 {
                     actual_width = double.IsNaN(element.Width) ? actual_width : element.Width;

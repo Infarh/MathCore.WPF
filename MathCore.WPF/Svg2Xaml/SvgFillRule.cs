@@ -27,16 +27,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgFillRule
-  {   
+//****************************************************************************
+enum SvgFillRule
+{   
     Nonzero, 
     Evenodd,
     Inherit
 
-  } // enum SvgFillRule
-
-}
+} // enum SvgFillRule

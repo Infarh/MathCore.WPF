@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;

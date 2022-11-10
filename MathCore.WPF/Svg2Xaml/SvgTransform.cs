@@ -26,126 +26,119 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
+
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  abstract class SvgTransform
-  {
+//****************************************************************************
+abstract class SvgTransform
+{
 
     //==========================================================================
     public static SvgTransform Parse(string value)
     {
-      if(value is null)
-        throw new ArgumentNullException("value");
+        if(value is null)
+            throw new ArgumentNullException(nameof(value));
       
-      value = value.Trim();
-      if(value == "")
-        throw new ArgumentException("value must not be empty", "value");
+        value = value.Trim();
+        if(value == "")
+            throw new ArgumentException("value must not be empty", nameof(value));
 
-      var transforms = new List<SvgTransform>();
+        var transforms = new List<SvgTransform>();
 
-      var transform = value;
-      while(transform.Length > 0)
-      {
-
-        if(transform.StartsWith("translate"))
+        var transform = value;
+        while(transform.Length > 0)
         {
-          transform = transform.Substring(9).TrimStart();
-          if(transform.StartsWith("("))
-          {
-            transform = transform.Substring(1);
-            var index = transform.IndexOf(")");
-            if(index >= 0)
+
+            if(transform.StartsWith("translate"))
             {
-              transforms.Add(SvgTranslateTransform.Parse(transform.Substring(0, index).Trim()));
-              transform = transform.Substring(index + 1).TrimStart();
-              continue;
+                transform = transform[9..].TrimStart();
+                if(transform.StartsWith("("))
+                {
+                    transform = transform[1..];
+                    var index = transform.IndexOf(")", StringComparison.Ordinal);
+                    if(index >= 0)
+                    {
+                        transforms.Add(SvgTranslateTransform.Parse(transform[..index].Trim()));
+                        transform = transform[(index + 1)..].TrimStart();
+                        continue;
+                    }
+                }
             }
-          }
-        }
           
-        if(transform.StartsWith("matrix"))
-        {
-          transform = transform.Substring(6).TrimStart();
-          if(transform.StartsWith("("))
-          {
-            transform = transform.Substring(1);
-            var index = transform.IndexOf(")");
-            if(index >= 0)
+            if(transform.StartsWith("matrix"))
             {
-              transforms.Add(SvgMatrixTransform.Parse(transform.Substring(0, index).Trim()));
-              transform = transform.Substring(index + 1).TrimStart();
-              continue;
+                transform = transform[6..].TrimStart();
+                if(transform.StartsWith("("))
+                {
+                    transform = transform[1..];
+                    var index = transform.IndexOf(")", StringComparison.Ordinal);
+                    if(index >= 0)
+                    {
+                        transforms.Add(SvgMatrixTransform.Parse(transform[..index].Trim()));
+                        transform = transform[(index + 1)..].TrimStart();
+                        continue;
+                    }
+                }
             }
-          }
+
+            if(transform.StartsWith("scale"))
+            {
+                transform = transform[5..].TrimStart();
+                if(transform.StartsWith("("))
+                {
+                    transform = transform[1..];
+                    var index = transform.IndexOf(")", StringComparison.Ordinal);
+                    if(index >= 0)
+                    {
+                        transforms.Add(SvgScaleTransform.Parse(transform[..index].Trim()));
+                        transform = transform[(index + 1)..].TrimStart();
+                        continue;
+                    }
+                }
+            }
+
+            if(transform.StartsWith("skew"))
+            {
+                transform = transform[5..].TrimStart();
+                if(transform.StartsWith("("))
+                {
+                    transform = transform[1..];
+                    var index = transform.IndexOf(")", StringComparison.Ordinal);
+                    if(index >= 0)
+                    {
+                        transforms.Add(SvgSkewTransform.Parse(transform[..index].Trim()));
+                        transform = transform[(index + 1)..].TrimStart();
+                        continue;
+                    }
+                }
+            }
+
+            if(transform.StartsWith("rotate"))
+            {
+                transform = transform[6..].TrimStart();
+                if (!transform.StartsWith("(")) continue;
+
+                transform = transform[1..];
+                var index = transform.IndexOf(")", StringComparison.Ordinal);
+                if (index < 0) continue;
+
+                transforms.Add(SvgScaleTransform.Parse(transform[..index].Trim()));
+                transform = transform[(index + 1)..].TrimStart();
+            }
+
         }
 
-        if(transform.StartsWith("scale"))
+        return transforms.Count switch
         {
-          transform = transform.Substring(5).TrimStart();
-          if(transform.StartsWith("("))
-          {
-            transform = transform.Substring(1);
-            var index = transform.IndexOf(")");
-            if(index >= 0)
-            {
-              transforms.Add(SvgScaleTransform.Parse(transform.Substring(0, index).Trim()));
-              transform = transform.Substring(index + 1).TrimStart();
-              continue;
-            }
-          }
-        }
-
-        if(transform.StartsWith("skew"))
-        {
-          transform = transform.Substring(5).TrimStart();
-          if(transform.StartsWith("("))
-          {
-            transform = transform.Substring(1);
-            var index = transform.IndexOf(")");
-            if(index >= 0)
-            {
-              transforms.Add(SvgSkewTransform.Parse(transform.Substring(0, index).Trim()));
-              transform = transform.Substring(index + 1).TrimStart();
-              continue;
-            }
-          }
-        }
-
-        if(transform.StartsWith("rotate"))
-        {
-          transform = transform.Substring(6).TrimStart();
-          if(transform.StartsWith("("))
-          {
-            transform = transform.Substring(1);
-            var index = transform.IndexOf(")");
-            if(index >= 0)
-            {
-              transforms.Add(SvgScaleTransform.Parse(transform.Substring(0, index).Trim()));
-              transform = transform.Substring(index + 1).TrimStart();
-              continue;
-            }
-          }
-        }
-
-      }
-
-      if(transforms.Count == 1)
-        return transforms[0];
-      else if(transforms.Count > 1)
-        return new SvgTransformGroup(transforms.ToArray());
-
-      throw new ArgumentException($"Unsupported transform value: {value}");
+            1   => transforms[0],
+            > 1 => new SvgTransformGroup(transforms.ToArray()),
+            _   => throw new ArgumentException($"Unsupported transform value: {value}")
+        };
     }
 
     //==========================================================================
     public abstract Transform ToTransform();
 
-  } // class Transform
-
-}
+} // class Transform

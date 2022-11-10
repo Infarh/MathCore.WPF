@@ -26,208 +26,204 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 using System.Windows.Media.Imaging;
 using System.Windows;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;mask&gt; element.</summary>
+class SvgMaskElement
+    : SvgContainerBaseElement
 {
 
-    //****************************************************************************
-    /// <summary>
-    ///   Represents a &lt;mask&gt; element.
-    /// </summary>
-    class SvgMaskElement
-      : SvgContainerBaseElement
+    //==========================================================================
+    public readonly SvgMaskUnits MaskUnits = SvgMaskUnits.ObjectBoundingBox;
+
+    //==========================================================================
+    public SvgMaskElement(SvgDocument document, SvgBaseElement parent, XElement MaskElement)
+        : base(document, parent, MaskElement)
     {
-
-        //==========================================================================
-        public readonly SvgMaskUnits MaskUnits = SvgMaskUnits.ObjectBoundingBox;
-
-        //==========================================================================
-        public SvgMaskElement(SvgDocument document, SvgBaseElement parent, XElement maskElement)
-          : base(document, parent, maskElement)
-        {
-            var mask_units_attribute = maskElement.Attribute("maskUnits");
-            if (mask_units_attribute != null)
-                switch (mask_units_attribute.Value)
-                {
-                    case "objectBoundingBox":
-                        MaskUnits = SvgMaskUnits.ObjectBoundingBox;
-                        break;
-
-                    case "userSpaceOnUse":
-                        MaskUnits = SvgMaskUnits.UserSpaceOnUse;
-                        break;
-
-                    default:
-                        throw new NotImplementedException($"maskUnits value '{mask_units_attribute.Value}' is no supported");
-                }
-        }
-
-        //==========================================================================
-        public Geometry GetClipGeometry()
-        {
-            var geometry_group = new GeometryGroup();
-
-            foreach (var child_element in Children)
+        var mask_units_attribute = MaskElement.Attribute("maskUnits");
+        if (mask_units_attribute != null)
+            switch (mask_units_attribute.Value)
             {
-                var element = child_element;
-                if (element is SvgUseElement)
-                    element = (element as SvgUseElement).GetElement();
+                case "objectBoundingBox":
+                    MaskUnits = SvgMaskUnits.ObjectBoundingBox;
+                    break;
 
-                if (element is SvgDrawableBaseElement)
+                case "userSpaceOnUse":
+                    MaskUnits = SvgMaskUnits.UserSpaceOnUse;
+                    break;
+
+                default:
+                    throw new NotImplementedException($"maskUnits value '{mask_units_attribute.Value}' is no supported");
+            }
+    }
+
+    //==========================================================================
+    public Geometry GetClipGeometry()
+    {
+        var geometry_group = new GeometryGroup();
+
+        foreach (var child_element in Children)
+        {
+            var element = child_element;
+            if (element is SvgUseElement use_element)
+                element = use_element.GetElement();
+
+            if (element is SvgDrawableBaseElement base_element)
+            {
+                var geometry = base_element.GetBaseGeometry();
+                if (geometry != null)
                 {
-                    var geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
-                    if (geometry != null)
+                    if (base_element.Transform != null)
                     {
-                        if ((element as SvgDrawableBaseElement).Transform != null)
-                        {
-                            geometry.Transform = (element as SvgDrawableBaseElement).Transform.ToTransform();
-                        }
-                        geometry_group.Children.Add(geometry);
+                        geometry.Transform = base_element.Transform.ToTransform();
                     }
+                    geometry_group.Children.Add(geometry);
                 }
-                else
-                    throw new NotImplementedException();
             }
-
-            return geometry_group;
+            else
+                throw new NotImplementedException();
         }
 
-        //==========================================================================
-        private static Color ConvertColor(Color color)
-        {
-            var max = Math.Max(Math.Max(color.ScR, color.ScG), color.ScB);
-            var min = Math.Min(Math.Min(color.ScR, color.ScG), color.ScB);
+        return geometry_group;
+    }
 
-            return Color.FromScRgb((min + max) / 2, 0, 0, 0);
-        }
+    //==========================================================================
+    private static Color ConvertColor(Color color)
+    {
+        var max = Math.Max(Math.Max(color.ScR, color.ScG), color.ScB);
+        var min = Math.Min(Math.Min(color.ScR, color.ScG), color.ScB);
 
-        //==========================================================================
-        private static void ConvertColors(Brush brush)
+        return Color.FromScRgb((min + max) / 2, 0, 0, 0);
+    }
+
+    //==========================================================================
+    private static void ConvertColors(Brush brush)
+    {
+        if (brush != null)
         {
-            if (brush != null)
+
+            if (brush is SolidColorBrush color_brush)
             {
-
-                if (brush is SolidColorBrush)
-                {
-                    (brush as SolidColorBrush).Color = ConvertColor((brush as SolidColorBrush).Color);
-                }
-                else if (brush is GradientBrush)
-                {
-                    foreach (var gradient_stop in (brush as GradientBrush).GradientStops)
-                        gradient_stop.Color = ConvertColor(gradient_stop.Color);
-                }
-                else if (brush is DrawingBrush)
-                {
-                    ConvertColors((brush as DrawingBrush).Drawing);
-                }
-                else
-                    throw new NotSupportedException();
-
+                color_brush.Color = ConvertColor(color_brush.Color);
             }
-        }
-
-        //==========================================================================
-        private static void ConvertColors(Pen pen)
-        {
-            if (pen != null)
-                ConvertColors(pen.Brush);
-        }
-
-        //==========================================================================
-        private static void ConvertColors(Drawing drawing)
-        {
-            switch (drawing)
+            else if (brush is GradientBrush gradient_brush)
             {
-                case DrawingGroup drawing_group:
+                foreach (var gradient_stop in gradient_brush.GradientStops)
+                    gradient_stop.Color = ConvertColor(gradient_stop.Color);
+            }
+            else if (brush is DrawingBrush drawing_brush)
+            {
+                ConvertColors(drawing_brush.Drawing);
+            }
+            else
+                throw new NotSupportedException();
+
+        }
+    }
+
+    //==========================================================================
+    private static void ConvertColors(Pen pen)
+    {
+        if (pen != null)
+            ConvertColors(pen.Brush);
+    }
+
+    //==========================================================================
+    private static void ConvertColors(Drawing drawing)
+    {
+        switch (drawing)
+        {
+            case DrawingGroup drawing_group:
+            {
+                foreach (var child_drawing in drawing_group.Children)
+                    ConvertColors(child_drawing);
+                break;
+            }
+            case GeometryDrawing geometry_drawing:
+                ConvertColors(geometry_drawing.Brush);
+                ConvertColors(geometry_drawing.Pen);
+                break;
+            case ImageDrawing { ImageSource: BitmapSource } image_drawing:
+                if (image_drawing.ImageSource is BitmapSource bitmap_source)
                 {
-                    foreach (var child_drawing in drawing_group.Children)
-                        ConvertColors(child_drawing);
-                    break;
-                }
-                case GeometryDrawing geometry_drawing:
-                    ConvertColors(geometry_drawing.Brush);
-                    ConvertColors(geometry_drawing.Pen);
-                    break;
-                case ImageDrawing { ImageSource: BitmapSource } image_drawing:
-                    if (image_drawing.ImageSource is BitmapSource bitmap_source)
+                    var bitmap = new WriteableBitmap(
+                        bitmap_source.PixelWidth, bitmap_source.PixelHeight, bitmap_source.DpiX, bitmap_source.DpiY, PixelFormats.Bgra32, null);
+
+                    var pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * 4];
+                    bitmap_source.CopyPixels(pixels, (bitmap_source.PixelWidth * bitmap_source.Format.BitsPerPixel + 7) / 8, 0);
+
+                    for (var i = 0; i < pixels.Length; i += 4)
                     {
-                        var bitmap = new WriteableBitmap(
-                            bitmap_source.PixelWidth, bitmap_source.PixelHeight, bitmap_source.DpiX, bitmap_source.DpiY, PixelFormats.Bgra32, null);
+                        var r = pixels[i + 0];
+                        var g = pixels[i + 1];
+                        var b = pixels[i + 2];
 
-                        var pixels = new byte[bitmap.PixelWidth * bitmap.PixelHeight * 4];
-                        bitmap_source.CopyPixels(pixels, (bitmap_source.PixelWidth * bitmap_source.Format.BitsPerPixel + 7) / 8, 0);
+                        var max = Math.Max(Math.Max(r, g), b);
+                        var min = Math.Min(Math.Min(r, g), b);
 
-                        for (var i = 0; i < pixels.Length; i += 4)
-                        {
-                            var r = pixels[i + 0];
-                            var g = pixels[i + 1];
-                            var b = pixels[i + 2];
+                        var a = (byte)(((int)min + (int)max) / 2);
 
-                            var max = Math.Max(Math.Max(r, g), b);
-                            var min = Math.Min(Math.Min(r, g), b);
-
-                            var a = (byte)(((int)min + (int)max) / 2);
-
-                            pixels[i + 3] = a;
-                        }
-
-                        bitmap.WritePixels(
-                            new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixels,
-                            (bitmap.PixelWidth * bitmap.Format.BitsPerPixel + 7) / 8, 0);
-
-                        image_drawing.ImageSource = bitmap;
+                        pixels[i + 3] = a;
                     }
 
-                    break;
-                case ImageDrawing { ImageSource: DrawingImage } image_drawing:
-                    ConvertColors((image_drawing.ImageSource as DrawingImage).Drawing);
-                    break;
-                case ImageDrawing: throw new NotSupportedException();
-                default: throw new NotSupportedException();
-            }
-        }
+                    bitmap.WritePixels(
+                        new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixels,
+                        (bitmap.PixelWidth * bitmap.Format.BitsPerPixel + 7) / 8, 0);
 
-        //==========================================================================
-        public DrawingBrush? GetOpacityMask()
+                    image_drawing.ImageSource = bitmap;
+                }
+
+                break;
+            case ImageDrawing { ImageSource: DrawingImage } image_drawing:
+                ConvertColors((image_drawing.ImageSource as DrawingImage).Drawing);
+                break;
+            case ImageDrawing: throw new NotSupportedException();
+            default:           throw new NotSupportedException();
+        }
+    }
+
+    //==========================================================================
+    public DrawingBrush? GetOpacityMask()
+    {
+        var drawing_group = new DrawingGroup();
+
+        foreach (var child_element in Children)
         {
-            var drawing_group = new DrawingGroup();
+            var element = child_element;
+            if (element is SvgUseElement use_element)
+                element = use_element.GetElement();
 
-            foreach (var child_element in Children)
+            var drawing = element switch
             {
-                var element = child_element;
-                if (element is SvgUseElement use_element)
-                    element = use_element.GetElement();
+                SvgDrawableBaseElement drawable_base_element => drawable_base_element.Draw(),
+                SvgDrawableContainerBaseElement base_element => base_element.Draw(),
+                _                                            => null
+            };
 
-                var drawing = element switch
-                {
-                    SvgDrawableBaseElement drawable_base_element => drawable_base_element.Draw(),
-                    SvgDrawableContainerBaseElement base_element => base_element.Draw(),
-                    _ => null
-                };
-
-                if (drawing != null)
-                    drawing_group.Children.Add(drawing);
-            }
-
-            if (drawing_group.Children.Count == 0)
-                return null;
-
-            foreach (var drawing in drawing_group.Children)
-                ConvertColors(drawing);
-
-
-            var brush = new DrawingBrush(drawing_group);
-
-            if (MaskUnits != SvgMaskUnits.UserSpaceOnUse) return brush;
-            brush.ViewportUnits = BrushMappingMode.Absolute;
-            brush.Viewport = drawing_group.Bounds;
-
-            return brush;
+            if (drawing != null)
+                drawing_group.Children.Add(drawing);
         }
-    } // class SvgMaskElement
-}
+
+        if (drawing_group.Children.Count == 0)
+            return null;
+
+        foreach (var drawing in drawing_group.Children)
+            ConvertColors(drawing);
+
+
+        var brush = new DrawingBrush(drawing_group);
+
+        if (MaskUnits != SvgMaskUnits.UserSpaceOnUse) return brush;
+        brush.ViewportUnits = BrushMappingMode.Absolute;
+        brush.Viewport      = drawing_group.Bounds;
+
+        return brush;
+    }
+} // class SvgMaskElement

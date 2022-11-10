@@ -26,83 +26,80 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  abstract class SvgGradientBaseElement
+//****************************************************************************
+abstract class SvgGradientBaseElement
     : SvgBaseElement
-  {
+{
     //==========================================================================
     public readonly List<SvgStopElement> Stops = new();
 
     //==========================================================================
     public readonly SvgGradientUnits GradientUnits = SvgGradientUnits.ObjectBoundingBox;
     public readonly SvgSpreadMethod SpreadMethod = SvgSpreadMethod.Pad;
-    public readonly SvgTransform Transform;
+    public readonly SvgTransform? Transform;
     
     //==========================================================================
-    public SvgGradientBaseElement(SvgDocument document, SvgBaseElement parent, XElement gradientElement)
-      : base(document, parent, gradientElement)
+    public SvgGradientBaseElement(SvgDocument document, SvgBaseElement parent, XElement GradientElement)
+        : base(document, parent, GradientElement)
     {
 
-      var gradient_units_attribute = gradientElement.Attribute("gradientUnits");
-      if(gradient_units_attribute != null)
-        switch(gradient_units_attribute.Value)
-        {
-          case "objectBoundingBox":
-            GradientUnits = SvgGradientUnits.ObjectBoundingBox;
-            break;
+        var gradient_units_attribute = GradientElement.Attribute("gradientUnits");
+        if(gradient_units_attribute != null)
+            switch(gradient_units_attribute.Value)
+            {
+                case "objectBoundingBox":
+                    GradientUnits = SvgGradientUnits.ObjectBoundingBox;
+                    break;
 
-          case "userSpaceOnUse":
-            GradientUnits = SvgGradientUnits.UserSpaceOnUse;
-            break;
+                case "userSpaceOnUse":
+                    GradientUnits = SvgGradientUnits.UserSpaceOnUse;
+                    break;
 
-          default:
-            throw new NotImplementedException($"gradientUnits value '{gradient_units_attribute.Value}' is no supported");
-        }
+                default:
+                    throw new NotImplementedException($"gradientUnits value '{gradient_units_attribute.Value}' is no supported");
+            }
 
-      var gradient_transform_attribute = gradientElement.Attribute("gradientTransform");
-      if(gradient_transform_attribute != null)
-        Transform = SvgTransform.Parse(gradient_transform_attribute.Value);
+        var gradient_transform_attribute = GradientElement.Attribute("gradientTransform");
+        if(gradient_transform_attribute != null)
+            Transform = SvgTransform.Parse(gradient_transform_attribute.Value);
 
-      var spread_method_attribute = gradientElement.Attribute("spreadMethod");
-      if(spread_method_attribute != null)
-       switch(spread_method_attribute.Value)
-       {
-         case "pad":
-           SpreadMethod = SvgSpreadMethod.Pad;
-           break;
+        var spread_method_attribute = GradientElement.Attribute("spreadMethod");
+        if(spread_method_attribute != null)
+            switch(spread_method_attribute.Value)
+            {
+                case "pad":
+                    SpreadMethod = SvgSpreadMethod.Pad;
+                    break;
 
-         case "reflect":
-           SpreadMethod = SvgSpreadMethod.Reflect;
-           break;
+                case "reflect":
+                    SpreadMethod = SvgSpreadMethod.Reflect;
+                    break;
 
-         case "repeat":
-           SpreadMethod = SvgSpreadMethod.Repeat;
-           break;
-       }
+                case "repeat":
+                    SpreadMethod = SvgSpreadMethod.Repeat;
+                    break;
+            }
 
 
 
-      foreach(var element in from element in gradientElement.Elements()
-                             where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
-                             select element)
-        switch(element.Name.LocalName)
-        {
-          case "stop":
-            Stops.Add(new SvgStopElement(Document, this, element));
-            break;
+        foreach(var element in from element in GradientElement.Elements()
+                               where element.Name.NamespaceName == "http://www.w3.org/2000/svg"
+                               select element)
+            switch(element.Name.LocalName)
+            {
+                case "stop":
+                    Stops.Add(new SvgStopElement(Document, this, element));
+                    break;
 
-          default:
-            throw new NotImplementedException($"Unhandled element: {element}");
-        }
+                default:
+                    throw new NotImplementedException($"Unhandled element: {element}");
+            }
     }
 
     //==========================================================================
@@ -111,58 +108,55 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     protected virtual GradientBrush SetBrush(GradientBrush brush)
     {
-      switch(SpreadMethod)
-      {
-        case SvgSpreadMethod.Pad:
-          brush.SpreadMethod = GradientSpreadMethod.Pad;
-          break;
+        switch(SpreadMethod)
+        {
+            case SvgSpreadMethod.Pad:
+                brush.SpreadMethod = GradientSpreadMethod.Pad;
+                break;
 
-        case SvgSpreadMethod.Reflect:
-          brush.SpreadMethod = GradientSpreadMethod.Reflect;
-          break;
+            case SvgSpreadMethod.Reflect:
+                brush.SpreadMethod = GradientSpreadMethod.Reflect;
+                break;
 
-        case SvgSpreadMethod.Repeat:
-          brush.SpreadMethod = GradientSpreadMethod.Repeat;
-          break;
-      }
+            case SvgSpreadMethod.Repeat:
+                brush.SpreadMethod = GradientSpreadMethod.Repeat;
+                break;
+        }
 
-      switch(GradientUnits)
-      {
-        case SvgGradientUnits.ObjectBoundingBox:
-          brush.MappingMode = BrushMappingMode.RelativeToBoundingBox;
-          break;
+        switch(GradientUnits)
+        {
+            case SvgGradientUnits.ObjectBoundingBox:
+                brush.MappingMode = BrushMappingMode.RelativeToBoundingBox;
+                break;
 
-        case SvgGradientUnits.UserSpaceOnUse:
-          brush.MappingMode = BrushMappingMode.Absolute;
-          break;
-      }
+            case SvgGradientUnits.UserSpaceOnUse:
+                brush.MappingMode = BrushMappingMode.Absolute;
+                break;
+        }
 
-      if(Transform != null)
-        brush.Transform = Transform.ToTransform();
+        if(Transform != null)
+            brush.Transform = Transform.ToTransform();
 
-      foreach(var stop in Stops)
-        brush.GradientStops.Add(stop.ToGradientStop());
+        foreach(var stop in Stops)
+            brush.GradientStops.Add(stop.ToGradientStop());
 
-      return brush;
+        return brush;
     }
 
     //==========================================================================
     public GradientBrush ToBrush()
     {
-      var brush = CreateBrush();
+        var brush = CreateBrush();
 
-      if(Reference != null)
-      {
+        if (Reference == null) return SetBrush(brush);
         if (!Document.Elements.ContainsKey(Reference))
-          return null;
+            return null;
 
-        if(!(Document.Elements[Reference] is SvgGradientBaseElement reference))
-          throw new NotImplementedException();
+        if(Document.Elements[Reference] is not SvgGradientBaseElement reference)
+            throw new NotImplementedException();
         reference.SetBrush(brush);
-      }
-      return SetBrush(brush);
+
+        return SetBrush(brush);
     }
 
-  } // class SvgGradientBaseElement
-
-}
+} // class SvgGradientBaseElement

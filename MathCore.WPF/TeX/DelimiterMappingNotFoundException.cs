@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+public class DelimiterMappingNotFoundException : Exception
 {
-    public class DelimiterMappingNotFoundException : Exception
+    internal DelimiterMappingNotFoundException(char delimiter)
+        : base($"Cannot find delimeter mapping for the character '{delimiter}'.")
     {
-        internal DelimiterMappingNotFoundException(char delimiter)
-            : base($"Cannot find delimeter mapping for the character '{delimiter}'.")
-        {
-        }
     }
 }

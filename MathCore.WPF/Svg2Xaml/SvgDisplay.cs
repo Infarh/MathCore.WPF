@@ -27,12 +27,11 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgDisplay
-  {   
+//****************************************************************************
+enum SvgDisplay
+{   
     Inline, 
     Block,
     ListItem,
@@ -52,6 +51,4 @@ namespace MathCore.WPF.SVG
     None,
     Inherit
 
-  } // enum SvgDisplay
-
-}
+} // enum SvgDisplay

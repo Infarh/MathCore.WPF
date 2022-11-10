@@ -20,7 +20,7 @@ public class LambdaCommandAsync : Command
             CanExecute is null ? null : _ => CanExecute!())
     { }
 
-    public LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<bool>? CanExecute = null)
+    public LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<bool>? CanExecute)
         : this(ExecuteAsync, CanExecute is null ? null : _ => CanExecute!())
     { }
 

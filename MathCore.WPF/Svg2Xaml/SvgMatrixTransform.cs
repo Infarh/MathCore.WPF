@@ -26,17 +26,16 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Globalization;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgMatrixTransform
+//****************************************************************************
+class SvgMatrixTransform
     : SvgTransform
-  {
+{
     //==========================================================================
     public readonly double M11;
     public readonly double M12;
@@ -46,34 +45,32 @@ namespace MathCore.WPF.SVG
     public readonly double OffsetY;
 
     //==========================================================================
-    public SvgMatrixTransform(double m11, double m12, double m21, double m22, double offsetX, double offsetY)
+    public SvgMatrixTransform(double m11, double m12, double m21, double m22, double OffsetX, double OffsetY)
     {
-      M11 = m11;
-      M12 = m12;
-      M21 = m21;
-      M22 = m22;
-      OffsetX = offsetX;
-      OffsetY = offsetY;
+        M11          = m11;
+        M12          = m12;
+        M21          = m21;
+        M22          = m22;
+        this.OffsetX = OffsetX;
+        this.OffsetY = OffsetY;
     }
 
     //==========================================================================
     public override Transform ToTransform() => new MatrixTransform(M11, M12, M21, M22, OffsetX, OffsetY);
 
-      //==========================================================================
+    //==========================================================================
     public static new SvgMatrixTransform Parse(string transform)
     {
-      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
-      if(tokens.Length == 6)
-        return new SvgMatrixTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
-                                      double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat),
-                                      double.Parse(tokens[2].Trim(), CultureInfo.InvariantCulture.NumberFormat),
-                                      double.Parse(tokens[3].Trim(), CultureInfo.InvariantCulture.NumberFormat), 
-                                      double.Parse(tokens[4].Trim(), CultureInfo.InvariantCulture.NumberFormat), 
-                                      double.Parse(tokens[5].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+        var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        if(tokens.Length == 6)
+            return new SvgMatrixTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+                double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+                double.Parse(tokens[2].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+                double.Parse(tokens[3].Trim(), CultureInfo.InvariantCulture.NumberFormat), 
+                double.Parse(tokens[4].Trim(), CultureInfo.InvariantCulture.NumberFormat), 
+                double.Parse(tokens[5].Trim(), CultureInfo.InvariantCulture.NumberFormat));
 
-      throw new ArgumentException();
+        throw new ArgumentException();
     }
 
-  } // class SvgMatrixTransform
-
-}
+} // class SvgMatrixTransform

@@ -26,50 +26,26 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+class SvgUrl
 {
-
-  //****************************************************************************
-  class SvgURL
-  {
-
     //==========================================================================
     public readonly string Id;
-    
-    //==========================================================================
-    public SvgURL(string id) => Id = id;
 
     //==========================================================================
-    public static SvgURL Parse(string value)
+    public SvgUrl(string id) => Id = id;
+
+    //==========================================================================
+    public static SvgUrl Parse(string value) => value switch
     {
-      if(value is null)
-        throw new ArgumentNullException("value");
+        ['u', 'r', 'l', .. { Length: > 0 } ss] when ss.Trim() is ['(', .. { Length: > 0 } qq, ')'] && qq is ['#', .. { Length: > 0 } url] => new(url),
 
-      value = value.Trim();
-
-      if(value == "none")
-        return null;
-
-      if(value == "")
-        throw new ArgumentException("value must not be empty.");
-
-      if(value.StartsWith("url"))
-      {
-        value = value.Substring(3).Trim();
-        if(value.StartsWith("(") && value.EndsWith(")"))
-        {
-          value = value.Substring(1, value.Length - 2).Trim();
-          if(value.StartsWith("#"))
-            return new SvgURL(value.Substring(1));
-        }
-      }
-
-      throw new ArgumentException($"Unsupported URL value: {value}");
-    }
-
-
-  } // class SvgURL
-
-}
+        "none" => null,
+        ""     => throw new ArgumentException("value must not be empty."),
+        null   => throw new ArgumentNullException(nameof(value)),
+        _      => throw new ArgumentException($"Unsupported URL value: {value}")
+    };
+} // class SvgURL

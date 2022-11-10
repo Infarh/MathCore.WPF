@@ -28,100 +28,94 @@
 ////////////////////////////////////////////////////////////////////////////////
 using System.Xml.Linq;
 using System.Windows.Media;
-using System;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;pattern&gt; element.
-  /// </summary>
-  class SvgPatternElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;pattern&gt; element.</summary>
+class SvgPatternElement
     : SvgDrawableContainerBaseElement
-  {
+{
     //==========================================================================
-    public readonly SvgTransform PatternTransform;
+    public readonly SvgTransform? PatternTransform;
     public readonly SvgPatternUnits PatternUnits =  SvgPatternUnits.ObjectBoundingBox;
-    public readonly SvgLength Width;
-    public readonly SvgLength Height;
+    public readonly SvgLength? Width;
+    public readonly SvgLength? Height;
 
     //==========================================================================
-    public SvgPatternElement(SvgDocument document, SvgBaseElement parent, XElement patternElement)
-      : base(document, parent, patternElement)
+    public SvgPatternElement(SvgDocument document, SvgBaseElement parent, XElement PatternElement)
+        : base(document, parent, PatternElement)
     {
-      var pattern_transform_attribute = patternElement.Attribute("patternTransform");
-      if(pattern_transform_attribute != null)
-        PatternTransform = SvgTransform.Parse(pattern_transform_attribute.Value);
+        var pattern_transform_attribute = PatternElement.Attribute("patternTransform");
+        if(pattern_transform_attribute != null)
+            PatternTransform = SvgTransform.Parse(pattern_transform_attribute.Value);
 
-      var pattern_units_attribute = patternElement.Attribute("patternUnits");
-      if(pattern_units_attribute != null)
-        switch(pattern_units_attribute.Value)
-        {
-          case "objectBoundingBox":
-            PatternUnits = SvgPatternUnits.ObjectBoundingBox;
-            break;
+        var pattern_units_attribute = PatternElement.Attribute("patternUnits");
+        if(pattern_units_attribute != null)
+            switch(pattern_units_attribute.Value)
+            {
+                case "objectBoundingBox":
+                    PatternUnits = SvgPatternUnits.ObjectBoundingBox;
+                    break;
 
-          case "userSpaceOnUse":
-            PatternUnits = SvgPatternUnits.UserSpaceOnUse;
-            break;
+                case "userSpaceOnUse":
+                    PatternUnits = SvgPatternUnits.UserSpaceOnUse;
+                    break;
 
-          default:
-            throw new NotImplementedException($"patternUnits value '{pattern_units_attribute.Value}' is no supported");
-        }
+                default:
+                    throw new NotImplementedException($"patternUnits value '{pattern_units_attribute.Value}' is no supported");
+            }
 
-      var width_attribute = patternElement.Attribute("width");
-      if(width_attribute != null)
-        Width = SvgLength.Parse(width_attribute.Value);
+        var width_attribute = PatternElement.Attribute("width");
+        if(width_attribute != null)
+            Width = SvgLength.Parse(width_attribute.Value);
 
-      var height_attribute = patternElement.Attribute("height");
-      if(height_attribute != null)
-        Height = SvgLength.Parse(height_attribute.Value);
+        var height_attribute = PatternElement.Attribute("height");
+        if(height_attribute != null)
+            Height = SvgLength.Parse(height_attribute.Value);
 
     }
 
     //==========================================================================
     public DrawingBrush ToBrush()
     {
-      DrawingBrush brush = null;
+        DrawingBrush brush;
 
-      if(Reference is null)
-        brush = new DrawingBrush(Draw());
-      else
-      {
-        var element = Document.Elements[Reference];
-        if(element is SvgPatternElement)
-          brush = (element as SvgPatternElement).ToBrush();
+        if(Reference is null)
+            brush = new DrawingBrush(Draw());
         else
-          throw new NotSupportedException("Other references than patterns are not supported");
-      }
+        {
+            if(Document.Elements[Reference] is SvgPatternElement pattern_element)
+                brush = pattern_element.ToBrush();
+            else
+                throw new NotSupportedException("Other references than patterns are not supported");
+        }
 
-      if(brush is null)
-        return null;
+        //if(brush is null)
+        //    return null;
 
-      if((Width != null) || (Height != null))
-      {
-        var width = brush.Drawing.Bounds.Width;
-        var height = brush.Drawing.Bounds.Height;
-      }
+        if((Width != null) || (Height != null))
+        {
+            var width  = brush.Drawing.Bounds.Width;
+            var height = brush.Drawing.Bounds.Height;
+        }
 
-      if(PatternUnits == SvgPatternUnits.UserSpaceOnUse)
-      {
-        brush.ViewportUnits = BrushMappingMode.Absolute;
-        brush.Viewport = brush.Drawing.Bounds;
-      }
+        if(PatternUnits == SvgPatternUnits.UserSpaceOnUse)
+        {
+            brush.ViewportUnits = BrushMappingMode.Absolute;
+            brush.Viewport      = brush.Drawing.Bounds;
+        }
 
-      if(PatternTransform != null)
-      {
-        var drawing_group = new DrawingGroup();
-        drawing_group.Transform = PatternTransform.ToTransform();
-        drawing_group.Children.Add(brush.Drawing);
+        if (PatternTransform == null) return brush;
+
+        var drawing_group = new DrawingGroup
+        {
+            Transform = PatternTransform.ToTransform(),
+            Children = { brush.Drawing }
+        };
         brush.Drawing = drawing_group;
-      }
 
-      return brush;
+        return brush;
     }
 
-  } // class SvgPatternElement
-
-}
+} // class SvgPatternElement

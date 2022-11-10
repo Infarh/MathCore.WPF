@@ -28,24 +28,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;switch&gt; element.
-  /// </summary>
-  class SvgSwitchElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;switch&gt; element.</summary>
+class SvgSwitchElement
     : SvgContainerBaseElement
-  {
+{
     //==========================================================================
-    public SvgSwitchElement(SvgDocument document, SvgBaseElement parent, XElement svgElement)
-      : base(document, parent, svgElement)
+    public SvgSwitchElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
+        : base(document, parent, SvgElement)
     {
-      // ...
+        // ...
     }
 
 
-  } // class SvgSwitchElement
-
-}
+} // class SvgSwitchElement

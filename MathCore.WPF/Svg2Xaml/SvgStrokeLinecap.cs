@@ -26,18 +26,15 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgStrokeLinecap
-  {
+//****************************************************************************
+enum SvgStrokeLinecap
+{
 
     Butt,
     Round,
     Square,
     Inherit
 
-  } // enum SvgStrokeLinecap
-
-}
+} // enum SvgStrokeLinecap

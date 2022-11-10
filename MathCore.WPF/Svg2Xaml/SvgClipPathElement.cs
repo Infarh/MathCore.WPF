@@ -30,52 +30,52 @@
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;clipPath&gt; element.
-  /// </summary>
-  class SvgClipPathElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;clipPath&gt; element.</summary>
+class SvgClipPathElement
     : SvgContainerBaseElement
-  {
+{
     //==========================================================================
-    public SvgClipPathElement(SvgDocument document, SvgBaseElement parent, XElement clipPathElement)
-      : base(document, parent, clipPathElement)
+    public SvgClipPathElement(SvgDocument document, SvgBaseElement parent, XElement ClipPathElement)
+        : base(document, parent, ClipPathElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public Geometry GetClipGeometry()
     {
-      var geometry_group = new GeometryGroup();
+        var geometry_group = new GeometryGroup();
 
-      foreach(var child_element in Children)
-      {
-        var element = child_element;
-        if(element is SvgUseElement)
-          element = (element as SvgUseElement).GetElement();
-
-
-        if(element is SvgDrawableBaseElement)
+        foreach(var child_element in Children)
         {
-          var geometry = (element as SvgDrawableBaseElement).GetGeometry();
-          if(geometry != null)
-            geometry_group.Children.Add(geometry);
-        }
-        else if(element is SvgDrawableContainerBaseElement)
-        {
-          var geometry = (element as SvgDrawableContainerBaseElement).GetGeometry();
-          if(geometry != null)
-            geometry_group.Children.Add(geometry);
-        }
-      }
+            var element = child_element;
+            if(element is SvgUseElement use_element)
+                element = use_element.GetElement();
 
-      return geometry_group;
+
+            switch (element)
+            {
+                case SvgDrawableBaseElement base_element:
+                {
+                    var geometry = base_element.GetGeometry();
+                    if(geometry != null)
+                        geometry_group.Children.Add(geometry);
+                    break;
+                }
+                case SvgDrawableContainerBaseElement container_base_element:
+                {
+                    var geometry = container_base_element.GetGeometry();
+                    if(geometry != null)
+                        geometry_group.Children.Add(geometry);
+                    break;
+                }
+            }
+        }
+
+        return geometry_group;
     }
 
-  } // class SvgClipPathElement
-
-}
+} // class SvgClipPathElement

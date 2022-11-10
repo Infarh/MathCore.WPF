@@ -27,16 +27,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgPatternUnits
-  {   
+//****************************************************************************
+enum SvgPatternUnits
+{   
 
     ObjectBoundingBox,
     UserSpaceOnUse
 
-  } // enum SvgPatternUnits
-
-}
+} // enum SvgPatternUnits

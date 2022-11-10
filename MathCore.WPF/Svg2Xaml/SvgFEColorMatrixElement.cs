@@ -30,30 +30,25 @@ using System.Windows.Media.Effects;
 using System.Xml.Linq;
 using System.Diagnostics;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;feColorMatrix&gt; element.
-  /// </summary>
-  class SvgFEColorMatrixElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;feColorMatrix&gt; element.</summary>
+class SvgFeColorMatrixElement
     : SvgFilterEffectBaseElement
-  {
+{
 
     //==========================================================================
-    public SvgFEColorMatrixElement(SvgDocument document, SvgBaseElement parent, XElement feColorMatrixElement)
-      : base(document, parent, feColorMatrixElement)
+    public SvgFeColorMatrixElement(SvgDocument document, SvgBaseElement parent, XElement FeColorMatrixElement)
+        : base(document, parent, FeColorMatrixElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public override BitmapEffect ToBitmapEffect()
     {
-      Debug.WriteLine("feColorMatrix is not supported yet!");
-      return null;
+        Debug.WriteLine("feColorMatrix is not supported yet!");
+        return null;
     }
-  } // class SvgFEColorMatrixElement
-
-}
+} // class SvgFEColorMatrixElement

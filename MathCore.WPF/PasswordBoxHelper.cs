@@ -35,7 +35,7 @@ public static class PasswordBoxHelper
         // in order to allow the GC to collect the control, we'll wrap the event handler inside an object living in an attached property
         // don't be tempted to use the Unloaded event as that will be fired  even when the control is still alive and well (e.g. switching tabs in a tab control) 
         var password_box = (PasswordBox)d;
-        if (!(password_box.GetValue(__PasswordBindingMarshallerProperty) is PasswordBindingMarshaller binding_marshaller))
+        if (password_box.GetValue(__PasswordBindingMarshallerProperty) is not PasswordBindingMarshaller binding_marshaller)
         {
             binding_marshaller = new PasswordBindingMarshaller(password_box);
             password_box.SetValue(__PasswordBindingMarshallerProperty, binding_marshaller);
@@ -44,9 +44,7 @@ public static class PasswordBoxHelper
         binding_marshaller.UpdatePasswordBox(e.NewValue as SecureString);
     }
 
-    /// <summary>
-    /// Encapsulated event logic
-    /// </summary>
+    /// <summary>Encapsulated event logic</summary>
     private class PasswordBindingMarshaller
     {
         private readonly PasswordBox _PasswordBox;

@@ -27,37 +27,33 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgTransformGroup
+//****************************************************************************
+class SvgTransformGroup
     : SvgTransform
-  {
+{
     //==========================================================================
     public readonly List<SvgTransform> Transforms = new();
 
     //==========================================================================
     public SvgTransformGroup(SvgTransform[] transforms)
     {
-      foreach(var transform in transforms)
-        Transforms.Add(transform);
+        foreach(var transform in transforms)
+            Transforms.Add(transform);
     }
 
     //==========================================================================
     public override Transform ToTransform()
     {
-      var transform_group = new TransformGroup();
+        var transform_group = new TransformGroup();
 
-      foreach(var transform in Transforms)
-        transform_group.Children.Add(transform.ToTransform());
+        foreach(var transform in Transforms)
+            transform_group.Children.Add(transform.ToTransform());
 
-      return transform_group;
+        return transform_group;
     }
 
-  } // class SvgTransformGroup
-
-}
+} // class SvgTransformGroup

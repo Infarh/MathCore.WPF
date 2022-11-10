@@ -1,30 +1,28 @@
-﻿using System;
-using System.Windows.Markup;
+﻿using System.Windows.Markup;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace MathCore.WPF
+namespace MathCore.WPF;
+
+public class EnumValues : MarkupExtension
 {
-    public class EnumValues : MarkupExtension
+    private Type? _Type;
+    public Type? Type
     {
-        private Type? _Type;
-        public Type? Type
+        get => _Type;
+        set
         {
-            get => _Type;
-            set
-            {
-                if (value is { IsEnum: false }) throw new ArgumentException("Тип не является перечислением", nameof(value));
-                _Type = value;
-            }
+            if (value is { IsEnum: false }) throw new ArgumentException("Тип не является перечислением", nameof(value));
+            _Type = value;
         }
-
-        public EnumValues() { }
-
-        public EnumValues(Type type)
-        {
-            if (!type.IsEnum) throw new ArgumentException("Тип не является перечислением", nameof(type));
-            Type = type;
-        }
-
-        public override object? ProvideValue(IServiceProvider sp) => _Type?.GetEnumValues();
     }
+
+    public EnumValues() { }
+
+    public EnumValues(Type type)
+    {
+        if (!type.IsEnum) throw new ArgumentException("Тип не является перечислением", nameof(type));
+        Type = type;
+    }
+
+    public override object? ProvideValue(IServiceProvider sp) => _Type?.GetEnumValues();
 }

@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+public class SymbolNotFoundException : Exception
 {
-    public class SymbolNotFoundException : Exception
+    internal SymbolNotFoundException(string SymbolName)
+        : base($"Cannot find symbol with the name '{SymbolName}'.")
     {
-        internal SymbolNotFoundException(string symbolName)
-            : base($"Cannot find symbol with the name '{symbolName}'.")
-        {
-        }
     }
 }

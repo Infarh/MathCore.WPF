@@ -27,17 +27,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgSpreadMethod
-  {
+//****************************************************************************
+enum SvgSpreadMethod
+{
 
     Pad,
     Reflect,
     Repeat
 
-  } // enum SvgSpreadMethod
-
-}
+} // enum SvgSpreadMethod

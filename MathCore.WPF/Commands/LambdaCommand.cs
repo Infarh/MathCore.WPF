@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿#nullable enable
+using System.ComponentModel;
 using System.Linq.Reactive;
 using System.Windows.Markup;
 
@@ -63,12 +64,7 @@ public class LambdaCommand : Command
         [NotNull]
         get => _CanExecute;
         [CanBeNull]
-        set
-        {
-            if (ReferenceEquals(_CanExecute, value)) return;
-            _CanExecute = value ?? (_ => true);
-            OnPropertyChanged(nameof(CanExecuteDelegate));
-        }
+        set => Set(ref _CanExecute, value ?? (_ => true));
     }
 
     #endregion

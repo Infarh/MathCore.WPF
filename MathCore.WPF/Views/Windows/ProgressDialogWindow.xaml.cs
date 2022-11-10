@@ -1,7 +1,6 @@
-﻿namespace MathCore.WPF.Views.Windows
+﻿namespace MathCore.WPF.Views.Windows;
+
+public partial class ProgressDialogWindow
 {
-    public partial class ProgressDialogWindow
-    {
-        public ProgressDialogWindow() => InitializeComponent();
-    }
+    public ProgressDialogWindow() => InitializeComponent();
 }

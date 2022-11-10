@@ -26,91 +26,80 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Markup;
 using System.Windows;
 using System.IO;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  A <see cref="MarkupExtension"/> for loading SVG images.</summary>
+[MarkupExtensionReturnType(typeof(DrawingImage))]
+public class SvgImage : MarkupExtension
 {
+    //==========================================================================
 
-    //****************************************************************************
-    /// <summary>
-    ///   A <see cref="MarkupExtension"/> for loading SVG images.
-    /// </summary>
-    [MarkupExtensionReturnType(typeof(DrawingImage))]
-    public class SvgImage : MarkupExtension
+    private Uri _Uri;
+    private bool _MIgnoreEffects;
+
+    //==========================================================================
+    /// <summary>  Initializes a new <see cref="SvgImage"/> instance.</summary>
+    public SvgImage()
     {
-        //==========================================================================
+        // ...
+    }
 
-        private Uri _Uri;
-        private bool m_IgnoreEffects;
+    //==========================================================================
+    /// <summary>  Initializes a new <see cref="SvgImage"/> instance.</summary>
+    /// <param name="uri">
+    ///   The location of the SVG document.
+    /// </param>
+    public SvgImage(Uri uri) => _Uri = uri;
 
-        //==========================================================================
-        /// <summary>
-        ///   Initializes a new <see cref="SvgImage"/> instance.
-        /// </summary>
-        public SvgImage()
+    //==========================================================================
+    /// <summary>
+    ///   Overrides <see cref="MarkupExtension.ProvideValue"/> and returns the 
+    ///   <see cref="DrawingImage"/> the SVG document is rendered into.
+    /// </summary>
+    /// <param name="ServiceProvider">
+    ///   Object that can provide services for the markup extension; 
+    ///   <paramref name="ServiceProvider"/> is not used.
+    /// </param>
+    /// <returns>
+    ///   The <see cref="DrawingImage"/> the SVG image is rendered into or 
+    ///   <c>null</c> in case there has been an error while parsing or 
+    ///   rendering.
+    /// </returns>
+    public override object ProvideValue(IServiceProvider ServiceProvider)
+    {
+        Stream stream = null;
+        try
         {
-            // ...
+
+            try { stream = Application.GetResourceStream(_Uri)?.Stream; } catch (IOException) { }
+            if(stream is null && File.Exists(_Uri.ToString()))
+                stream = new FileStream(_Uri.ToString(), FileMode.Open);
+            else
+                return null;
+            return SvgReader.Load(stream, new SvgReaderOptions { IgnoreEffects = _MIgnoreEffects });
         }
-
-        //==========================================================================
-        /// <summary>
-        ///   Initializes a new <see cref="SvgImage"/> instance.
-        /// </summary>
-        /// <param name="uri">
-        ///   The location of the SVG document.
-        /// </param>
-        public SvgImage(Uri uri) => _Uri = uri;
-
-        //==========================================================================
-        /// <summary>
-        ///   Overrides <see cref="MarkupExtension.ProvideValue"/> and returns the 
-        ///   <see cref="DrawingImage"/> the SVG document is rendered into.
-        /// </summary>
-        /// <param name="serviceProvider">
-        ///   Object that can provide services for the markup extension; 
-        ///   <paramref name="serviceProvider"/> is not used.
-        /// </param>
-        /// <returns>
-        ///   The <see cref="DrawingImage"/> the SVG image is rendered into or 
-        ///   <c>null</c> in case there has been an error while parsing or 
-        ///   rendering.
-        /// </returns>
-        public override object ProvideValue(IServiceProvider serviceProvider)
+        finally
         {
-            Stream stream = null;
-            try
-            {
-
-                try { stream = Application.GetResourceStream(_Uri)?.Stream; } catch (IOException) { }
-                if(stream is null && File.Exists(_Uri.ToString()))
-                    stream = new FileStream(_Uri.ToString(), FileMode.Open);
-                else
-                    return null;
-                return SvgReader.Load(stream, new SvgReaderOptions { IgnoreEffects = m_IgnoreEffects });
-            }
-            finally
-            {
-                stream?.Dispose();
-            }
+            stream?.Dispose();
         }
+    }
 
-        //==========================================================================
-        /// <summary>
-        ///   Gets or sets the location of the SVG image.
-        /// </summary>
-        public Uri Uri { get => _Uri; set => _Uri = value; }
+    //==========================================================================
+    /// <summary>  Gets or sets the location of the SVG image.</summary>
+    public Uri Uri { get => _Uri; set => _Uri = value; }
 
-        //==========================================================================
-        /// <summary>
-        ///   Gets or sets whether SVG filter effects should be transformed into
-        ///   WPF bitmap effects.
-        /// </summary>
-        public bool IgnoreEffects { get => m_IgnoreEffects; set => m_IgnoreEffects = value; }
+    //==========================================================================
+    /// <summary>
+    ///   Gets or sets whether SVG filter effects should be transformed into
+    ///   WPF bitmap effects.
+    /// </summary>
+    public bool IgnoreEffects { get => _MIgnoreEffects; set => _MIgnoreEffects = value; }
 
-    } // class SvgImage
-
-}
+} // class SvgImage

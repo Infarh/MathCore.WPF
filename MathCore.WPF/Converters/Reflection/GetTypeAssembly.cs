@@ -1,9 +1,8 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
 using System.Windows.Markup;
-using MathCore.Annotations;
+
 using MathCore.WPF.Converters.Base;
 
 // ReSharper disable UnusedType.Global

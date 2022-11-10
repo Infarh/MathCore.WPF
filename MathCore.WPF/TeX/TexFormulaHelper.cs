@@ -1,161 +1,160 @@
-﻿namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX;
+
+internal sealed class TexFormulaHelper
 {
-    internal sealed class TexFormulaHelper
+    public TexFormulaParser FormulaParser;
+
+    public TexFormula Formula { get; }
+
+    public TexFormulaHelper(TexFormula formula)
     {
-        public TexFormulaParser FormulaParser;
-
-        public TexFormula Formula { get; }
-
-        public TexFormulaHelper(TexFormula formula)
-        {
-            FormulaParser = new TexFormulaParser();
-            Formula = formula;
-        }
-
-        public void SetFixedTypes(TexAtomType leftType, TexAtomType rightType) => Formula.RootAtom = new TypedAtom(Formula.RootAtom, leftType, rightType);
-
-        public void CenterOnAxis() => Formula.RootAtom = new VerticalCenteredAtom(Formula.RootAtom);
-
-        public void AddAccent(string formula, string accentName) => AddAccent(FormulaParser.Parse(formula), accentName);
-
-        public void AddAccent(TexFormula baseAtom, string accentName) => Add(new AccentedAtom(baseAtom?.RootAtom, accentName));
-
-        public void AddAccent(TexFormula baseAtom, TexFormula accent) => Add(new AccentedAtom(baseAtom?.RootAtom, accent));
-
-        public void AddEmbraced(string formula, char leftChar, char rightChar) =>
-            AddEmbraced(FormulaParser.Parse(formula), leftChar, rightChar);
-
-        public void AddEmbraced(TexFormula formula, char leftChar, char rightChar) =>
-            AddEmbraced(formula, TexFormulaParser.GetDelimeterMapping(leftChar), TexFormulaParser.GetDelimeterMapping(rightChar));
-
-        public void AddEmbraced(string formula, string leftSymbol, string rightSymbol) => AddEmbraced(FormulaParser.Parse(formula), leftSymbol, rightSymbol);
-
-        public void AddEmbraced(TexFormula formula, string leftSymbol, string rightSymbol) => Add(new FencedAtom(formula?.RootAtom, TexFormulaParser.GetDelimiterSymbol(leftSymbol),
-            TexFormulaParser.GetDelimiterSymbol(rightSymbol)));
-
-        public void AddFraction(string numerator, string denominator, bool drawLine) => AddFraction(FormulaParser.Parse(numerator), FormulaParser.Parse(denominator), drawLine);
-
-        public void AddFraction(string numerator, TexFormula denominator, bool drawLine) => AddFraction(FormulaParser.Parse(numerator), denominator, drawLine);
-
-        public void AddFraction(string numerator, string denominator, bool drawLine, TexAlignment numeratorAlignment,
-            TexAlignment denominatorAlignment) => AddFraction(FormulaParser.Parse(numerator), FormulaParser.Parse(denominator), drawLine, numeratorAlignment,
-                denominatorAlignment);
-
-        public void AddFraction(TexFormula numerator, string denominator, bool drawLine) => AddFraction(numerator, FormulaParser.Parse(denominator), drawLine);
-
-        public void AddFraction(TexFormula numerator, TexFormula denominator, bool drawLine) => Add(new FractionAtom(numerator?.RootAtom,
-            denominator?.RootAtom, drawLine));
-
-        public void AddFraction(TexFormula numerator, TexFormula denominator, bool drawLine,
-            TexAlignment numeratorAlignment, TexAlignment denominatorAlignment) => Add(new FractionAtom(numerator?.RootAtom,
-                denominator?.RootAtom, drawLine, numeratorAlignment, denominatorAlignment));
-
-        public void AddRadical(string baseFormula, string nthRoot) => AddRadical(FormulaParser.Parse(baseFormula), FormulaParser.Parse(nthRoot));
-
-        public void AddRadical(string baseFormula, TexFormula nthRoot) => AddRadical(FormulaParser.Parse(baseFormula), nthRoot);
-
-        public void AddRadical(string baseFormula) => AddRadical(FormulaParser.Parse(baseFormula));
-
-        public void AddRadical(TexFormula baseFormula, string degreeFormula) => AddRadical(baseFormula, FormulaParser.Parse(degreeFormula));
-
-        public void AddRadical(TexFormula baseFormula) => AddRadical(baseFormula, (TexFormula)null);
-
-        public void AddRadical(TexFormula baseFormula, TexFormula degreeFormula) => Add(new Radical(baseFormula?.RootAtom,
-            degreeFormula?.RootAtom));
-
-        public void AddOperator(string operatorFormula, string lowerLimitFormula, string upperLimitFormula) => AddOperator(FormulaParser.Parse(operatorFormula), FormulaParser.Parse(lowerLimitFormula),
-            FormulaParser.Parse(upperLimitFormula));
-
-        public void AddOperator(string operatorFormula, string lowerLimitFormula, string upperLimitFormula,
-            bool useVerticalLimits) => AddOperator(FormulaParser.Parse(operatorFormula), FormulaParser.Parse(lowerLimitFormula),
-                FormulaParser.Parse(upperLimitFormula), useVerticalLimits);
-
-        public void AddOperator(TexFormula operatorFormula, TexFormula lowerLimitFormula, TexFormula upperLimitFormula) => Add(new BigOperatorAtom(operatorFormula?.RootAtom,
-            lowerLimitFormula?.RootAtom,
-            upperLimitFormula?.RootAtom));
-
-        public void AddOperator(TexFormula operatorFormula, TexFormula lowerLimitFormula, TexFormula upperLimitFormula,
-            bool useVerticalLimits) => Add(new BigOperatorAtom(operatorFormula?.RootAtom,
-                lowerLimitFormula?.RootAtom,
-                upperLimitFormula?.RootAtom, useVerticalLimits));
-
-        public void AddPhantom(string formula) => AddPhantom(FormulaParser.Parse(formula));
-
-        public void AddPhantom(string formula, bool useWidth, bool useHeight, bool useDepth) => AddPhantom(FormulaParser.Parse(formula), useWidth, useHeight, useDepth);
-
-        public void AddPhantom(TexFormula formula) => Add(new PhantomAtom(formula?.RootAtom));
-
-        public void AddPhantom(TexFormula phantom, bool useWidth, bool useHeight, bool useDepth) => Add(new PhantomAtom(phantom?.RootAtom, useWidth, useHeight, useDepth));
-
-        public void AddStrut(TexUnit unit, double width, double height, double depth) => Add(new SpaceAtom(unit, width, height, depth));
-
-        public void AddStrut(TexUnit widthUnit, double width, TexUnit heightUnit, double height, TexUnit depthUnit,
-            double depth) => Add(new SpaceAtom(widthUnit, width, heightUnit, height, depthUnit, depth));
-
-        public void AddSymbol(string name) => Add(SymbolAtom.GetAtom(name));
-
-        public void AddSymbol(string name, TexAtomType type) => Add(new SymbolAtom(SymbolAtom.GetAtom(name), type));
-
-        public void Add(string formula) => Add(FormulaParser.Parse(formula));
-
-        public void Add(TexFormula formula) => Formula.Add(formula);
-
-        public void Add(Atom atom) => Formula.Add(atom);
-
-        public void PutAccentOver(string accentName) => Formula.RootAtom = new AccentedAtom(Formula.RootAtom, accentName);
-
-        public void PutDelimiterOver(TexDelimeter delimiter)
-        {
-            var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Over];
-            Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom, null, SymbolAtom.GetAtom(name),
-                TexUnit.Ex, 0, true);
-        }
-
-        public void PutDelimiterOver(TexDelimeter delimiter, string superscriptFormula, TexUnit kernUnit, double kern) => PutDelimiterOver(delimiter, FormulaParser.Parse(superscriptFormula), kernUnit, kern);
-
-        public void PutDelimiterOver(TexDelimeter delimiter, TexFormula superscriptFormula, TexUnit kernUnit, double kern)
-        {
-            var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Over];
-            Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom,
-                superscriptFormula?.RootAtom, SymbolAtom.GetAtom(name), kernUnit, kern,
-                true);
-        }
-
-        public void PutDelimiterUnder(TexDelimeter delimiter)
-        {
-            var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Under];
-            Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom, null, SymbolAtom.GetAtom(name),
-                TexUnit.Ex, 0, false);
-        }
-
-        public void PutDelimiterUnder(TexDelimeter delimiter, string subscriptFormula, TexUnit kernUnit, double kern) => PutDelimiterUnder(delimiter, FormulaParser.Parse(subscriptFormula), kernUnit, kern);
-
-        public void PutDelimiterUnder(TexDelimeter delimiter, TexFormula subscriptName, TexUnit kernUnit, double kern)
-        {
-            var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Under];
-            Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom,
-                subscriptName?.RootAtom, SymbolAtom.GetAtom(name), kernUnit, kern, false);
-        }
-
-        public void PutOver(TexFormula overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) =>
-            Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
-                overFormula?.RootAtom, overUnit, overSpace, overScriptSize, true);
-
-        public void PutOver(string overFormula, TexUnit overUnit, double overSpace, bool overScriptSize) => PutOver(overFormula is null ? null : FormulaParser.Parse(overFormula), overUnit, overSpace, overScriptSize);
-
-        public void PutUnder(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) => PutUnder(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
-            underScriptSize);
-
-        public void PutUnder(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize) =>
-            Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
-                underFormula?.RootAtom, underUnit, underSpace, underScriptSize, false);
-
-        public void PutUnderAndOver(string underFormula, TexUnit underUnit, double underSpace, bool underScriptSize,
-            string over, TexUnit overUnit, double overSpace, bool overScriptSize) => PutUnderAndOver(underFormula is null ? null : FormulaParser.Parse(underFormula), underUnit, underSpace,
-                underScriptSize, over is null ? null : FormulaParser.Parse(over), overUnit, overSpace, overScriptSize);
-
-        public void PutUnderAndOver(TexFormula underFormula, TexUnit underUnit, double underSpace, bool underScriptSize,
-            TexFormula over, TexUnit overUnit, double overSpace, bool overScriptSize) => Formula.RootAtom = new UnderOverAtom(Formula.RootAtom, underFormula?.RootAtom, underUnit, underSpace, underScriptSize, over?.RootAtom,
-                overUnit, overSpace, overScriptSize);
+        FormulaParser = new TexFormulaParser();
+        Formula       = formula;
     }
+
+    public void SetFixedTypes(TexAtomType LeftType, TexAtomType RightType) => Formula.RootAtom = new TypedAtom(Formula.RootAtom, LeftType, RightType);
+
+    public void CenterOnAxis() => Formula.RootAtom = new VerticalCenteredAtom(Formula.RootAtom);
+
+    public void AddAccent(string formula, string AccentName) => AddAccent(FormulaParser.Parse(formula), AccentName);
+
+    public void AddAccent(TexFormula BaseAtom, string AccentName) => Add(new AccentedAtom(BaseAtom?.RootAtom, AccentName));
+
+    public void AddAccent(TexFormula BaseAtom, TexFormula accent) => Add(new AccentedAtom(BaseAtom?.RootAtom, accent));
+
+    public void AddEmbraced(string formula, char LeftChar, char RightChar) =>
+        AddEmbraced(FormulaParser.Parse(formula), LeftChar, RightChar);
+
+    public void AddEmbraced(TexFormula formula, char LeftChar, char RightChar) =>
+        AddEmbraced(formula, TexFormulaParser.GetDelimeterMapping(LeftChar), TexFormulaParser.GetDelimeterMapping(RightChar));
+
+    public void AddEmbraced(string formula, string LeftSymbol, string RightSymbol) => AddEmbraced(FormulaParser.Parse(formula), LeftSymbol, RightSymbol);
+
+    public void AddEmbraced(TexFormula formula, string LeftSymbol, string RightSymbol) => Add(new FencedAtom(formula?.RootAtom, TexFormulaParser.GetDelimiterSymbol(LeftSymbol),
+        TexFormulaParser.GetDelimiterSymbol(RightSymbol)));
+
+    public void AddFraction(string numerator, string denominator, bool DrawLine) => AddFraction(FormulaParser.Parse(numerator), FormulaParser.Parse(denominator), DrawLine);
+
+    public void AddFraction(string numerator, TexFormula denominator, bool DrawLine) => AddFraction(FormulaParser.Parse(numerator), denominator, DrawLine);
+
+    public void AddFraction(string numerator, string denominator, bool DrawLine, TexAlignment NumeratorAlignment,
+        TexAlignment DenominatorAlignment) => AddFraction(FormulaParser.Parse(numerator), FormulaParser.Parse(denominator), DrawLine, NumeratorAlignment,
+        DenominatorAlignment);
+
+    public void AddFraction(TexFormula numerator, string denominator, bool DrawLine) => AddFraction(numerator, FormulaParser.Parse(denominator), DrawLine);
+
+    public void AddFraction(TexFormula numerator, TexFormula denominator, bool DrawLine) => Add(new FractionAtom(numerator?.RootAtom,
+        denominator?.RootAtom, DrawLine));
+
+    public void AddFraction(TexFormula numerator, TexFormula denominator, bool DrawLine,
+        TexAlignment NumeratorAlignment, TexAlignment DenominatorAlignment) => Add(new FractionAtom(numerator?.RootAtom,
+        denominator?.RootAtom, DrawLine, NumeratorAlignment, DenominatorAlignment));
+
+    public void AddRadical(string BaseFormula, string NthRoot) => AddRadical(FormulaParser.Parse(BaseFormula), FormulaParser.Parse(NthRoot));
+
+    public void AddRadical(string BaseFormula, TexFormula NthRoot) => AddRadical(FormulaParser.Parse(BaseFormula), NthRoot);
+
+    public void AddRadical(string BaseFormula) => AddRadical(FormulaParser.Parse(BaseFormula));
+
+    public void AddRadical(TexFormula BaseFormula, string DegreeFormula) => AddRadical(BaseFormula, FormulaParser.Parse(DegreeFormula));
+
+    public void AddRadical(TexFormula BaseFormula) => AddRadical(BaseFormula, (TexFormula)null);
+
+    public void AddRadical(TexFormula BaseFormula, TexFormula DegreeFormula) => Add(new Radical(BaseFormula?.RootAtom,
+        DegreeFormula?.RootAtom));
+
+    public void AddOperator(string OperatorFormula, string LowerLimitFormula, string UpperLimitFormula) => AddOperator(FormulaParser.Parse(OperatorFormula), FormulaParser.Parse(LowerLimitFormula),
+        FormulaParser.Parse(UpperLimitFormula));
+
+    public void AddOperator(string OperatorFormula, string LowerLimitFormula, string UpperLimitFormula,
+        bool UseVerticalLimits) => AddOperator(FormulaParser.Parse(OperatorFormula), FormulaParser.Parse(LowerLimitFormula),
+        FormulaParser.Parse(UpperLimitFormula), UseVerticalLimits);
+
+    public void AddOperator(TexFormula OperatorFormula, TexFormula LowerLimitFormula, TexFormula UpperLimitFormula) => Add(new BigOperatorAtom(OperatorFormula?.RootAtom,
+        LowerLimitFormula?.RootAtom,
+        UpperLimitFormula?.RootAtom));
+
+    public void AddOperator(TexFormula OperatorFormula, TexFormula LowerLimitFormula, TexFormula UpperLimitFormula,
+        bool UseVerticalLimits) => Add(new BigOperatorAtom(OperatorFormula?.RootAtom,
+        LowerLimitFormula?.RootAtom,
+        UpperLimitFormula?.RootAtom, UseVerticalLimits));
+
+    public void AddPhantom(string formula) => AddPhantom(FormulaParser.Parse(formula));
+
+    public void AddPhantom(string formula, bool UseWidth, bool UseHeight, bool UseDepth) => AddPhantom(FormulaParser.Parse(formula), UseWidth, UseHeight, UseDepth);
+
+    public void AddPhantom(TexFormula formula) => Add(new PhantomAtom(formula?.RootAtom));
+
+    public void AddPhantom(TexFormula phantom, bool UseWidth, bool UseHeight, bool UseDepth) => Add(new PhantomAtom(phantom?.RootAtom, UseWidth, UseHeight, UseDepth));
+
+    public void AddStrut(TexUnit unit, double width, double height, double depth) => Add(new SpaceAtom(unit, width, height, depth));
+
+    public void AddStrut(TexUnit WidthUnit, double width, TexUnit HeightUnit, double height, TexUnit DepthUnit,
+        double depth) => Add(new SpaceAtom(WidthUnit, width, HeightUnit, height, DepthUnit, depth));
+
+    public void AddSymbol(string name) => Add(SymbolAtom.GetAtom(name));
+
+    public void AddSymbol(string name, TexAtomType type) => Add(new SymbolAtom(SymbolAtom.GetAtom(name), type));
+
+    public void Add(string formula) => Add(FormulaParser.Parse(formula));
+
+    public void Add(TexFormula formula) => Formula.Add(formula);
+
+    public void Add(Atom atom) => Formula.Add(atom);
+
+    public void PutAccentOver(string AccentName) => Formula.RootAtom = new AccentedAtom(Formula.RootAtom, AccentName);
+
+    public void PutDelimiterOver(TexDelimeter delimiter)
+    {
+        var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Over];
+        Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom, null, SymbolAtom.GetAtom(name),
+            TexUnit.Ex, 0, true);
+    }
+
+    public void PutDelimiterOver(TexDelimeter delimiter, string SuperscriptFormula, TexUnit KernUnit, double kern) => PutDelimiterOver(delimiter, FormulaParser.Parse(SuperscriptFormula), KernUnit, kern);
+
+    public void PutDelimiterOver(TexDelimeter delimiter, TexFormula SuperscriptFormula, TexUnit KernUnit, double kern)
+    {
+        var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Over];
+        Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom,
+            SuperscriptFormula?.RootAtom, SymbolAtom.GetAtom(name), KernUnit, kern,
+            true);
+    }
+
+    public void PutDelimiterUnder(TexDelimeter delimiter)
+    {
+        var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Under];
+        Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom, null, SymbolAtom.GetAtom(name),
+            TexUnit.Ex, 0, false);
+    }
+
+    public void PutDelimiterUnder(TexDelimeter delimiter, string SubscriptFormula, TexUnit KernUnit, double kern) => PutDelimiterUnder(delimiter, FormulaParser.Parse(SubscriptFormula), KernUnit, kern);
+
+    public void PutDelimiterUnder(TexDelimeter delimiter, TexFormula SubscriptName, TexUnit KernUnit, double kern)
+    {
+        var name = TexFormulaParser.DelimiterNames[(int)delimiter][(int)TexDelimeterType.Under];
+        Formula.RootAtom = new OverUnderDelimiter(Formula.RootAtom,
+            SubscriptName?.RootAtom, SymbolAtom.GetAtom(name), KernUnit, kern, false);
+    }
+
+    public void PutOver(TexFormula OverFormula, TexUnit OverUnit, double OverSpace, bool OverScriptSize) =>
+        Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
+            OverFormula?.RootAtom, OverUnit, OverSpace, OverScriptSize, true);
+
+    public void PutOver(string OverFormula, TexUnit OverUnit, double OverSpace, bool OverScriptSize) => PutOver(OverFormula is null ? null : FormulaParser.Parse(OverFormula), OverUnit, OverSpace, OverScriptSize);
+
+    public void PutUnder(string UnderFormula, TexUnit UnderUnit, double UnderSpace, bool UnderScriptSize) => PutUnder(UnderFormula is null ? null : FormulaParser.Parse(UnderFormula), UnderUnit, UnderSpace,
+        UnderScriptSize);
+
+    public void PutUnder(TexFormula UnderFormula, TexUnit UnderUnit, double UnderSpace, bool UnderScriptSize) =>
+        Formula.RootAtom = new UnderOverAtom(Formula.RootAtom,
+            UnderFormula?.RootAtom, UnderUnit, UnderSpace, UnderScriptSize, false);
+
+    public void PutUnderAndOver(string UnderFormula, TexUnit UnderUnit, double UnderSpace, bool UnderScriptSize,
+        string over, TexUnit OverUnit, double OverSpace, bool OverScriptSize) => PutUnderAndOver(UnderFormula is null ? null : FormulaParser.Parse(UnderFormula), UnderUnit, UnderSpace,
+        UnderScriptSize, over is null ? null : FormulaParser.Parse(over), OverUnit, OverSpace, OverScriptSize);
+
+    public void PutUnderAndOver(TexFormula UnderFormula, TexUnit UnderUnit, double UnderSpace, bool UnderScriptSize,
+        TexFormula over, TexUnit OverUnit, double OverSpace, bool OverScriptSize) => Formula.RootAtom = new UnderOverAtom(Formula.RootAtom, UnderFormula?.RootAtom, UnderUnit, UnderSpace, UnderScriptSize, over?.RootAtom,
+        OverUnit, OverSpace, OverScriptSize);
 }

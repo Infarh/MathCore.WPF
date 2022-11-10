@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+public class SymbolMappingNotFoundException : Exception
 {
-    public class SymbolMappingNotFoundException : Exception
+    internal SymbolMappingNotFoundException(string SymbolName)
+        : base($"Cannot find mapping for the symbol with name '{SymbolName}'.")
     {
-        internal SymbolMappingNotFoundException(string symbolName)
-            : base($"Cannot find mapping for the symbol with name '{symbolName}'.")
-        {
-        }
     }
 }

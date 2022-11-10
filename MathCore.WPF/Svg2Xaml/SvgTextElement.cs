@@ -29,24 +29,19 @@
 
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;text&gt; element.
-  /// </summary>
-  class SvgTextElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;text&gt; element.</summary>
+class SvgTextElement
     : SvgDrawableContainerBaseElement
-  {
+{
 
     //==========================================================================
-    public SvgTextElement(SvgDocument document, SvgBaseElement parent, XElement svgElement)
-      : base(document, parent, svgElement)
+    public SvgTextElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
+        : base(document, parent, SvgElement)
     {
-      // ...
+        // ...
     }
 
-  } // class SvgTextElement
-
-}
+} // class SvgTextElement

@@ -14,12 +14,12 @@ jobs:
     steps:
       
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
         
       - name: Building
         run: |
@@ -30,7 +30,7 @@ jobs:
         run: dotnet test Tests/MathCore.WPF.Tests --nologo -c Release --no-build
         
       - name: Packing
-        run: dotnet pack MathCore.WPF -c Release -v m          
+        run: dotnet pack MathCore.WPF -c Release -v m
       
       - name: Push package
         run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/Infarh/index.json -k ${{secrets.GITHUB_TOKEN}}

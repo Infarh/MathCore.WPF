@@ -53,8 +53,7 @@ public class NestedBinding : MarkupExtension
 
         foreach (var binding_base in NestedBinding.Bindings)
         {
-            var binding = binding_base as Binding;
-            if (binding?.Source is NestedBinding child_nested_binding && binding.Converter == null)
+            if (binding_base is Binding { Source: NestedBinding child_nested_binding, Converter: null })
             {
                 tree.Nodes.Add(GetNestedBindingsTree(child_nested_binding, MultiBinding));
                 continue;

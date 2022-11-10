@@ -1,89 +1,87 @@
 ﻿using System.Windows.Media;
 
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+/// <summary>Specifies current graphical parameters used to create boxes</summary>
+internal class TexEnvironment
 {
-    /// <summary>Specifies current graphical parameters used to create boxes</summary>
-    internal class TexEnvironment
+    /// <summary>ID of font that was last used</summary>
+    private int _LastFontId = TexFontUtilities.NoFontId;
+
+    public TexStyle Style { get; private set; }
+
+    public ITeXFont TexFont { get; }
+
+    public Brush Background { get; set; }
+
+    public Brush Foreground { get; set; }
+    public int LastFontId
     {
-        /// <summary>ID of font that was last used</summary>
-        private int lastFontId = TexFontUtilities.NoFontId;
+        get => _LastFontId == TexFontUtilities.NoFontId ? TexFont.GetMuFontId() : _LastFontId;
+        set => _LastFontId = value;
+    }
 
-        public TexStyle Style { get; private set; }
+    public TexEnvironment(TexStyle style, ITeXFont TexFont) : this(style, TexFont, null, null) { }
 
-        public ITeXFont TexFont { get; }
+    private TexEnvironment(TexStyle style, ITeXFont TexFont, Brush background, Brush foreground)
+    {
+        if(style is TexStyle.Display or TexStyle.Text or TexStyle.Script or TexStyle.ScriptScript)
+            Style = style;
+        else
+            Style = TexStyle.Display;
 
-        public Brush Background { get; set; }
+        this.TexFont    = TexFont;
+        Background = background;
+        Foreground = foreground;
+    }
 
-        public Brush Foreground { get; set; }
-        public int LastFontId
-        {
-            get => lastFontId == TexFontUtilities.NoFontId ? TexFont.GetMuFontId() : lastFontId;
-            set => lastFontId = value;
-        }
+    public TexEnvironment GetCrampedStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = (int)Style % 2 == 1 ? Style : Style + 1;
+        return new_environment;
+    }
 
-        public TexEnvironment(TexStyle style, ITeXFont texFont) : this(style, texFont, null, null) { }
+    public TexEnvironment GetNumeratorStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = Style + 2 - 2 * ((int)Style / 6);
+        return new_environment;
+    }
 
-        private TexEnvironment(TexStyle style, ITeXFont texFont, Brush background, Brush foreground)
-        {
-            if(style == TexStyle.Display || style == TexStyle.Text ||
-                style == TexStyle.Script || style == TexStyle.ScriptScript)
-                Style = style;
-            else
-                Style = TexStyle.Display;
+    public TexEnvironment GetDenominatorStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = (TexStyle)(2 * ((int)Style / 2) + 1 + 2 - 2 * ((int)Style / 6));
+        return new_environment;
+    }
 
-            TexFont = texFont;
-            Background = background;
-            Foreground = foreground;
-        }
+    public TexEnvironment GetRootStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = TexStyle.ScriptScript;
+        return new_environment;
+    }
 
-        public TexEnvironment GetCrampedStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = (int)Style % 2 == 1 ? Style : Style + 1;
-            return newEnvironment;
-        }
+    public TexEnvironment GetSubscriptStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = (TexStyle)(2 * ((int)Style / 4) + 4 + 1);
+        return new_environment;
+    }
 
-        public TexEnvironment GetNumeratorStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = Style + 2 - 2 * ((int)Style / 6);
-            return newEnvironment;
-        }
+    public TexEnvironment GetSuperscriptStyle()
+    {
+        var new_environment = Clone();
+        new_environment.Style = (TexStyle)(2 * ((int)Style / 4) + 4 + ((int)Style % 2));
+        return new_environment;
+    }
 
-        public TexEnvironment GetDenominatorStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = (TexStyle)(2 * ((int)Style / 2) + 1 + 2 - 2 * ((int)Style / 6));
-            return newEnvironment;
-        }
+    public TexEnvironment Clone() => new(Style, TexFont, Background, Foreground);
 
-        public TexEnvironment GetRootStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = TexStyle.ScriptScript;
-            return newEnvironment;
-        }
-
-        public TexEnvironment GetSubscriptStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = (TexStyle)(2 * ((int)Style / 4) + 4 + 1);
-            return newEnvironment;
-        }
-
-        public TexEnvironment GetSuperscriptStyle()
-        {
-            var newEnvironment = Clone();
-            newEnvironment.Style = (TexStyle)(2 * ((int)Style / 4) + 4 + ((int)Style % 2));
-            return newEnvironment;
-        }
-
-        public TexEnvironment Clone() => new(Style, TexFont, Background, Foreground);
-
-        public void Reset()
-        {
-            Background = null;
-            Foreground = null;
-        }
+    public void Reset()
+    {
+        Background = null;
+        Foreground = null;
     }
 }

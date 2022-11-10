@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
-using MathCore.Annotations;
+
 // ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters;
