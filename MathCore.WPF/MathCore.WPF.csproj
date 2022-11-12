@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.37.1</Version>
+    <Version>0.0.38</Version>
     <PackageReleaseNotes>
       Обновление пакетов
     </PackageReleaseNotes>
@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.81" />
+    <PackageReference Include="MathCore" Version="0.0.81.1" />
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
