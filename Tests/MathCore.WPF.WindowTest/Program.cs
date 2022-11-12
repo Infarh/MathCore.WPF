@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-
-using OxyPlot.Series;
+﻿using System.Windows.Controls;
 
 namespace MathCore.WPF.WindowTest;
 
@@ -15,7 +10,7 @@ internal static class Program
         var property = DependencyPropertyBuilder
            .Register<TestControl>()
            .Property(p => p.Title)
-           .OnChanged((control, OldValue, NewValue) => { });
+           .OnChanged((_, _, _) => { });
 
         var app = new App();
         app.InitializeComponent();

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 using MathCore.WPF.Converters.Base;
 

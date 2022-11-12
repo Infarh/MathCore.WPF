@@ -20,9 +20,7 @@ namespace System
         /// <summary>Construct an Index using a value and indicating if the index is from the start or from the end.</summary>
         /// <param name="value">The index value. it has to be zero or positive number.</param>
         /// <param name="FromEnd">Indicating if the index is from the start or from the end.</param>
-        /// <remarks>
-        /// If the Index constructed from the end, index value 1 means pointing at the last element and index value 0 means pointing at beyond last element.
-        /// </remarks>
+        /// <remarks>If the Index constructed from the end, index value 1 means pointing at the last element and index value 0 means pointing at beyond last element.</remarks>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Index(int value, bool FromEnd = false)
         {
@@ -180,9 +178,7 @@ namespace System.Runtime.CompilerServices
 {
     internal static class RuntimeHelpers
     {
-        /// <summary>
-        /// Slices the specified array using the specified range.
-        /// </summary>
+        /// <summary>Slices the specified array using the specified range.</summary>
         public static T[] GetSubArray<T>(T[] array, Range range)
         {
             if (array == null) throw new ArgumentNullException(nameof(array));

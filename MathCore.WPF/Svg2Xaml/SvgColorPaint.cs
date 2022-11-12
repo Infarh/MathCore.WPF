@@ -29,16 +29,13 @@
 
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  /// <summary>
-  ///   A paint with a solid color.
-  /// </summary>
-  class SvgColorPaint
+//****************************************************************************
+/// <summary>  A paint with a solid color.</summary>
+class SvgColorPaint
     : SvgPaint
-  {
+{
     //==========================================================================
     public readonly SvgColor Color;
 
@@ -47,7 +44,4 @@ namespace MathCore.WPF.SVG
 
     //==========================================================================
     public override Brush ToBrush(SvgBaseElement element) => new SolidColorBrush(Color.ToColor());
-  } // class SvgColorPaint
-
-
-}
+} // class SvgColorPaint

@@ -1,67 +1,65 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using MathCore.Annotations;
+
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Behaviors
+namespace MathCore.WPF.Behaviors;
+
+public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSelectedItem
 {
-    public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSelectedItem
+    protected override void OnSelectedItemPropertyChanged(object item)
     {
-        protected override void OnSelectedItemPropertyChanged(object item)
-        {
-            if (item is not DirectoryViewModel model) return;
-            var tree_view = AssociatedObject;
-            if (tree_view is null || ReferenceEquals(tree_view.SelectedItem, item)) return;
-            SelectTreeViewItem(tree_view, model.Directory.FullName);
-        }
+        if (item is not DirectoryViewModel model) return;
+        var tree_view = AssociatedObject;
+        if (tree_view is null || ReferenceEquals(tree_view.SelectedItem, item)) return;
+        SelectTreeViewItem(tree_view, model.Directory.FullName);
+    }
 
-        private static bool SelectTreeViewItem(ItemsControl Container, string path)
+    private static bool SelectTreeViewItem(ItemsControl Container, string path)
+    {
+        foreach (DirectoryViewModel? model in Container.Items)
         {
-            foreach (DirectoryViewModel? model in Container.Items)
+            if(model is null) continue;
+            var view = (TreeViewItem)Container.ItemContainerGenerator.ContainerFromItem(model);
+            if (view is null) continue;
+            if (model.Equals(path))
             {
-                if(model is null) continue;
-                var view = (TreeViewItem)Container.ItemContainerGenerator.ContainerFromItem(model);
-                if (view is null) continue;
-                if (model.Equals(path))
-                {
-                    view.IsSelected = true;
-                    view.BringIntoView();
-                    return true;
-                }
-
-                if (!path.StartsWith(model.Directory.FullName, StringComparison.InvariantCultureIgnoreCase)) continue;
-                var is_expanded = view.IsExpanded;
-                view.IsExpanded = true;
-                view.UpdateLayout();
-                if (view.Items.Count == 0) return false;
-                if (SelectTreeViewItem(view, path)) return true;
-                view.IsExpanded = is_expanded;
-                view.UpdateLayout();
-                return false;
+                view.IsSelected = true;
+                view.BringIntoView();
+                return true;
             }
 
+            if (!path.StartsWith(model.Directory.FullName, StringComparison.InvariantCultureIgnoreCase)) continue;
+            var is_expanded = view.IsExpanded;
+            view.IsExpanded = true;
+            view.UpdateLayout();
+            if (view.Items.Count == 0) return false;
+            if (SelectTreeViewItem(view, path)) return true;
+            view.IsExpanded = is_expanded;
+            view.UpdateLayout();
             return false;
         }
 
-        protected override void OnTreeViewItem_Loaded(object? Sender, RoutedEventArgs? _)
+        return false;
+    }
+
+    protected override void OnTreeViewItem_Loaded(object? Sender, RoutedEventArgs? _)
+    {
+        var selected_item = (DirectoryViewModel)SelectedItem!;
+        if (selected_item is null) return;
+        var tree_view_item = (TreeViewItem)Sender!;
+        var current_item   = (DirectoryViewModel)tree_view_item.DataContext;
+        var selected_path  = selected_item.Directory.FullName;
+        var current_path   = current_item.Directory.FullName;
+        if (string.Equals(selected_path, current_path, StringComparison.InvariantCultureIgnoreCase))
         {
-            var selected_item = (DirectoryViewModel)SelectedItem!;
-            if (selected_item is null) return;
-            var tree_view_item = (TreeViewItem)Sender!;
-            var current_item = (DirectoryViewModel)tree_view_item.DataContext;
-            var selected_path = selected_item.Directory.FullName;
-            var current_path = current_item.Directory.FullName;
-            if (string.Equals(selected_path, current_path, StringComparison.InvariantCultureIgnoreCase))
-            {
-                tree_view_item.IsSelected = true;
-                tree_view_item.BringIntoView();
-            }
-            else if (selected_path.StartsWith(current_path, StringComparison.InvariantCultureIgnoreCase))
-            {
-                tree_view_item.IsExpanded = true;
-                tree_view_item.UpdateLayout();
-            }
+            tree_view_item.IsSelected = true;
+            tree_view_item.BringIntoView();
+        }
+        else if (selected_path.StartsWith(current_path, StringComparison.InvariantCultureIgnoreCase))
+        {
+            tree_view_item.IsExpanded = true;
+            tree_view_item.UpdateLayout();
         }
     }
 }

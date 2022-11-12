@@ -28,24 +28,19 @@
 ////////////////////////////////////////////////////////////////////////////////
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;marker&gt; element.
-  /// </summary>
-  class SvgMarkerElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;marker&gt; element.</summary>
+class SvgMarkerElement
     : SvgContainerBaseElement
-  {
+{
     //==========================================================================
-    public SvgMarkerElement(SvgDocument document, SvgBaseElement parent, XElement markerElement)
-      : base(document, parent, markerElement)
+    public SvgMarkerElement(SvgDocument document, SvgBaseElement parent, XElement MarkerElement)
+        : base(document, parent, MarkerElement)
     {
-      // ...
+        // ...
     }
 
 
-  } // class SvgMarkerElement
-
-}
+} // class SvgMarkerElement

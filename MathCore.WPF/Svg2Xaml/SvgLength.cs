@@ -26,15 +26,14 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Globalization;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgLength
-  {
+//****************************************************************************
+class SvgLength
+{
 
     //==========================================================================
     public readonly double Value;
@@ -43,45 +42,43 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public SvgLength(double value)
     {
-      Value = value;
-      Unit = null;
+        Value = value;
+        Unit  = null;
     }
 
 
     //==========================================================================
     public SvgLength(double value, string unit)
     {
-      Value = value;
-      Unit  = unit;
+        Value = value;
+        Unit  = unit;
     }
 
     //==========================================================================
     public static SvgLength Parse(string value)
     {
-      if(value is null)
-        throw new ArgumentNullException("value");
-      value = value.Trim();
-      if(value == "")
-        throw new ArgumentException("value must not be empty", "value");
+        if(value is null)
+            throw new ArgumentNullException(nameof(value));
+        value = value.Trim();
+        if(value == "")
+            throw new ArgumentException("value must not be empty", nameof(value));
 
-      if(value == "inherit")
-        return new SvgLength(double.NaN, null);
+        if(value == "inherit")
+            return new SvgLength(double.NaN, null);
 
-      string unit = null;
+        string unit = null;
 
-      foreach(var unit_identifier in new string[] {"in", "cm", "mm", "pt", "pc", "px", "%" })
-        if(value.EndsWith(unit_identifier))
-        {
-          unit  = unit_identifier;
-          value = value.Substring(0, value.Length - unit_identifier.Length).Trim();
-          break;
-        }
+        foreach(var unit_identifier in new[] {"in", "cm", "mm", "pt", "pc", "px", "%" })
+            if(value.EndsWith(unit_identifier))
+            {
+                unit  = unit_identifier;
+                value = value[..^unit_identifier.Length].Trim();
+                break;
+            }
 
-      return new SvgLength(double.Parse(value, CultureInfo.InvariantCulture.NumberFormat), unit);
+        return new SvgLength(double.Parse(value, CultureInfo.InvariantCulture.NumberFormat), unit);
     }
 
     //==========================================================================
     public double ToDouble() => Value;
-  } // class SvgLength
-
-}
+} // class SvgLength

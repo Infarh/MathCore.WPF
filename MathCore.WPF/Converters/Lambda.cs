@@ -1,6 +1,5 @@
-﻿using System;
-using System.Globalization;
-using MathCore.Annotations;
+﻿using System.Globalization;
+
 using MathCore.WPF.Converters.Base;
 
 // ReSharper disable MemberCanBePrivate.Global

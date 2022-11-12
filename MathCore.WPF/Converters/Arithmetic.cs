@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Text.RegularExpressions;
 
 using MathCore.WPF.Converters.Base;
@@ -15,16 +14,15 @@ public class Arithmetic : ValueConverter
 
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c)
     {
-        if (!(v is double) || p is not string p_str) return null;
+        if (v is not double value || p is not string { Length: > 0 } p_str) return null;
 
-        if (p_str.Length == 0) return null;
         var pattern = _Pattern.Match(p_str);
         if (pattern.Groups.Count != 3) return null;
         var op = pattern.Groups[1].Value.Trim();
         p_str = pattern.Groups[2].Value;
 
         if (!double.TryParse(p_str, out var p_value)) return null;
-        var value = (double)v;
+
         return op switch
         {
             "+" => (value + p_value),
@@ -37,9 +35,8 @@ public class Arithmetic : ValueConverter
 
     protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c)
     {
-        if (v is not double d || p is not string p_str) return null;
+        if (v is not double d || p is not string { Length: > 0 } p_str) return null;
 
-        if (p_str.Length == 0) return null;
         var pattern = _Pattern.Match(p_str);
         if (pattern.Groups.Count != 3) return null;
         var op = pattern.Groups[1].Value.Trim();

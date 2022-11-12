@@ -13,7 +13,7 @@ public static class VisualTreeHelperExtensions
     {
         if (obj is null) return null;
         var target = obj;
-        do { target = VisualTreeHelper.GetParent(target); } while (target != null && !(target is T));
+        do { target = VisualTreeHelper.GetParent(target); } while (target != null && target is not T);
         return target as T;
     }
 
@@ -43,7 +43,7 @@ public static class VisualTreeHelperExtensions
     {
         if (obj is null) return null;
         var target = obj;
-        do { target = LogicalTreeHelper.GetParent(target); } while (target != null && !(target is T));
+        do { target = LogicalTreeHelper.GetParent(target); } while (target != null && target is not T);
         return target as T;
     }
 

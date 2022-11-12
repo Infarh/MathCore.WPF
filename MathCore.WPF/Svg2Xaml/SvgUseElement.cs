@@ -26,38 +26,33 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;use&gt; element.
-  /// </summary>
-  class SvgUseElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;use&gt; element.</summary>
+class SvgUseElement
     : SvgBaseElement
-  {
+{
     //==========================================================================
-    public SvgUseElement(SvgDocument document, SvgBaseElement parent, XElement useElement)
-      : base(document, parent, useElement)
+    public SvgUseElement(SvgDocument document, SvgBaseElement parent, XElement UseElement)
+        : base(document, parent, UseElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public SvgBaseElement GetElement()
     {
-      if(Reference is null)
-        throw new NotSupportedException();
+        if(Reference is null)
+            throw new NotSupportedException();
 
-      if (Document.Elements.ContainsKey(Reference))
-        return Document.Elements[Reference];
-      else
-        return null;
+        if (Document.Elements.ContainsKey(Reference))
+            return Document.Elements[Reference];
+        else
+            return null;
     }
 
-  } // class SvgUseElement
-
-}
+} // class SvgUseElement

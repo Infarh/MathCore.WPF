@@ -1,16 +1,15 @@
 ﻿// Atom representing single character that can be marked as text symbol.
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+internal abstract class CharSymbol : Atom
 {
-    internal abstract class CharSymbol : Atom
+    protected CharSymbol() => IsTextSymbol = false;
+
+    public bool IsTextSymbol
     {
-        protected CharSymbol() => IsTextSymbol = false;
-
-        public bool IsTextSymbol
-        {
-            get;
-            set;
-        }
-
-        public abstract CharFont GetCharFont(ITeXFont texFont);
+        get;
+        set;
     }
+
+    public abstract CharFont GetCharFont(ITeXFont TexFont);
 }

@@ -19,11 +19,9 @@ public static class CollectionExtensions
 
     private abstract class CollectionConnectorBase
     {
-        private static readonly List<CollectionConnectorBase> __ConnectorsPool
-            = new();
+        private static readonly List<CollectionConnectorBase> __ConnectorsPool = new();
 
-        public static ReadOnlyCollection<CollectionConnectorBase> Pool =>
-            new(__ConnectorsPool);
+        public static ReadOnlyCollection<CollectionConnectorBase> Pool => new(__ConnectorsPool);
 
         protected CollectionConnectorBase() => __ConnectorsPool.Add(this);
 
@@ -198,7 +196,7 @@ public static class CollectionExtensions
         IEnumerable<TItem> items)
         where TCollection : ICollection<TItem>
     {
-        if (!(collection is ObservableCollection<TItem>))
+        if (collection is not ObservableCollection<TItem>)
             foreach (var item in items)
                 collection.Add(item);
 
@@ -251,7 +249,7 @@ public static class CollectionExtensions
         IEnumerable<TItem> items)
         where TCollection : ICollection<TItem>
     {
-        if (!(collection is ObservableCollection<TItem>))
+        if (collection is not ObservableCollection<TItem>)
             foreach (var item in items)
                 collection.Remove(item);
         else

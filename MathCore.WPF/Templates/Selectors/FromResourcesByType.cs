@@ -1,13 +1,11 @@
-﻿using System;
-using System.Windows.Markup;
-using MathCore.Annotations;
+﻿using System.Windows.Markup;
+
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Templates.Selectors
+namespace MathCore.WPF.Templates.Selectors;
+
+[MarkupExtensionReturnType(typeof(FromResourcesByTypeTemplateSelector))]
+public class FromResourcesByType : MarkupExtension
 {
-    [MarkupExtensionReturnType(typeof(FromResourcesByTypeTemplateSelector))]
-    public class FromResourcesByType : MarkupExtension
-    {
-        public override object ProvideValue(IServiceProvider sp) => new FromResourcesByTypeTemplateSelector();
-    }
+    public override object ProvideValue(IServiceProvider sp) => new FromResourcesByTypeTemplateSelector();
 }

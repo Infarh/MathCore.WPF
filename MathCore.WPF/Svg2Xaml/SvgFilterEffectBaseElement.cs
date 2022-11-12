@@ -29,26 +29,21 @@
 using System.Windows.Media.Effects;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;filterEffect&gt; element.
-  /// </summary>
-  abstract class SvgFilterEffectBaseElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;filterEffect&gt; element.</summary>
+abstract class SvgFilterEffectBaseElement
     : SvgBaseElement
-  {
+{
     //==========================================================================
-    public SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement filterEffectElement)
-      : base(document, parent, filterEffectElement)
+    public SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement FilterEffectElement)
+        : base(document, parent, FilterEffectElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public abstract BitmapEffect ToBitmapEffect();
 
-  } // class SvgFilterEffectBaseElement
-
-}
+} // class SvgFilterEffectBaseElement

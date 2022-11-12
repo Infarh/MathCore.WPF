@@ -1,17 +1,14 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+public class TexParseException : Exception
 {
-    public class TexParseException : Exception
+    internal TexParseException(string message)
+        : base(message)
     {
-        internal TexParseException(string message)
-            : base(message)
-        {
-        }
+    }
 
-        internal TexParseException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+    internal TexParseException(string message, Exception InnerException)
+        : base(message, InnerException)
+    {
     }
 }

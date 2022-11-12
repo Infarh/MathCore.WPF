@@ -1,129 +1,125 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Xml.Linq;
 
 // Parses information about glue settings from XML file.
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+internal class GlueSettingsParser
 {
-    internal class GlueSettingsParser
+    private static readonly Dictionary<string, TexAtomType> __TypeMappings;
+    private static readonly Dictionary<string, TexStyle> __StyleMappings;
+
+    static GlueSettingsParser()
     {
-        private static readonly Dictionary<string, TexAtomType> typeMappings;
-        private static readonly Dictionary<string, TexStyle> styleMappings;
+        __TypeMappings  = new Dictionary<string, TexAtomType>();
+        __StyleMappings = new Dictionary<string, TexStyle>();
 
-        static GlueSettingsParser()
+        SetTypeMappings();
+        SetStyleMappings();
+    }
+
+    private static Glue CreateGlue(XElement type, string name)
+    {
+        var names  = new[] { "space", "stretch", "shrink" };
+        var values = new double[names.Length];
+        for(var i = 0; i < names.Length; i++)
+            values[i] = type.AttributeDoubleValue(names[i], 0d);
+        return new Glue(values[0], values[1], values[2], name);
+    }
+
+    private static void SetTypeMappings()
+    {
+        __TypeMappings.Add("ord", TexAtomType.Ordinary);
+        __TypeMappings.Add("op", TexAtomType.BigOperator);
+        __TypeMappings.Add("bin", TexAtomType.BinaryOperator);
+        __TypeMappings.Add("rel", TexAtomType.Relation);
+        __TypeMappings.Add("open", TexAtomType.Opening);
+        __TypeMappings.Add("close", TexAtomType.Closing);
+        __TypeMappings.Add("punct", TexAtomType.Punctuation);
+        __TypeMappings.Add("inner", TexAtomType.Inner);
+    }
+
+    private static void SetStyleMappings()
+    {
+        __StyleMappings.Add("display", (int)TexStyle.Display / 2);
+        __StyleMappings.Add("text", (TexStyle)((int)TexStyle.Text / 2));
+        __StyleMappings.Add("script", (TexStyle)((int)TexStyle.Script / 2));
+        __StyleMappings.Add("script_script", (TexStyle)((int)TexStyle.ScriptScript / 2));
+    }
+
+    private List<Glue> _GlueTypes;
+    private Dictionary<string, int> _GlueTypeMappings;
+
+    private readonly XElement _RootElement;
+
+    public GlueSettingsParser()
+    {
+        var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(
+            $"{TexUtilities.ResourcesStylesNamespace}GlueSettings.xml"));
+        _RootElement = doc.Root;
+        ParseGlueTypes();
+    }
+
+    public List<Glue> GetGlueTypes() => _GlueTypes;
+
+    public int[,,] GetGlueRules()
+    {
+        var rules = new int[__TypeMappings.Count, __TypeMappings.Count, __StyleMappings.Count];
+
+        var GlobalElement = _RootElement.Element("GlueTable");
+        if(GlobalElement is null) return rules;
+        foreach(var element in GlobalElement.Elements("Glue"))
         {
-            typeMappings = new Dictionary<string, TexAtomType>();
-            styleMappings = new Dictionary<string, TexStyle>();
+            var left_type  = __TypeMappings[element.AttributeValue("lefttype")];
+            var right_type = __TypeMappings[element.AttributeValue("righttype")];
+            var glue_type  = _GlueTypeMappings[element.AttributeValue("gluetype")];
 
-            SetTypeMappings();
-            SetStyleMappings();
+            foreach(var style in element.Elements("Style").Select(e => e.AttributeValue("name")))
+                rules[(int)left_type, (int)right_type, (int)__StyleMappings[style]] = glue_type;
         }
 
-        private static Glue CreateGlue(XElement type, string name)
+        return rules;
+    }
+
+    private void ParseGlueTypes()
+    {
+        _GlueTypes        = new List<Glue>();
+        _GlueTypeMappings = new Dictionary<string, int>();
+
+        var default_index = -1;
+        var index        = 0;
+
+        var GlobalElement = _RootElement.Element("GlueTypes");
+        if(GlobalElement != null)
         {
-            var names = new[] { "space", "stretch", "shrink" };
-            var values = new double[names.Length];
-            for(var i = 0; i < names.Length; i++)
-                values[i] = type.AttributeDoubleValue(names[i], 0d);
-            return new Glue(values[0], values[1], values[2], name);
-        }
-
-        private static void SetTypeMappings()
-        {
-            typeMappings.Add("ord", TexAtomType.Ordinary);
-            typeMappings.Add("op", TexAtomType.BigOperator);
-            typeMappings.Add("bin", TexAtomType.BinaryOperator);
-            typeMappings.Add("rel", TexAtomType.Relation);
-            typeMappings.Add("open", TexAtomType.Opening);
-            typeMappings.Add("close", TexAtomType.Closing);
-            typeMappings.Add("punct", TexAtomType.Punctuation);
-            typeMappings.Add("inner", TexAtomType.Inner);
-        }
-
-        private static void SetStyleMappings()
-        {
-            styleMappings.Add("display", (int)TexStyle.Display / 2);
-            styleMappings.Add("text", (TexStyle)((int)TexStyle.Text / 2));
-            styleMappings.Add("script", (TexStyle)((int)TexStyle.Script / 2));
-            styleMappings.Add("script_script", (TexStyle)((int)TexStyle.ScriptScript / 2));
-        }
-
-        private List<Glue> glueTypes;
-        private Dictionary<string, int> glueTypeMappings;
-
-        private readonly XElement rootElement;
-
-        public GlueSettingsParser()
-        {
-            var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(
-                $"{TexUtilities.ResourcesStylesNamespace}GlueSettings.xml"));
-            rootElement = doc.Root;
-            ParseGlueTypes();
-        }
-
-        public List<Glue> GetGlueTypes() => glueTypes;
-
-        public int[,,] GetGlueRules()
-        {
-            var rules = new int[typeMappings.Count, typeMappings.Count, styleMappings.Count];
-
-            var GlobalElement = rootElement.Element("GlueTable");
-            if(GlobalElement is null) return rules;
-            foreach(var element in GlobalElement.Elements("Glue"))
+            foreach(var element in GlobalElement.Elements("GlueType"))
             {
-                var leftType = typeMappings[element.AttributeValue("lefttype")];
-                var rightType = typeMappings[element.AttributeValue("righttype")];
-                var glueType = glueTypeMappings[element.AttributeValue("gluetype")];
-
-                foreach(var style in element.Elements("Style").Select(e => e.AttributeValue("name")))
-                    rules[(int)leftType, (int)rightType, (int)styleMappings[style]] = glueType;
+                var name = element.AttributeValue("name");
+                var glue = CreateGlue(element, name);
+                if(name.Equals("default", StringComparison.InvariantCultureIgnoreCase))
+                    default_index = index;
+                _GlueTypes.Add(glue);
+                index++;
             }
-
-            return rules;
         }
 
-        private void ParseGlueTypes()
+        // Create default glue type if it does not exist.
+        if(default_index < 0)
         {
-            glueTypes = new List<Glue>();
-            glueTypeMappings = new Dictionary<string, int>();
-
-            var defaultIndex = -1;
-            var index = 0;
-
-            var GlobalElement = rootElement.Element("GlueTypes");
-            if(GlobalElement != null)
-            {
-                foreach(var element in GlobalElement.Elements("GlueType"))
-                {
-                    var name = element.AttributeValue("name");
-                    var glue = CreateGlue(element, name);
-                    if(name.Equals("default", StringComparison.InvariantCultureIgnoreCase))
-                        defaultIndex = index;
-                    glueTypes.Add(glue);
-                    index++;
-                }
-            }
-
-            // Create default glue type if it does not exist.
-            if(defaultIndex < 0)
-            {
-                defaultIndex = index;
-                glueTypes.Add(new Glue(0, 0, 0, "default"));
-            }
-
-            // Insure that default glue type is first in list.
-            if(defaultIndex > 0)
-            {
-                var tempGlueType = glueTypes[defaultIndex];
-                glueTypes[defaultIndex] = glueTypes[0];
-                glueTypes[0] = tempGlueType;
-            }
-
-            // Create dictionary of reverse mappings.
-            for(var i = 0; i < glueTypes.Count; i++)
-                glueTypeMappings.Add(glueTypes[i].Name, i);
+            default_index = index;
+            _GlueTypes.Add(new Glue(0, 0, 0, "default"));
         }
+
+        // Insure that default glue type is first in list.
+        if(default_index > 0)
+        {
+            var temp_glue_type = _GlueTypes[default_index];
+            _GlueTypes[default_index] = _GlueTypes[0];
+            _GlueTypes[0]            = temp_glue_type;
+        }
+
+        // Create dictionary of reverse mappings.
+        for(var i = 0; i < _GlueTypes.Count; i++)
+            _GlueTypeMappings.Add(_GlueTypes[i].Name, i);
     }
 }

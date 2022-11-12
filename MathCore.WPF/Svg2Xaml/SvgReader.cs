@@ -31,93 +31,80 @@ using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Provides methods to read (and render) SVG documents.</summary>
+public static class SvgReader
 {
 
-    //****************************************************************************
+    //==========================================================================
     /// <summary>
-    ///   Provides methods to read (and render) SVG documents.
+    ///   Loads an SVG document and renders it into a 
+    ///   <see cref="DrawingImage"/>.
     /// </summary>
-    public static class SvgReader
+    /// <param name="reader">
+    ///   A <see cref="XmlReader"/> to read the XML structure of the SVG 
+    ///   document.
+    /// </param>
+    /// <param name="options">
+    ///   <see cref="SvgReaderOptions"/> to use for parsing respectively 
+    ///   rendering the SVG document.
+    /// </param>
+    /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
+    public static DrawingImage Load(XmlReader reader, SvgReaderOptions options)
     {
+        options ??= new SvgReaderOptions();
 
-        //==========================================================================
-        /// <summary>
-        ///   Loads an SVG document and renders it into a 
-        ///   <see cref="DrawingImage"/>.
-        /// </summary>
-        /// <param name="reader">
-        ///   A <see cref="XmlReader"/> to read the XML structure of the SVG 
-        ///   document.
-        /// </param>
-        /// <param name="options">
-        ///   <see cref="SvgReaderOptions"/> to use for parsing respectively 
-        ///   rendering the SVG document.
-        /// </param>
-        /// <returns>
-        ///   A <see cref="DrawingImage"/> containing the rendered SVG document.
-        /// </returns>
-        public static DrawingImage Load(XmlReader reader, SvgReaderOptions options)
-        {
-            options ??= new SvgReaderOptions();
+        var document = XDocument.Load(reader);
+        if(document.Root.Name.NamespaceName != "http://www.w3.org/2000/svg")
+            throw new XmlException("Root element is not in namespace 'http://www.w3.org/2000/svg'.");
+        return document.Root.Name.LocalName == "svg"
+            ? new SvgDocument(document.Root, options).Draw()
+            : throw new XmlException("Root element is not an <svg> element.");
+    }
 
-            var document = XDocument.Load(reader);
-            if(document.Root.Name.NamespaceName != "http://www.w3.org/2000/svg")
-                throw new XmlException("Root element is not in namespace 'http://www.w3.org/2000/svg'.");
-            return document.Root.Name.LocalName == "svg"
-                ? new SvgDocument(document.Root, options).Draw()
-                : throw new XmlException("Root element is not an <svg> element.");
-        }
+    //==========================================================================
+    /// <summary>
+    ///   Loads an SVG document and renders it into a 
+    ///   <see cref="DrawingImage"/>.
+    /// </summary>
+    /// <param name="reader">
+    ///   A <see cref="XmlReader"/> to read the XML structure of the SVG 
+    ///   document.
+    /// </param>
+    /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
+    public static DrawingImage Load(XmlReader reader) => Load(reader, null);
 
-        //==========================================================================
-        /// <summary>
-        ///   Loads an SVG document and renders it into a 
-        ///   <see cref="DrawingImage"/>.
-        /// </summary>
-        /// <param name="reader">
-        ///   A <see cref="XmlReader"/> to read the XML structure of the SVG 
-        ///   document.
-        /// </param>
-        /// <returns>
-        ///   A <see cref="DrawingImage"/> containing the rendered SVG document.
-        /// </returns>
-        public static DrawingImage Load(XmlReader reader) => Load(reader, null);
+    //==========================================================================
+    /// <summary>
+    ///   Loads an SVG document and renders it into a 
+    ///   <see cref="DrawingImage"/>.
+    /// </summary>
+    /// <param name="stream">
+    ///   A <see cref="Stream"/> to read the XML structure of the SVG 
+    ///   document.
+    /// </param>
+    /// <param name="options">
+    ///   <see cref="SvgReaderOptions"/> to use for parsing respectively 
+    ///   rendering the SVG document.
+    /// </param>
+    /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
+    public static DrawingImage Load(Stream stream, SvgReaderOptions options)
+    {
+        using var reader = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
+        return Load(reader, options);
+    }
 
-        //==========================================================================
-        /// <summary>
-        ///   Loads an SVG document and renders it into a 
-        ///   <see cref="DrawingImage"/>.
-        /// </summary>
-        /// <param name="stream">
-        ///   A <see cref="Stream"/> to read the XML structure of the SVG 
-        ///   document.
-        /// </param>
-        /// <param name="options">
-        ///   <see cref="SvgReaderOptions"/> to use for parsing respectively 
-        ///   rendering the SVG document.
-        /// </param>
-        /// <returns>
-        ///   A <see cref="DrawingImage"/> containing the rendered SVG document.
-        /// </returns>
-        public static DrawingImage Load(Stream stream, SvgReaderOptions options)
-        {
-            using var reader = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
-            return Load(reader, options);
-        }
-
-        //==========================================================================
-        /// <summary>
-        ///   Loads an SVG document and renders it into a 
-        ///   <see cref="DrawingImage"/>.
-        /// </summary>
-        /// <param name="stream">
-        ///   A <see cref="Stream"/> to read the XML structure of the SVG 
-        ///   document.
-        /// </param>
-        /// <returns>
-        ///   A <see cref="DrawingImage"/> containing the rendered SVG document.
-        /// </returns>
-        public static DrawingImage Load(Stream stream) => Load(stream, null);
-    } // class SvgReader
-
-}
+    //==========================================================================
+    /// <summary>
+    ///   Loads an SVG document and renders it into a 
+    ///   <see cref="DrawingImage"/>.
+    /// </summary>
+    /// <param name="stream">
+    ///   A <see cref="Stream"/> to read the XML structure of the SVG 
+    ///   document.
+    /// </param>
+    /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
+    public static DrawingImage Load(Stream stream) => Load(stream, null);
+} // class SvgReader

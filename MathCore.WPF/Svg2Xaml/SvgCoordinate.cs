@@ -26,41 +26,35 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-
-  //****************************************************************************
-  /// <summary>
-  ///   A coordinate.
-  /// </summary>
-  class SvgCoordinate
+//****************************************************************************
+/// <summary>  A coordinate.</summary>
+class SvgCoordinate
     : SvgLength
-  {
+{
 
     //==========================================================================
     public SvgCoordinate(double value)
-      : base(value)
+        : base(value)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public SvgCoordinate(double value, string unit)
-      : base(value, unit)
+        : base(value, unit)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public static new SvgCoordinate Parse(string value)
     {
-      var length = SvgLength.Parse(value);
+        var length = SvgLength.Parse(value);
 
-      return new SvgCoordinate(length.Value, length.Unit);
+        return new SvgCoordinate(length.Value, length.Unit);
 
     }
 
-  } // class SvgCoordinate
-
-}
+} // class SvgCoordinate

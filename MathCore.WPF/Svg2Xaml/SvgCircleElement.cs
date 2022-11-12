@@ -30,54 +30,43 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;circle&gt; element.
-  /// </summary>
-  class SvgCircleElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;circle&gt; element.</summary>
+class SvgCircleElement
     : SvgDrawableBaseElement
-  {
+{
     //==========================================================================
-    /// <summary>
-    ///   The x-coordinate of the circle's center.
-    /// </summary>
+    /// <summary>  The x-coordinate of the circle's center.</summary>
     public readonly SvgCoordinate CenterX = new(0);
 
     //==========================================================================
-    /// <summary>
-    ///   The y-coordinate of the circle's center.
-    /// </summary>
+    /// <summary>  The y-coordinate of the circle's center.</summary>
     public readonly SvgCoordinate CenterY = new(0);
 
     //==========================================================================
-    /// <summary>
-    ///   The circle's radius.
-    /// </summary>
+    /// <summary>  The circle's radius.</summary>
     public readonly SvgLength Radius = new(0);
 
     //==========================================================================
-    public SvgCircleElement(SvgDocument document, SvgBaseElement parent, XElement circleElement)
-      : base(document, parent, circleElement)
+    public SvgCircleElement(SvgDocument document, SvgBaseElement parent, XElement CircleElement)
+        : base(document, parent, CircleElement)
     {
-      var cx_attribute = circleElement.Attribute("cx");
-      if(cx_attribute != null)
-        CenterX = SvgCoordinate.Parse(cx_attribute.Value);
+        var cx_attribute = CircleElement.Attribute("cx");
+        if(cx_attribute != null)
+            CenterX = SvgCoordinate.Parse(cx_attribute.Value);
 
-      var cy_attribute = circleElement.Attribute("cy");
-      if(cy_attribute != null)
-        CenterY = SvgCoordinate.Parse(cy_attribute.Value);
+        var cy_attribute = CircleElement.Attribute("cy");
+        if(cy_attribute != null)
+            CenterY = SvgCoordinate.Parse(cy_attribute.Value);
 
-      var r_attribute = circleElement.Attribute("r");
-      if(r_attribute != null)
-        Radius = SvgLength.Parse(r_attribute.Value);
+        var r_attribute = CircleElement.Attribute("r");
+        if(r_attribute != null)
+            Radius = SvgLength.Parse(r_attribute.Value);
     }
 
     //==========================================================================
     public override Geometry GetBaseGeometry() => new EllipseGeometry(new Point(CenterX.ToDouble(), CenterY.ToDouble()), 
         Radius.ToDouble(), Radius.ToDouble());
-  } // class SvgCircleElement
-
-}
+} // class SvgCircleElement

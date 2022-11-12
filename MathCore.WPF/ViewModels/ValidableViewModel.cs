@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Windows.Markup;
@@ -11,120 +8,119 @@ using System.Windows.Markup;
 using MathCore.Extensions.Expressions;
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
-namespace MathCore.WPF.ViewModels
+namespace MathCore.WPF.ViewModels;
+
+/// <summary>Модель-представления, обеспечивающая возможность валидации данных на основе атрибутов</summary>
+[MarkupExtensionReturnType(typeof(ValidableViewModel))]
+public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDataErrorInfo
 {
-    /// <summary>Модель-представления, обеспечивающая возможность валидации данных на основе атрибутов</summary>
-    [MarkupExtensionReturnType(typeof(ValidableViewModel))]
-    public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDataErrorInfo
+    private class PropertyValidator
     {
-        private class PropertyValidator
-        {
-            private readonly Func<object> _Getter;
-            private readonly Func<object, bool> _Validator;
-            public string? ErrorMessage { get; }
+        private readonly Func<object> _Getter;
+        private readonly Func<object, bool> _Validator;
+        public string? ErrorMessage { get; }
 
-            public PropertyValidator(Func<object> Getter, Func<object, bool> Validator, string? ErrorMessage)
+        public PropertyValidator(Func<object> Getter, Func<object, bool> Validator, string? ErrorMessage)
+        {
+            _Getter           = Getter;
+            _Validator        = Validator;
+            this.ErrorMessage = ErrorMessage;
+        }
+
+        public bool IsValid => _Validator(_Getter());
+
+        private bool IsPropertyValid(out string? Message)
+        {
+            var is_valid = IsValid;
+            Message = is_valid ? null : ErrorMessage;
+            return is_valid;
+        }
+
+        public string? GetErrorMessageIfInvalid() => IsPropertyValid(out var error) ? null : error;
+    }
+
+    private readonly Dictionary<string, List<PropertyValidator>> _Validators = new();
+
+    protected ValidableViewModel(bool CheckDependencies = true)
+        : base(CheckDependencies)
+    {
+        var type = GetType();
+        foreach (var property in type.GetProperties().Where(p => p.CanRead))
+        {
+            var validator_attributes = property.GetCustomAttributes<ValidationAttribute>().ToArray();
+            if (validator_attributes.Length == 0) continue;
+
+            var getter = Expression
+               .Property(this.ToExpression(), property.Name)
+               .CreateLambda<Func<object>>()
+               .Compile();
+
+            static string GetAttributeName(ValidationAttribute attribute)
             {
-                _Getter = Getter;
-                _Validator = Validator;
-                this.ErrorMessage = ErrorMessage;
+                var          type           = attribute.GetType();
+                var          type_name      = type.Name;
+                const string attribute_name = "Attribute";
+                return type_name.EndsWith(attribute_name, StringComparison.InvariantCulture)
+                    ? type_name[..^attribute_name.Length]
+                    : type_name;
             }
 
-            public bool IsValid => _Validator(_Getter());
-
-            private bool IsPropertyValid(out string? Message)
-            {
-                var is_valid = IsValid;
-                Message = is_valid ? null : ErrorMessage;
-                return is_valid;
-            }
-
-            public string? GetErrorMessageIfInvalid() => IsPropertyValid(out var error) ? null : error;
+            _Validators.Add(property.Name, validator_attributes.Select(validator => new PropertyValidator(getter, validator.IsValid, validator.ErrorMessage ?? $"{property.Name} {GetAttributeName(validator)}")).ToList());
         }
+    }
 
-        private readonly Dictionary<string, List<PropertyValidator>> _Validators = new();
+    #region IDataErrorInfo
 
-        protected ValidableViewModel(bool CheckDependencies = true)
-            : base(CheckDependencies)
-        {
-            var type = GetType();
-            foreach (var property in type.GetProperties().Where(p => p.CanRead))
-            {
-                var validator_attributes = property.GetCustomAttributes<ValidationAttribute>().ToArray();
-                if (validator_attributes.Length == 0) continue;
+    string? IDataErrorInfo.this[string Property] =>
+        _Validators.TryGetValue(Property, out var validators)
+            ? validators
+               .Where(validator => !validator.IsValid)
+               .Select(validator => validator.ErrorMessage)
+               .JoinStrings(Environment.NewLine)
+            : null;
 
-                var getter = Expression
-                   .Property(this.ToExpression(), property.Name)
-                   .CreateLambda<Func<object>>()
-                   .Compile();
+    string IDataErrorInfo.Error => _Validators.Keys
+       .Select(property => ((IDataErrorInfo)this)[property])
+       .JoinStrings(Environment.NewLine);
 
-                static string GetAttributeName(ValidationAttribute attribute)
-                {
-                    var type = attribute.GetType();
-                    var type_name = type.Name;
-                    const string attribute_name = "Attribute";
-                    return type_name.EndsWith(attribute_name, StringComparison.InvariantCulture)
-                        ? type_name.Substring(0, type_name.Length - attribute_name.Length)
-                        : type_name;
-                }
+    #endregion
 
-                _Validators.Add(property.Name, validator_attributes.Select(validator => new PropertyValidator(getter, validator.IsValid, validator.ErrorMessage ?? $"{property.Name} {GetAttributeName(validator)}")).ToList());
-            }
-        }
+    #region INotifyDataErrorInfo
 
-        #region IDataErrorInfo
+    IEnumerable INotifyDataErrorInfo.GetErrors(string? PropertyName) =>
+        _Validators.TryGetValue(PropertyName ?? throw new ArgumentNullException(nameof(PropertyName)), out var validators)
+            ? validators
+               .Where(validator => !validator.IsValid)
+               .Select(validator => validator.ErrorMessage)
+            : Enumerable.Empty<string>();
 
-        string? IDataErrorInfo.this[string Property] =>
-            _Validators.TryGetValue(Property, out var validators)
-                ? validators
-                   .Where(validator => !validator.IsValid)
-                   .Select(validator => validator.ErrorMessage)
-                   .JoinStrings(Environment.NewLine)
-                : null;
+    bool INotifyDataErrorInfo.HasErrors => _Validators.Values.Any(propertry_validators => propertry_validators.Any(validator => !validator.IsValid));
 
-        string IDataErrorInfo.Error => _Validators.Keys
-           .Select(property => ((IDataErrorInfo)this)[property])
-           .JoinStrings(Environment.NewLine);
+    protected event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
-        #endregion
+    event EventHandler<DataErrorsChangedEventArgs>? INotifyDataErrorInfo.ErrorsChanged
+    {
+        add => ErrorsChanged += value;
+        remove => ErrorsChanged -= value;
+    }
 
-        #region INotifyDataErrorInfo
+    protected virtual void OnErrorsChanged(DataErrorsChangedEventArgs e) => ErrorsChanged?.Invoke(this, e);
 
-        IEnumerable INotifyDataErrorInfo.GetErrors(string? PropertyName) =>
-            _Validators.TryGetValue(PropertyName ?? throw new ArgumentNullException(nameof(PropertyName)), out var validators)
-                ? validators
-                   .Where(validator => !validator.IsValid)
-                   .Select(validator => validator.ErrorMessage)
-                : Enumerable.Empty<string>();
+    #endregion
 
-        bool INotifyDataErrorInfo.HasErrors => _Validators.Values.Any(propertry_validators => propertry_validators.Any(validator => !validator.IsValid));
+    protected override void OnPropertyChanged(string PropertyName = null!, bool UpdateCommandsState = false, bool ThreadSafe = true)
+    {
+        base.OnPropertyChanged(PropertyName, UpdateCommandsState, ThreadSafe);
 
-        protected event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+        Validate(PropertyName);
+    }
 
-        event EventHandler<DataErrorsChangedEventArgs>? INotifyDataErrorInfo.ErrorsChanged
-        {
-            add => ErrorsChanged += value;
-            remove => ErrorsChanged -= value;
-        }
+    private void Validate(string Property)
+    {
+        var event_handler = ErrorsChanged;
+        if (event_handler is null) return;
 
-        protected virtual void OnErrorsChanged(DataErrorsChangedEventArgs e) => ErrorsChanged?.Invoke(this, e);
-
-        #endregion
-
-        protected override void OnPropertyChanged(string PropertyName = null!, bool UpdateCommandsState = false, bool ThreadSafe = true)
-        {
-            base.OnPropertyChanged(PropertyName, UpdateCommandsState, ThreadSafe);
-
-            Validate(PropertyName);
-        }
-
-        private void Validate(string Property)
-        {
-            var event_handler = ErrorsChanged;
-            if (event_handler is null) return;
-
-            if (_Validators.TryGetValue(Property, out var validators) && validators.Any(v => !v.IsValid))
-                OnErrorsChanged(new DataErrorsChangedEventArgs(Property));
-        }
+        if (_Validators.TryGetValue(Property, out var validators) && validators.Any(v => !v.IsValid))
+            OnErrorsChanged(new DataErrorsChangedEventArgs(Property));
     }
 }

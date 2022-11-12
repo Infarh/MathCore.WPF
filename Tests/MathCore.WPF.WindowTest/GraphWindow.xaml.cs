@@ -1,7 +1,6 @@
-﻿namespace MathCore.WPF.WindowTest
+﻿namespace MathCore.WPF.WindowTest;
+
+public partial class GraphWindow
 {
-    public partial class GraphWindow
-    {
-        public GraphWindow() => InitializeComponent();
-    }
+    public GraphWindow() => InitializeComponent();
 }

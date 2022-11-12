@@ -30,16 +30,13 @@ using System.Windows;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;ellipse&gt; element.
-  /// </summary>
-  class SvgEllipseElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;ellipse&gt; element.</summary>
+class SvgEllipseElement
     : SvgDrawableBaseElement
-  {
+{
     //==========================================================================
     public readonly SvgCoordinate CenterX = new(0.0);
     public readonly SvgCoordinate CenterY = new(0.0);
@@ -47,30 +44,28 @@ namespace MathCore.WPF.SVG
     public readonly SvgLength RadiusY = new(0.0);
 
     //==========================================================================
-    public SvgEllipseElement(SvgDocument document, SvgBaseElement parent, XElement ellipseElement)
-      : base(document, parent, ellipseElement)
+    public SvgEllipseElement(SvgDocument document, SvgBaseElement parent, XElement EllipseElement)
+        : base(document, parent, EllipseElement)
     {
-      var cx_attribute = ellipseElement.Attribute("cx");
-      if(cx_attribute != null)
-        CenterX = SvgCoordinate.Parse(cx_attribute.Value);
+        var cx_attribute = EllipseElement.Attribute("cx");
+        if(cx_attribute != null)
+            CenterX = SvgCoordinate.Parse(cx_attribute.Value);
 
-      var cy_attribute = ellipseElement.Attribute("cy");
-      if(cy_attribute != null)
-        CenterY = SvgCoordinate.Parse(cy_attribute.Value);
+        var cy_attribute = EllipseElement.Attribute("cy");
+        if(cy_attribute != null)
+            CenterY = SvgCoordinate.Parse(cy_attribute.Value);
 
-      var rx_attribute = ellipseElement.Attribute("rx");
-      if(rx_attribute != null)
-        RadiusX = SvgCoordinate.Parse(rx_attribute.Value);
+        var rx_attribute = EllipseElement.Attribute("rx");
+        if(rx_attribute != null)
+            RadiusX = SvgCoordinate.Parse(rx_attribute.Value);
 
-      var ry_attribute = ellipseElement.Attribute("ry");
-      if(ry_attribute != null)
-        RadiusY = SvgCoordinate.Parse(ry_attribute.Value);
+        var ry_attribute = EllipseElement.Attribute("ry");
+        if(ry_attribute != null)
+            RadiusY = SvgCoordinate.Parse(ry_attribute.Value);
     }
 
     //==========================================================================
     public override Geometry GetBaseGeometry() => new EllipseGeometry(
         new Point(CenterX.ToDouble(), CenterY.ToDouble()), RadiusX.ToDouble(),
         RadiusY.ToDouble());
-  } // class SvgEllipseElement
-
-}
+} // class SvgEllipseElement

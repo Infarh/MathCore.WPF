@@ -26,32 +26,29 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System.Collections.Generic;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  sealed class SvgDocument
-  {
+//****************************************************************************
+sealed class SvgDocument
+{
     //==========================================================================
     public readonly Dictionary<string, SvgBaseElement> Elements = new();
 
     //==========================================================================
-    public readonly SvgSVGElement    Root;
+    public readonly SvgSvgElement    Root;
     public readonly SvgReaderOptions Options;
 
     //==========================================================================
     public SvgDocument(XElement root, SvgReaderOptions options)
     {
-      Root    = new SvgSVGElement(this, null, root);
-      Options = options;
+        Root    = new SvgSvgElement(this, null, root);
+        Options = options;
     }
 
     //==========================================================================
     public DrawingImage Draw() => new(Root.Draw());
-  } // class SvgDocument
-
-}
+} // class SvgDocument

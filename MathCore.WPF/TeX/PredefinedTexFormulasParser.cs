@@ -1,238 +1,234 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Media;
 using System.Xml.Linq;
 
 // Parses definitions of predefined formulas from XML file.
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+internal class TexPredefinedFormulaParser
 {
-    internal class TexPredefinedFormulaParser
+    private static readonly Dictionary<string, Type> __TypeMappings;
+    private static readonly Dictionary<string, ArgumentValueParser> __ArgValueParsers;
+    private static readonly Dictionary<string, ActionParser?> __ActionParsers;
+    private static TexFormulaParser __FormulaParser;
+
+    static TexPredefinedFormulaParser()
     {
-        private static readonly Dictionary<string, Type> typeMappings;
-        private static readonly Dictionary<string, ArgumentValueParser> argValueParsers;
-        private static readonly Dictionary<string, ActionParser> actionParsers;
-        private static TexFormulaParser formulaParser;
+        __TypeMappings    = new Dictionary<string, Type>();
+        __ArgValueParsers = new Dictionary<string, ArgumentValueParser>();
+        __ActionParsers   = new Dictionary<string, ActionParser>();
+        __FormulaParser   = new TexFormulaParser();
 
-        static TexPredefinedFormulaParser()
+        __TypeMappings.Add("Formula", typeof(TexFormula));
+        __TypeMappings.Add("string", typeof(string));
+        __TypeMappings.Add("double", typeof(double));
+        __TypeMappings.Add("int", typeof(int));
+        __TypeMappings.Add("bool", typeof(bool));
+        __TypeMappings.Add("char", typeof(char));
+        __TypeMappings.Add("Color", typeof(Color));
+        __TypeMappings.Add("Unit", typeof(TexUnit));
+        __TypeMappings.Add("AtomType", typeof(TexAtomType));
+
+        __ActionParsers.Add("CreateFormula", new CreateTeXFormulaParser());
+        __ActionParsers.Add("MethodInvocation", new MethodInvocationParser());
+        __ActionParsers.Add("Return", new ReturnParser());
+
+        __ArgValueParsers.Add("TeXFormula", new TeXFormulaValueParser());
+        __ArgValueParsers.Add("string", new StringValueParser());
+        __ArgValueParsers.Add("double", new DoubleValueParser());
+        __ArgValueParsers.Add("int", new IntValueParser());
+        __ArgValueParsers.Add("bool", new BooleanValueParser());
+        __ArgValueParsers.Add("char", new CharValueParser());
+        __ArgValueParsers.Add("Color", new ColorConstantValueParser());
+        __ArgValueParsers.Add("Unit", new EnumParser(typeof(TexUnit)));
+        __ArgValueParsers.Add("AtomType", new EnumParser(typeof(TexAtomType)));
+    }
+
+    private static Type[] GetArgumentTypes(IEnumerable<XElement> args)
+    {
+        var result = new List<Type>();
+
+        foreach(var type in args.Select(arg => arg.AttributeValue("type")).Select(t => __TypeMappings[t]))
         {
-            typeMappings = new Dictionary<string, Type>();
-            argValueParsers = new Dictionary<string, ArgumentValueParser>();
-            actionParsers = new Dictionary<string, ActionParser>();
-            formulaParser = new TexFormulaParser();
-
-            typeMappings.Add("Formula", typeof(TexFormula));
-            typeMappings.Add("string", typeof(string));
-            typeMappings.Add("double", typeof(double));
-            typeMappings.Add("int", typeof(int));
-            typeMappings.Add("bool", typeof(bool));
-            typeMappings.Add("char", typeof(char));
-            typeMappings.Add("Color", typeof(Color));
-            typeMappings.Add("Unit", typeof(TexUnit));
-            typeMappings.Add("AtomType", typeof(TexAtomType));
-
-            actionParsers.Add("CreateFormula", new CreateTeXFormulaParser());
-            actionParsers.Add("MethodInvocation", new MethodInvocationParser());
-            actionParsers.Add("Return", new ReturnParser());
-
-            argValueParsers.Add("TeXFormula", new TeXFormulaValueParser());
-            argValueParsers.Add("string", new StringValueParser());
-            argValueParsers.Add("double", new DoubleValueParser());
-            argValueParsers.Add("int", new IntValueParser());
-            argValueParsers.Add("bool", new BooleanValueParser());
-            argValueParsers.Add("char", new CharValueParser());
-            argValueParsers.Add("Color", new ColorConstantValueParser());
-            argValueParsers.Add("Unit", new EnumParser(typeof(TexUnit)));
-            argValueParsers.Add("AtomType", new EnumParser(typeof(TexAtomType)));
+            Debug.Assert(type != null);
+            result.Add(type);
         }
 
-        private static Type[] GetArgumentTypes(IEnumerable<XElement> args)
+        return result.ToArray();
+    }
+
+    private static object[] GetArgumentValues(Dictionary<string, TexFormula> TempFormulas, IEnumerable<XElement> args)
+    {
+        var result = new List<object>();
+        foreach(var cur_arg in args)
         {
-            var result = new List<Type>();
+            var type_name = cur_arg.AttributeValue("type");
+            var value    = cur_arg.AttributeValue("value");
 
-            foreach(var type in args.Select(arg => arg.AttributeValue("type")).Select(t => typeMappings[t]))
-            {
-                Debug.Assert(type != null);
-                result.Add(type);
-            }
-
-            return result.ToArray();
+            var parser = __ArgValueParsers[type_name];
+            parser.TempFormulas = TempFormulas;
+            result.Add(parser.Parse(value, type_name));
         }
 
-        private static object[] GetArgumentValues(Dictionary<string, TexFormula> tempFormulas, IEnumerable<XElement> args)
+        return result.ToArray();
+    }
+
+    private readonly XElement _RootElement;
+
+    public TexPredefinedFormulaParser()
+    {
+        var doc = XDocument.Load(Assembly.GetExecutingAssembly()
+           .GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}PredefinedTexFormulas.xml"));
+        _RootElement = doc.Root;
+    }
+
+    public void Parse(Dictionary<string, TexFormula> PredefinedTeXFormulas)
+    {
+        if(!_RootElement.AttributeBooleanValue("enabled", true)) return;
+        foreach(var formula_element in _RootElement.Elements("TeXFormula"))
         {
-            var result = new List<object>();
-            foreach(var curArg in args)
-            {
-                var typeName = curArg.AttributeValue("type");
-                var value = curArg.AttributeValue("value");
-
-                var parser = argValueParsers[typeName];
-                parser.TempFormulas = tempFormulas;
-                result.Add(parser.Parse(value, typeName));
-            }
-
-            return result.ToArray();
+            if(!formula_element.AttributeBooleanValue("enabled", true)) continue;
+            var formula_name = formula_element.AttributeValue("name");
+            PredefinedTeXFormulas.Add(formula_name, ParseFormula(formula_name, formula_element));
         }
+    }
 
-        private readonly XElement rootElement;
-
-        public TexPredefinedFormulaParser()
+    public static TexFormula ParseFormula(string FormulaName, XElement FormulaElement)
+    {
+        var temp_formulas = new Dictionary<string, TexFormula>();
+        foreach(var element in FormulaElement.Elements())
         {
-            var doc = XDocument.Load(Assembly.GetExecutingAssembly()
-                .GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}PredefinedTexFormulas.xml"));
-            rootElement = doc.Root;
-        }
+            var parser = __ActionParsers[element.Name.ToString()];
+            if(parser is null)
+                continue;
 
-        public void Parse(Dictionary<string, TexFormula> predefinedTeXFormulas)
+            parser.TempFormulas = temp_formulas;
+            parser.Parse(element);
+            if(parser is ReturnParser return_parser)
+                return return_parser.Result;
+        }
+        return null;
+    }
+
+    public sealed class MethodInvocationParser : ActionParser
+    {
+        public override void Parse(XElement element)
         {
-            if(!rootElement.AttributeBooleanValue("enabled", true)) return;
-            foreach(var formulaElement in rootElement.Elements("TeXFormula"))
-            {
-                if(!formulaElement.AttributeBooleanValue("enabled", true)) continue;
-                var formulaName = formulaElement.AttributeValue("name");
-                predefinedTeXFormulas.Add(formulaName, ParseFormula(formulaName, formulaElement));
-            }
-        }
+            var method_name = element.AttributeValue("name");
+            var object_name = element.AttributeValue("formula");
+            var args       = element.Elements("Argument");
 
-        public static TexFormula ParseFormula(string formulaName, XElement formulaElement)
+            var formula = TempFormulas[object_name];
+            Debug.Assert(formula != null);
+
+            var arg_types  = GetArgumentTypes(args);
+            var arg_values = GetArgumentValues(TempFormulas, args);
+
+            var helper = new TexFormulaHelper(formula);
+            typeof(TexFormulaHelper).GetMethod(method_name, arg_types).Invoke(helper, arg_values);
+        }
+    }
+
+    public sealed class CreateTeXFormulaParser : ActionParser
+    {
+        public override void Parse(XElement element)
         {
-            var tempFormulas = new Dictionary<string, TexFormula>();
-            foreach(var element in formulaElement.Elements())
-            {
-                var parser = actionParsers[element.Name.ToString()];
-                if(parser is null)
-                    continue;
+            var name = element.AttributeValue("name");
+            var args = element.Elements("Argument");
 
-                parser.TempFormulas = tempFormulas;
-                parser.Parse(element);
-                if(parser is ReturnParser)
-                    return ((ReturnParser)parser).Result;
-            }
-            return null;
+            var arg_types  = GetArgumentTypes(args);
+            var arg_values = GetArgumentValues(TempFormulas, args);
+
+            Debug.Assert(arg_values.Length == 1);
+            var parser  = new TexFormulaParser();
+            var formula = parser.Parse((string)arg_values[0]);
+
+            TempFormulas.Add(name, formula);
         }
+    }
 
-        public sealed class MethodInvocationParser : ActionParser
+    public sealed class ReturnParser : ActionParser
+    {
+        public TexFormula Result { get; private set; }
+
+        public override void Parse(XElement element)
         {
-            public override void Parse(XElement element)
-            {
-                var methodName = element.AttributeValue("name");
-                var objectName = element.AttributeValue("formula");
-                var args = element.Elements("Argument");
-
-                var formula = TempFormulas[objectName];
-                Debug.Assert(formula != null);
-
-                var argTypes = GetArgumentTypes(args);
-                var argValues = GetArgumentValues(TempFormulas, args);
-
-                var helper = new TexFormulaHelper(formula);
-                typeof(TexFormulaHelper).GetMethod(methodName, argTypes).Invoke(helper, argValues);
-            }
+            var name   = element.AttributeValue("name");
+            var result = TempFormulas[name];
+            Debug.Assert(result != null);
+            Result = result;
         }
+    }
 
-        public sealed class CreateTeXFormulaParser : ActionParser
+    public sealed class DoubleValueParser : ArgumentValueParser
+    {
+        public override object Parse(string value, string type) => double.Parse(value);
+    }
+
+    public sealed class CharValueParser : ArgumentValueParser
+    {
+        public override object Parse(string value, string type)
         {
-            public override void Parse(XElement element)
-            {
-                var name = element.AttributeValue("name");
-                var args = element.Elements("Argument");
-
-                var argTypes = GetArgumentTypes(args);
-                var argValues = GetArgumentValues(TempFormulas, args);
-
-                Debug.Assert(argValues.Length == 1);
-                var parser = new TexFormulaParser();
-                var formula = parser.Parse((string)argValues[0]);
-
-                TempFormulas.Add(name, formula);
-            }
+            Debug.Assert(value.Length == 1);
+            return value[0];
         }
+    }
 
-        public sealed class ReturnParser : ActionParser
+    public sealed class BooleanValueParser : ArgumentValueParser
+    {
+        public override object Parse(string value, string type) => bool.Parse(value);
+    }
+
+    public sealed class IntValueParser : ArgumentValueParser
+    {
+        public override object Parse(string value, string type) => int.Parse(value);
+    }
+
+    public sealed class StringValueParser : ArgumentValueParser
+    {
+        public override object Parse(string value, string type) => value;
+    }
+
+    public sealed class TeXFormulaValueParser : ArgumentValueParser
+    {
+        public override object Parse(string? value, string type)
         {
-            public TexFormula Result { get; private set; }
+            if(value is null)
+                return null;
 
-            public override void Parse(XElement element)
-            {
-                var name = element.AttributeValue("name");
-                var result = TempFormulas[name];
-                Debug.Assert(result != null);
-                Result = result;
-            }
+            var formula = TempFormulas[value];
+            Debug.Assert(formula != null);
+            return formula;
         }
+    }
 
-        public sealed class DoubleValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type) => double.Parse(value);
-        }
+    public class ColorConstantValueParser : ArgumentValueParser
+    {
+        public override object Parse(string? value, string type) => typeof(Color).GetField(value).GetValue(null);
+    }
 
-        public sealed class CharValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type)
-            {
-                Debug.Assert(value.Length == 1);
-                return value[0];
-            }
-        }
+    public sealed class EnumParser : ArgumentValueParser
+    {
+        private readonly Type _EnumType;
 
-        public sealed class BooleanValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type) => bool.Parse(value);
-        }
+        public EnumParser(Type EnumType) => this._EnumType = EnumType;
 
-        public sealed class IntValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type) => int.Parse(value);
-        }
+        public override object Parse(string? value, string type) => Enum.Parse(_EnumType, value);
+    }
 
-        public sealed class StringValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type) => value;
-        }
+    public abstract class ActionParser : ParserBase
+    {
+        public abstract void Parse(XElement element);
+    }
 
-        public sealed class TeXFormulaValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type)
-            {
-                if(value is null)
-                    return null;
+    public abstract class ArgumentValueParser : ParserBase
+    {
+        public abstract object Parse(string? value, string type);
+    }
 
-                var formula = TempFormulas[value];
-                Debug.Assert(formula != null);
-                return formula;
-            }
-        }
-
-        public class ColorConstantValueParser : ArgumentValueParser
-        {
-            public override object Parse(string value, string type) => typeof(Color).GetField(value).GetValue(null);
-        }
-
-        public sealed class EnumParser : ArgumentValueParser
-        {
-            private readonly Type enumType;
-
-            public EnumParser(Type enumType) => this.enumType = enumType;
-
-            public override object Parse(string value, string type) => Enum.Parse(enumType, value);
-        }
-
-        public abstract class ActionParser : ParserBase
-        {
-            public abstract void Parse(XElement element);
-        }
-
-        public abstract class ArgumentValueParser : ParserBase
-        {
-            public abstract object Parse(string value, string type);
-        }
-
-        public abstract class ParserBase
-        {
-            public Dictionary<string, TexFormula> TempFormulas { get; set; }
-        }
+    public abstract class ParserBase
+    {
+        public Dictionary<string, TexFormula> TempFormulas { get; set; }
     }
 }

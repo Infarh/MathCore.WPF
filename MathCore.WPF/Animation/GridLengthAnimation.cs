@@ -1,58 +1,56 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Media.Animation;
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable UnusedType.Global
 
-namespace MathCore.WPF.Animation
+namespace MathCore.WPF.Animation;
+
+public class GridLengthAnimation : AnimationTimeline
 {
-    public class GridLengthAnimation : AnimationTimeline
+    #region property From : GridLength
+
+    public static readonly DependencyProperty FromProperty =
+        DependencyProperty.Register(
+            nameof(From),
+            typeof(GridLength),
+            typeof(GridLengthAnimation));
+
+    public GridLength From
     {
-        #region property From : GridLength
+        get => (GridLength)GetValue(FromProperty);
+        set => SetValue(FromProperty, value);
+    }
 
-        public static readonly DependencyProperty FromProperty =
-            DependencyProperty.Register(
-                nameof(From),
-                typeof(GridLength),
-                typeof(GridLengthAnimation));
+    #endregion
 
-        public GridLength From
-        {
-            get => (GridLength)GetValue(FromProperty);
-            set => SetValue(FromProperty, value);
-        }
+    #region property To : GridLength
 
-        #endregion
+    public static readonly DependencyProperty ToProperty =
+        DependencyProperty.Register(
+            nameof(To),
+            typeof(GridLength),
+            typeof(GridLengthAnimation));
 
-        #region property To : GridLength
+    public GridLength To
+    {
+        get => (GridLength)GetValue(ToProperty);
+        set => SetValue(ToProperty, value);
+    } 
 
-        public static readonly DependencyProperty ToProperty =
-            DependencyProperty.Register(
-                nameof(To),
-                typeof(GridLength),
-                typeof(GridLengthAnimation));
+    #endregion
 
-        public GridLength To
-        {
-            get => (GridLength)GetValue(ToProperty);
-            set => SetValue(ToProperty, value);
-        } 
+    public override Type TargetPropertyType => typeof(GridLength);
 
-        #endregion
+    protected override Freezable CreateInstanceCore() => new GridLengthAnimation();
 
-        public override Type TargetPropertyType => typeof(GridLength);
+    public override object GetCurrentValue(object DefaultOriginValue, object DefaultDestinationValue, AnimationClock clock)
+    {
+        var from_val = ((GridLength)GetValue(FromProperty)).Value;
+        var to_val   = ((GridLength)GetValue(ToProperty)).Value;
 
-        protected override Freezable CreateInstanceCore() => new GridLengthAnimation();
-
-        public override object GetCurrentValue(object DefaultOriginValue, object DefaultDestinationValue, AnimationClock clock)
-        {
-            var from_val = ((GridLength)GetValue(FromProperty)).Value;
-            var to_val = ((GridLength)GetValue(ToProperty)).Value;
-
-            var clock_current_progress = clock.CurrentProgress ?? double.NaN;
-            return from_val > to_val
-                ? new GridLength((1 - clock_current_progress) * (from_val - to_val) + to_val, GridUnitType.Star)
-                : new GridLength(clock_current_progress * (to_val - from_val) + from_val, GridUnitType.Star);
-        }
+        var clock_current_progress = clock.CurrentProgress ?? double.NaN;
+        return from_val > to_val
+            ? new GridLength((1 - clock_current_progress) * (from_val - to_val) + to_val, GridUnitType.Star)
+            : new GridLength(clock_current_progress * (to_val - from_val) + from_val, GridUnitType.Star);
     }
 }

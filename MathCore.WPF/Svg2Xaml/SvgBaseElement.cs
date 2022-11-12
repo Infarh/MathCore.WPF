@@ -29,26 +29,23 @@
 using System.Xml;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  /// <summary>
-  ///   Base class for all other SVG elements.
-  /// </summary>
-  class SvgBaseElement
-  {
+//****************************************************************************
+/// <summary>  Base class for all other SVG elements.</summary>
+class SvgBaseElement
+{
 
     //==========================================================================
     public readonly SvgDocument Document;
 
     //==========================================================================
-    public readonly string Reference;
+    public readonly string? Reference;
 
     //==========================================================================
-    public SvgSVGElement Root => Document.Root;
+    public SvgSvgElement Root => Document.Root;
 
-      //==========================================================================
+    //==========================================================================
     public readonly SvgBaseElement Parent;
 
     //==========================================================================
@@ -60,44 +57,36 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     protected SvgBaseElement(SvgDocument document, SvgBaseElement parent, XElement element)
     {
-      Document = document;
-      Parent   = parent;
+        Document = document;
+        Parent   = parent;
 
-      // Create attributes from styles...
-      var style_attribute = element.Attribute("style");
-      if(style_attribute != null)
-      {
-        foreach(var property in style_attribute.Value.Split(';'))
+        // Create attributes from styles...
+        var style_attribute = element.Attribute("style");
+        if(style_attribute != null)
         {
-          var tokens = property.Split(':');
-          if(tokens.Length == 2)
-            try
+            foreach(var property in style_attribute.Value.Split(';'))
             {
-              element.SetAttributeValue(tokens[0], tokens[1]);
+                var tokens = property.Split(':');
+                if (tokens.Length != 2) continue;
+
+                try
+                {
+                    element.SetAttributeValue(tokens[0], tokens[1]);
+                }
+                catch(XmlException)
+                { }
             }
-            catch(XmlException)
-            {
-              continue;
-            }
+            style_attribute.Remove();
         }
-        style_attribute.Remove();
-      }
 
-      var id_attribute = element.Attribute("id");
-      if(id_attribute != null)
-        Document.Elements[Id = id_attribute.Value] = this;
+        var id_attribute = element.Attribute("id");
+        if(id_attribute != null)
+            Document.Elements[Id = id_attribute.Value] = this;
 
-      var href_attribute = element.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
-      if(href_attribute != null)
-      {
-        var reference = href_attribute.Value;
-        if(reference.StartsWith("#"))
-          Reference = reference.Substring(1);
-      }
+        if(element.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink")) is { Value: [ '#', _ ] reference })
+            Reference = reference[1..];
 
-      Element = element;
+        Element = element;
     }
 
-  } // class SvgBaseElement
-
-}
+} // class SvgBaseElement

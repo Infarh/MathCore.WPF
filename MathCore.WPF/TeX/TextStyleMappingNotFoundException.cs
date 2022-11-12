@@ -1,12 +1,9 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+public class TextStyleMappingNotFoundException : Exception
 {
-    public class TextStyleMappingNotFoundException : Exception
+    internal TextStyleMappingNotFoundException(string TextStyleName)
+        : base($"Cannot find mapping for the style with name '{TextStyleName}'.")
     {
-        internal TextStyleMappingNotFoundException(string textStyleName)
-            : base($"Cannot find mapping for the style with name '{textStyleName}'.")
-        {
-        }
     }
 }

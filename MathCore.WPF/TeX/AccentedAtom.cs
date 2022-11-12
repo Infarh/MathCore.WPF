@@ -1,89 +1,87 @@
-﻿using System;
+﻿namespace MathCore.WPF.TeX;
 
-namespace MathCore.WPF.TeX
+/// <summary>Atom representing base atom with accent above it</summary>
+internal class AccentedAtom : Atom
 {
-    /// <summary>Atom representing base atom with accent above it</summary>
-    internal class AccentedAtom : Atom
+    /// <summary>Atom over which accent symbol is placed</summary>
+    public Atom BaseAtom { get; }
+
+    /// <summary>Atom representing accent symbol to place over base atom</summary>
+    public SymbolAtom AccentAtom { get; }
+
+    public AccentedAtom(Atom BaseAtom, string AccentName)
     {
-        /// <summary>Atom over which accent symbol is placed</summary>
-        public Atom BaseAtom { get; }
+        this.BaseAtom = BaseAtom;
+        AccentAtom    = SymbolAtom.GetAtom(AccentName);
 
-        /// <summary>Atom representing accent symbol to place over base atom</summary>
-        public SymbolAtom AccentAtom { get; }
+        if (AccentAtom.Type != TexAtomType.Accent)
+            throw new ArgumentException(@"The specified symbol name is not an accent.", nameof(AccentName));
+    }
 
-        public AccentedAtom(Atom baseAtom, string accentName)
+    public AccentedAtom(Atom BaseAtom, TexFormula accent)
+    {
+        if (accent.RootAtom is not SymbolAtom root_symbol)
+            throw new ArgumentException(@"The formula for the accent is not a single symbol.", nameof(accent));
+
+        AccentAtom = root_symbol;
+
+        if (AccentAtom.Type != TexAtomType.Accent)
+            throw new ArgumentException(@"The specified symbol name is not an accent.", nameof(accent));
+    }
+
+    public override Box CreateBox(TexEnvironment environment)
+    {
+        var tex_font = environment.TexFont;
+        var style    = environment.Style;
+
+        // Create box for base atom.
+        var base_box = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
+        var skew     = 0d;
+        if (BaseAtom is CharSymbol symbol)
+            skew = tex_font.GetSkew(symbol.GetCharFont(tex_font), style);
+
+        // Find character of best scale for accent symbol.
+        var accent_char = tex_font.GetCharInfo(AccentAtom.Name, style);
+        while (tex_font.HasNextLarger(accent_char))
         {
-            BaseAtom = baseAtom;
-            AccentAtom = SymbolAtom.GetAtom(accentName);
+            var next_larger_char = tex_font.GetNextLargerCharInfo(accent_char, style);
+            if (next_larger_char.Metrics.Width > base_box.Width)
+                break;
 
-            if(AccentAtom.Type != TexAtomType.Accent)
-                throw new ArgumentException(@"The specified symbol name is not an accent.", nameof(accentName));
+            accent_char = next_larger_char;
         }
 
-        public AccentedAtom(Atom baseAtom, TexFormula accent)
+        var result_box = new VerticalBox();
+
+        // Create and add box for accent symbol.
+        Box accent_box;
+        var accent_italic_width = accent_char.Metrics.Italic;
+        if (accent_italic_width > TexUtilities.FloatPrecision)
         {
-            if(!(accent.RootAtom is SymbolAtom rootSymbol))
-                throw new ArgumentException(@"The formula for the accent is not a single symbol.", nameof(accent));
-            AccentAtom = rootSymbol;
-
-            if(AccentAtom.Type != TexAtomType.Accent)
-                throw new ArgumentException(@"The specified symbol name is not an accent.", nameof(accent));
+            accent_box = new HorizontalBox(new CharBox(environment, accent_char));
+            accent_box.Add(new StrutBox(accent_italic_width, 0, 0, 0));
         }
+        else
+            accent_box = new CharBox(environment, accent_char);
 
-        public override Box CreateBox(TexEnvironment environment)
-        {
-            var texFont = environment.TexFont;
-            var style = environment.Style;
+        result_box.Add(accent_box);
 
-            // Create box for base atom.
-            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment.GetCrampedStyle());
-            var skew = 0d;
-            if(BaseAtom is CharSymbol)
-                skew = texFont.GetSkew(((CharSymbol)BaseAtom).GetCharFont(texFont), style);
+        var delta = Math.Min(base_box.Height, tex_font.GetXHeight(style, accent_char.FontId));
+        result_box.Add(new StrutBox(0, -delta, 0, 0));
 
-            // Find character of best scale for accent symbol.
-            var accentChar = texFont.GetCharInfo(AccentAtom.Name, style);
-            while(texFont.HasNextLarger(accentChar))
-            {
-                var nextLargerChar = texFont.GetNextLargerCharInfo(accentChar, style);
-                if(nextLargerChar.Metrics.Width > baseBox.Width)
-                    break;
-                accentChar = nextLargerChar;
-            }
+        // Centre and add box for base atom. Centre base box and accent box with respect to each other.
+        var box_widths_diff = (base_box.Width - accent_box.Width) / 2;
+        accent_box.Shift = skew + Math.Max(box_widths_diff, 0);
+        if (box_widths_diff < 0)
+            base_box = new HorizontalBox(base_box, accent_box.Width, TexAlignment.Center);
+        result_box.Add(base_box);
 
-            var resultBox = new VerticalBox();
+        // Adjust height and depth of result box.
+        var depth         = base_box.Depth;
+        var total_height  = result_box.Height + result_box.Depth;
+        result_box.Depth  = depth;
+        result_box.Height = total_height - depth;
 
-            // Create and add box for accent symbol.
-            Box accentBox;
-            var accentItalicWidth = accentChar.Metrics.Italic;
-            if(accentItalicWidth > TexUtilities.FloatPrecision)
-            {
-                accentBox = new HorizontalBox(new CharBox(environment, accentChar));
-                accentBox.Add(new StrutBox(accentItalicWidth, 0, 0, 0));
-            }
-            else
-            {
-                accentBox = new CharBox(environment, accentChar);
-            }
-            resultBox.Add(accentBox);
-
-            var delta = Math.Min(baseBox.Height, texFont.GetXHeight(style, accentChar.FontId));
-            resultBox.Add(new StrutBox(0, -delta, 0, 0));
-
-            // Centre and add box for base atom. Centre base box and accent box with respect to each other.
-            var boxWidthsDiff = (baseBox.Width - accentBox.Width) / 2;
-            accentBox.Shift = skew + Math.Max(boxWidthsDiff, 0);
-            if(boxWidthsDiff < 0)
-                baseBox = new HorizontalBox(baseBox, accentBox.Width, TexAlignment.Center);
-            resultBox.Add(baseBox);
-
-            // Adjust height and depth of result box.
-            var depth = baseBox.Depth;
-            var totalHeight = resultBox.Height + resultBox.Depth;
-            resultBox.Depth = depth;
-            resultBox.Height = totalHeight - depth;
-
-            return resultBox;
-        }
+        return result_box;
     }
 }

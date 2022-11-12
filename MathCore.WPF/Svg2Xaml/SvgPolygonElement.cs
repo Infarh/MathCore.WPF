@@ -27,66 +27,62 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  class SvgPolygonElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+class SvgPolygonElement
     : SvgDrawableBaseElement
-  {
+{
     //==========================================================================
     public readonly List<SvgPoint> Points = new();
 
 
     //==========================================================================
-    public SvgPolygonElement(SvgDocument document, SvgBaseElement parent, XElement polygonElement)
-      : base(document, parent, polygonElement)
+    public SvgPolygonElement(SvgDocument document, SvgBaseElement parent, XElement PolygonElement)
+        : base(document, parent, PolygonElement)
     {
-      var points_attribute = polygonElement.Attribute("points");
-      if(points_attribute != null)
-      {
-        var coordinates = new List<double>();
-
-        var points = points_attribute.Value.Split(',', ' ', '\t');
-        foreach(var coordinate_value in points)
+        var points_attribute = PolygonElement.Attribute("points");
+        if(points_attribute != null)
         {
-          var coordinate = coordinate_value.Trim();
-          if(coordinate == "")
-            continue;
-          coordinates.Add(double.Parse(coordinate, CultureInfo.InvariantCulture.NumberFormat));
-        }
+            var coordinates = new List<double>();
 
-        for(var i = 0; i < coordinates.Count - 1; i += 2)
-          Points.Add(new SvgPoint(coordinates[i], coordinates[i + 1]));
-      }
+            var points = points_attribute.Value.Split(',', ' ', '\t');
+            foreach(var coordinate_value in points)
+            {
+                var coordinate = coordinate_value.Trim();
+                if(coordinate == "")
+                    continue;
+                coordinates.Add(double.Parse(coordinate, CultureInfo.InvariantCulture.NumberFormat));
+            }
+
+            for(var i = 0; i < coordinates.Count - 1; i += 2)
+                Points.Add(new SvgPoint(coordinates[i], coordinates[i + 1]));
+        }
     }
 
     //==========================================================================
     public override Geometry GetBaseGeometry()
     {
-      if(Points.Count == 0)
-        return null;
+        if(Points.Count == 0)
+            return null;
 
-      var path_figure = new PathFigure();
+        var path_figure = new PathFigure();
 
-      path_figure.StartPoint = Points[0].ToPoint();
-      path_figure.IsClosed   = true;
-      path_figure.IsFilled   = true;
+        path_figure.StartPoint = Points[0].ToPoint();
+        path_figure.IsClosed   = true;
+        path_figure.IsFilled   = true;
 
-      for(var i = 1; i < Points.Count; ++i)
-        path_figure.Segments.Add(new LineSegment(Points[i].ToPoint(), true));
+        for(var i = 1; i < Points.Count; ++i)
+            path_figure.Segments.Add(new LineSegment(Points[i].ToPoint(), true));
 
-      var path_geometry = new PathGeometry();
-      path_geometry.Figures.Add(path_figure);
+        var path_geometry = new PathGeometry();
+        path_geometry.Figures.Add(path_figure);
 
-      return path_geometry;
+        return path_geometry;
     }
 
-  } // class SvgPolygonElement
-
-}
+} // class SvgPolygonElement

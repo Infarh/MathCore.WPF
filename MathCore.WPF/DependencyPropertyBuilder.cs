@@ -12,7 +12,7 @@ public readonly ref struct DependencyPropertyClassBuilder<T> where T : Dependenc
 {
     public DependencyPropertyBuilder<T, TValue> Property<TValue>(Expression<Func<T, TValue>> PropertySelector)
     {
-        if (PropertySelector is not { Body: MemberExpression { Member: { Name: var name } } })
+        if (PropertySelector is not { Body: MemberExpression { Member.Name: var name } })
             throw new InvalidOperationException("Селектор должен выбирать свойство объекта");
         return new(name);
     }

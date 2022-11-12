@@ -2,12 +2,11 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MathCore.WPF.WindowTest
-{
-    internal class ServiceLocator
-    {
-        public TestWindow2ViewModel Model2 => App.Services.GetRequiredService<TestWindow2ViewModel>();
+namespace MathCore.WPF.WindowTest;
 
-        public TestWindow3ViewModel Model3 => App.Services.GetRequiredService<TestWindow3ViewModel>();
-    }
+internal class ServiceLocator
+{
+    public TestWindow2ViewModel Model2 => App.Services.GetRequiredService<TestWindow2ViewModel>();
+
+    public TestWindow3ViewModel Model3 => App.Services.GetRequiredService<TestWindow3ViewModel>();
 }

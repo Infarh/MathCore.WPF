@@ -1,309 +1,304 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
-using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+/// <summary>Parses information for DefaultTeXFont settings from XML file</summary>
+internal class DefaultTexFontParser
 {
-    /// <summary>Parses information for DefaultTeXFont settings from XML file</summary>
-    internal class DefaultTexFontParser
+    private const int __FontIdCount = 4;
+    private const string __FontsDirectory = "Fonts/";
+
+    private static readonly Dictionary<string, int> __RangeTypeMappings;
+    private static readonly Dictionary<string, ICharChildParser> __CharChildParsers;
+
+    static DefaultTexFontParser()
     {
-        private const int fontIdCount = 4;
-        private const string fontsDirectory = "Fonts/";
+        __RangeTypeMappings = new Dictionary<string, int>();
+        __CharChildParsers  = new Dictionary<string, ICharChildParser>();
 
-        private static readonly Dictionary<string, int> rangeTypeMappings;
-        private static readonly Dictionary<string, ICharChildParser> charChildParsers;
+        SetRangeTypeMappings();
+        SetCharChildParsers();
+    }
 
-        static DefaultTexFontParser()
+    private static void SetRangeTypeMappings()
+    {
+        __RangeTypeMappings.Add("numbers", (int)TexCharKind.Numbers);
+        __RangeTypeMappings.Add("capitals", (int)TexCharKind.Capitals);
+        __RangeTypeMappings.Add("small", (int)TexCharKind.Small);
+    }
+
+    private static void SetCharChildParsers()
+    {
+        __CharChildParsers.Add("Kern", new KernParser());
+        __CharChildParsers.Add("Lig", new LigParser());
+        __CharChildParsers.Add("NextLarger", new NextLargerParser());
+        __CharChildParsers.Add("Extension", new ExtensionParser());
+    }
+
+    private Dictionary<string, CharFont[]> _ParsedTextStyles;
+
+    private readonly XElement _RootElement;
+
+    public DefaultTexFontParser()
+    {
+        var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}DefaultTexFont.xml"));
+        _RootElement = doc.Root;
+        ParseTextStyleMappings();
+    }
+
+    public TexFontInfo[] GetFontDescriptions()
+    {
+        var result = new TexFontInfo[__FontIdCount];
+
+        var font_descriptions = _RootElement.Element("FontDescriptions");
+        if(font_descriptions != null)
         {
-            rangeTypeMappings = new Dictionary<string, int>();
-            charChildParsers = new Dictionary<string, ICharChildParser>();
-
-            SetRangeTypeMappings();
-            SetCharChildParsers();
-        }
-
-        private static void SetRangeTypeMappings()
-        {
-            rangeTypeMappings.Add("numbers", (int)TexCharKind.Numbers);
-            rangeTypeMappings.Add("capitals", (int)TexCharKind.Capitals);
-            rangeTypeMappings.Add("small", (int)TexCharKind.Small);
-        }
-
-        private static void SetCharChildParsers()
-        {
-            charChildParsers.Add("Kern", new KernParser());
-            charChildParsers.Add("Lig", new LigParser());
-            charChildParsers.Add("NextLarger", new NextLargerParser());
-            charChildParsers.Add("Extension", new ExtensionParser());
-        }
-
-        private Dictionary<string, CharFont[]> parsedTextStyles;
-
-        private readonly XElement rootElement;
-
-        public DefaultTexFontParser()
-        {
-            var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}DefaultTexFont.xml"));
-            rootElement = doc.Root;
-            ParseTextStyleMappings();
-        }
-
-        public TexFontInfo[] GetFontDescriptions()
-        {
-            var result = new TexFontInfo[fontIdCount];
-
-            var fontDescriptions = rootElement.Element("FontDescriptions");
-            if(fontDescriptions != null)
+            foreach(var font_element in font_descriptions.Elements("Font"))
             {
-                foreach(var fontElement in fontDescriptions.Elements("Font"))
-                {
-                    var fontName = fontElement.AttributeValue("name");
-                    var fontId = fontElement.AttributeInt32Value("id");
-                    var space = fontElement.AttributeDoubleValue("space");
-                    var xHeight = fontElement.AttributeDoubleValue("xHeight");
-                    var quad = fontElement.AttributeDoubleValue("quad");
-                    var skewChar = fontElement.AttributeInt32Value("skewChar", -1);
+                var font_name = font_element.AttributeValue("name");
+                var font_id   = font_element.AttributeInt32Value("id");
+                var space    = font_element.AttributeDoubleValue("space");
+                var x_height  = font_element.AttributeDoubleValue("xHeight");
+                var quad     = font_element.AttributeDoubleValue("quad");
+                var skew_char = font_element.AttributeInt32Value("skewChar", -1);
 
-                    var font = CreateFont(fontName);
-                    var fontInfo = new TexFontInfo(fontId, font, xHeight, space, quad);
-                    if(skewChar != -1)
-                        fontInfo.SkewCharacter = (char)skewChar;
+                var font     = CreateFont(font_name);
+                var font_info = new TexFontInfo(font_id, font, x_height, space, quad);
+                if(skew_char != -1)
+                    font_info.SkewCharacter = (char)skew_char;
 
-                    foreach(var charElement in fontElement.Elements("Char"))
-                        ProcessCharElement(charElement, fontInfo);
+                foreach(var char_element in font_element.Elements("Char"))
+                    ProcessCharElement(char_element, font_info);
 
-                    if(result[fontId] != null)
-                        throw new InvalidOperationException($"Multiple entries for font with ID {fontId}.");
-                    result[fontId] = fontInfo;
-                }
-            }
-
-            return result;
-        }
-
-        private static void ProcessCharElement(XElement charElement, TexFontInfo fontInfo)
-        {
-            var character = (char)charElement.AttributeInt32Value("code");
-
-            var metrics = new double[4];
-            metrics[TexFontUtilities.MetricsWidth] = charElement.AttributeDoubleValue("width", 0d);
-            metrics[TexFontUtilities.MetricsHeight] = charElement.AttributeDoubleValue("height", 0d);
-            metrics[TexFontUtilities.MetricsDepth] = charElement.AttributeDoubleValue("depth", 0d);
-            metrics[TexFontUtilities.MetricsItalic] = charElement.AttributeDoubleValue("italic", 0d);
-            fontInfo.SetMetrics(character, metrics);
-
-            foreach(var childElement in charElement.Elements())
-            {
-                var parser = charChildParsers[childElement.Name.ToString()];
-                if(parser is null)
-                    throw new InvalidOperationException("Unknown element type.");
-                parser.Parse(childElement, character, fontInfo);
+                if(result[font_id] != null)
+                    throw new InvalidOperationException($"Multiple entries for font with ID {font_id}.");
+                result[font_id] = font_info;
             }
         }
 
-        public Dictionary<string, CharFont> GetSymbolMappings()
+        return result;
+    }
+
+    private static void ProcessCharElement(XElement CharElement, TexFontInfo FontInfo)
+    {
+        var character = (char)CharElement.AttributeInt32Value("code");
+
+        var metrics = new double[4];
+        metrics[TexFontUtilities.MetricsWidth]  = CharElement.AttributeDoubleValue("width", 0d);
+        metrics[TexFontUtilities.MetricsHeight] = CharElement.AttributeDoubleValue("height", 0d);
+        metrics[TexFontUtilities.MetricsDepth]  = CharElement.AttributeDoubleValue("depth", 0d);
+        metrics[TexFontUtilities.MetricsItalic] = CharElement.AttributeDoubleValue("italic", 0d);
+        FontInfo.SetMetrics(character, metrics);
+
+        foreach(var child_element in CharElement.Elements())
         {
-            var result = new Dictionary<string, CharFont>();
-
-            var symbolMappingsElement = rootElement.Element("SymbolMappings");
-            if(symbolMappingsElement is null)
-                throw new InvalidOperationException("Cannot find SymbolMappings element.");
-
-            foreach(var mappingElement in symbolMappingsElement.Elements("SymbolMapping"))
-            {
-                var symbolName = mappingElement.AttributeValue("name");
-                var character = mappingElement.AttributeInt32Value("ch");
-                var fontId = mappingElement.AttributeInt32Value("fontId");
-
-                result.Add(symbolName, new CharFont((char)character, fontId));
-            }
-
-            if(!result.ContainsKey("sqrt"))
-                throw new InvalidOperationException("Cannot find SymbolMap element for 'sqrt'.");
-
-            return result;
-        }
-
-        public string[] GetDefaultTextStyleMappings()
-        {
-            var result = new string[3];
-
-            var defaultTextStyleMappings = rootElement.Element("DefaultTextStyleMapping");
-            if(defaultTextStyleMappings is null)
-                throw new InvalidOperationException("Cannot find DefaultTextStyleMapping element.");
-
-            foreach(var mappingElement in defaultTextStyleMappings.Elements("MapStyle"))
-            {
-                var code = mappingElement.AttributeValue("code");
-                var codeMapping = rangeTypeMappings[code];
-
-                var textStyleName = mappingElement.AttributeValue("textStyle");
-                //var textStyleMapping = parsedTextStyles[textStyleName];
-
-                var charFonts = parsedTextStyles[textStyleName];
-                Debug.Assert(charFonts[codeMapping] != null);
-
-                result[codeMapping] = textStyleName;
-            }
-
-            return result;
-        }
-
-        public Dictionary<string, double> GetParameters()
-        {
-            var parameters = rootElement.Element("Parameters");
-            if(parameters is null)
-                throw new InvalidOperationException("Cannot find Parameters element.");
-
-            return parameters.Attributes()
-                .ToDictionary(attribute => attribute.Name.ToString(), attribute => parameters.AttributeDoubleValue(attribute.Name.ToString()));
-        }
-
-        public Dictionary<string, object> GetGeneralSettings()
-        {
-            var result = new Dictionary<string, object>();
-
-            var generalSettings = rootElement.Element("GeneralSettings");
-            if(generalSettings is null)
-                throw new InvalidOperationException("Cannot find GeneralSettings element.");
-
-            result.Add("mufontid", generalSettings.AttributeInt32Value("mufontid"));
-            result.Add("spacefontid", generalSettings.AttributeInt32Value("spacefontid"));
-            result.Add("scriptfactor", generalSettings.AttributeDoubleValue("scriptfactor"));
-            result.Add("scriptscriptfactor", generalSettings.AttributeDoubleValue("scriptscriptfactor"));
-
-            return result;
-        }
-
-        public Dictionary<string, CharFont[]> GetTextStyleMappings() => parsedTextStyles;
-
-        private void ParseTextStyleMappings()
-        {
-            parsedTextStyles = new Dictionary<string, CharFont[]>();
-
-            var textStyleMappings = rootElement.Element("TextStyleMappings");
-            if(textStyleMappings is null)
-                throw new InvalidOperationException("Cannot find TextStyleMappings element.");
-
-            foreach(var mappingElement in textStyleMappings.Elements("TextStyleMapping"))
-            {
-                var textStyleName = mappingElement.AttributeValue("name");
-                var charFonts = new CharFont[3];
-                foreach(var mapRangeElement in mappingElement.Elements("MapRange"))
-                {
-                    var fontId = mapRangeElement.AttributeInt32Value("fontId");
-                    var character = mapRangeElement.AttributeInt32Value("start");
-                    var code = mapRangeElement.AttributeValue("code");
-                    var codeMapping = rangeTypeMappings[code];
-
-                    charFonts[codeMapping] = new CharFont((char)character, fontId);
-                }
-                parsedTextStyles.Add(textStyleName, charFonts);
-            }
-        }
-
-        private GlyphTypeface CreateFont(string name)
-        {
-            GlyphTypeface glyphTypeface;
-            using var memoryPackage = new MemoryPackage();
-            using var fontStream = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}");
-            var typefaceSource = memoryPackage.CreatePart(fontStream);
-
-            glyphTypeface = new GlyphTypeface(typefaceSource);
-
-            memoryPackage.DeletePart(typefaceSource);
-
-            return glyphTypeface;
-        }
-
-        public sealed class ExtensionParser : ICharChildParser
-        {
-            public void Parse(XElement element, char character, TexFontInfo fontInfo)
-            {
-                var extensionChars = new int[4];
-                extensionChars[TexFontUtilities.ExtensionRepeat] = element.AttributeInt32Value("rep");
-                extensionChars[TexFontUtilities.ExtensionTop] = element.AttributeInt32Value("top",
-                    (int)TexCharKind.None);
-                extensionChars[TexFontUtilities.ExtensionMiddle] = element.AttributeInt32Value("mid",
-                    (int)TexCharKind.None);
-                extensionChars[TexFontUtilities.ExtensionBottom] = element.AttributeInt32Value("bot",
-                    (int)TexCharKind.None);
-
-                fontInfo.SetExtensions(character, extensionChars);
-            }
-        }
-
-        public sealed class KernParser : ICharChildParser
-        {
-            public void Parse(XElement element, char character, TexFontInfo fontInfo) => fontInfo.AddKern(character, (char)element.AttributeInt32Value("code"),
-                element.AttributeDoubleValue("val"));
-        }
-
-        public sealed class LigParser : ICharChildParser
-        {
-            public void Parse(XElement element, char character, TexFontInfo fontInfo) => fontInfo.AddLigature(character, (char)element.AttributeInt32Value("code"),
-                (char)element.AttributeInt32Value("ligCode"));
-        }
-
-        public sealed class NextLargerParser : ICharChildParser
-        {
-            public void Parse(XElement element, char character, TexFontInfo fontInfo) => fontInfo.SetNextLarger(character, (char)element.AttributeInt32Value("code"),
-                element.AttributeInt32Value("fontId"));
-        }
-
-        public interface ICharChildParser
-        {
-            void Parse(XElement element, char character, TexFontInfo fontInfo);
+            var parser = __CharChildParsers[child_element.Name.ToString()];
+            if(parser is null)
+                throw new InvalidOperationException("Unknown element type.");
+            parser.Parse(child_element, character, FontInfo);
         }
     }
 
-    sealed class MemoryPackage : IDisposable
+    public Dictionary<string, CharFont> GetSymbolMappings()
     {
-        private static int packageCounter;
+        var result = new Dictionary<string, CharFont>();
 
-        private readonly Uri packageUri = new("payload://memorypackage" + Interlocked.Increment(ref packageCounter), UriKind.Absolute);
-        private readonly Package package = Package.Open(new MemoryStream(), FileMode.Create);
-        private int partCounter;
+        var symbol_mappings_element = _RootElement.Element("SymbolMappings");
+        if(symbol_mappings_element is null)
+            throw new InvalidOperationException("Cannot find SymbolMappings element.");
 
-        public MemoryPackage() => PackageStore.AddPackage(this.packageUri, this.package);
-
-        public Uri CreatePart(Stream stream, string contentType = "application/octet-stream")
+        foreach(var mapping_element in symbol_mappings_element.Elements("SymbolMapping"))
         {
-            var partUri = new Uri("/stream" + ++partCounter, UriKind.Relative);
+            var symbol_name = mapping_element.AttributeValue("name");
+            var character  = mapping_element.AttributeInt32Value("ch");
+            var font_id     = mapping_element.AttributeInt32Value("fontId");
 
-            var part = package.CreatePart(partUri, contentType);
-
-            Debug.Assert(part != null, "part != null");
-            using(var partStream = part.GetStream())
-                CopyStream(stream, partStream);
-
-            // Each packUri must be globally unique because WPF might perform some caching based on it.
-            return PackUriHelper.Create(this.packageUri, partUri);
+            result.Add(symbol_name, new CharFont((char)character, font_id));
         }
 
-        public void DeletePart(Uri packUri) => package.DeletePart(PackUriHelper.GetPartUri(packUri));
+        if(!result.ContainsKey("sqrt"))
+            throw new InvalidOperationException("Cannot find SymbolMap element for 'sqrt'.");
 
-        public void Dispose()
+        return result;
+    }
+
+    public string[] GetDefaultTextStyleMappings()
+    {
+        var result = new string[3];
+
+        var default_text_style_mappings = _RootElement.Element("DefaultTextStyleMapping");
+        if(default_text_style_mappings is null)
+            throw new InvalidOperationException("Cannot find DefaultTextStyleMapping element.");
+
+        foreach(var mapping_element in default_text_style_mappings.Elements("MapStyle"))
         {
-            PackageStore.RemovePackage(packageUri);
-            package.Close();
+            var code        = mapping_element.AttributeValue("code");
+            var code_mapping = __RangeTypeMappings[code];
+
+            var text_style_name = mapping_element.AttributeValue("textStyle");
+            //var textStyleMapping = parsedTextStyles[textStyleName];
+
+            var char_fonts = _ParsedTextStyles[text_style_name];
+            Debug.Assert(char_fonts[code_mapping] != null);
+
+            result[code_mapping] = text_style_name;
         }
 
-        private static void CopyStream(Stream source, Stream destination)
-        {
-            const int bufferSize = 4096;
+        return result;
+    }
 
-            var buffer = new byte[bufferSize];
-            int read;
-            while((read = source.Read(buffer, 0, buffer.Length)) != 0)
-                destination.Write(buffer, 0, read);
+    public Dictionary<string, double> GetParameters()
+    {
+        var parameters = _RootElement.Element("Parameters");
+        if(parameters is null)
+            throw new InvalidOperationException("Cannot find Parameters element.");
+
+        return parameters.Attributes()
+           .ToDictionary(attribute => attribute.Name.ToString(), attribute => parameters.AttributeDoubleValue(attribute.Name.ToString()));
+    }
+
+    public Dictionary<string, object> GetGeneralSettings()
+    {
+        var result = new Dictionary<string, object>();
+
+        var general_settings = _RootElement.Element("GeneralSettings");
+        if(general_settings is null)
+            throw new InvalidOperationException("Cannot find GeneralSettings element.");
+
+        result.Add("mufontid", general_settings.AttributeInt32Value("mufontid"));
+        result.Add("spacefontid", general_settings.AttributeInt32Value("spacefontid"));
+        result.Add("scriptfactor", general_settings.AttributeDoubleValue("scriptfactor"));
+        result.Add("scriptscriptfactor", general_settings.AttributeDoubleValue("scriptscriptfactor"));
+
+        return result;
+    }
+
+    public Dictionary<string, CharFont[]> GetTextStyleMappings() => _ParsedTextStyles;
+
+    private void ParseTextStyleMappings()
+    {
+        _ParsedTextStyles = new Dictionary<string, CharFont[]>();
+
+        var text_style_mappings = _RootElement.Element("TextStyleMappings");
+        if(text_style_mappings is null)
+            throw new InvalidOperationException("Cannot find TextStyleMappings element.");
+
+        foreach(var mapping_element in text_style_mappings.Elements("TextStyleMapping"))
+        {
+            var text_style_name = mapping_element.AttributeValue("name");
+            var char_fonts     = new CharFont[3];
+            foreach(var map_range_element in mapping_element.Elements("MapRange"))
+            {
+                var font_id      = map_range_element.AttributeInt32Value("fontId");
+                var character   = map_range_element.AttributeInt32Value("start");
+                var code        = map_range_element.AttributeValue("code");
+                var code_mapping = __RangeTypeMappings[code];
+
+                char_fonts[code_mapping] = new CharFont((char)character, font_id);
+            }
+            _ParsedTextStyles.Add(text_style_name, char_fonts);
         }
+    }
+
+    private GlyphTypeface CreateFont(string name)
+    {
+        GlyphTypeface glyph_typeface;
+        using var     memory_package  = new MemoryPackage();
+        using var     font_stream     = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}");
+        var           typeface_source = memory_package.CreatePart(font_stream);
+
+        glyph_typeface = new GlyphTypeface(typeface_source);
+
+        memory_package.DeletePart(typeface_source);
+
+        return glyph_typeface;
+    }
+
+    public sealed class ExtensionParser : ICharChildParser
+    {
+        public void Parse(XElement element, char character, TexFontInfo FontInfo)
+        {
+            var extension_chars = new int[4];
+            extension_chars[TexFontUtilities.ExtensionRepeat] = element.AttributeInt32Value("rep");
+            extension_chars[TexFontUtilities.ExtensionTop] = element.AttributeInt32Value("top",
+                (int)TexCharKind.None);
+            extension_chars[TexFontUtilities.ExtensionMiddle] = element.AttributeInt32Value("mid",
+                (int)TexCharKind.None);
+            extension_chars[TexFontUtilities.ExtensionBottom] = element.AttributeInt32Value("bot",
+                (int)TexCharKind.None);
+
+            FontInfo.SetExtensions(character, extension_chars);
+        }
+    }
+
+    public sealed class KernParser : ICharChildParser
+    {
+        public void Parse(XElement element, char character, TexFontInfo FontInfo) => FontInfo.AddKern(character, (char)element.AttributeInt32Value("code"),
+            element.AttributeDoubleValue("val"));
+    }
+
+    public sealed class LigParser : ICharChildParser
+    {
+        public void Parse(XElement element, char character, TexFontInfo FontInfo) => FontInfo.AddLigature(character, (char)element.AttributeInt32Value("code"),
+            (char)element.AttributeInt32Value("ligCode"));
+    }
+
+    public sealed class NextLargerParser : ICharChildParser
+    {
+        public void Parse(XElement element, char character, TexFontInfo FontInfo) => FontInfo.SetNextLarger(character, (char)element.AttributeInt32Value("code"),
+            element.AttributeInt32Value("fontId"));
+    }
+
+    public interface ICharChildParser
+    {
+        void Parse(XElement element, char character, TexFontInfo FontInfo);
+    }
+}
+
+sealed class MemoryPackage : IDisposable
+{
+    private static int __PackageCounter;
+
+    private readonly Uri _PackageUri = new("payload://memorypackage" + Interlocked.Increment(ref __PackageCounter), UriKind.Absolute);
+    private readonly Package _Package = Package.Open(new MemoryStream(), FileMode.Create);
+    private int _PartCounter;
+
+    public MemoryPackage() => PackageStore.AddPackage(this._PackageUri, this._Package);
+
+    public Uri CreatePart(Stream stream, string ContentType = "application/octet-stream")
+    {
+        var part_uri = new Uri("/stream" + ++_PartCounter, UriKind.Relative);
+
+        var part = _Package.CreatePart(part_uri, ContentType);
+
+        Debug.Assert(part != null, "part != null");
+        using(var part_stream = part.GetStream())
+            CopyStream(stream, part_stream);
+
+        // Each packUri must be globally unique because WPF might perform some caching based on it.
+        return PackUriHelper.Create(this._PackageUri, part_uri);
+    }
+
+    public void DeletePart(Uri PackUri) => _Package.DeletePart(PackUriHelper.GetPartUri(PackUri));
+
+    public void Dispose()
+    {
+        PackageStore.RemovePackage(_PackageUri);
+        _Package.Close();
+    }
+
+    private static void CopyStream(Stream source, Stream destination)
+    {
+        const int buffer_size = 4096;
+
+        var buffer = new byte[buffer_size];
+        int read;
+        while((read = source.Read(buffer, 0, buffer.Length)) != 0)
+            destination.Write(buffer, 0, read);
     }
 }

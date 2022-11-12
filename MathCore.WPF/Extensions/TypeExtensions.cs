@@ -55,15 +55,15 @@ public static class TypeExtensions
         if (!c.CanConvertTo(ToType) && !(c_to = ToType.GetTypeConverter()).CanConvertFrom(FromType))
             throw new NotSupportedException($"Преобразование из {FromType} в {ToType} не поддерживается");
         var expr_from = Expression.Parameter(FromType, "pFrom");
-        var expr_from2tObject = Expression.Convert(expr_from, typeof(object));
+        var expr_from2_t_object = Expression.Convert(expr_from, typeof(object));
         var expr_converter = Expression.Constant(c_to ?? c);
         var method = (c_to is null
                 ? (Delegate)(Func<object, Type, object>)c.ConvertTo
                 : (Func<object, object>)c_to.ConvertFrom)
            .Method;
         var exprs_converter = c_to is null
-            ? new Expression[] { expr_from2tObject, Expression.Constant(ToType) }
-            : new Expression[] { expr_from2tObject };
+            ? new Expression[] { expr_from2_t_object, Expression.Constant(ToType) }
+            : new Expression[] { expr_from2_t_object };
         var expr_conversation = Expression.Call(expr_converter, method, exprs_converter);
 
         return Expression.Lambda(Expression.Convert(expr_conversation, ToType), expr_from);
@@ -101,7 +101,7 @@ public static class TypeExtensions
     public static Type? GetType(string TypeName)
     {
         var type_array = AppDomain.CurrentDomain.GetAssemblies().
-            SelectMany((a, i) => a.GetTypes()).Where(t => t.Name == TypeName).ToArray();
+            SelectMany((a, _) => a.GetTypes()).Where(t => t.Name == TypeName).ToArray();
         return type_array.Length != 0 ? type_array[0] : null;
     }
 

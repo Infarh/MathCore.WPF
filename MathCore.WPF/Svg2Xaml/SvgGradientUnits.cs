@@ -27,16 +27,13 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  enum SvgGradientUnits
-  {   
+//****************************************************************************
+enum SvgGradientUnits
+{   
 
     ObjectBoundingBox,
     UserSpaceOnUse
 
-  } // enum SvgGradientUnits
-
-}
+} // enum SvgGradientUnits

@@ -26,17 +26,16 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Globalization;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgRotateTransform
+//****************************************************************************
+class SvgRotateTransform
     : SvgTransform
-  {
+{
     //==========================================================================
     public readonly double Angle;
 
@@ -46,17 +45,15 @@ namespace MathCore.WPF.SVG
     //==========================================================================
     public override Transform ToTransform() => new RotateTransform(Angle);
 
-      //==========================================================================
+    //==========================================================================
     public static new SvgRotateTransform Parse(string transform)
     {
-      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-      if(tokens.Length == 1)
-        return new SvgRotateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+        if(tokens.Length == 1)
+            return new SvgRotateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
       
-      throw new NotSupportedException();
+        throw new NotSupportedException();
     }
 
-  } // class SvgRotateTransform
-
-}
+} // class SvgRotateTransform

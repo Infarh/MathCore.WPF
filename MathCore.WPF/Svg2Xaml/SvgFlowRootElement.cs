@@ -26,84 +26,80 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;flowRoot&gt; element.</summary>
+class SvgFlowRootElement
+    : SvgDrawableContainerBaseElement
 {
+    //==========================================================================
+    public readonly SvgFlowRegionElement? FlowRegion;
 
-    //****************************************************************************
-    /// <summary>
-    ///   Represents a &lt;flowRoot&gt; element.
-    /// </summary>
-    class SvgFlowRootElement
-      : SvgDrawableContainerBaseElement
+    //==========================================================================
+    public SvgFlowRootElement(SvgDocument document, SvgBaseElement parent, XElement FlowRootElement)
+        : base(document, parent, FlowRootElement)
     {
-        //==========================================================================
-        public readonly SvgFlowRegionElement? FlowRegion;
-
-        //==========================================================================
-        public SvgFlowRootElement(SvgDocument document, SvgBaseElement parent, XElement FlowRootElement)
-          : base(document, parent, FlowRootElement)
+        for (var i = 0; i < Children.Count; ++i)
         {
-            for (var i = 0; i < Children.Count; ++i)
-            {
-                FlowRegion = Children[i] as SvgFlowRegionElement;
-                if (FlowRegion is null) continue;
-                Children.RemoveAt(i);
-                break;
-            }
-
-            if (FlowRegion is null)
-                throw new NotImplementedException();
+            FlowRegion = Children[i] as SvgFlowRegionElement;
+            if (FlowRegion is null) continue;
+            Children.RemoveAt(i);
+            break;
         }
 
-        //==========================================================================
-        public override Drawing Draw()
+        if (FlowRegion is null)
+            throw new NotImplementedException();
+    }
+
+    //==========================================================================
+    public override Drawing Draw()
+    {
+        var drawing_group = new DrawingGroup { Opacity = Opacity.ToDouble() };
+
+        if (Transform != null)
+            drawing_group.Transform = Transform.ToTransform();
+
+        foreach (var element in Children)
         {
-            var drawing_group = new DrawingGroup { Opacity = Opacity.ToDouble() };
-
-            if (Transform != null)
-                drawing_group.Transform = Transform.ToTransform();
-
-            foreach (var element in Children)
+            var drawing = element switch
             {
-                var drawing = element switch
-                {
-                    SvgDrawableBaseElement base_element => base_element.Draw(),
-                    SvgDrawableContainerBaseElement base_element => base_element.Draw(),
-                    _ => null
-                };
+                SvgDrawableBaseElement base_element          => base_element.Draw(),
+                SvgDrawableContainerBaseElement base_element => base_element.Draw(),
+                _                                            => null
+            };
 
-                if (drawing != null)
-                    drawing_group.Children.Add(drawing);
+            if (drawing != null)
+                drawing_group.Children.Add(drawing);
+        }
+
+        if (Filter != null)
+            if (Document.Elements[Filter.Id] is SvgFilterElement filter_element)
+                drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
+
+        if (ClipPath != null)
+            if (Document.Elements[ClipPath.Id] is SvgClipPathElement clip_path_element)
+                drawing_group.ClipGeometry = clip_path_element.GetClipGeometry();
+
+        if (Mask != null)
+            if (Document.Elements[Mask.Id] is SvgMaskElement mask_element)
+            {
+                drawing_group.OpacityMask = mask_element.GetOpacityMask();
+
+                var geometry_group = new GeometryGroup();
+
+                if (drawing_group.ClipGeometry != null)
+                    geometry_group.Children.Add(drawing_group.ClipGeometry);
+
+                geometry_group.Children.Add(mask_element.GetClipGeometry());
+                drawing_group.ClipGeometry = geometry_group;
+
             }
 
-            if (Filter != null)
-                if (Document.Elements[Filter.Id] is SvgFilterElement filter_element)
-                    drawing_group.BitmapEffect = filter_element.ToBitmapEffect();
-
-            if (ClipPath != null)
-                if (Document.Elements[ClipPath.Id] is SvgClipPathElement clip_path_element)
-                    drawing_group.ClipGeometry = clip_path_element.GetClipGeometry();
-
-            if (Mask != null)
-                if (Document.Elements[Mask.Id] is SvgMaskElement mask_element)
-                {
-                    drawing_group.OpacityMask = mask_element.GetOpacityMask();
-
-                    var geometry_group = new GeometryGroup();
-
-                    if (drawing_group.ClipGeometry != null)
-                        geometry_group.Children.Add(drawing_group.ClipGeometry);
-
-                    geometry_group.Children.Add(mask_element.GetClipGeometry());
-                    drawing_group.ClipGeometry = geometry_group;
-
-                }
-
-            return drawing_group;
-        }
-    } // class SvgFlowRootElement
-}
+        return drawing_group;
+    }
+} // class SvgFlowRootElement

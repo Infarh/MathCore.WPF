@@ -1,7 +1,6 @@
-﻿namespace MathCore.WPF.Views.Windows
+﻿namespace MathCore.WPF.Views.Windows;
+
+public partial class TextRequestDialogWindow
 {
-    public partial class TextRequestDialogWindow
-    {
-        public TextRequestDialogWindow() => InitializeComponent();
-    }
+    public TextRequestDialogWindow() => InitializeComponent();
 }

@@ -1,15 +1,14 @@
-﻿namespace MathCore.WPF.TeX
+﻿namespace MathCore.WPF.TeX;
+
+/// <summary>Atom representing character that does not depend on text style</summary>
+internal class FixedCharAtom : CharSymbol
 {
-    /// <summary>Atom representing character that does not depend on text style</summary>
-    internal class FixedCharAtom : CharSymbol
-    {
-        public CharFont CharFont { get; }
+    public CharFont CharFont { get; }
 
-        public FixedCharAtom(CharFont charFont) => CharFont = charFont;
+    public FixedCharAtom(CharFont CharFont) => this.CharFont = CharFont;
 
-        public override CharFont GetCharFont(ITeXFont texFont) => CharFont;
+    public override CharFont GetCharFont(ITeXFont TexFont) => CharFont;
 
-        public override Box CreateBox(TexEnvironment environment) =>
-            new CharBox(environment, environment.TexFont.GetCharInfo(CharFont, environment.Style));
-    }
+    public override Box CreateBox(TexEnvironment environment) =>
+        new CharBox(environment, environment.TexFont.GetCharInfo(CharFont, environment.Style));
 }

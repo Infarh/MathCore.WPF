@@ -1,9 +1,7 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
+﻿using System.Globalization;
 using System.Reflection;
 using System.Windows.Data;
-using MathCore.Annotations;
+
 using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.Reflection;

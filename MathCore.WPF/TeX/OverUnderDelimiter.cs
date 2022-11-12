@@ -1,57 +1,56 @@
-﻿using System;
+﻿
 
 // Atom representing other atom with delimeter and script atoms over or under it.
-namespace MathCore.WPF.TeX
+namespace MathCore.WPF.TeX;
+
+internal class OverUnderDelimiter : Atom
 {
-    internal class OverUnderDelimiter : Atom
+    private static double GetMaxWidth(Box BaseBox, Box DelimeterBox, Box ScriptBox)
     {
-        private static double GetMaxWidth(Box baseBox, Box delimeterBox, Box scriptBox)
-        {
-            var maxWidth = Math.Max(baseBox.Width, delimeterBox.Height + delimeterBox.Depth);
-            if(scriptBox != null)
-                maxWidth = Math.Max(maxWidth, scriptBox.Width);
-            return maxWidth;
-        }
+        var max_width = Math.Max(BaseBox.Width, DelimeterBox.Height + DelimeterBox.Depth);
+        if(ScriptBox != null)
+            max_width = Math.Max(max_width, ScriptBox.Width);
+        return max_width;
+    }
 
-        public Atom BaseAtom { get; }
+    public Atom BaseAtom { get; }
 
-        private Atom Script { get; }
+    private Atom Script { get; }
 
-        private SymbolAtom Symbol { get; }
+    private SymbolAtom Symbol { get; }
 
-        /// <summary>Kern between delimeter symbol and script</summary>
-        private SpaceAtom Kern { get; }
+    /// <summary>Kern between delimeter symbol and script</summary>
+    private SpaceAtom Kern { get; }
 
-        /// <summary> True to place delimeter symbol Over base; false to place delimeter symbol under base</summary>
-        public bool Over { get; set; }
+    /// <summary> True to place delimeter symbol Over base; false to place delimeter symbol under base</summary>
+    public bool Over { get; set; }
 
-        public OverUnderDelimiter(Atom baseAtom, Atom script, SymbolAtom symbol, TexUnit kernUnit, double kern, bool over)
-        {
-            Type = TexAtomType.Inner;
-            BaseAtom = baseAtom;
-            Script = script;
-            Symbol = symbol;
-            Kern = new SpaceAtom(kernUnit, 0, kern, 0);
-            Over = over;
-        }
+    public OverUnderDelimiter(Atom BaseAtom, Atom script, SymbolAtom symbol, TexUnit KernUnit, double kern, bool over)
+    {
+        Type          = TexAtomType.Inner;
+        this.BaseAtom = BaseAtom;
+        Script        = script;
+        Symbol        = symbol;
+        Kern          = new SpaceAtom(KernUnit, 0, kern, 0);
+        Over          = over;
+    }
 
-        public override Box CreateBox(TexEnvironment environment)
-        {
-            // Create boxes for base, delimeter, and script atoms.
-            var baseBox = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
-            var delimeterBox = DelimiterFactory.CreateBox(Symbol.Name, baseBox.Width, environment);
-            var scriptBox = Script?.CreateBox(Over ? environment.GetSuperscriptStyle() : environment.GetSubscriptStyle());
+    public override Box CreateBox(TexEnvironment environment)
+    {
+        // Create boxes for base, delimeter, and script atoms.
+        var base_box      = BaseAtom is null ? StrutBox.Empty : BaseAtom.CreateBox(environment);
+        var delimeter_box = DelimiterFactory.CreateBox(Symbol.Name, base_box.Width, environment);
+        var script_box    = Script?.CreateBox(Over ? environment.GetSuperscriptStyle() : environment.GetSubscriptStyle());
 
-            // Create centered horizontal box if any box is smaller than maximum width.
-            var maxWidth = GetMaxWidth(baseBox, delimeterBox, scriptBox);
-            if(Math.Abs(maxWidth - baseBox.Width) > TexUtilities.FloatPrecision)
-                baseBox = new HorizontalBox(baseBox, maxWidth, TexAlignment.Center);
-            if(Math.Abs(maxWidth - delimeterBox.Height - delimeterBox.Depth) > TexUtilities.FloatPrecision)
-                delimeterBox = new VerticalBox(delimeterBox, maxWidth, TexAlignment.Center);
-            if(scriptBox != null && Math.Abs(maxWidth - scriptBox.Width) > TexUtilities.FloatPrecision)
-                scriptBox = new HorizontalBox(scriptBox, maxWidth, TexAlignment.Center);
+        // Create centered horizontal box if any box is smaller than maximum width.
+        var max_width = GetMaxWidth(base_box, delimeter_box, script_box);
+        if(Math.Abs(max_width - base_box.Width) > TexUtilities.FloatPrecision)
+            base_box = new HorizontalBox(base_box, max_width, TexAlignment.Center);
+        if(Math.Abs(max_width - delimeter_box.Height - delimeter_box.Depth) > TexUtilities.FloatPrecision)
+            delimeter_box = new VerticalBox(delimeter_box, max_width, TexAlignment.Center);
+        if(script_box != null && Math.Abs(max_width - script_box.Width) > TexUtilities.FloatPrecision)
+            script_box = new HorizontalBox(script_box, max_width, TexAlignment.Center);
 
-            return new OverUnderBox(baseBox, delimeterBox, scriptBox, Kern.CreateBox(environment).Height, Over);
-        }
+        return new OverUnderBox(base_box, delimeter_box, script_box, Kern.CreateBox(environment).Height, Over);
     }
 }

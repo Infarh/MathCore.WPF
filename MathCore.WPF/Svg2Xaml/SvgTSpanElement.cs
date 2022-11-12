@@ -29,24 +29,19 @@
 
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;tspan&gt; element.
-  /// </summary>
-  class SvgTSpanElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;tspan&gt; element.</summary>
+class SvgTSpanElement
     : SvgDrawableContainerBaseElement
-  {
+{
 
     //==========================================================================
-    public SvgTSpanElement(SvgDocument document, SvgBaseElement parent, XElement svgElement)
-      : base(document, parent, svgElement)
+    public SvgTSpanElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
+        : base(document, parent, SvgElement)
     {
-      // ...
+        // ...
     }
 
-  } // class SvgTSpanElement
-
-}
+} // class SvgTSpanElement

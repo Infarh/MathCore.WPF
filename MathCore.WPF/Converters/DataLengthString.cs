@@ -1,8 +1,7 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
-using MathCore.Annotations;
+
 using MathCore.Data;
 using MathCore.WPF.Converters.Base;
 

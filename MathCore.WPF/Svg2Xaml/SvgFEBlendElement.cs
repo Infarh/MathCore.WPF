@@ -29,26 +29,21 @@
 using System.Windows.Media.Effects;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;feBlend&gt; element.
-  /// </summary>
-  class SvgFEBlendElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;feBlend&gt; element.</summary>
+class SvgFeBlendElement
     : SvgFilterEffectBaseElement
-  {
+{
 
     //==========================================================================
-    public SvgFEBlendElement(SvgDocument document, SvgBaseElement parent, XElement feBlendElement)
-      : base(document, parent, feBlendElement)
+    public SvgFeBlendElement(SvgDocument document, SvgBaseElement parent, XElement FeBlendElement)
+        : base(document, parent, FeBlendElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public override BitmapEffect ToBitmapEffect() => null;
-  } // class SvgFEBlendElement
-
-}
+} // class SvgFEBlendElement

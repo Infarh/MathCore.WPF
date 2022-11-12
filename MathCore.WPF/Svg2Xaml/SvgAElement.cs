@@ -28,23 +28,18 @@
 ////////////////////////////////////////////////////////////////////////////////
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents an &lt;a&gt; element.
-  /// </summary>
-  class SvgAElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents an &lt;a&gt; element.</summary>
+class SvgAElement
     : SvgDrawableContainerBaseElement
-  {
+{
     //==========================================================================
-    public SvgAElement(SvgDocument document, SvgBaseElement parent, XElement aElement)
-      : base(document, parent, aElement)
+    public SvgAElement(SvgDocument document, SvgBaseElement parent, XElement AElement)
+        : base(document, parent, AElement)
     {
-      // ...
+        // ...
     }
 
-  } // class SvgAElement
-
-}
+} // class SvgAElement

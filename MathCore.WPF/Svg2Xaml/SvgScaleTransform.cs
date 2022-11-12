@@ -26,52 +26,49 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Globalization;
 using System.Windows.Media;
 
-namespace MathCore.WPF.SVG
-{
+namespace MathCore.WPF.SVG;
 
-  //****************************************************************************
-  class SvgScaleTransform
+//****************************************************************************
+class SvgScaleTransform
     : SvgTransform
-  {
+{
     public readonly double X;
     public readonly double Y;
 
     //==========================================================================
     public SvgScaleTransform(double x, double y)
     {
-      X = x;
-      Y = y;
+        X = x;
+        Y = y;
     }
 
     //==========================================================================
     public SvgScaleTransform(double scale)
     {
-      X = scale;
-      Y = scale;
+        X = scale;
+        Y = scale;
     }
 
     //==========================================================================
     public override Transform ToTransform() => new ScaleTransform(X, Y);
 
-      //==========================================================================
+    //==========================================================================
     public static new SvgScaleTransform Parse(string transform)
     {
-      var tokens = transform.Split(new char[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-      if(tokens.Length == 1)
-        return new SvgScaleTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+        if(tokens.Length == 1)
+            return new SvgScaleTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
       
-      if(tokens.Length == 2)
-        return new SvgScaleTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
-                                     double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+        if(tokens.Length == 2)
+            return new SvgScaleTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+                double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat));
 
-      throw new NotSupportedException();
+        throw new NotSupportedException();
     }
 
-  } // class SvgScaleTransform
-
-}
+} // class SvgScaleTransform

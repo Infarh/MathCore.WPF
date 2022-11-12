@@ -8,32 +8,27 @@
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:behaviors="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:fa5="http://schemas.fontawesome.com/icons/"
+        xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
         Title="{Binding Title}"
         Width="800" Height="450">
     <Window.DataContext>
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
-    <DockPanel Margin="5">
-        <StackPanel DockPanel.Dock="Right" Width="120">
-            <TextBox Text="{Binding Value1}"/>
-            <TextBox Text="{Binding Value2}"/>
-        </StackPanel>
-        <DynamicModelContent>
-            <DynamicModelContent.Model>
-                <DynamicModelField Name="V1" Value="{Binding Value1}"/>
-                <DynamicModelField Name="V2" Value="{Binding Value2}"/>
-            </DynamicModelContent.Model>
-            <Grid>
-                <StackPanel>
-                    <TextBlock Text="{Binding}"/>
-                    <TextBlock Text="{Binding V1}"/>
-                    <TextBlock Text="{Binding V2}">
-                        <TextBlock.InputBindings>
-                            <MouseBinding MouseAction="LeftClick" Command="{Binding}"/>
-                        </TextBlock.InputBindings>
-                    </TextBlock>
-                </StackPanel>
-            </Grid>
-        </DynamicModelContent>
-    </DockPanel>
+    <Grid>
+        <!--<Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
+                fa5:Awesome.Content="Solid_FileDownload"/>-->
+        <Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120">
+            <!--<fa5:ImageAwesome Icon="Solid_CloudDownloadAlt" Width="50">
+                <fa5:ImageAwesome.Foreground>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#FF1300FF"/>
+                        <GradientStop Color="#FFE40707" Offset="1"/>
+                    </RadialGradientBrush>
+                </fa5:ImageAwesome.Foreground>
+            </fa5:ImageAwesome>-->
+            <fa6:SvgAwesome Icon="Solid_DownLong" Height="30"/>
+        </Button>
+    </Grid>
 </Window>

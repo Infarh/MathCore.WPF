@@ -26,48 +26,41 @@
 //  $LastChangedBy: unknown $
 //
 ////////////////////////////////////////////////////////////////////////////////
-using System;
+
 using System.Windows.Media;
 using System.Xml.Linq;
 
-namespace MathCore.WPF.SVG
-{
-  
-  //****************************************************************************
-  /// <summary>
-  ///   Represents a &lt;flowRegíon&gt; element.
-  /// </summary>
-  class SvgFlowRegionElement
+namespace MathCore.WPF.SVG;
+
+//****************************************************************************
+/// <summary>  Represents a &lt;flowRegíon&gt; element.</summary>
+class SvgFlowRegionElement
     : SvgDrawableContainerBaseElement
-  {
+{
 
     //==========================================================================
-    public SvgFlowRegionElement(SvgDocument document, SvgBaseElement parent, XElement flowRegionElement)
-      : base(document, parent, flowRegionElement)
+    public SvgFlowRegionElement(SvgDocument document, SvgBaseElement parent, XElement FlowRegionElement)
+        : base(document, parent, FlowRegionElement)
     {
-      // ...
+        // ...
     }
 
     //==========================================================================
     public Geometry GetClipGeometry()
     {
-      var geometry_group = new GeometryGroup();
+        var geometry_group = new GeometryGroup();
 
-      foreach(var element in Children)
-      {
-        if(element is SvgDrawableBaseElement)
-        {
-          var geometry = (element as SvgDrawableBaseElement).GetBaseGeometry();
-          if(geometry != null)
-            geometry_group.Children.Add(geometry);
-        }
-        else
-          throw new NotImplementedException();
-      }
+        foreach(var element in Children)
+            if(element is SvgDrawableBaseElement base_element)
+            {
+                var geometry = base_element.GetBaseGeometry();
+                if(geometry != null)
+                    geometry_group.Children.Add(geometry);
+            }
+            else
+                throw new NotImplementedException();
 
-      return geometry_group;
+        return geometry_group;
     }
 
-  } // class SvgFlowRegionElement
-
-}
+} // class SvgFlowRegionElement
