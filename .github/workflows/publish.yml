@@ -1,0 +1,110 @@
+name: Publish NuGet.org
+
+on:
+  push:
+    branches: 
+      - master
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+
+jobs:
+  build:
+    name: Build 
+    runs-on: windows-latest    
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+          
+      - name: Cache NuGet  
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+          
+      - name: Restore
+        run: |
+          dotnet restore MathCore.WPF/MathCore.WPF.csproj
+          dotnet restore Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj
+        
+      - name: Building
+        run: |
+          dotnet build MathCore.WPF -c Release --no-restore --nowarn:CS1998,CS8625,CS8600,CS8603,CS8620,CS8618,CS8604,CS8602,CS8622,CS8619,CS8632,CS0108,NU1701,NU1702,MSB3277,NU1701
+          dotnet build Tests/MathCore.WPF.Tests -c Release --no-restore
+          
+      - name: Test
+        run: dotnet test Tests/MathCore.WPF.Tests -c Release --no-build
+        
+      - name: Packing
+        run: dotnet pack MathCore.WPF/MathCore.WPF.csproj --no-build -c Release -v q -o ${{ github.workspace }}/ReleasePack --include-symbols
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3.1.1
+        with:
+          name: Release
+          path: ${{ github.workspace }}/ReleasePack
+          retention-days: 1
+        
+  nuget:
+    name: NuGet
+    needs: [build]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+    
+      - name: Get artifact
+        uses: actions/download-artifact@v3.0.1
+        id: download
+        with:
+            name: Release
+            path: ${{ github.workspace }}/ReleasePack
+            
+      - name: Upload to NuGet
+        run: dotnet nuget push "**/*.nupkg" -k ${{ secrets.NuGetApiKey }} --skip-duplicate -s https://api.nuget.org/v3/index.json
+        
+  github:
+    name: GitHub
+    needs: [build]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+    
+      - name: Get artifact
+        uses: actions/download-artifact@v3.0.1
+        id: download
+        with:
+            name: Release
+            path: ${{ github.workspace }}/ReleasePack
+            
+      - name: Upload to GitHub
+        run: dotnet nuget push "**/*.nupkg" --skip-duplicate -s https://nuget.pkg.github.com/Infarh/index.json -k ${{secrets.GITHUB_TOKEN}}
+        
+  clean:
+    name: Clean artifact
+    needs: [nuget, github]
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Delete artefact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+            name: Release
