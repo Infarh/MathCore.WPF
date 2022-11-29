@@ -16,7 +16,11 @@ internal struct MinMaxInfo : IEquatable<MinMaxInfo>
 
     public override bool Equals(object? obj) => obj is MinMaxInfo other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(Reserved, MaxSize, MaxPosition, MinTrackSize, MaxTrackSize);
+    public override int GetHashCode() => HashBuilder.New(Reserved)
+       .Append(MaxSize)
+       .Append(MaxPosition)
+       .Append(MinTrackSize)
+       .Append(MaxTrackSize);
 
     public static bool operator ==(MinMaxInfo left, MinMaxInfo right) => left.Equals(right);
 

@@ -12,7 +12,7 @@ public readonly struct PropertyDescription : IEquatable<PropertyDescription>
     
     public string Path => $"{BaseProperty}.{Name}".TrimStart('.');
     
-    public string DisplayPath => string.IsNullOrEmpty(BasePropertyDisplayName) ? DisplayName : $"{BasePropertyDisplayName}.{DisplayName}";
+    public string DisplayPath => BasePropertyDisplayName is { Length: > 0 } ? $"{BasePropertyDisplayName}.{DisplayName}" : DisplayName;
 
     public PropertyDescription(string Name, string DisplayName, string? BaseProperty, string BasePropertyDisplayName)
     {
@@ -26,7 +26,10 @@ public readonly struct PropertyDescription : IEquatable<PropertyDescription>
 
     public override bool Equals(object? obj) => obj is PropertyDescription other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(Name, DisplayName, BaseProperty, BasePropertyDisplayName);
+    public override int GetHashCode() => HashBuilder.New(Name)
+       .Append(DisplayName)
+       .Append(BaseProperty)
+       .Append(BasePropertyDisplayName);
 
     public static bool operator ==(PropertyDescription left, PropertyDescription right) => left.Equals(right);
     public static bool operator !=(PropertyDescription left, PropertyDescription right) => !left.Equals(right);

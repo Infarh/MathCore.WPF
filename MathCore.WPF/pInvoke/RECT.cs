@@ -28,7 +28,6 @@ public struct Rect : IEquatable<Rect>
         Bottom = bottom;
     }
 
-
     public Rect(Rect rcSrc)
     {
         Left   = rcSrc.Left;
@@ -46,7 +45,10 @@ public struct Rect : IEquatable<Rect>
 
     public override bool Equals(object? obj) => obj is Rect other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(Left, Top, Right, Bottom);
+    public override int GetHashCode() => HashBuilder.New(Left)
+       .Append(Top)
+       .Append(Right)
+       .Append(Bottom);
 
     public static bool operator ==(Rect left, Rect right) => left.Equals(right);
 
