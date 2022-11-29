@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
-using MathCore.WPF.TrayIcon;
+// ReSharper disable InconsistentNaming
 
 namespace MathCore.WPF;
 
@@ -19,18 +19,19 @@ public static class WinApi
         public int Y;
     }
 
-    /// <summary>Creates, updates or deletes the taskbar icon.</summary>
-    [DllImport("shell32.Dll", CharSet = CharSet.Unicode)]
-    public static extern bool Shell_NotifyIcon(NotifyCommand cmd, [In] ref NotifyIconData data);
-
-
     /// <summary>Creates the helper window that receives messages from the taskar icon.</summary>
     [DllImport("USER32.DLL", EntryPoint = "CreateWindowExW", SetLastError = true)]
-    public static extern IntPtr CreateWindowEx(int dwExStyle, [MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
-        [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName, int dwStyle, int x, int y,
-        int nWidth, int nHeight, IntPtr hWndParent, IntPtr hMenu, IntPtr hInstance,
+    public static extern IntPtr CreateWindowEx(
+        int dwExStyle,
+        [MarshalAs(UnmanagedType.LPWStr)] string lpClassName,
+        [MarshalAs(UnmanagedType.LPWStr)] string lpWindowName, 
+        int dwStyle,
+        int x, int y,
+        int nWidth, int nHeight,
+        IntPtr hWndParent,
+        IntPtr hMenu,
+        IntPtr hInstance,
         IntPtr lpParam);
-
 
     /// <summary>Processes a default windows procedure.</summary>
     [DllImport("USER32.DLL")]
