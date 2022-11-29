@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.38</Version>
+    <Version>0.0.39</Version>
     <PackageReleaseNotes>
-      Обновление пакетов
+      Исключение лишних зависимостей
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -34,27 +34,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Using Include="System" />
-    <Using Include="System.Threading.Tasks" />
+    <PackageReference Include="MathCore" Version="0.0.81.1" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.81.1" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net4.6.1-windows'">
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net7.0-windows'">
-    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net4.7-windows'">
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'!='net7.0-windows'">
-    <PackageReference Include="System.Drawing.Common" Version="[6.0.0]" />
+  <ItemGroup Condition="'$(TargetFramework)'=='net4.8-windows'">
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
   </ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <ItemGroup Condition="'$(TargetFramework)'=='net5.0-windows'">
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DocumentationFile></DocumentationFile>
     <NoWarn>
       0436;
@@ -65,8 +68,8 @@
     </NoWarn>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>MathCore.WPF.xml</DocumentationFile>
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DocumentationFile>$(MSBuildProjectName.Replace(" ", "_")).xml</DocumentationFile>
     <NoWarn>
       1570;1573;1574;
       1701;1702;8618;1591;
@@ -121,21 +124,6 @@
     <EmbeddedResource Include="TeX\Styles\PredefinedTexFormulas.xml" />
     <EmbeddedResource Include="TeX\Styles\TexFormulaSettings.xml" />
     <EmbeddedResource Include="TeX\Styles\TexSymbols.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

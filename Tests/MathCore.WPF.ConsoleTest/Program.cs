@@ -1,9 +1,4 @@
-﻿global using System;
-global using System.Collections.Generic;
-global using System.Linq;
-global using System.Threading.Tasks;
-
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 
 var sh = Channel.CreateBounded<int>(new BoundedChannelOptions(10)
 {

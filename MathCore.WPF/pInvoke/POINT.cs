@@ -22,7 +22,7 @@ internal struct Point : IEquatable<Point>
 
     public override bool Equals(object? obj) => obj is Point other && Equals(other);
 
-    public override int GetHashCode() => HashCode.Combine(x, y);
+    public override int GetHashCode() => HashBuilder.New(x).Append(y);
 
     public static bool operator ==(Point left, Point right) => left.Equals(right);
 
