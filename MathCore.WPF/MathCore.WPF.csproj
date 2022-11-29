@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.38</Version>
+    <Version>0.0.39</Version>
     <PackageReleaseNotes>
-      Обновление пакетов
+      Исключение лишних зависимостей
     </PackageReleaseNotes>
   </PropertyGroup>
 
