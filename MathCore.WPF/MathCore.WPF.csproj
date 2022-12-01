@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.39</Version>
+    <Version>0.0.39.1</Version>
     <PackageReleaseNotes>
       Исключение лишних зависимостей
     </PackageReleaseNotes>
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.81.1" />
+    <PackageReference Include="MathCore" Version="0.0.82" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
