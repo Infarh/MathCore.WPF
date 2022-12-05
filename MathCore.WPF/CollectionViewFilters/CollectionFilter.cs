@@ -51,19 +51,21 @@ public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<
     private void ResetCollection()
     {
         _InternalCollection.Clear();
-        if (_Collection.Count == 0) return;
-        foreach (var group in _Collection!.GroupBy(_Selector))
-            _InternalCollection.Add(new CollectionFilterItem<TValue, TCriteria>(group.Key!, group));
+        if (_Collection.Count == 0 || _Selector is not { } selector) return;
+
+        foreach (var group in _Collection!.GroupBy(selector))
+            _InternalCollection.Add(new(group.Key!, group));
     }
 
     private void AddValues(IEnumerable<TValue> values)
     {
         if(_Selector is not { } selector) return;
+
         foreach (var value in values)
         {
             var key = selector(value);
             var filter = _InternalCollection.FirstOrDefault(f => Equals(f.Key, key));
-            if (filter is null) _InternalCollection.Add(filter = new CollectionFilterItem<TValue, TCriteria>(key));
+            if (filter is null) _InternalCollection.Add(filter = new(key));
             filter.Add(value);
         }
     }
@@ -71,6 +73,7 @@ public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<
     private void RemoveValues(IEnumerable<TValue> values)
     {
         if(_Selector is not { } selector) return;
+
         foreach (var value in values)
         {
             var key = selector(value);

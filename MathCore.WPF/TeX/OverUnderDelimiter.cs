@@ -1,11 +1,12 @@
 ﻿
 
 // Atom representing other atom with delimeter and script atoms over or under it.
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 namespace MathCore.WPF.TeX;
 
 internal class OverUnderDelimiter : Atom
 {
-    private static double GetMaxWidth(Box BaseBox, Box DelimeterBox, Box ScriptBox)
+    private static double GetMaxWidth(Box BaseBox, Box DelimeterBox, Box? ScriptBox)
     {
         var max_width = Math.Max(BaseBox.Width, DelimeterBox.Height + DelimeterBox.Depth);
         if(ScriptBox != null)
@@ -13,9 +14,9 @@ internal class OverUnderDelimiter : Atom
         return max_width;
     }
 
-    public Atom BaseAtom { get; }
+    public Atom? BaseAtom { get; }
 
-    private Atom Script { get; }
+    private Atom? Script { get; }
 
     private SymbolAtom Symbol { get; }
 
@@ -46,8 +47,10 @@ internal class OverUnderDelimiter : Atom
         var max_width = GetMaxWidth(base_box, delimeter_box, script_box);
         if(Math.Abs(max_width - base_box.Width) > TexUtilities.FloatPrecision)
             base_box = new HorizontalBox(base_box, max_width, TexAlignment.Center);
+
         if(Math.Abs(max_width - delimeter_box.Height - delimeter_box.Depth) > TexUtilities.FloatPrecision)
             delimeter_box = new VerticalBox(delimeter_box, max_width, TexAlignment.Center);
+
         if(script_box != null && Math.Abs(max_width - script_box.Width) > TexUtilities.FloatPrecision)
             script_box = new HorizontalBox(script_box, max_width, TexAlignment.Center);
 

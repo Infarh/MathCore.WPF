@@ -67,7 +67,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
     /// <summary>Содержимое окна</summary>
     [Category("Other")]
     [Description("Содержимое окна")]
-    public object WindowContent { get => GetValue(WindowContentProperty); set => SetValue(WindowContentProperty, value); }
+    public object? WindowContent { get => GetValue(WindowContentProperty); set => SetValue(WindowContentProperty, value); }
 
     #endregion
 
@@ -84,7 +84,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
     /// <summary>Шаблон диалога</summary>
     [Category("Other")]
     [Description("Шаблон диалога")]
-    public DataTemplate Template
+    public DataTemplate? Template
     {
         get => (DataTemplate)GetValue(TemplateProperty);
         set => SetValue(TemplateProperty, value);
@@ -105,7 +105,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
     /// <summary>Иконка окна диалога</summary>
     [Category("Other")]
     [Description("Иконка окна диалога")]
-    public ImageSource WindowIcon
+    public ImageSource? WindowIcon
     {
         get => (ImageSource)GetValue(WindowIconProperty);
         set => SetValue(WindowIconProperty, value);
@@ -165,7 +165,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
 
     private void OnShowCommandExecute(object Obj) => CreateWindow(Obj).Show();
 
-    private Window CreateWindow(object Obj)
+    private Window CreateWindow(object? Obj)
     {
         var window = new Window();
         window.SetBinding(StyleProperty, new Binding(nameof(WindowStyle)) { Source = this, Mode = BindingMode.OneTime });
@@ -190,8 +190,9 @@ public sealed class UserDialog : FrameworkElement, ICommand
         }
 
         if (WindowIcon != null) window.SetBinding(Window.IconProperty, new Binding(nameof(WindowIcon)) { Source = this, Mode = BindingMode.OneTime });
-        if (ReadLocalValue(WindowHeightProperty) != null) window.SetBinding(HeightProperty, new Binding(nameof(WindowHeight)) { Source = this, Mode = BindingMode.OneTime });
-        if (ReadLocalValue(WindowWidthProperty) != null) window.SetBinding(WidthProperty, new Binding(nameof(WindowWidth)) { Source = this, Mode = BindingMode.OneTime });
+
+        window.SetBinding(HeightProperty, new Binding(nameof(WindowHeight)) { Source = this, Mode = BindingMode.OneTime });
+        window.SetBinding(WidthProperty, new Binding(nameof(WindowWidth)) { Source = this, Mode = BindingMode.OneTime });
 
         return window;
     }
@@ -199,10 +200,16 @@ public sealed class UserDialog : FrameworkElement, ICommand
     #region ICommand interface implementation
 
     /// <inheritdoc />
-    public bool CanExecute(object p) => true;
+    public bool CanExecute(object? p) => true;
 
     /// <inheritdoc />
-    public void Execute(object p) { if (IsDialogDefault) OnShowDialogCommandExecute(p); else OnShowCommandExecute(p); }
+    public void Execute(object? p)
+    {
+        if (IsDialogDefault)
+            OnShowDialogCommandExecute(p); 
+        else 
+            OnShowCommandExecute(p);
+    }
 
     /// <inheritdoc />
     public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }

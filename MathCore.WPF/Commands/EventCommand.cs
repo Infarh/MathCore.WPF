@@ -10,7 +10,7 @@ namespace MathCore.WPF.Commands;
 public class EventCommand : LambdaCommand
 {
     public event Action<object?>? ExecuteEvent;
-    public event Func<object, bool>? CanExecuteEvent;
+    public event Func<object?, bool>? CanExecuteEvent;
 
     public bool CanExecuteIfEventNotDefined { get; set; } = true;
 

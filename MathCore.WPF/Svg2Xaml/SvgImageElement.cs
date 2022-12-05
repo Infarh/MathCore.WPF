@@ -37,8 +37,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;image&gt; element.</summary>
-class SvgImageElement
-    : SvgDrawableBaseElement
+internal class SvgImageElement : SvgDrawableBaseElement
 {
     //==========================================================================
     public readonly SvgCoordinate Y = new(0.0);
@@ -48,83 +47,66 @@ class SvgImageElement
 
     //==========================================================================
     public readonly string DataType;
-    public readonly byte[] Data;
+    public readonly byte[]? Data;
 
     //==========================================================================
     public SvgImageElement(SvgDocument document, SvgBaseElement parent, XElement ImageElement)
         : base(document, parent, ImageElement)
     {
-        var x_attribute = ImageElement.Attribute("x");
-        if(x_attribute != null)
+        if(ImageElement.Attribute("x") is { } x_attribute)
             X = SvgCoordinate.Parse(x_attribute.Value);
 
-        var y_attribute = ImageElement.Attribute("y");
-        if(y_attribute != null)
+        if(ImageElement.Attribute("y") is { } y_attribute)
             Y = SvgCoordinate.Parse(y_attribute.Value);
 
-        var width_attribute = ImageElement.Attribute("width");
-        if(width_attribute != null)
+        if(ImageElement.Attribute("width") is { } width_attribute)
             Width = SvgLength.Parse(width_attribute.Value);
 
-        var height_attribute = ImageElement.Attribute("height");
-        if(height_attribute != null)
+        if(ImageElement.Attribute("height") is { } height_attribute)
             Height = SvgLength.Parse(height_attribute.Value);
 
-        var href_attribute = ImageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink"));
-        if(href_attribute != null)
+        if (ImageElement.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink")) is not { } href_attribute) 
+            return;
+
+        var reference = href_attribute.Value.TrimStart();
+        if (!reference.StartsWith("data:")) return;
+
+        reference = reference[5..].TrimStart();
+        var index = reference.IndexOf(";", StringComparison.Ordinal);
+        if (index <= -1) 
+            return;
+
+        var type = reference[..index].Trim();
+        reference = reference[(index + 1)..];
+
+        index = reference.IndexOf(",", StringComparison.Ordinal);
+        var encoding = reference[..index].Trim();
+        reference = reference[(index + 1)..].TrimStart();
+
+        Data = encoding switch
         {
-            var reference = href_attribute.Value.TrimStart();
-            if(reference.StartsWith("data:"))
-            {
-                reference = reference[5..].TrimStart();
-                var index = reference.IndexOf(";", StringComparison.Ordinal);
-                if(index > -1)
-                {
-                    var type = reference[..index].Trim();
-                    reference = reference[(index + 1)..];
+            "base64" => Convert.FromBase64String(reference),
+            _        => throw new NotSupportedException($"Unsupported encoding: {encoding}")
+        };
 
-                    index = reference.IndexOf(",", StringComparison.Ordinal);
-                    var encoding = reference[..index].Trim();
-                    reference = reference[(index + 1)..].TrimStart();
+        var type_tokens = type.Split('/');
+        if(type_tokens.Length != 2)
+            throw new NotSupportedException($"Unsupported type: {type}");
 
-                    switch(encoding)
-                    { 
-                        case "base64":
-                            Data = Convert.FromBase64String(reference);
-                            break;
+        type_tokens[0] = type_tokens[0].Trim();
+        if(type_tokens[0] != "image")
+            throw new NotSupportedException($"Unsupported type: {type}");
 
-                        default:
-                            throw new NotSupportedException($"Unsupported encoding: {encoding}");
-                    }
-
-                    var type_tokens = type.Split('/');
-                    if(type_tokens.Length != 2)
-                        throw new NotSupportedException($"Unsupported type: {type}");
-
-                    type_tokens[0] = type_tokens[0].Trim();
-                    if(type_tokens[0] != "image")
-                        throw new NotSupportedException($"Unsupported type: {type}");
-
-                    switch(type_tokens[1].Trim())
-                    {
-                        case "jpeg":
-                            DataType = "jpeg";
-                            break;
-
-                        case "png":
-                            DataType = "png";
-                            break;
-
-                        default:
-                            throw new NotSupportedException($"Unsupported type: {type}");
-                    }
-                }
-            }
-        }
+        DataType = type_tokens[1].Trim() switch
+        {
+            "jpeg" => "jpeg",
+            "png"  => "png",
+            _      => throw new NotSupportedException($"Unsupported type: {type}")
+        };
     }
 
     //==========================================================================
-    public override Drawing GetBaseDrawing()
+    public override Drawing? GetBaseDrawing()
     {
         if(Data is null)
             return null;
@@ -141,8 +123,8 @@ class SvgImageElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry() => new RectangleGeometry(new Rect(
-        new Point(X.ToDouble(), Y.ToDouble()),
+    public override Geometry GetBaseGeometry() => new RectangleGeometry(new(
+        new(X.ToDouble(), Y.ToDouble()),
         new Size(Width.ToDouble(), Height.ToDouble())
     ));
 } // class SvgImageElement

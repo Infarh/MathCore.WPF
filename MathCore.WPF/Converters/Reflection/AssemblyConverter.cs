@@ -20,5 +20,5 @@ public abstract class AssemblyConverter : ValueConverter
     protected AssemblyConverter(Func<Assembly, object?> Converter) => _Converter = Converter;
 
     /// <inheritdoc />
-    protected override object Convert(object v, Type t, object p, CultureInfo c) => _Converter((Assembly)v)!;
+    protected override object? Convert(object? v, Type t, object? p, CultureInfo c) => v is null ? null : _Converter((Assembly)v);
 }

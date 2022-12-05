@@ -29,7 +29,7 @@ internal class BigOperatorAtom : Atom
         : this(BaseAtom, LowerLimitAtom, UpperLimitAtom) =>
         this.UseVerticalLimits = UseVerticalLimits;
 
-    public BigOperatorAtom(Atom BaseAtom, Atom LowerLimitAtom, Atom UpperLimitAtom)
+    public BigOperatorAtom(Atom BaseAtom, Atom? LowerLimitAtom, Atom? UpperLimitAtom)
     {
         Type                = TexAtomType.BigOperator;
         this.BaseAtom       = BaseAtom;

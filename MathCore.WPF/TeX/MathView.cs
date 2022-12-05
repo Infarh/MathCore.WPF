@@ -119,7 +119,7 @@ public partial class MathView : FrameworkElement
 
     protected override int VisualChildrenCount => 1;
 
-    private DrawingVisual Visual
+    private DrawingVisual? Visual
     {
         get => _Visual;
         set
@@ -133,7 +133,7 @@ public partial class MathView : FrameworkElement
         }
     }
 
-    protected override Visual GetVisualChild(int index) => _Visual;
+    protected override Visual? GetVisualChild(int index) => _Visual;
 
     protected override Size MeasureOverride(Size AvailableSize) =>
         _Visual?.ContentBounds.Size ?? base.MeasureOverride(AvailableSize);

@@ -266,5 +266,5 @@ public sealed class ModelObject : DynamicObject, INotifyPropertyChanged
         _Model.TryGetValue(binder.Name, out result) || base.TryGetMember(binder, out result);
 
     /// <inheritdoc />
-    public override bool TrySetMember(SetMemberBinder binder, object value) => _Model.TrySetValue(binder.Name, value) || base.TrySetMember(binder, value);
+    public override bool TrySetMember(SetMemberBinder binder, object? value) => _Model.TrySetValue(binder.Name, value) || base.TrySetMember(binder, value);
 }

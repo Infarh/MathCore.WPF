@@ -81,7 +81,7 @@ public class TexFormulaParser
         return __Delimiters[character];
     }
 
-    internal static SymbolAtom GetDelimiterSymbol(string name)
+    internal static SymbolAtom? GetDelimiterSymbol(string name)
     {
         var result = SymbolAtom.GetAtom(name);
         return !result.IsDelimeter ? null : result;

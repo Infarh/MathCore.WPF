@@ -19,19 +19,20 @@ public static class CollectionFiltersExtensions
     public static CollectionViewFilter<TCriteria> FilterView<TCriteria>(
         this ICollectionView view,
         Func<object, TCriteria> selector,
-        string? Name = null) => 
+        string? Name = null) where TCriteria : notnull =>
         new(view, selector, Name);
 
     public static CollectionViewFilter<TCriteria, TItem> FilterView<TItem, TCriteria>(
         this ICollectionView view,
         Func<TItem, TCriteria> selector,
-        string? Name = null) => 
+        string? Name = null) where TCriteria : notnull => 
         new(view, selector, Name);
 
     public static CollectionViewFilter<TCriteria> FilterView<TCriteria>(
         this CollectionViewSource source,
         Func<object, TCriteria> selector,
         string? Name = null)
+        where TCriteria : notnull
     {
         var filter = source.View.FilterView(selector, Name);
         source.Filter += filter.Filter;
@@ -41,7 +42,7 @@ public static class CollectionFiltersExtensions
     public static CollectionViewFilter<TCriteria, TItem> FilterView<TItem, TCriteria>(
         this CollectionViewSource source,
         Func<TItem, TCriteria> selector,
-        string? Name = null)
+        string? Name = null) where TCriteria : notnull
     {
         var filter = source.View.FilterView(selector, Name);
         source.Filter += filter.Filter;

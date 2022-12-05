@@ -94,26 +94,21 @@ public sealed partial class AutoComplete
 
         public AutoCompleteFilterPathCollection() { }
 
-        internal string Join()
-        {
-            var array = new string[Count];
-            CopyTo(array, 0);
-            return string.Join(",", array);
-        }
+        internal string Join() => string.Join(",", this);
     }
 
     private class AutoCompleteFilterPathCollectionTypeConverter : TypeConverter
     {
-        public override bool CanConvertFrom(ITypeDescriptorContext context, Type SourceType) => SourceType == typeof(string) || base.CanConvertFrom(context, SourceType);
+        public override bool CanConvertFrom(ITypeDescriptorContext? context, Type SourceType) => SourceType == typeof(string) || base.CanConvertFrom(context, SourceType);
 
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type DestinationType) => DestinationType == typeof(string) || base.CanConvertTo(context, DestinationType);
+        public override bool CanConvertTo(ITypeDescriptorContext? context, Type? DestinationType) => DestinationType == typeof(string) || base.CanConvertTo(context, DestinationType);
 
-        public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) =>
+        public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
             value is not string s
                 ? base.ConvertFrom(context, culture, value)!
                 : new AutoCompleteFilterPathCollection(s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
 
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type DestinationType)
+        public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type DestinationType)
         {
             if (DestinationType != typeof(string))
                 return base.ConvertTo(context, culture, value, DestinationType)!;
@@ -244,12 +239,14 @@ public sealed partial class AutoComplete
 
     private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
     {
-        if (string.IsNullOrEmpty(_Control!.Text))
+        if (_Control!.Text is not { Length: > 0 })
         {
             _AutoCompletePopup!.IsOpen = false;
             return;
         }
-        if (_IteratingListItems || string.IsNullOrEmpty(_Control.Text)) return;
+
+        if (_IteratingListItems) return;
+
         var v = ViewSource!.View;
         v.Refresh();
         _AutoCompletePopup!.IsOpen = !v.IsEmpty;

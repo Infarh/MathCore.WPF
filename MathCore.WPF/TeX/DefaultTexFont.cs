@@ -69,7 +69,7 @@ internal class DefaultTexFont : ITeXFont
             parts[TexFontUtilities.ExtensionBottom], parts[TexFontUtilities.ExtensionRepeat]);
     }
 
-    public CharFont GetLigature(CharFont LeftCharFont, CharFont RightCharFont) =>
+    public CharFont? GetLigature(CharFont LeftCharFont, CharFont RightCharFont) =>
         LeftCharFont.FontId == RightCharFont.FontId
             ? __FontInfoList[LeftCharFont.FontId].GetLigature(LeftCharFont.Character, RightCharFont.Character)
             : null;

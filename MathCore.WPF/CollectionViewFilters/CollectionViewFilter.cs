@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Data;
 
 using MathCore.Annotations;
+// ReSharper disable EventNeverSubscribedTo.Global
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -19,7 +20,7 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF;
 
-public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>
+public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>> where TCriteria : notnull
 {
     private readonly ICollectionView? _View;
     
@@ -160,7 +161,7 @@ public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollecti
     }
 }
 
-public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>
+public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>> where TCriteria : notnull
 {
     private readonly ICollectionView? _View;
     

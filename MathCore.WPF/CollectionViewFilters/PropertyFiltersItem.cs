@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 
 using MathCore.WPF.Commands;
+// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF;
 
@@ -140,9 +141,9 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
     /// <inheritdoc />
     public void Add(PropertyFilterItem item) => _Filters.Add(item);
 
-    public int Add(object value) => ((IList)_Filters).Add(value);
+    public int Add(object? value) => ((IList)_Filters).Add(value);
 
-    public bool Contains(object value) => ((IList)_Filters).Contains(value);
+    public bool Contains(object? value) => ((IList)_Filters).Contains(value);
 
     public void Clear()
     {
@@ -152,15 +153,15 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
         _Filters.Clear();
     }
 
-    public int IndexOf(object value) => ((IList)_Filters).IndexOf(value);
+    public int IndexOf(object? value) => ((IList)_Filters).IndexOf(value);
 
-    public void Insert(int index, object value) => ((IList)_Filters).Insert(index, value);
+    public void Insert(int index, object? value) => ((IList)_Filters).Insert(index, value);
 
-    public void Remove(object value) => ((IList)_Filters).Remove(value);
+    public void Remove(object? value) => ((IList)_Filters).Remove(value);
 
     public void RemoveAt(int index) => _Filters.RemoveAt(index);
 
-    public object this[int index]
+    public object? this[int index]
     {
         get => ((IList)_Filters)[index];
         set => ((IList)_Filters)[index] = value;
@@ -171,7 +172,7 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
     public bool IsFixedSize => ((IList)_Filters).IsFixedSize;
 
     /// <inheritdoc />
-    bool ICollection<PropertyFilterItem>.Contains(PropertyFilterItem? item) => _Filters.Contains(item);
+    bool ICollection<PropertyFilterItem>.Contains(PropertyFilterItem? item) => item is not null && _Filters.Contains(item);
 
     /// <inheritdoc />
     void ICollection<PropertyFilterItem>.CopyTo(PropertyFilterItem[] array, int index) => _Filters.CopyTo(array, index);

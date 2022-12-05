@@ -64,7 +64,7 @@ class SvgPolylineElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry()
+    public override Geometry? GetBaseGeometry()
     {
         if(Points.Count == 0)
             return null;

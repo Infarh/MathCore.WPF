@@ -7,7 +7,7 @@ namespace MathCore.WPF.Behaviors;
 
 public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSelectedItem
 {
-    protected override void OnSelectedItemPropertyChanged(object item)
+    protected override void OnSelectedItemPropertyChanged(object? item)
     {
         if (item is not DirectoryViewModel model) return;
         var tree_view = AssociatedObject;
@@ -17,11 +17,10 @@ public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSe
 
     private static bool SelectTreeViewItem(ItemsControl Container, string path)
     {
-        foreach (DirectoryViewModel? model in Container.Items)
+        foreach (var model in Container.Items.OfType<DirectoryViewModel>())
         {
-            if(model is null) continue;
-            var view = (TreeViewItem)Container.ItemContainerGenerator.ContainerFromItem(model);
-            if (view is null) continue;
+            if (Container.ItemContainerGenerator.ContainerFromItem(model) is not TreeViewItem view) continue;
+
             if (model.Equals(path))
             {
                 view.IsSelected = true;
@@ -30,6 +29,7 @@ public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSe
             }
 
             if (!path.StartsWith(model.Directory.FullName, StringComparison.InvariantCultureIgnoreCase)) continue;
+
             var is_expanded = view.IsExpanded;
             view.IsExpanded = true;
             view.UpdateLayout();
@@ -45,8 +45,9 @@ public class TreeViewBindableSelectedDirectoryViewModelItem : TreeViewBindableSe
 
     protected override void OnTreeViewItem_Loaded(object? Sender, RoutedEventArgs? _)
     {
-        var selected_item = (DirectoryViewModel)SelectedItem!;
-        if (selected_item is null) return;
+        if (SelectedItem is not DirectoryViewModel selected_item) 
+            return;
+
         var tree_view_item = (TreeViewItem)Sender!;
         var current_item   = (DirectoryViewModel)tree_view_item.DataContext;
         var selected_path  = selected_item.Directory.FullName;

@@ -31,7 +31,7 @@ public class ListBoxItemsSelectionBinder : Behavior<ListBox>
 
         var to_remove = new List<object>();
         foreach (var list_item in list_selected_items)
-            if (!new_selected_items.Contains(list_item))
+            if (!new_selected_items.Contains(list_item) && list_item is not null)
                 to_remove.Add(list_item);
 
         foreach (var item in to_remove)

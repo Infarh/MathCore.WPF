@@ -10,10 +10,11 @@ namespace MathCore.WPF;
 /// <typeparam name="T">Тип элемента коллекции</typeparam>
 public class ObservableCollectionSyncWrapper<T> : ICollection<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {
-    public event NotifyCollectionChangedEventHandler CollectionChanged;
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
+
     protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs E) => _AsyncOp.Post(_CollectionChanged, E);
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     //[NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged(string PropertyName) => _AsyncOp.Post(_PropertyChanged, new PropertyChangedEventArgs(PropertyName));
@@ -29,12 +30,12 @@ public class ObservableCollectionSyncWrapper<T> : ICollection<T>, INotifyCollect
 
     public ObservableCollectionSyncWrapper(ObservableCollection<T> Collection)
     {
-        _CollectionChanged = o => CollectionChanged?.Invoke(this, (NotifyCollectionChangedEventArgs)o);
-        _PropertyChanged   = o => PropertyChanged?.Invoke(this, (PropertyChangedEventArgs)o);
+        _CollectionChanged = o => CollectionChanged?.Invoke(this, (NotifyCollectionChangedEventArgs)o!);
+        _PropertyChanged   = o => PropertyChanged?.Invoke(this, (PropertyChangedEventArgs)o!);
 
         _Collection                                           =  Collection;
         _Collection.CollectionChanged                         += (_, e) => OnCollectionChanged(e);
-        ((INotifyPropertyChanged)_Collection).PropertyChanged += (_, e) => OnPropertyChanged(e.PropertyName);
+        ((INotifyPropertyChanged)_Collection).PropertyChanged += (_, e) => OnPropertyChanged(e.PropertyName ?? throw new InvalidOperationException("Не указана ссылка на строку с именем свойства"));
     }
 
     public IEnumerator<T> GetEnumerator() => _Collection.GetEnumerator();

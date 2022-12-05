@@ -66,25 +66,29 @@ class SvgColor
     public Color ToColor() => Color.FromScRgb(1, Red, Green, Blue);
 
     //==========================================================================
-    public static SvgColor Parse(string value)
+    public static SvgColor? Parse(string value)
     {
         if(value.StartsWith("#"))
         {
             var color = value[1..].Trim();
-            if(color.Length == 3)
-            {
-                var r = (float)(byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber) / 255.0);
-                var g = (float)(byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber) / 255.0);
-                var b = (float)(byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber) / 255.0);
-                return new SvgColor(r, g, b);
-            }
 
-            if(color.Length == 6)
+            switch (color)
             {
-                var r = (float)(byte.Parse(color[..2], NumberStyles.HexNumber) / 255.0);
-                var g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
-                var b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
-                return new SvgColor(r, g, b);
+                case [ var sr, var sg, var sb ]:
+                {
+                    var r = (float)(byte.Parse(string.Format("{0}{0}", sr), NumberStyles.HexNumber) / 255.0);
+                    var g = (float)(byte.Parse(string.Format("{0}{0}", sg), NumberStyles.HexNumber) / 255.0);
+                    var b = (float)(byte.Parse(string.Format("{0}{0}", sb), NumberStyles.HexNumber) / 255.0);
+                    return new SvgColor(r, g, b);
+                }
+
+                case { Length: 6 }:
+                {
+                    var r = (float)(byte.Parse(color[..2], NumberStyles.HexNumber) / 255.0);
+                    var g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
+                    var b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
+                    return new SvgColor(r, g, b);
+                }
             }
         }
 
@@ -135,45 +139,26 @@ class SvgColor
         if(value == "none")
             return null;
 
-
-        switch(value)
+        return value switch
         {
-            case "black":
-                return new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0));
-            case "green":
-                return new SvgColor((float)(0 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0));
-            case "silver":
-                return new SvgColor((float)(192 / 255.0), (float)(192 / 255.0), (float)(192 / 255.0));
-            case "lime":
-                return new SvgColor((float)(0 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0));
-            case "gray":
-                return new SvgColor((float)(128 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0));
-            case "olive":
-                return new SvgColor((float)(128 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0));
-            case "white":
-                return new SvgColor((float)(255 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0));
-            case "yellow":
-                return new SvgColor((float)(255 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0));
-            case "maroon":
-                return new SvgColor((float)(128 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0));
-            case "navy":
-                return new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0));
-            case "red":
-                return new SvgColor((float)(255 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0));
-            case "blue":
-                return new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0));
-            case "purple":
-                return new SvgColor((float)(128 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0));
-            case "teal":
-                return new SvgColor((float)(0 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0));
-            case "fuchsia":
-                return new SvgColor((float)(255 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0));
-            case "aqua":
-                return new SvgColor((float)(0 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0));
-        }
-
-        throw new ArgumentException($"Unsupported color value: {value}");
-
+            "black"   => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
+            "green"   => new((float)(0 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)),
+            "silver"  => new((float)(192 / 255.0), (float)(192 / 255.0), (float)(192 / 255.0)),
+            "lime"    => new((float)(0 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)),
+            "gray"    => new((float)(128 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)),
+            "olive"   => new((float)(128 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)),
+            "white"   => new((float)(255 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)),
+            "yellow"  => new((float)(255 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)),
+            "maroon"  => new((float)(128 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
+            "navy"    => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)),
+            "red"     => new((float)(255 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
+            "blue"    => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)),
+            "purple"  => new((float)(128 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)),
+            "teal"    => new((float)(0 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)),
+            "fuchsia" => new((float)(255 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)),
+            "aqua"    => new((float)(0 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)),
+            _         => throw new ArgumentException($"Unsupported color value: {value}")
+        };
     }
 
 } // class SvgColor

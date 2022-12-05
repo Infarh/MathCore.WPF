@@ -1,4 +1,4 @@
-﻿#if !NET5_0_OR_GREATER
+﻿#if !NETCOREAPP
 #nullable enable
 using System.Runtime.CompilerServices;
 

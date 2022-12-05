@@ -72,7 +72,7 @@ public class SvgImage : MarkupExtension
     ///   <c>null</c> in case there has been an error while parsing or 
     ///   rendering.
     /// </returns>
-    public override object ProvideValue(IServiceProvider ServiceProvider)
+    public override object? ProvideValue(IServiceProvider ServiceProvider)
     {
         Stream stream = null;
         try

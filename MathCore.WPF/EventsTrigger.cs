@@ -11,7 +11,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
     {
         private readonly Dictionary<string, EventsTrigger> _Triggers = new();
 
-        public EventsTrigger this[string Name]
+        public EventsTrigger? this[string Name]
         {
             get { lock (_Triggers) return _Triggers.GetValue(Name); }
             set

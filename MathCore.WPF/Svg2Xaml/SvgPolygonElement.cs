@@ -65,16 +65,12 @@ class SvgPolygonElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry()
+    public override Geometry? GetBaseGeometry()
     {
         if(Points.Count == 0)
             return null;
 
-        var path_figure = new PathFigure();
-
-        path_figure.StartPoint = Points[0].ToPoint();
-        path_figure.IsClosed   = true;
-        path_figure.IsFilled   = true;
+        var path_figure = new PathFigure { StartPoint = Points[0].ToPoint(), IsClosed = true, IsFilled = true };
 
         for(var i = 1; i < Points.Count; ++i)
             path_figure.Segments.Add(new LineSegment(Points[i].ToPoint(), true));

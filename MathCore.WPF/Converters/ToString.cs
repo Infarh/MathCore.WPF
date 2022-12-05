@@ -18,8 +18,9 @@ public class ToString : ValueConverter
 
     protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c)
     {
-        var str = v as string;
-        if(string.IsNullOrWhiteSpace(str)) return null;
+        if (v is not string { Length: > 0 } str || t is null)
+            return null;
+
         var converter = TypeDescriptor.GetConverter(t);
         return converter.CanConvertFrom(typeof(string)) 
             ? converter.ConvertFrom(str) 
