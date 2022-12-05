@@ -33,8 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;feBlend&gt; element.</summary>
-class SvgFeBlendElement
-    : SvgFilterEffectBaseElement
+class SvgFeBlendElement : SvgFilterEffectBaseElement
 {
 
     //==========================================================================
@@ -45,5 +44,5 @@ class SvgFeBlendElement
     }
 
     //==========================================================================
-    public override BitmapEffect ToBitmapEffect() => null;
+    public override BitmapEffect? ToBitmapEffect() => null;
 } // class SvgFEBlendElement

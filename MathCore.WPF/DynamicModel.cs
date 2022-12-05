@@ -47,7 +47,7 @@ public class DynamicModelContent : Decorator
         {
             /*"(DynamicModelContent.ModelShadow).Model"*/
             var pr = ModelProperty;
-            var n = pr.Name;
+            //var n = pr.Name;
             BindingOperations.SetBinding(
                 VisualAdded, 
                 DataContextProperty, new Binding($"({nameof(DynamicModelContent)}.{ModelProperty.Name}).{nameof(DynamicModel.Model)}")
@@ -164,15 +164,25 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
 
         switch (E.Action)
         {
-            case NotifyCollectionChangedAction.Add: AddEventHandler(E.NewItems.Cast<DynamicModelField>()); break;
-            case NotifyCollectionChangedAction.Remove: RemoveEventHandler(E.NewItems.Cast<DynamicModelField>()); break;
+            default: return;
+
+            case NotifyCollectionChangedAction.Add when E.NewItems is { Count: > 0 } new_items:
+                AddEventHandler(new_items.Cast<DynamicModelField>());
+                break;
+
+            case NotifyCollectionChangedAction.Remove when E.OldItems is { Count: > 0 } old_items:
+                RemoveEventHandler(old_items.Cast<DynamicModelField>());
+                break;
 
             case NotifyCollectionChangedAction.Reset:
                 ClearEventHandler();
                 AddEventHandler(fields);
                 break;
 
-            default: throw new NotSupportedException($"Действие {E.Action} с коллекцией {typeof(DynamicModel)} не поддерживается");
+            case NotifyCollectionChangedAction.Replace:
+            case NotifyCollectionChangedAction.Move:
+                 throw new NotSupportedException($"Действие {E.Action} с коллекцией {typeof(DynamicModel)} не поддерживается");
+
         }
     }
 

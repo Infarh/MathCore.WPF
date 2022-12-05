@@ -15,5 +15,11 @@ public class StringArray : MarkupExtension
     public StringArray() { }
     public StringArray(string Data) => _Data = Data;
 
-    public override object ProvideValue(IServiceProvider serviceProvider) => _Data.Split(new[] { Separator }, RemoveEmpty ? StringSplitOptions.RemoveEmptyEntries : StringSplitOptions.None);
+    public override object ProvideValue(IServiceProvider sp)
+    {
+        var result = new List<string>();
+        foreach (var str in _Data.AsStringPtr().Split(RemoveEmpty, Separator))
+            result.Add(str);
+        return result.ToArray();
+    }
 }

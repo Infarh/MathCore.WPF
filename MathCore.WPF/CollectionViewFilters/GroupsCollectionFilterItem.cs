@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Data;
 
@@ -32,32 +33,39 @@ public class GroupsCollectionFilterItem : CollectionViewFilterItem
 
     private async void OnItemsChanged(object? Sender, NotifyCollectionChangedEventArgs E)
     {
-        switch (E.Action)
+        try
         {
-            case NotifyCollectionChangedAction.Add:
-                if (E.NewItems is { } added) 
-                    foreach (var item in added) 
-                        await AddItemAsync(item).ConfigureAwait(false);
-                break;
+            switch (E.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (E.NewItems is { } added) 
+                        foreach (var item in added) 
+                            await AddItemAsync(item).ConfigureAwait(false);
+                    break;
 
-            case NotifyCollectionChangedAction.Remove:
-                if (E.OldItems is { } old) 
-                    foreach (var item in old) 
-                        RemoveItem(item);
-                break;
+                case NotifyCollectionChangedAction.Remove:
+                    if (E.OldItems is { } old) 
+                        foreach (var item in old) 
+                            await RemoveItemAsync(item);
+                    break;
 
-            case NotifyCollectionChangedAction.Replace:
-                if (E.OldItems is { } removed_items) 
-                    foreach (var item in removed_items)
-                        RemoveItem(item);
-                if (E.NewItems is { } new_items)
-                    foreach (var item in new_items)
-                        await AddItemAsync(item).ConfigureAwait(false);
-                break;
+                case NotifyCollectionChangedAction.Replace:
+                    if (E.OldItems is { } removed_items) 
+                        foreach (var item in removed_items)
+                            await RemoveItemAsync(item);
+                    if (E.NewItems is { } new_items)
+                        foreach (var item in new_items)
+                            await AddItemAsync(item).ConfigureAwait(false);
+                    break;
 
-            case NotifyCollectionChangedAction.Reset:
-                UpdateGroups();
-                break;
+                case NotifyCollectionChangedAction.Reset:
+                    UpdateGroups();
+                    break;
+            }
+        }
+        catch (OperationCanceledException e)
+        {
+            Trace.WriteLine(e);
         }
     }
 

@@ -39,7 +39,7 @@ class SvgUrl
     public SvgUrl(string id) => Id = id;
 
     //==========================================================================
-    public static SvgUrl Parse(string value) => value switch
+    public static SvgUrl? Parse(string value) => value switch
     {
         ['u', 'r', 'l', .. { Length: > 0 } ss] when ss.Trim() is ['(', .. { Length: > 0 } qq, ')'] && qq is ['#', .. { Length: > 0 } url] => new(url),
 

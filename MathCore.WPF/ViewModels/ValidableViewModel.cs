@@ -71,13 +71,13 @@ public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDat
 
     #region IDataErrorInfo
 
-    string? IDataErrorInfo.this[string Property] =>
+    string IDataErrorInfo.this[string Property] =>
         _Validators.TryGetValue(Property, out var validators)
             ? validators
                .Where(validator => !validator.IsValid)
                .Select(validator => validator.ErrorMessage)
                .JoinStrings(Environment.NewLine)
-            : null;
+            : string.Empty;
 
     string IDataErrorInfo.Error => _Validators.Keys
        .Select(property => ((IDataErrorInfo)this)[property])

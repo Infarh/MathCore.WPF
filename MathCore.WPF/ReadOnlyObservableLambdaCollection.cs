@@ -9,21 +9,21 @@ namespace MathCore.WPF;
 /// <summary>Наблюдаемая коллекция элементов, построенная на другой наблюдаемой коллекции элементов с указаинем метода преобразвоания элементов</summary>
 /// <typeparam name="TSourceItem">Тим элементов исходной коллекции</typeparam>
 /// <typeparam name="TCollectionItem">Тип требуемых элементов</typeparam>
-public class ReadOnlyObservableLamdaCollection<TSourceItem, TCollectionItem> : IList<TCollectionItem>, IList, INotifyCollectionChanged, INotifyPropertyChanged
+public class ReadOnlyObservableLambdaCollection<TSourceItem, TCollectionItem> : IList<TCollectionItem>, IList, INotifyCollectionChanged, INotifyPropertyChanged
 {
     #region Статические методы
 
     /// <summary>Генерация исключения при вызове метода интерфейса, не поддерживаемого данной коллекцией</summary>
     /// <param name="Method">Имя вызываемого метода</param>
     /// <returns>Исключение <see cref="NotSupportedException"/></returns>
-    private static NotSupportedException NotSupported([CallerMemberName] string Method = null) => new($"{Method} не поддерживается коллекцией только для чтения");
+    private static NotSupportedException NotSupported([CallerMemberName] string Method = null!) => new($"{Method} не поддерживается коллекцией только для чтения");
 
     #endregion
 
     #region INotifyCollectionChanged
 
     /// <summary>Событие возникает когда наблюдаемая коллекция меняется</summary>
-    public event NotifyCollectionChangedEventHandler CollectionChanged;
+    public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
     /// <summary>Генерация события изменения коллекции</summary>
     /// <param name="args">Аргументы события</param>
@@ -31,7 +31,7 @@ public class ReadOnlyObservableLamdaCollection<TSourceItem, TCollectionItem> : I
 
     /// <summary>Обработчик событий изменения в наблюдаемой коллекции</summary>
     /// <param name="sender">Источник события - наблюдаемая коллекция</param>
-    /// <param name="e">Аргумент события, определяющий тип изменеия наблюдаемой коллекции</param>
+    /// <param name="e">Аргумент события, определяющий тип изменения наблюдаемой коллекции</param>
     private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         NotifyCollectionChangedEventArgs new_e;
@@ -55,7 +55,7 @@ public class ReadOnlyObservableLamdaCollection<TSourceItem, TCollectionItem> : I
     /// <summary>Событие возникает когда изменяется одно из свойств наблюдаемой коллекции</summary>
     public event PropertyChangedEventHandler PropertyChanged;
 
-    /// <summary>Генерация события изменеия свойства коллекции</summary>
+    /// <summary>Генерация события изменения свойства коллекции</summary>
     /// <param name="args">Аргумент события изменения свойства, хранящий имя изменившегося свойства</param>
     protected virtual void OnPropertyChanged(PropertyChangedEventArgs args) => PropertyChanged?.Invoke(this, args);
 
@@ -96,7 +96,7 @@ public class ReadOnlyObservableLamdaCollection<TSourceItem, TCollectionItem> : I
     /// <summary>Инициализация новой наблюдаемой коллекции элементов требуемого типа</summary>
     /// <param name="collection">Исходная наблюдаемая коллекция</param>
     /// <param name="converter">Метод преобразования элементов</param>
-    public ReadOnlyObservableLamdaCollection(ObservableCollection<TSourceItem> collection, Func<TSourceItem, TCollectionItem> converter)
+    public ReadOnlyObservableLambdaCollection(ObservableCollection<TSourceItem> collection, Func<TSourceItem, TCollectionItem> converter)
     {
         _Collection                                           =  collection;
         _Converter                                            =  converter;
@@ -173,25 +173,25 @@ public class ReadOnlyObservableLamdaCollection<TSourceItem, TCollectionItem> : I
     bool IList.IsFixedSize => true;
 
     /// <inheritdoc />
-    object IList.this[int index] { get => this[index]; set => throw NotSupported(); }
+    object? IList.this[int index] { get => this[index]; set => throw NotSupported(); }
 
     /// <inheritdoc />
-    int IList.Add(object value) => throw NotSupported();
+    int IList.Add(object? value) => throw NotSupported();
 
     /// <inheritdoc />
     void IList<TCollectionItem>.RemoveAt(int index) => throw NotSupported();
 
     /// <inheritdoc />
-    bool IList.Contains(object value) => OutElementCollection.Contains((TCollectionItem)value);
+    bool IList.Contains(object? value) => OutElementCollection.Contains((TCollectionItem)value);
 
     /// <inheritdoc />
-    int IList.IndexOf(object value) => OutElementCollection.FirstIndexOf((TCollectionItem)value);
+    int IList.IndexOf(object? value) => OutElementCollection.FirstIndexOf((TCollectionItem)value);
 
     /// <inheritdoc />
-    void IList.Insert(int index, object value) => throw NotSupported();
+    void IList.Insert(int index, object? value) => throw NotSupported();
 
     /// <inheritdoc />
-    void IList.Remove(object value) => throw NotSupported();
+    void IList.Remove(object? value) => throw NotSupported();
 
     /// <inheritdoc />
     void IList.RemoveAt(int index) => throw NotSupported();

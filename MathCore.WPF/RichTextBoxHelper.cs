@@ -64,9 +64,9 @@ public static class RichTextBoxHelper
     /// If this TextPointer is between two words, the following word range is returned.
     /// If this TextPointer is at trailing word boundary, the following word range is returned.
     /// </remarks>
-    public static TextRange GetWordRange(this TextPointer position)
+    public static TextRange? GetWordRange(this TextPointer position)
     {
-        TextRange   word_range         = null;
+        TextRange?  word_range          = null;
         TextPointer word_start_position = null;
 
         // Go forward first, to find word end position.

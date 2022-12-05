@@ -55,7 +55,7 @@ internal class GlueSettingsParser
     public GlueSettingsParser()
     {
         var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream(
-            $"{TexUtilities.ResourcesStylesNamespace}GlueSettings.xml"));
+            $"{TexUtilities.ResourcesStylesNamespace}GlueSettings.xml")!);
         _RootElement = doc.Root;
         ParseGlueTypes();
     }
@@ -89,10 +89,8 @@ internal class GlueSettingsParser
         var default_index = -1;
         var index        = 0;
 
-        var GlobalElement = _RootElement.Element("GlueTypes");
-        if(GlobalElement != null)
-        {
-            foreach(var element in GlobalElement.Elements("GlueType"))
+        if(_RootElement.Element("GlueTypes") is { } global_element)
+            foreach(var element in global_element.Elements("GlueType"))
             {
                 var name = element.AttributeValue("name");
                 var glue = CreateGlue(element, name);
@@ -101,7 +99,6 @@ internal class GlueSettingsParser
                 _GlueTypes.Add(glue);
                 index++;
             }
-        }
 
         // Create default glue type if it does not exist.
         if(default_index < 0)
@@ -111,12 +108,8 @@ internal class GlueSettingsParser
         }
 
         // Insure that default glue type is first in list.
-        if(default_index > 0)
-        {
-            var temp_glue_type = _GlueTypes[default_index];
-            _GlueTypes[default_index] = _GlueTypes[0];
-            _GlueTypes[0]            = temp_glue_type;
-        }
+        if(default_index > 0) 
+            (_GlueTypes[default_index], _GlueTypes[0]) = (_GlueTypes[0], _GlueTypes[default_index]);
 
         // Create dictionary of reverse mappings.
         for(var i = 0; i < _GlueTypes.Count; i++)

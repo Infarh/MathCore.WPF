@@ -57,8 +57,8 @@ public class AnimatedBinding : MarkupExtension
         if (service.GetService(typeof(IProvideValueTarget)) is not IProvideValueTarget value_provider)
             throw new InvalidOperationException("Невозможно получить источник данных о цели привязки");
 
-        if (value_provider.TargetObject is not FrameworkElement target) throw new InvalidOperationException("Не определны сведенья о целевом объекте привязки");
-        if (value_provider.TargetProperty is not DependencyProperty property) throw new InvalidOperationException("Не определны сведенья о целевом свойстве привязки");
+        if (value_provider.TargetObject is not FrameworkElement target) throw new InvalidOperationException("Не определены сведения о целевом объекте привязки");
+        if (value_provider.TargetProperty is not DependencyProperty property) throw new InvalidOperationException("Не определены сведения о целевом свойстве привязки");
 
         var binding = new Binding
         {
@@ -83,20 +83,20 @@ public class AnimatedBinding : MarkupExtension
             UpdateSourceExceptionFilter = UpdateSourceExceptionFilter
         };
 
-        if (!string.IsNullOrWhiteSpace(ElementName))
-            binding.ElementName = ElementName;
+        if (ElementName is { Length: > 0 } element_name)
+            binding.ElementName = element_name;
+
         else if (RelativeSource != null)
             binding.RelativeSource = RelativeSource;
+
         else if (Source != null)
             binding.Source = Source;
 
-        if (ValidationRules.Count > 0)
-        {
-            var rules = binding.ValidationRules;
-            foreach (var rule in ValidationRules) rules.Add(rule);
-        }
+        if (ValidationRules.Count > 0) 
+            binding.ValidationRules.AddItemsRange(ValidationRules);
 
-        if (!string.IsNullOrWhiteSpace(XPath)) binding.XPath = XPath;
+        if (XPath is { Length: > 0 } x_path) 
+            binding.XPath = x_path;
 
         var animation = new DoubleAnimation
         {
@@ -106,7 +106,9 @@ public class AnimatedBinding : MarkupExtension
             EasingFunction    = EasingFunction,
             SpeedRatio        = SpeedRatio
         };
-        if (EasingFunction != null) animation.EasingFunction = EasingFunction;
+
+        if (EasingFunction != null) 
+            animation.EasingFunction = EasingFunction;
 
         __DoubleAnimationToPropertyDescriptor.AddValueChanged(animation, (_, _) => target.BeginAnimation(property, animation));
         BindingOperations.SetBinding(animation, DoubleAnimation.ToProperty, binding);

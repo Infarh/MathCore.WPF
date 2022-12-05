@@ -7,7 +7,7 @@ namespace MathCore.WPF;
 public class EventBinding : MarkupExtension
 {
     private EventInfo _TargetEvent;
-    private Delegate _LastEventHandler;
+    private Delegate? _LastEventHandler;
     private FrameworkElement _Target;
     public string EventHandlerName { get; set; }
 
@@ -38,13 +38,16 @@ public class EventBinding : MarkupExtension
             _TargetEvent.AddEventHandler(_Target, _LastEventHandler);
     }
 
-    private Delegate GetEventHandler(object Context)
+    private Delegate? GetEventHandler(object? Context)
     {
         if (Context is null) return null;
+
         var context_type = Context.GetType();
         var methods = context_type.GetMethods(BindingFlags.Instance | BindingFlags.Public);
         var event_handler_type = _TargetEvent.EventHandlerType;
-        var invoke_method = event_handler_type.GetMethod(nameof(Action.Invoke), BindingFlags.Public | BindingFlags.Instance) ?? throw new InvalidOperationException();
+        var invoke_method = event_handler_type.GetMethod(nameof(Action.Invoke), BindingFlags.Public | BindingFlags.Instance) 
+            ?? throw new InvalidOperationException();
+
         var invoke_method_parameters = invoke_method.GetParameters();
         MethodInfo target_method = null;
         foreach (var method in methods.Where(m => m.ReturnType == invoke_method.ReturnType))
@@ -52,11 +55,14 @@ public class EventBinding : MarkupExtension
             var method_parameters = method.GetParameters();
             if (method_parameters.Length != invoke_method_parameters.Length) continue;
             var i = 0;
+
             for (; i < method_parameters.Length; i++)
                 if (!method_parameters[i].ParameterType.IsAssignableFrom(invoke_method_parameters[i].ParameterType))
                     break;
+
             if (i < method_parameters.Length)
                 continue;
+
             target_method = method;
             break;
         }

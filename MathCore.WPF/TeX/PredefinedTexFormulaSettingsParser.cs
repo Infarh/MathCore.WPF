@@ -24,7 +24,7 @@ internal class TexPredefinedFormulaSettingsParser
 
     public TexPredefinedFormulaSettingsParser()
     {
-        var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}TexFormulaSettings.xml"));
+        var doc = XDocument.Load(Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}TexFormulaSettings.xml")!);
         _RootElement = doc.Root;
     }
 

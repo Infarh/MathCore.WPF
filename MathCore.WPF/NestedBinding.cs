@@ -95,13 +95,13 @@ public class NestedBindingConverter : IMultiValueConverter
 
     private NestedBindingsTree Tree { get; }
 
-    public object Convert(object[] values, Type TargetType, object parameter, CultureInfo culture)
+    public object? Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)
     {
         var value = GetTreeValue(Tree, values, TargetType, culture);
         return value;
     }
 
-    private static object GetTreeValue(NestedBindingsTree tree, object[] values, Type TargetType, CultureInfo culture)
+    private static object? GetTreeValue(NestedBindingsTree tree, object[]? values, Type TargetType, CultureInfo culture)
     {
         //var objects = tree.Nodes
         //   .Select(x => x is NestedBindingsTree bindings_tree
@@ -122,20 +122,23 @@ public class NestedBindingConverter : IMultiValueConverter
         return value;
     }
 
-    public object[] ConvertBack(object value, Type[] TargetTypes, object parameter, CultureInfo culture) => throw new NotSupportedException();
+    public object?[]? ConvertBack(object? value, Type[] TargetTypes, object? parameter, CultureInfo culture) => throw new NotSupportedException();
 }
 
 public class JoinStringConverter : IMultiValueConverter
 {
-    public object Convert(object[] values, Type TargetType, object parameter, CultureInfo culture)
+    public object Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)
     {
         var separator = parameter as string ?? " ";
         return string.Join(separator, values);
     }
 
-    public object[] ConvertBack(object value, Type[] TargetTypes, object parameter, CultureInfo culture)
+    public object[]? ConvertBack(object? value, Type[] TargetTypes, object? parameter, CultureInfo culture)
     {
+        if (value is not string { } str) return null;
+
         var separator = parameter as string ?? " ";
-        return (value as string)?.Split(new[] { separator }, StringSplitOptions.None).Cast<object>().ToArray();
+
+        return str.Split(new[] { separator }, StringSplitOptions.None).Cast<object>().ToArray();
     }
 }

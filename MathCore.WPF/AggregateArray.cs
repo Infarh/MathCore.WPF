@@ -13,15 +13,17 @@ public class AggregateArray : MarkupExtension
 
     public override object ProvideValue(IServiceProvider sp) => _Elements.Cast<Array>().SelectMany(GetItems).ToArray();
 
-    private static IEnumerable<object> GetItems(object? Item)
+    private static IEnumerable<object?> GetItems(object? Item)
     {
         switch (Item)
         {
             case null: yield break;
+
             case IEnumerable enumerable:
                 foreach (var item in enumerable)
                     yield return item;
                 break;
+
             default: yield return Item;
                 break;
         }

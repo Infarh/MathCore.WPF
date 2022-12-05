@@ -80,10 +80,7 @@ class SvgMaskElement
                 var geometry = base_element.GetBaseGeometry();
                 if (geometry != null)
                 {
-                    if (base_element.Transform != null)
-                    {
-                        geometry.Transform = base_element.Transform.ToTransform();
-                    }
+                    if (base_element.Transform != null) geometry.Transform = base_element.Transform.ToTransform();
                     geometry_group.Children.Add(geometry);
                 }
             }
@@ -110,18 +107,12 @@ class SvgMaskElement
         {
 
             if (brush is SolidColorBrush color_brush)
-            {
                 color_brush.Color = ConvertColor(color_brush.Color);
-            }
             else if (brush is GradientBrush gradient_brush)
-            {
                 foreach (var gradient_stop in gradient_brush.GradientStops)
                     gradient_stop.Color = ConvertColor(gradient_stop.Color);
-            }
             else if (brush is DrawingBrush drawing_brush)
-            {
                 ConvertColors(drawing_brush.Drawing);
-            }
             else
                 throw new NotSupportedException();
 

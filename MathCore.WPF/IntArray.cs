@@ -6,15 +6,20 @@ namespace MathCore.WPF;
 public class IntArray : MarkupExtension
 {
     public string Data { get; set; } = "";
+
     public IntArray() { }
+
     public IntArray(string Data) => this.Data = Data;
 
-    public override object ProvideValue(IServiceProvider Services) =>
-        Data.Split(new[] { ';', ' ' }, StringSplitOptions.RemoveEmptyEntries)
-           .Select(s => int.TryParse(s, out var v) ? (int?)v : null)
-           .Where(v => v.HasValue)
-           .Select(v => v.Value)
-           .ToArray();
+    public override object ProvideValue(IServiceProvider Services)
+    {
+        var data   = Data.AsStringPtr().Split(';', ' ');
+        var values = new List<int>();
+        foreach (var str in data)
+            if(str.TryParseInt32() is { } value)
+                values.Add(value);
+        return values.ToArray();
+    }
 }
 
 [MarkupExtensionReturnType(typeof(long[]))]
@@ -37,8 +42,12 @@ public sealed class Int64Array : MarkupExtension
         var N = Math.Max(from, to) - Math.Min(from, to) + 1;
         N /= step;
         var result = new long[N];
-        if(from < to) for(var i = 0; i < N; i++) result[i] = from + i * step;
-        else for(var i = 0; i < N; i++) result[i]          = from - i * step;
+        if (from < to)
+            for (var i = 0; i < N; i++)
+                result[i] = from + i * step;
+        else
+            for (var i = 0; i < N; i++)
+                result[i] = from - i * step;
 
         return result;
     }
@@ -66,8 +75,12 @@ public sealed class Int32Array : MarkupExtension
         var N = Math.Max(from, to) - Math.Min(from, to) + 1;
         N /= step;
         var result = new int[N];
-        if(from < to) for(var i = 0; i < N; i++) result[i] = from + i * step;
-        else for(var i = 0; i < N; i++) result[i]          = from - i * step;
+        if(from < to)
+            for (var i = 0; i < N; i++)
+                result[i] = from + i * step;
+        else
+            for (var i = 0; i < N; i++)
+                result[i] = from - i * step;
 
         return result;
     }
@@ -97,8 +110,12 @@ public sealed class Int16Array : MarkupExtension
         var N = Math.Max(from, to) - Math.Min(from, to) + 1;
         N /= step;
         var result = new short[N];
-        if(from < to) for(var i = 0; i < N; i++) result[i] = (short)(from + i * step);
-        else for(var i = 0; i < N; i++) result[i]          = (short)(from - i * step);
+        if(from < to)
+            for (var i = 0; i < N; i++)
+                result[i] = (short)(from + i * step);
+        else
+            for (var i = 0; i < N; i++)
+                result[i] = (short)(from - i * step);
 
         return result;
     }

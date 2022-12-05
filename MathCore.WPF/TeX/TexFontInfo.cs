@@ -64,11 +64,12 @@ internal class TexFontInfo
     public double GetKern(char LeftChar, char RightChar, double factor) =>
         _Kerns.GetValue(Tuple.Create(LeftChar, RightChar)) * factor;
 
-    public CharFont GetLigature(char left, char right)
+    public CharFont? GetLigature(char left, char right)
     {
         var key = Tuple.Create(left, right);
-        if(!_Ligatures.ContainsKey(key)) return null;
-        return new CharFont(_Ligatures[key], FontId);
+        return _Ligatures.ContainsKey(key) 
+            ? new CharFont(_Ligatures[key], FontId) 
+            : null;
     }
 
     public CharFont GetNextLarger(char character) => _NextLarger[character];

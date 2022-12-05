@@ -37,7 +37,7 @@ abstract class SvgPaint
 {
 
     //==========================================================================
-    public static SvgPaint Parse(string value)
+    public static SvgPaint? Parse(string value)
     {
         if(value is null)
             throw new ArgumentNullException(nameof(value));
@@ -60,20 +60,22 @@ abstract class SvgPaint
         if(value.StartsWith("#"))
         {
             var color = value[1..].Trim();
-            if(color.Length == 3)
+            switch (color)
             {
-                var r = byte.Parse(string.Format("{0}{0}", color[0]), NumberStyles.HexNumber);
-                var g = byte.Parse(string.Format("{0}{0}", color[1]), NumberStyles.HexNumber);
-                var b = byte.Parse(string.Format("{0}{0}", color[2]), NumberStyles.HexNumber);
-                return new SvgColorPaint(new SvgColor(r, g, b));
-            }
-
-            if(color.Length == 6)
-            {
-                var r = byte.Parse(color[..2], NumberStyles.HexNumber);
-                var g = byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber);
-                var b = byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber);
-                return new SvgColorPaint(new SvgColor(r, g, b));
+                case [var sr, var sg, var sb]:
+                {
+                    var r = byte.Parse(string.Format("{0}{0}", sr), NumberStyles.HexNumber);
+                    var g = byte.Parse(string.Format("{0}{0}", sg), NumberStyles.HexNumber);
+                    var b = byte.Parse(string.Format("{0}{0}", sb), NumberStyles.HexNumber);
+                    return new SvgColorPaint(new SvgColor(r, g, b));
+                }
+                case  { Length: 6 }:
+                {
+                    var r = byte.Parse(color[..2], NumberStyles.HexNumber);
+                    var g = byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber);
+                    var b = byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber);
+                    return new SvgColorPaint(new SvgColor(r, g, b));
+                }
             }
         }
 
@@ -124,47 +126,29 @@ abstract class SvgPaint
         if(value == "none")
             return null;
 
-
-        switch(value)
+        return value switch
         {
-            case "black":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)));
-            case "green":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)));
-            case "silver":
-                return new SvgColorPaint(new SvgColor((float)(192 / 255.0), (float)(192 / 255.0), (float)(192 / 255.0)));
-            case "lime":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)));
-            case "gray":
-                return new SvgColorPaint(new SvgColor((float)(128 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)));
-            case "olive":
-                return new SvgColorPaint(new SvgColor((float)(128 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)));
-            case "white":
-                return new SvgColorPaint(new SvgColor((float)(255 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)));
-            case "yellow":
-                return new SvgColorPaint(new SvgColor((float)(255 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)));
-            case "maroon":
-                return new SvgColorPaint(new SvgColor((float)(128 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)));
-            case "navy":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)));
-            case "red":
-                return new SvgColorPaint(new SvgColor((float)(255 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)));
-            case "blue":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)));
-            case "purple":
-                return new SvgColorPaint(new SvgColor((float)(128 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)));
-            case "teal":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)));
-            case "fuchsia":
-                return new SvgColorPaint(new SvgColor((float)(255 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)));
-            case "aqua":
-                return new SvgColorPaint(new SvgColor((float)(0 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)));
-        }
-
-        throw new ArgumentException($"Unsupported paint value: {value}");
+            "black"   => new SvgColorPaint(new((float)(0 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0))),
+            "green"   => new SvgColorPaint(new((float)(0 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0))),
+            "silver"  => new SvgColorPaint(new((float)(192 / 255.0), (float)(192 / 255.0), (float)(192 / 255.0))),
+            "lime"    => new SvgColorPaint(new((float)(0 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0))),
+            "gray"    => new SvgColorPaint(new((float)(128 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0))),
+            "olive"   => new SvgColorPaint(new((float)(128 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0))),
+            "white"   => new SvgColorPaint(new((float)(255 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0))),
+            "yellow"  => new SvgColorPaint(new((float)(255 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0))),
+            "maroon"  => new SvgColorPaint(new((float)(128 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0))),
+            "navy"    => new SvgColorPaint(new((float)(0 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0))),
+            "red"     => new SvgColorPaint(new((float)(255 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0))),
+            "blue"    => new SvgColorPaint(new((float)(0 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0))),
+            "purple"  => new SvgColorPaint(new((float)(128 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0))),
+            "teal"    => new SvgColorPaint(new((float)(0 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0))),
+            "fuchsia" => new SvgColorPaint(new((float)(255 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0))),
+            "aqua"    => new SvgColorPaint(new((float)(0 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0))),
+            _         => throw new ArgumentException($"Unsupported paint value: {value}")
+        };
     }
 
     //==========================================================================
-    public abstract Brush ToBrush(SvgBaseElement element);
+    public abstract Brush? ToBrush(SvgBaseElement element);
 
 } // class SvgPaint

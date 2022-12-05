@@ -58,7 +58,7 @@ public class BindingCustomTypeDescriptor : CustomTypeDescriptor
     private static readonly string[] __Properties = { "Source", "ValidationRules" };
 
     /// <inheritdoc />
-    public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+    public override PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
     {
         var descriptors = new PropertyDescriptorCollection(base.GetProperties().Cast<PropertyDescriptor>().ToArray());
         foreach (var property_descriptor in __Properties.Select(p => descriptors.Find(p, false)))

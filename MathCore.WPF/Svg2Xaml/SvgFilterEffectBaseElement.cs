@@ -33,17 +33,16 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;filterEffect&gt; element.</summary>
-abstract class SvgFilterEffectBaseElement
-    : SvgBaseElement
+abstract class SvgFilterEffectBaseElement : SvgBaseElement
 {
     //==========================================================================
-    public SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement FilterEffectElement)
+    protected SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement FilterEffectElement)
         : base(document, parent, FilterEffectElement)
     {
         // ...
     }
 
     //==========================================================================
-    public abstract BitmapEffect ToBitmapEffect();
+    public abstract BitmapEffect? ToBitmapEffect();
 
 } // class SvgFilterEffectBaseElement

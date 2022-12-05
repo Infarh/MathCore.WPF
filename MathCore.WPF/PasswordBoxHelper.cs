@@ -11,23 +11,26 @@ namespace MathCore.WPF;
 public static class PasswordBoxHelper
 {
     // an attached behavior won't work due to view model validation not picking up the right control to adorn
-    public static readonly DependencyProperty SecurePasswordBindingProperty = DependencyProperty.RegisterAttached(
-        "ShadowSecurePassword",
-        typeof(SecureString),
-        typeof(PasswordBoxHelper),
-        new FrameworkPropertyMetadata(new SecureString(), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, AttachedPropertyValueChanged)
-    );
+    public static readonly DependencyProperty SecurePasswordBindingProperty = DependencyProperty
+       .RegisterAttached(
+            "ShadowSecurePassword",
+            typeof(SecureString),
+            typeof(PasswordBoxHelper),
+            new FrameworkPropertyMetadata(
+                new SecureString(), 
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                AttachedPropertyValueChanged));
 
-    private static readonly DependencyProperty __PasswordBindingMarshallerProperty = DependencyProperty.RegisterAttached(
-        "PasswordBindingMarshaller",
-        typeof(PasswordBindingMarshaller),
-        typeof(PasswordBoxHelper),
-        new PropertyMetadata()
-    );
+    private static readonly DependencyProperty __PasswordBindingMarshallerProperty = DependencyProperty
+       .RegisterAttached(
+            "PasswordBindingMarshaller",
+            typeof(PasswordBindingMarshaller),
+            typeof(PasswordBoxHelper),
+            new PropertyMetadata());
 
     public static void SetSecurePassword(PasswordBox element, SecureString SecureString) => element.SetValue(SecurePasswordBindingProperty, SecureString);
 
-    public static SecureString GetSecurePassword(PasswordBox element) => element.GetValue(SecurePasswordBindingProperty) as SecureString;
+    public static SecureString GetSecurePassword(PasswordBox element) => (SecureString)element.GetValue(SecurePasswordBindingProperty)!;
 
     private static void AttachedPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

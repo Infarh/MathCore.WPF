@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows.Media;
 using System.Xml.Linq;
+// ReSharper disable UnusedParameter.Global
 
 // Parses definitions of predefined formulas from XML file.
 namespace MathCore.WPF.TeX;
@@ -11,14 +12,14 @@ internal class TexPredefinedFormulaParser
     private static readonly Dictionary<string, Type> __TypeMappings;
     private static readonly Dictionary<string, ArgumentValueParser> __ArgValueParsers;
     private static readonly Dictionary<string, ActionParser?> __ActionParsers;
-    private static TexFormulaParser __FormulaParser;
+    //private static TexFormulaParser __FormulaParser;
 
     static TexPredefinedFormulaParser()
     {
         __TypeMappings    = new Dictionary<string, Type>();
         __ArgValueParsers = new Dictionary<string, ArgumentValueParser>();
         __ActionParsers   = new Dictionary<string, ActionParser>();
-        __FormulaParser   = new TexFormulaParser();
+        //__FormulaParser   = new TexFormulaParser();
 
         __TypeMappings.Add("Formula", typeof(TexFormula));
         __TypeMappings.Add("string", typeof(string));
@@ -79,7 +80,7 @@ internal class TexPredefinedFormulaParser
     public TexPredefinedFormulaParser()
     {
         var doc = XDocument.Load(Assembly.GetExecutingAssembly()
-           .GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}PredefinedTexFormulas.xml"));
+           .GetManifestResourceStream($"{TexUtilities.ResourcesStylesNamespace}PredefinedTexFormulas.xml")!);
         _RootElement = doc.Root;
     }
 
@@ -94,7 +95,7 @@ internal class TexPredefinedFormulaParser
         }
     }
 
-    public static TexFormula ParseFormula(string FormulaName, XElement FormulaElement)
+    public static TexFormula? ParseFormula(string FormulaName, XElement FormulaElement)
     {
         var temp_formulas = new Dictionary<string, TexFormula>();
         foreach(var element in FormulaElement.Elements())
@@ -117,7 +118,7 @@ internal class TexPredefinedFormulaParser
         {
             var method_name = element.AttributeValue("name");
             var object_name = element.AttributeValue("formula");
-            var args       = element.Elements("Argument");
+            var args       = (element.Elements("Argument") ?? throw new InvalidOperationException("Отсутствует элемент Arguments")).ToArray();
 
             var formula = TempFormulas[object_name];
             Debug.Assert(formula != null);
@@ -135,9 +136,9 @@ internal class TexPredefinedFormulaParser
         public override void Parse(XElement element)
         {
             var name = element.AttributeValue("name");
-            var args = element.Elements("Argument");
+            var args = element.Elements("Argument") ?? throw new InvalidOperationException("Отсутствует элемент Arguments");
 
-            var arg_types  = GetArgumentTypes(args);
+            //var arg_types  = GetArgumentTypes(args);
             var arg_values = GetArgumentValues(TempFormulas, args);
 
             Debug.Assert(arg_values.Length == 1);
@@ -163,12 +164,12 @@ internal class TexPredefinedFormulaParser
 
     public sealed class DoubleValueParser : ArgumentValueParser
     {
-        public override object Parse(string value, string type) => double.Parse(value);
+        public override object Parse(string? value, string type) => double.Parse(value.NotNull());
     }
 
     public sealed class CharValueParser : ArgumentValueParser
     {
-        public override object Parse(string value, string type)
+        public override object Parse(string? value, string type)
         {
             Debug.Assert(value.Length == 1);
             return value[0];
@@ -177,22 +178,22 @@ internal class TexPredefinedFormulaParser
 
     public sealed class BooleanValueParser : ArgumentValueParser
     {
-        public override object Parse(string value, string type) => bool.Parse(value);
+        public override object Parse(string? value, string type) => bool.Parse(value.NotNull());
     }
 
     public sealed class IntValueParser : ArgumentValueParser
     {
-        public override object Parse(string value, string type) => int.Parse(value);
+        public override object Parse(string? value, string type) => int.Parse(value.NotNull());
     }
 
     public sealed class StringValueParser : ArgumentValueParser
     {
-        public override object Parse(string value, string type) => value;
+        public override object? Parse(string? value, string type) => value;
     }
 
     public sealed class TeXFormulaValueParser : ArgumentValueParser
     {
-        public override object Parse(string? value, string type)
+        public override object? Parse(string? value, string type)
         {
             if(value is null)
                 return null;
@@ -205,7 +206,7 @@ internal class TexPredefinedFormulaParser
 
     public class ColorConstantValueParser : ArgumentValueParser
     {
-        public override object Parse(string? value, string type) => typeof(Color).GetField(value).GetValue(null);
+        public override object? Parse(string? value, string type) => typeof(Color).GetField(value.NotNull()).GetValue(null);
     }
 
     public sealed class EnumParser : ArgumentValueParser
@@ -214,7 +215,7 @@ internal class TexPredefinedFormulaParser
 
         public EnumParser(Type EnumType) => this._EnumType = EnumType;
 
-        public override object Parse(string? value, string type) => Enum.Parse(_EnumType, value);
+        public override object Parse(string? value, string type) => Enum.Parse(_EnumType, value.NotNull());
     }
 
     public abstract class ActionParser : ParserBase
@@ -224,7 +225,7 @@ internal class TexPredefinedFormulaParser
 
     public abstract class ArgumentValueParser : ParserBase
     {
-        public abstract object Parse(string? value, string type);
+        public abstract object? Parse(string? value, string type);
     }
 
     public abstract class ParserBase

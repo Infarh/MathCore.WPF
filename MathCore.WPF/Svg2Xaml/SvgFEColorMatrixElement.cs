@@ -34,8 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;feColorMatrix&gt; element.</summary>
-class SvgFeColorMatrixElement
-    : SvgFilterEffectBaseElement
+class SvgFeColorMatrixElement : SvgFilterEffectBaseElement
 {
 
     //==========================================================================
@@ -46,7 +45,7 @@ class SvgFeColorMatrixElement
     }
 
     //==========================================================================
-    public override BitmapEffect ToBitmapEffect()
+    public override BitmapEffect? ToBitmapEffect()
     {
         Debug.WriteLine("feColorMatrix is not supported yet!");
         return null;

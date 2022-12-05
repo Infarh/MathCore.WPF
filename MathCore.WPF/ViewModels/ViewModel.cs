@@ -60,8 +60,8 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
 
     /// <summary>Добавить зависимости между свойствами</summary>
     /// <param name="PropertyName">Имя исходного свойства</param>
-    /// <param name="Dependences">Перечисление свойств, на которые исходное свойство имеет влияние</param>
-    protected void PropertyDependence_Add(string PropertyName, params string[] Dependences)
+    /// <param name="Dependencies">Перечисление свойств, на которые исходное свойство имеет влияние</param>
+    protected void PropertyDependence_Add(string PropertyName, params string[] Dependencies)
     {
         // Если не указано имя свойства, то это ошибка
         if (PropertyName is null) throw new ArgumentNullException(nameof(PropertyName));
@@ -82,7 +82,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             var dependencies = dependencies_dictionary.GetValueOrAddNew(PropertyName, () => new List<string>());
 
             // Перебираем все зависимые свойства среди указанных исключая исходное свойство
-            foreach (var dependence_property in Dependences.Where(name => name != PropertyName))
+            foreach (var dependence_property in Dependencies.Where(name => name != PropertyName))
             {
                 // Если список зависимостей уже содержит зависящее свойство, то пропускаем его
                 if (dependencies.Contains(dependence_property)) continue;
@@ -224,6 +224,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="ThreadSafe">Генерировать события безопасным для потоков способом</param>
     protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!, bool UpdateCommandsState = false, bool ThreadSafe = true)
     {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (PropertyName is null)
             return; // Если имя свойства не указано, то выход
 
@@ -273,6 +274,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="OnChanged">Метод, выполняемый после генерации события</param>
     protected async void OnPropertyChangedAsync(string PropertyName, int Timeout = 0, Action? OnChanging = null, Action? OnChanged = null)
     {
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (PropertyName is null)
             return; // Если имя свойства не указано, то выход
 
@@ -316,10 +318,13 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         {
             foreach (DependsOnAttribute depends_on_attribute in property.GetCustomAttributes(typeof(DependsOnAttribute), true))
                 PropertyDependence_Add(depends_on_attribute.Name, property.Name);
+
             foreach (var depends_on_attribute in property.GetCustomAttributes(typeof(DependencyOnAttribute), true).OfType<DependencyOnAttribute>())
                 PropertyDependence_Add(depends_on_attribute.Name, property.Name);
+
             foreach (var affects_the_attribute in property.GetCustomAttributes(typeof(AffectsTheAttribute), true).OfType<AffectsTheAttribute>())
                 PropertyDependence_Add(property.Name, affects_the_attribute.Name);
+
             foreach (var changed_handler_attribute in property.GetCustomAttributes(typeof(ChangedHandlerAttribute), true).OfType<ChangedHandlerAttribute>().Where(a => !string.IsNullOrWhiteSpace(a.MethodName)))
             {
                 var handler = type.GetMethod(changed_handler_attribute.MethodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);

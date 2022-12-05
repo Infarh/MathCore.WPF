@@ -144,7 +144,7 @@ abstract class SvgGradientBaseElement
     }
 
     //==========================================================================
-    public GradientBrush ToBrush()
+    public GradientBrush? ToBrush()
     {
         var brush = CreateBrush();
 
@@ -154,6 +154,7 @@ abstract class SvgGradientBaseElement
 
         if(Document.Elements[Reference] is not SvgGradientBaseElement reference)
             throw new NotImplementedException();
+
         reference.SetBrush(brush);
 
         return SetBrush(brush);

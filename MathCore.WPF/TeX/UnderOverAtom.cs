@@ -3,18 +3,18 @@
 /// <summary>Atom representing other atom with atoms optionally over and under it</summary>
 internal class UnderOverAtom : Atom
 {
-    private static Box ChangeWidth(Box box, double MaxWidth)
+    private static Box? ChangeWidth(Box? box, double MaxWidth)
     {
         if(box != null && Math.Abs(MaxWidth - box.Width) > TexUtilities.FloatPrecision)
             return new HorizontalBox(box, MaxWidth, TexAlignment.Center);
         return box;
     }
 
-    public Atom BaseAtom { get; }
+    public Atom? BaseAtom { get; }
 
-    public Atom UnderAtom { get; }
+    public Atom? UnderAtom { get; }
 
-    public Atom OverAtom { get; }
+    public Atom? OverAtom { get; }
 
     // Kern between base and under atom.
     public double UnderSpace { get; set; }
@@ -29,8 +29,13 @@ internal class UnderOverAtom : Atom
 
     public bool OverScriptSmaller { get; set; }
 
-    public UnderOverAtom(Atom BaseAtom, Atom UnderOver, TexUnit UnderOverUnit, double UnderOverSpace,
-        bool UnderOverScriptSize, bool over)
+    public UnderOverAtom(
+        Atom BaseAtom, 
+        Atom? UnderOver, 
+        TexUnit UnderOverUnit,
+        double UnderOverSpace,
+        bool UnderOverScriptSize,
+        bool over)
     {
         SpaceAtom.CheckUnit(UnderOverUnit);
 
@@ -60,8 +65,16 @@ internal class UnderOverAtom : Atom
         }
     }
 
-    public UnderOverAtom(Atom BaseAtom, Atom under, TexUnit UnderUnit, double UnderSpace, bool UnderScriptSize,
-        Atom over, TexUnit OverUnit, double OverSpace, bool OverScriptSize)
+    public UnderOverAtom(
+        Atom BaseAtom, 
+        Atom under, 
+        TexUnit UnderUnit,
+        double UnderSpace,
+        bool UnderScriptSize,
+        Atom over,
+        TexUnit OverUnit,
+        double OverSpace, 
+        bool OverScriptSize)
     {
         SpaceAtom.CheckUnit(UnderUnit);
         SpaceAtom.CheckUnit(OverUnit);

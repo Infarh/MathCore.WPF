@@ -69,7 +69,7 @@ class SvgFilterElement
     }
 
     //==========================================================================
-    public BitmapEffect ToBitmapEffect()
+    public BitmapEffect? ToBitmapEffect()
     {
         if(Document.Options.IgnoreEffects)
             return null;
@@ -77,16 +77,10 @@ class SvgFilterElement
         var bitmap_effect_group = new BitmapEffectGroup();
 
         foreach(var filter_effect in FilterEffects)
-        {
-            var bitmap_effect = filter_effect.ToBitmapEffect();
-            if(bitmap_effect != null)
+            if(filter_effect.ToBitmapEffect() is { } bitmap_effect)
                 bitmap_effect_group.Children.Add(bitmap_effect);
-        }
 
-        if(bitmap_effect_group.Children.Count == 0)
-            return null;
-
-        return bitmap_effect_group;
+        return bitmap_effect_group.Children.Count == 0 ? null : bitmap_effect_group;
     }
 
 } // class SvgFilterElement

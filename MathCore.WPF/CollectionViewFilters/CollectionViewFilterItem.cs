@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+// ReSharper disable VirtualMemberNeverOverridden.Global
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 // ReSharper disable InconsistentNaming
 
@@ -104,10 +106,9 @@ public class CollectionViewFilterItem : Freezable
         if (!E.Accepted || !Enabled) return;
         switch (FiltredValue)
         {
-            default:
-            case string str when string.IsNullOrEmpty(str): return;
+            default: return;
 
-            case string str:
+            case string { Length: > 0 } str:
             {
                 var string_value = GetItemValue(E.Item) switch
                 {
@@ -200,7 +201,7 @@ public class CollectionViewFilterItem : Freezable
             return await getter.Async(item, (d, v) => d.DynamicInvoke(v)).ConfigureAwait(false);
 
         var property_info = type.GetProperty(property);
-        if (property_info?.DeclaringType is null)
+        if (property_info?.DeclaringType is null || !property_info.CanRead)
             return item;
 
         var base_getter_name = $"{property_info.DeclaringType.FullName}:{property}";
@@ -208,7 +209,8 @@ public class CollectionViewFilterItem : Freezable
             return await getter.Async(item, (d, v) => d.DynamicInvoke(v)).ConfigureAwait(false);
 
         var delegate_tpe = typeof(Func<,>).MakeGenericType(property_info.DeclaringType, property_info.PropertyType);
-        getter = Delegate.CreateDelegate(delegate_tpe, property_info.GetGetMethod());
+        getter = Delegate.CreateDelegate(delegate_tpe, property_info.GetGetMethod()!);
+
         __Getter[getter_name] = getter;
         __Getter[base_getter_name] = getter;
         return await getter.Async(item, (d, v) => d.DynamicInvoke(v)).ConfigureAwait(false);

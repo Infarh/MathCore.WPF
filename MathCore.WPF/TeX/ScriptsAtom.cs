@@ -11,7 +11,7 @@ internal class ScriptsAtom : Atom
 
     public Atom? SuperscriptAtom { get; }
 
-    public ScriptsAtom(Atom BaseAtom, Atom SubscriptAtom, Atom SuperscriptAtom)
+    public ScriptsAtom(Atom BaseAtom, Atom? SubscriptAtom, Atom? SuperscriptAtom)
     {
         this.BaseAtom        = BaseAtom;
         this.SubscriptAtom   = SubscriptAtom;

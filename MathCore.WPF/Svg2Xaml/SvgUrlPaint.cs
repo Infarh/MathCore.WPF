@@ -32,8 +32,7 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgUrlPaint
-    : SvgPaint
+class SvgUrlPaint : SvgPaint
 {
     public readonly string Url;
     
@@ -41,7 +40,7 @@ class SvgUrlPaint
     public SvgUrlPaint(string url) => Url = url;
 
     //==========================================================================
-    public override Brush ToBrush(SvgBaseElement element) =>
+    public override Brush? ToBrush(SvgBaseElement element) =>
         !element.Document.Elements.ContainsKey(Url)
             ? null
             : element.Document.Elements[Url] switch
