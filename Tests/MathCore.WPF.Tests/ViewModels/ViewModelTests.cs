@@ -10,9 +10,9 @@ public class ViewModelTests
         #region P1 : string - P1
 
         /// <summary>P1</summary>
-        private string _P1;
+        private string? _P1;
 
-        public string P1
+        public string? P1
         {
             get => _P1;
             set => Set(ref _P1, value);
@@ -29,13 +29,13 @@ public class ViewModelTests
         #region P2 : string - P2
 
         /// <summary>P2</summary>
-        private string _P2;
+        private string? _P2;
 
         /// <summary>P2</summary>
         [ChangedHandler(nameof(OnP2Changed))]
-        public string P2 { get => _P2; set => Set(ref _P2, value); }
+        public string? P2 { get => _P2; set => Set(ref _P2, value); }
 
-        public event EventHandler P2Changed;
+        public event EventHandler? P2Changed;
 
         private void OnP2Changed() => P2Changed?.Invoke(this, EventArgs.Empty);
 
@@ -48,7 +48,7 @@ public class ViewModelTests
         var model = new TestViewModel();
 
         var properties = new List<string>();
-        model.PropertyChanged += (_, e) => properties.Add(e.PropertyName);
+        model.PropertyChanged += (_, e) => properties.Add(e.PropertyName!);
 
         model.P1 = "data";
 

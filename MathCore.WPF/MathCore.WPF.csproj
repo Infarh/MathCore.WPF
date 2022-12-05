@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.39.1</Version>
+    <Version>0.0.40</Version>
     <PackageReleaseNotes>
-      Исключение лишних зависимостей
+      Для команд добавлены методы-расширения для команд для обработки исключений
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.82" />
+    <PackageReference Include="MathCore" Version="0.0.83.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
