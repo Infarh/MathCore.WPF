@@ -1,77 +1,95 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace MathCore.WPF;
 
-public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollectionChanged
+public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {
     public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
-    private ObservableCollection<T> _Collection;
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private ObservableCollection<T> _BaseCollection;
+
+    public ObservableCollection<T> BaseCollection => _BaseCollection;
 
     public ThreadSaveObservableCollectionWrapper(ObservableCollection<T> collection)
     {
-        _Collection                  =  collection;
-        collection.CollectionChanged += OnCollectionChanged;
+        _BaseCollection                  =  collection;
+        collection.CollectionChanged += OnBaseCollectionChanged;
+        ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
     }
 
-    private void OnCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E) => CollectionChanged?.ThreadSafeInvoke(_Collection, E);
+    protected virtual void OnBaseCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E) => 
+        CollectionChanged?.ThreadSafeInvoke(this, E);
 
-
-    /// <inheritdoc />
-    public IEnumerator<T> GetEnumerator() => _Collection.GetEnumerator();
-
-    /// <inheritdoc />
-    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_Collection).GetEnumerator();
+    protected virtual void OnBaseCollectionPropertyChanged(object? Sender, PropertyChangedEventArgs E) => 
+        PropertyChanged?.ThreadSafeInvoke(this, E.PropertyName);
 
     /// <inheritdoc />
-    public void Add(T item) => _Collection.Add(item);
+    public IEnumerator<T> GetEnumerator() => _BaseCollection.GetEnumerator();
 
     /// <inheritdoc />
-    public void Clear() => _Collection.Clear();
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)_BaseCollection).GetEnumerator();
 
     /// <inheritdoc />
-    public bool Contains(T item) => _Collection.Contains(item);
+    public void Add(T item) => _BaseCollection.Add(item);
 
     /// <inheritdoc />
-    public void CopyTo(T[] array, int ArrayIndex) => _Collection.CopyTo(array, ArrayIndex);
+    public void Clear() => _BaseCollection.Clear();
 
     /// <inheritdoc />
-    public bool Remove(T item) => _Collection.Remove(item);
+    public bool Contains(T item) => _BaseCollection.Contains(item);
 
     /// <inheritdoc />
-    public int Count => _Collection.Count;
+    public void CopyTo(T[] array, int ArrayIndex) => _BaseCollection.CopyTo(array, ArrayIndex);
 
     /// <inheritdoc />
-    public bool IsReadOnly => ((ICollection<T>)_Collection).IsReadOnly;
+    public bool Remove(T item) => _BaseCollection.Remove(item);
 
     /// <inheritdoc />
-    public int IndexOf(T item) => _Collection.IndexOf(item);
+    public int Count => _BaseCollection.Count;
 
     /// <inheritdoc />
-    public void Insert(int index, T item) => _Collection.Insert(index, item);
+    public bool IsReadOnly => ((ICollection<T>)_BaseCollection).IsReadOnly;
 
     /// <inheritdoc />
-    public void RemoveAt(int index) => _Collection.RemoveAt(index);
+    public int IndexOf(T item) => _BaseCollection.IndexOf(item);
 
     /// <inheritdoc />
-    public T this[int index] { get => _Collection[index]; set => _Collection[index] = value; }
+    public void Insert(int index, T item) => _BaseCollection.Insert(index, item);
+
+    /// <inheritdoc />
+    public void RemoveAt(int index) => _BaseCollection.RemoveAt(index);
+
+    /// <inheritdoc />
+    public T this[int index] { get => _BaseCollection[index]; set => _BaseCollection[index] = value; }
 
     public void Reset(IEnumerable<T> items)
     {
+        if (_BaseCollection is { } old_collection)
+        {
+            old_collection.CollectionChanged                         -= OnBaseCollectionChanged;
+            ((INotifyPropertyChanged)old_collection).PropertyChanged -= OnBaseCollectionPropertyChanged;
+        }
+
         var collection = new ObservableCollection<T>(items);
-        //var old_collection = _Collection;
-        _Collection = collection;
-        OnCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+
+        collection.CollectionChanged                         += OnBaseCollectionChanged;
+        ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
+
+        _BaseCollection = collection;
+        OnBaseCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 
     public static implicit operator ThreadSaveObservableCollectionWrapper<T>(ObservableCollection<T> collection) => new(collection);
 
-    public static implicit operator ObservableCollection<T>(ThreadSaveObservableCollectionWrapper<T> collection) => collection._Collection;
+    public static implicit operator ObservableCollection<T>(ThreadSaveObservableCollectionWrapper<T> collection) => collection._BaseCollection;
 }
 
-public static class ThreadSaveObservableCollectionExtentions
+public static class ThreadSaveObservableCollectionExtensions
 {
     public static ThreadSaveObservableCollectionWrapper<T?> AsThreadSave<T>(this ObservableCollection<T?> collection)
         => new(collection);
