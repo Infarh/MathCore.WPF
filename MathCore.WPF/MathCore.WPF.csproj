@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.41.1</Version>
+    <Version>0.0.41.2</Version>
     <PackageReleaseNotes>
       Добавлен SwitchConverter, исправлен ThreadSaveObservableCollectionWrapper
     </PackageReleaseNotes>
@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.83.2" />
+    <PackageReference Include="MathCore" Version="0.0.84.1" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
