@@ -9,11 +9,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Use .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0.x
           
       - name: Building
         run: |
