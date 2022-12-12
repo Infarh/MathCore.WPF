@@ -1,5 +1,7 @@
-﻿using System.Windows.Markup;
+﻿using System.Windows.Input;
+using System.Windows.Markup;
 
+using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.WindowTest.ViewModels;
@@ -62,4 +64,63 @@ public class TestWindow1ViewModel : TitledViewModel
     #endregion
 
     public bool IsInDesignTime { get; } = IsDesignMode;
+
+    #region Command TestAsyncCommand - Тестовая фоновая команда
+
+    /// <summary>Тестовая фоновая команда</summary>
+    private Command? _TestAsyncCommand;
+
+    /// <summary>Тестовая фоновая команда</summary>
+    public ICommand TestAsyncCommand => _TestAsyncCommand ??= Command.NewBackground(OnTestAsyncCommandExecuted);
+
+    /// <summary>Логика выполнения - Тестовая фоновая команда</summary>
+    private static async Task OnTestAsyncCommandExecuted()
+    {
+        var thread_id0 = Environment.CurrentManagedThreadId;
+
+        await Task.Yield().ConfigureAwait(false);
+
+        var thread_id1 = Environment.CurrentManagedThreadId;
+
+        await Task.Yield().ConfigureAwaitWPF();
+
+        var thread_id2 = Environment.CurrentManagedThreadId;
+
+        await Task.Delay(100).ConfigureAwait(false);
+
+        var thread_id3 = Environment.CurrentManagedThreadId;
+
+        await Task.Delay(100).ConfigureAwaitWPF();
+
+        var thread_id4 = Environment.CurrentManagedThreadId;
+
+        await Task.Yield().ConfigureAwait(false);
+
+        var thread_id5 = Environment.CurrentManagedThreadId;
+
+        var task1 = Task.Delay(100);
+
+        var thread_id6 = 0;
+
+        var task2 = task1.OnSuccessWPF(() => thread_id6 = Environment.CurrentManagedThreadId);
+
+        var thread_id7 = Environment.CurrentManagedThreadId;
+
+        var thread_id8 = await task1.OnSuccessWPF(() => Environment.CurrentManagedThreadId);
+
+        var thread_id9 = Environment.CurrentManagedThreadId;
+
+        var thread_id10 = await Task.Run(
+            async () =>
+            {
+                await Task.Delay(100).ConfigureAwait(false);
+                return "Hello World!";
+            })
+           .OnSuccessWPF(s => (s, Environment.CurrentManagedThreadId));
+
+
+        var thread_id_last = Environment.CurrentManagedThreadId;
+    }
+
+    #endregion
 }

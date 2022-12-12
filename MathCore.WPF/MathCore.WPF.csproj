@@ -12,9 +12,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.41.3</Version>
+    <Version>0.0.42</Version>
     <PackageReleaseNotes>
-      Добавлен SwitchConverter, исправлен ThreadSaveObservableCollectionWrapper
+      Методы-расширения для работы с потоками GUI/ThreadPool
     </PackageReleaseNotes>
   </PropertyGroup>
 

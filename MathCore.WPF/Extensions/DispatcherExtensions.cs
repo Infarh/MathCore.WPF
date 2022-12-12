@@ -13,6 +13,11 @@ public static class DispatcherExtensions
         dispatcher is null 
             ? throw new ArgumentNullException(nameof(dispatcher)) 
             : new PriorityDispatcherAwaiter(dispatcher, Priority);
+
+    public static PriorityDispatcherAwaiter ChangeContext(this Dispatcher dispatcher, DispatcherPriority Priority = DispatcherPriority.Normal) => 
+        dispatcher is null 
+            ? throw new ArgumentNullException(nameof(dispatcher)) 
+            : new PriorityDispatcherAwaiter(dispatcher, Priority);
 }
 
 public readonly ref struct PriorityDispatcherAwaiter
@@ -57,4 +62,6 @@ public readonly struct DispatcherAwaiter : INotifyCompletion
     }
 
     public void GetResult() { }
+
+    public DispatcherAwaiter GetAwaiter() => this;
 }
