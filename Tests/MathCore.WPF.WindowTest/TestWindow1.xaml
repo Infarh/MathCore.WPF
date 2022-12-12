@@ -19,7 +19,8 @@
     <Grid>
         <!--<Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
                 fa5:Awesome.Content="Solid_FileDownload"/>-->
-        <Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120">
+        <Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
+                Command="{Binding TestAsyncCommand}">
             <!--<fa5:ImageAwesome Icon="Solid_CloudDownloadAlt" Width="50">
                 <fa5:ImageAwesome.Foreground>
                     <RadialGradientBrush>
