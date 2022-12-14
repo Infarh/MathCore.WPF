@@ -245,8 +245,8 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         var properties_dependencies_dictionary = _PropertiesDependenciesDictionary;
         if (properties_dependencies_dictionary != null)
             lock (properties_dependencies_dictionary)
-                if (properties_dependencies_dictionary.ContainsKey(PropertyName))
-                    dependencies = properties_dependencies_dictionary[PropertyName].Where(name => name != PropertyName).ToArray();
+                if (properties_dependencies_dictionary.TryGetValue(PropertyName, out var value))
+                    dependencies = value.Where(name => name != PropertyName).ToArray();
 
         var dependency_handlers = _PropertyChangedHandlers;
         if (dependency_handlers != null && dependency_handlers.TryGetValue(PropertyName, out var handler))
@@ -290,19 +290,20 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             return;
         }
 
-        var now = DateTime.Now;
-        if (_PropertyAsyncInvokeTime.TryGetValue(PropertyName, out var last_call_time) && (now - last_call_time).TotalMilliseconds < Timeout)
+        var now                    = DateTime.Now;
+        var properties_invoke_time = _PropertyAsyncInvokeTime;
+        if (properties_invoke_time.TryGetValue(PropertyName, out var last_call_time) && (now - last_call_time).TotalMilliseconds < Timeout)
         {
-            _PropertyAsyncInvokeTime[PropertyName] = now;
+            properties_invoke_time[PropertyName] = now;
             return;
         }
 
-        _PropertyAsyncInvokeTime[PropertyName] = now;
-        var delta = Timeout - (DateTime.Now - _PropertyAsyncInvokeTime[PropertyName]).TotalMilliseconds;
+        properties_invoke_time[PropertyName] = now;
+        var delta = Timeout - (DateTime.Now - properties_invoke_time[PropertyName]).TotalMilliseconds;
         while (delta > 0)
         {
             await Task.Delay(TimeSpan.FromMilliseconds(delta)).ConfigureAwait(true);
-            delta = Timeout - (DateTime.Now - _PropertyAsyncInvokeTime[PropertyName]).TotalMilliseconds;
+            delta = Timeout - (DateTime.Now - properties_invoke_time[PropertyName]).TotalMilliseconds;
         }
         OnChanging?.Invoke();
         OnPropertyChanged(PropertyName);
@@ -316,7 +317,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         var type = GetType();
         foreach (var property in type.GetProperties())
         {
-            foreach (DependsOnAttribute depends_on_attribute in property.GetCustomAttributes(typeof(DependsOnAttribute), true))
+            foreach (var depends_on_attribute in property.GetCustomAttributes(typeof(DependsOnAttribute), true).Cast<DependsOnAttribute>())
                 PropertyDependence_Add(depends_on_attribute.Name, property.Name);
 
             foreach (var depends_on_attribute in property.GetCustomAttributes(typeof(DependencyOnAttribute), true).OfType<DependencyOnAttribute>())

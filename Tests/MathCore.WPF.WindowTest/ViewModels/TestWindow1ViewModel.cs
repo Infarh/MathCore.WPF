@@ -68,7 +68,7 @@ public class TestWindow1ViewModel : TitledViewModel
     #region Command TestAsyncCommand - Тестовая фоновая команда
 
     /// <summary>Тестовая фоновая команда</summary>
-    private Command? _TestAsyncCommand;
+    private LambdaCommandAsync? _TestAsyncCommand;
 
     /// <summary>Тестовая фоновая команда</summary>
     public ICommand TestAsyncCommand => _TestAsyncCommand ??= Command.NewBackground(OnTestAsyncCommandExecuted);

@@ -73,4 +73,34 @@ public static class CommandEx
         Command.Error += Catch;
         return Command;
     }
+
+    public static TCommand OnExecuted<TCommand>(this TCommand Command, Action action) where TCommand : Command
+    {
+        Command.Executed += (_, _) => action();
+        return Command;
+    }
+
+    public static TCommand OnExecuted<TCommand>(this TCommand Command, EventHandler<EventArgs<object?>> handler) where TCommand : Command
+    {
+        Command.Executed += handler;
+        return Command;
+    }
+
+    public static TCommand OnExecuted<TCommand>(this TCommand Command, Action<object> action) where TCommand : Command
+    {
+        Command.Executed += (_, e) => action(e.Argument);
+        return Command;
+    }
+
+    public static TCommand OnCompleteExecuting<TCommand, T>(this TCommand Command, Action<T> action) where TCommand : LambdaCommand<T>
+    {
+        Command.CompleteExecuting += (_, e) => action(e.Argument);
+        return Command;
+    }
+
+    public static TCommand OnCompleteExecuting<TCommand, T>(this TCommand Command, EventHandler<EventArgs<T?>> handler) where TCommand : LambdaCommand<T>
+    {
+        Command.CompleteExecuting += handler;
+        return Command;
+    }
 }

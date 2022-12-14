@@ -11,6 +11,7 @@ using MathCore.WPF.ViewModels;
 // ReSharper disable UnusedMethodReturnValue.Global
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberCanBeProtected.Global
+// ReSharper disable EventNeverSubscribedTo.Global
 
 namespace MathCore.WPF.Commands;
 
@@ -162,7 +163,15 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
 
     protected bool HasErrorHandlers => Error is { };
 
-    protected virtual void OnError(Exception error) => Error?.Invoke(this, new(error));
+    protected virtual bool OnError(Exception error)
+    {
+        if (Error is not { } handlers) return false;
+
+        var args = new ExceptionEventHandlerArgs<Exception>(error);
+        handlers.Invoke(this, args);
+
+        return !args.NeedToThrow;
+    }
 
     public Command TraceErrors() => OnError((s, e) => Trace.TraceError("Ошибка при выполнении {0}: {1}", s, e));
 
@@ -174,6 +183,24 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     {
         Error += Handler;
         return this;
+    }
+
+    public event EventHandler<EventArgs<object?>>? Executed;
+
+    protected virtual void OnExecuted(object? p)
+    {
+        if(Executed is not { } handler) return;
+
+        handler.ThreadSafeInvoke(this, p);
+    }
+
+    public event EventHandler<EventArgs<object?>>? BeforeExecuted;
+
+    protected virtual void OnBeforeExecuted(object? p)
+    {
+        if (BeforeExecuted is not { } handler) return;
+
+        handler.ThreadSafeInvoke(this, p);
     }
 
     #endregion
@@ -252,13 +279,19 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
         if (!CanExecute(parameter)) return;
         try
         {
+            OnBeforeExecuted(parameter);
+
             Execute(parameter);
             _Observable?.OnNext(parameter!);
+
+            OnExecuted(parameter);
         }
         catch (Exception error)
         {
             _Observable?.OnError(error);
-            throw;
+
+            if(!OnError(error))
+                throw;
         }
     }
 
