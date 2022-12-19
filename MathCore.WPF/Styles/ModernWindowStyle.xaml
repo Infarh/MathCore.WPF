@@ -1,0 +1,225 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+                    xmlns:shaders="clr-namespace:MathCore.WPF.Shaders"
+                    xmlns:wpf="clr-namespace:MathCore.WPF"
+                    xmlns:styles="clr-namespace:MathCore.WPF.Styles">
+
+    <!--<system:Double x:Key="ModernWindow.HeaderHeight">30</system:Double>-->
+    <SolidColorBrush x:Key="ModernWindow.Header.Background.Active" Color="#214354"/>
+    <SolidColorBrush x:Key="ModernWindow.Header.Background.InActive" Color="#2B2B2B"/>
+
+    <Style x:Key="ModernWindow.Header.Button.Style" TargetType="Button">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="PART_Border" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="Transparent">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="ModernWindow.Header.ToggleButton.Style" TargetType="ToggleButton">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <Border x:Name="PART_Border" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="Transparent">
+                        <ContentPresenter VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="PART_Border" Property="Background" Value="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate x:Key="ModernWindow.Template" TargetType="{x:Type Window}">
+        <Border x:Name="PART_Border" 
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid x:Name="PART_BaseContent">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{wpf:BParent (ModernWindow.HeaderHeight)}"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Rectangle Grid.Row="0" x:Name="PART_HeaderBackgroundInActive" Fill="{wpf:BParent (ModernWindow.HeaderInActiveBrush)}"/>
+                <Rectangle Grid.Row="0" x:Name="PART_HeaderBackgroundActive" Fill="{wpf:BParent (ModernWindow.HeaderActiveBrush)}"/>
+
+                <DockPanel x:Name="PART_Header" Grid.Row="0">
+                    <UniformGrid DockPanel.Dock="Right" Rows="1" WindowChrome.IsHitTestVisibleInChrome="True">
+                        <UniformGrid.Resources>
+                            <Style TargetType="Button" BasedOn="{StaticResource ModernWindow.Header.Button.Style}"/>
+                            <Style TargetType="ToggleButton" BasedOn="{StaticResource ModernWindow.Header.ToggleButton.Style}"/>
+                            <Style TargetType="Path">
+                                <Setter Property="Stroke" Value="White"/>
+                                <Setter Property="StrokeThickness" Value="1"/>
+                            </Style>
+                        </UniformGrid.Resources>
+
+                        <!--<ToggleButton x:Name="PART_InvertColorsButton" Background="Black" Foreground="OrangeRed" Content="O"/>-->
+                        
+                        <ToggleButton x:Name="PART_TopMostButton" Background="Blue" Foreground="DarkBlue"
+                                      IsChecked="{Binding Topmost, RelativeSource={RelativeSource TemplatedParent}}"
+                                      Visibility="{wpf:BParent (ModernWindow.HeaderButtonTopMostVisibility)}">
+                            <TextBlock Text="T" Foreground="WhiteSmoke" FontWeight="Bold"/>
+                        </ToggleButton>
+                        
+                        <Button x:Name="PART_MinimizeWindowButton" Background="DimGray" Foreground="Gray"
+                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonMinimizeVisibility)}">
+                            <Path Data="M0,15 h10" />
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:ChangePropertyAction PropertyName="WindowState"
+                                                            TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Value="{Binding Source={x:Static WindowState.Minimized}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        
+                        <Button x:Name="PART_ChangeWindowStateButton" Background="DarkBlue" Foreground="Blue"
+                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonMaximizeVisibility)}">
+                            <Path x:Name="PART_MaximizeButtonPath" 
+                                  Data="M0,15 h10 v-10 h-10 z" />
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:ChangePropertyAction PropertyName="WindowState"
+                                                            TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            Value="{Binding Tag, ElementName=PART_ChangeWindowStateButton}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        
+                        <Button Background="DarkRed" Foreground="Red"
+                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonCloseVisibility)}">
+                            <Path Data="M0,15 l10,-10 m-10,0 l10,10"/>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction MethodName="Close"
+                                                        TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </UniformGrid>
+
+                    <ContentControl DockPanel.Dock="Right"
+                                    WindowChrome.IsHitTestVisibleInChrome="True"
+                                    Content="{wpf:BParent (ModernWindow.HeaderContent)}"
+                                    Visibility="{wpf:BParent (ModernWindow.HeaderAdditionalContentVisibility)}"/>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
+                        <Image Source="{TemplateBinding Icon}" Margin="2,4"
+                               Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"/>
+                        <Grid Margin="3,0,0,0">
+                            <ContentPresenter x:Name="PART_HeaderTextActive" 
+                                              TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"
+                                              ContentSource="Title" 
+                                              VerticalAlignment="Center"/>
+                            <ContentPresenter x:Name="PART_HeaderTextInActive" Visibility="Collapsed"
+                                              TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushInActive)}"
+                                              ContentSource="Title" 
+                                              VerticalAlignment="Center"/>
+                        </Grid>
+                    </StackPanel>
+                </DockPanel>
+                <ContentPresenter Grid.Row="1"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="False">
+                <Setter TargetName="PART_HeaderBackgroundActive" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_HeaderTextActive" Property="Visibility" Value="Collapsed"/>
+                <Setter TargetName="PART_HeaderTextInActive" Property="Visibility" Value="Visible"/>
+            </Trigger>
+
+            <Trigger Property="WindowState" Value="Maximized">
+                <Setter TargetName="PART_MaximizeButtonPath" Property="Data" Value="M0,15 h10 v-10 h-10 z m10,-2 h3 v-10 h-10 v2"/>
+                <Setter TargetName="PART_BaseContent" Property="Margin" Value="8"/>
+                <Setter TargetName="PART_ChangeWindowStateButton" Property="Tag" Value="{Binding Source={x:Static WindowState.Normal}}"/>
+            </Trigger>
+            <Trigger Property="WindowState" Value="Normal">
+                <Setter TargetName="PART_ChangeWindowStateButton" Property="Tag" Value="{Binding Source={x:Static WindowState.Maximized}}"/>
+            </Trigger>
+            <Trigger Property="ResizeMode" Value="NoResize">
+                <Setter TargetName="PART_ChangeWindowStateButton" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+            <Trigger Property="WindowStyle" Value="ToolWindow">
+                <Setter TargetName="PART_MinimizeWindowButton" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+
+            <!--<Trigger SourceName="PART_InvertColorsButton" Property="IsChecked" Value="True">
+                <Setter Property="Effect">
+                    <Setter.Value>
+                        <shaders:Invert/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>-->
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="ModernWindow" TargetType="{x:Type Window}">
+        <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome CornerRadius="3" 
+                              GlassFrameThickness="10"
+                              UseAeroCaptionButtons="True" 
+                              NonClientFrameEdges="Bottom"
+                              CaptionHeight="{wpf:Bself (ModernWindow.HeaderHeight)}" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template" Value="{StaticResource ModernWindow.Template}"/>
+
+        <Setter Property="wpf:ModernWindow.HeaderHeight" Value="30"/>
+
+        <Setter Property="wpf:ModernWindow.HeaderActiveBrush" Value="#214354"/>
+        <Setter Property="wpf:ModernWindow.HeaderInActiveBrush" Value="#2B2B2B"/>
+        <Setter Property="wpf:ModernWindow.HeaderTextBrushActive" Value="White"/>
+        <Setter Property="wpf:ModernWindow.HeaderTextBrushInActive" Value="Gray"/>
+
+        <Setter Property="wpf:ModernWindow.HeaderButtonTopMostVisibility" Value="Visible"/>
+        <Setter Property="wpf:ModernWindow.HeaderButtonMinimizeVisibility" Value="Visible"/>
+        <Setter Property="wpf:ModernWindow.HeaderButtonMaximizeVisibility" Value="Visible"/>
+        <Setter Property="wpf:ModernWindow.HeaderButtonCloseVisibility" Value="Visible"/>
+        <Setter Property="wpf:ModernWindow.HeaderIconVisibility" Value="Visible"/>
+        <Setter Property="wpf:ModernWindow.HeaderAdditionalContentVisibility" Value="Visible"/>
+    </Style>
+
+</ResourceDictionary>

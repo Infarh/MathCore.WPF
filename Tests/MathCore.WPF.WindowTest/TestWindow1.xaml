@@ -12,16 +12,23 @@
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
         Title="{Binding Title}"
-        Width="800" Height="450">
+        Style="{StaticResource ModernWindow}"
+        Icon="/img/cat.ico" 
+        Width="800" Height="450" ModernWindow.HeaderContent="123">
+    <Window.Tag>
+        <Button>123</Button>
+    </Window.Tag>
     <Window.DataContext>
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
-                 Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
-            <i:Interaction.Behaviors>
-                <b:DragBehavior/>
-            </i:Interaction.Behaviors>
-        </Ellipse>
-    </Grid>
+    <Border BorderBrush="Red" BorderThickness="2">
+        <Grid>
+            <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                     Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
+                <i:Interaction.Behaviors>
+                    <b:DragBehavior/>
+                </i:Interaction.Behaviors>
+            </Ellipse>
+        </Grid>
+    </Border>
 </Window>

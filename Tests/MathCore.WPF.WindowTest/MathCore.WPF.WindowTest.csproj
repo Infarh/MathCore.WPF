@@ -20,6 +20,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="img\cat.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="FontAwesome6.Svg" Version="2.5.1" />
@@ -32,6 +36,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\MathCore.WPF\MathCore.WPF.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="img\cat.ico" />
   </ItemGroup>
 
 </Project>
