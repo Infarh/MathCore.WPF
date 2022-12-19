@@ -10,7 +10,7 @@ public class BParent : MarkupExtension
 
     public BParent() { }
 
-    public BParent(string Property) => this.Path = Property;
+    public BParent(string Path) => this.Path = Path;
 
     public override object ProvideValue(IServiceProvider sp)
     {
@@ -31,7 +31,7 @@ public class B : MarkupExtension
 
     public B() { }
 
-    public B(string Property) => this.Path = Property;
+    public B(string Path) => this.Path = Path;
 
     public override object ProvideValue(IServiceProvider sp)
     {
@@ -51,7 +51,7 @@ public class Bself : MarkupExtension
 
     public Bself() { }
 
-    public Bself(string Property) => this.Path = Property;
+    public Bself(string Path) => this.Path = Path;
 
     public override object ProvideValue(IServiceProvider sp)
     {
@@ -76,9 +76,9 @@ public class Brel : MarkupExtension
 
     public Brel() { }
 
-    public Brel(string Property) => this.Path = Property;
-    public Brel(string Property, Type AncessorType) : this(Property) => this.AncessorType = AncessorType;
-    public Brel(string Property, Type AncessorType, int AncessorLevel) : this(Property, AncessorType) => this.AncessorLevel = AncessorLevel;
+    public Brel(string Path) => this.Path = Path;
+    public Brel(string Path, Type AncessorType) : this(Path) => this.AncessorType = AncessorType;
+    public Brel(string Path, Type AncessorType, int AncessorLevel) : this(Path, AncessorType) => this.AncessorLevel = AncessorLevel;
 
     public override object ProvideValue(IServiceProvider sp)
     {

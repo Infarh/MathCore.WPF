@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Markup;
 
 using MathCore.WPF.Commands;
@@ -121,6 +122,25 @@ public class TestWindow1ViewModel : TitledViewModel
 
         var thread_id_last = Environment.CurrentManagedThreadId;
     }
+
+    #endregion
+
+    #region Command OpenAnotherWindowCommand - Открыть ещё одно окно
+
+    /// <summary>Открыть ещё одно окно</summary>
+    private Command? _OpenAnotherWindowCommand;
+
+    /// <summary>Открыть ещё одно окно</summary>
+    public ICommand OpenAnotherWindowCommand => _OpenAnotherWindowCommand ??= Command.New(
+        () =>
+        {
+            var parent      = Application.Current.MainWindow;
+            var new_window = new TestWindow1
+            {
+                Owner = parent
+            };
+            new_window.Show();
+        });
 
     #endregion
 }
