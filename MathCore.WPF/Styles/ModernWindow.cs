@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 // ReSharper disable once CheckNamespace
@@ -231,6 +232,25 @@ public static class ModernWindow
             typeof(Brush),
             typeof(ModernWindow),
             new PropertyMetadata(default(Brush)));
+
+    #endregion
+
+    #region Attached property HeaderSystemMenu : ContextMenu - Системное меню в заголовке окна
+
+    /// <summary>Системное меню в заголовке окна</summary>
+    [AttachedPropertyBrowsableForType(typeof(Window))]
+    public static void SetHeaderSystemMenu(DependencyObject d, ContextMenu value) => d.SetValue(HeaderSystemMenuProperty, value);
+
+    /// <summary>Системное меню в заголовке окна</summary>
+    public static ContextMenu GetHeaderSystemMenu(DependencyObject d) => (ContextMenu)d.GetValue(HeaderSystemMenuProperty);
+
+    /// <summary>Системное меню в заголовке окна</summary>
+    public static readonly DependencyProperty HeaderSystemMenuProperty =
+        DependencyProperty.RegisterAttached(
+            "HeaderSystemMenu",
+            typeof(ContextMenu),
+            typeof(ModernWindow),
+            new PropertyMetadata(default(ContextMenu)));
 
     #endregion
 }

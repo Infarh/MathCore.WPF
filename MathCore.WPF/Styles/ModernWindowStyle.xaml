@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-                    xmlns:wpf="clr-namespace:MathCore.WPF">
+                    xmlns:wpf="clr-namespace:MathCore.WPF"
+                    xmlns:cmd="clr-namespace:MathCore.WPF.Commands">
 
     <!--<SolidColorBrush x:Key="ModernWindow.Header.Background.Active" Color="#214354"/>-->
     <!--<SolidColorBrush x:Key="ModernWindow.Header.Background.InActive" Color="#2B2B2B"/>-->
@@ -145,7 +146,9 @@
 
                     <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
                         <Image Source="{TemplateBinding Icon}" Margin="2,4"
-                           Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"/>
+                               WindowChrome.IsHitTestVisibleInChrome="True"
+                               Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"
+                               ContextMenu="{wpf:BParent (ModernWindow.HeaderSystemMenu)}"/>
                         <Grid Margin="3,0,0,0">
                             <ContentPresenter x:Name="PART_HeaderTextActive" 
                                           TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"
@@ -219,6 +222,33 @@
         <Setter Property="wpf:ModernWindow.HeaderButtonCloseVisibility" Value="Visible"/>
         <Setter Property="wpf:ModernWindow.HeaderIconVisibility" Value="Visible"/>
         <Setter Property="wpf:ModernWindow.HeaderAdditionalContentVisibility" Value="Visible"/>
+
+        <Setter Property="wpf:ModernWindow.HeaderSystemMenu">
+            <Setter.Value>
+                <ContextMenu StaysOpen="True">
+                    <MenuItem Header="Свернуть" Command="{cmd:MinimizeWindow}">
+                        <MenuItem.Icon>
+                            <Path Width="16" Height="16" Stroke="Black" StrokeThickness="1"
+                                  Data="m7,13 h6"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Развернуть" Command="{cmd:WindowStateChange}">
+                        <MenuItem.Icon>
+                            <Path Width="16" Height="16" Stroke="Black" StrokeThickness="1"
+                                  Data="m7,7 h6 v6 h-6 z"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator/>
+                    <MenuItem Header="Закрыть" InputGestureText="Alt+F4" FontWeight="Bold"
+                              Command="{cmd:CloseWindow}">
+                        <MenuItem.Icon>
+                            <Path Height="16" Width="16" Stroke=" Black" StrokeThickness="2"
+                                  Data="m7,7 l6,6 m-6,0 l6,-6"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
     </Style>
 
 </ResourceDictionary>
