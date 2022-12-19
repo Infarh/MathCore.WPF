@@ -15,29 +15,28 @@
         Style="{StaticResource ModernWindow}"
         Icon="/img/cat.ico" 
         Width="800" Height="450"
-        ModernWindow.HeaderButtonMaximizeVisibility="Hidden"
-        ModernWindow.HeaderButtonMinimizeVisibility="Collapsed">
+        ModernWindow.HeaderButtonMaximizeVisibility="Visible"
+        ModernWindow.HeaderButtonMinimizeVisibility="Visible"
+        >
     <ModernWindow.HeaderContent>
         <Button>qew</Button>
     </ModernWindow.HeaderContent>
     <Window.DataContext>
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
-    <Border BorderBrush="Red" BorderThickness="2">
-       <DockPanel>
-            <Menu>
-                <MenuItem Header="Test" Command="{Binding OpenAnotherWindowCommand}"/>
-            </Menu>
-           <Grid>
-               <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
-                        Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
-                   <i:Interaction.Behaviors>
-                       <b:DragBehavior/>
-                   </i:Interaction.Behaviors>
-               </Ellipse>
-               <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                          Text="{Brel Title, Window}"/>
-           </Grid>
-        </DockPanel>
-    </Border>
+    <DockPanel>
+        <Menu>
+            <MenuItem Header="Test" Command="{Binding OpenAnotherWindowCommand}"/>
+        </Menu>
+        <Grid>
+            <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                     Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
+                <i:Interaction.Behaviors>
+                    <b:DragBehavior/>
+                </i:Interaction.Behaviors>
+            </Ellipse>
+            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
+                       Text="{Brel Title, Window}"/>
+        </Grid>
+    </DockPanel>
 </Window>

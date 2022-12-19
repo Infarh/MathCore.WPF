@@ -13,6 +13,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Width" Value="30"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -43,6 +44,7 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Width" Value="30"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
@@ -67,7 +69,8 @@
     </Style>
 
     <ControlTemplate x:Key="ModernWindow.Template" TargetType="{x:Type Window}">
-        <Border x:Name="PART_Border" 
+        <Border x:Name="PART_Border"
+                Margin="0,0,0,0.25"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}">
@@ -90,68 +93,68 @@
                         </UniformGrid.Resources>
 
                         <ToggleButton x:Name="PART_TopMostButton" Background="Blue" Foreground="DarkBlue"
-                                      IsChecked="{Binding Topmost, RelativeSource={RelativeSource TemplatedParent}}"
-                                      Visibility="{wpf:BParent (ModernWindow.HeaderButtonTopMostVisibility)}">
+                                  IsChecked="{Binding Topmost, RelativeSource={RelativeSource TemplatedParent}}"
+                                  Visibility="{wpf:BParent (ModernWindow.HeaderButtonTopMostVisibility)}">
                             <TextBlock Text="T" 
-                                       Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}" 
-                                       FontWeight="Bold"/>
+                                   Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}" 
+                                   FontWeight="Bold"/>
                         </ToggleButton>
-                        
+
                         <Button x:Name="PART_MinimizeWindowButton" Background="DimGray" Foreground="Gray"
-                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonMinimizeVisibility)}">
+                            Visibility="{wpf:BParent (ModernWindow.HeaderButtonMinimizeVisibility)}">
                             <Path Data="M0,15 h10" Stroke="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:ChangePropertyAction PropertyName="WindowState"
-                                                            TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                            Value="{Binding Source={x:Static WindowState.Minimized}}"/>
+                                                        TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        Value="{Binding Source={x:Static WindowState.Minimized}}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
-                        
+
                         <Button x:Name="PART_ChangeWindowStateButton" Background="DarkBlue" Foreground="Blue"
-                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonMaximizeVisibility)}">
+                            Visibility="{wpf:BParent (ModernWindow.HeaderButtonMaximizeVisibility)}">
                             <Path x:Name="PART_MaximizeButtonPath" 
-                                  Data="M0,15 h10 v-10 h-10 z" 
-                                  Stroke="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"/>
+                              Data="M0,15 h10 v-10 h-10 z" 
+                              Stroke="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:ChangePropertyAction PropertyName="WindowState"
-                                                            TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                            Value="{Binding Tag, ElementName=PART_ChangeWindowStateButton}"/>
+                                                        TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        Value="{Binding Tag, ElementName=PART_ChangeWindowStateButton}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
-                        
+
                         <Button Background="DarkRed" Foreground="Red"
-                                Visibility="{wpf:BParent (ModernWindow.HeaderButtonCloseVisibility)}">
+                            Visibility="{wpf:BParent (ModernWindow.HeaderButtonCloseVisibility)}">
                             <Path Data="M0,15 l10,-10 m-10,0 l10,10" Stroke="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"/>
                             <i:Interaction.Triggers>
                                 <i:EventTrigger EventName="Click">
                                     <i:CallMethodAction MethodName="Close"
-                                                        TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                                    TargetObject="{Binding RelativeSource={RelativeSource AncestorType=Window}}"/>
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </Button>
                     </UniformGrid>
 
                     <ContentControl DockPanel.Dock="Right"
-                                    WindowChrome.IsHitTestVisibleInChrome="True"
-                                    Content="{wpf:BParent (ModernWindow.HeaderContent)}"
-                                    Visibility="{wpf:BParent (ModernWindow.HeaderAdditionalContentVisibility)}"/>
-                    
+                                WindowChrome.IsHitTestVisibleInChrome="True"
+                                Content="{wpf:BParent (ModernWindow.HeaderContent)}"
+                                Visibility="{wpf:BParent (ModernWindow.HeaderAdditionalContentVisibility)}"/>
+
                     <StackPanel Orientation="Horizontal" Margin="3,0,0,0">
                         <Image Source="{TemplateBinding Icon}" Margin="2,4"
-                               Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"/>
+                           Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"/>
                         <Grid Margin="3,0,0,0">
                             <ContentPresenter x:Name="PART_HeaderTextActive" 
-                                              TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"
-                                              ContentSource="Title" 
-                                              VerticalAlignment="Center"/>
+                                          TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"
+                                          ContentSource="Title" 
+                                          VerticalAlignment="Center"/>
                             <ContentPresenter x:Name="PART_HeaderTextInActive" Visibility="Collapsed"
-                                              TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushInActive)}"
-                                              ContentSource="Title" 
-                                              VerticalAlignment="Center"/>
+                                          TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushInActive)}"
+                                          ContentSource="Title" 
+                                          VerticalAlignment="Center"/>
                         </Grid>
                     </StackPanel>
                 </DockPanel>
@@ -163,6 +166,10 @@
                 <Setter TargetName="PART_HeaderBackgroundActive" Property="Visibility" Value="Collapsed"/>
                 <Setter TargetName="PART_HeaderTextActive" Property="Visibility" Value="Collapsed"/>
                 <Setter TargetName="PART_HeaderTextInActive" Property="Visibility" Value="Visible"/>
+            </Trigger>
+
+            <Trigger Property="WindowState" Value="Normal">
+                <Setter TargetName="PART_BaseContent" Property="Margin" Value="0,0,0,3.0"/>
             </Trigger>
 
             <Trigger Property="WindowState" Value="Maximized">
@@ -185,7 +192,9 @@
     </ControlTemplate>
 
     <Style x:Key="ModernWindow" TargetType="{x:Type Window}">
-        <Setter Property="WindowStyle" Value="SingleBorderWindow" />
+        <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="#5F5F61"/>
         <Setter Property="WindowChrome.WindowChrome">
             <Setter.Value>
                 <WindowChrome CornerRadius="3" 
