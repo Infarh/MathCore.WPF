@@ -97,7 +97,4 @@ public static class TaskExWPF
             (t, o) => (TResult)((Dispatcher)((object[])o)[0]).Invoke((Delegate)((object[])o)[1], (DispatcherPriority)((object[])o)[2], t.Exception),
             new object[] { Application.Current.Dispatcher, continuation, Priority },
             TaskContinuationOptions.OnlyOnFaulted);
-
-
-
 }
