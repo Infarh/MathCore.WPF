@@ -14,7 +14,7 @@ public static class DispatcherExtensions
             ? throw new ArgumentNullException(nameof(dispatcher)) 
             : new PriorityDispatcherAwaiter(dispatcher, Priority);
 
-    public static PriorityDispatcherAwaiter ChangeContext(this Dispatcher dispatcher, DispatcherPriority Priority = DispatcherPriority.Normal) => 
+    public static PriorityDispatcherAwaiter SwitchContext(this Dispatcher dispatcher, DispatcherPriority Priority = DispatcherPriority.Normal) => 
         dispatcher is null 
             ? throw new ArgumentNullException(nameof(dispatcher)) 
             : new PriorityDispatcherAwaiter(dispatcher, Priority);

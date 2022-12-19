@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -44,6 +45,90 @@ public class DragInCanvasBehavior : Behavior<UIElement>
 
     #endregion
 
+    #region Xmin : double - Минимально допустимое значение координаты X
+
+    /// <summary>Минимально допустимое значение координаты X</summary>
+    //[Category("")]
+    [Description("Минимально допустимое значение координаты X")]
+    public double Xmin
+    {
+        get => (double)GetValue(XminProperty);
+        set => SetValue(XminProperty, value);
+    }
+
+    /// <summary>Минимально допустимое значение координаты X</summary>
+    public static readonly DependencyProperty XminProperty =
+        DependencyProperty.Register(
+            nameof(Xmin),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(double.NaN));
+
+    #endregion
+
+    #region Xmax : double - Максимально допустимое значение координаты X
+
+    /// <summary>Максимально допустимое значение координаты X</summary>
+    //[Category("")]
+    [Description("Максимально допустимое значение координаты X")]
+    public double Xmax
+    {
+        get => (double)GetValue(XmaxProperty);
+        set => SetValue(XmaxProperty, value);
+    }
+
+    /// <summary>Максимально допустимое значение координаты X</summary>
+    public static readonly DependencyProperty XmaxProperty =
+        DependencyProperty.Register(
+            nameof(Xmax),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(double.NaN));
+
+    #endregion
+
+    #region Ymin : double - Минимально допустимое значение координаты Y
+
+    /// <summary>Минимально допустимое значение координаты Y</summary>
+    //[Category("")]
+    [Description("Минимально допустимое значение координаты Y")]
+    public double Ymin
+    {
+        get => (double)GetValue(YminProperty);
+        set => SetValue(YminProperty, value);
+    }
+
+    /// <summary>Минимально допустимое значение координаты Y</summary>
+    public static readonly DependencyProperty YminProperty =
+        DependencyProperty.Register(
+            nameof(Ymin),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(double.NaN));
+
+    #endregion
+
+    #region Ymax : double - Максимально допустимое значение координаты Y
+
+    /// <summary>Максимально допустимое значение координаты Y</summary>
+    //[Category("")]
+    [Description("Максимально допустимое значение координаты Y")]
+    public double Ymax
+    {
+        get => (double)GetValue(YmaxProperty);
+        set => SetValue(YmaxProperty, value);
+    }
+
+    /// <summary>Максимально допустимое значение координаты Y</summary>
+    public static readonly DependencyProperty YmaxProperty =
+        DependencyProperty.Register(
+            nameof(Ymax),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(double.NaN));
+
+    #endregion
+
     #region AllowX : bool - Разрешено перемещение по оси X
 
     /// <summary>Разрешено перемещение по оси X</summary>
@@ -78,6 +163,62 @@ public class DragInCanvasBehavior : Behavior<UIElement>
     {
         get => (bool)GetValue(AllowYProperty);
         set => SetValue(AllowYProperty, value);
+    }
+
+    #endregion
+
+    #region CurrentX : double - Текущее горизонтальное положение
+
+    /// <summary>Текущее горизонтальное положение</summary>
+    //[Category("")]
+    [Description("Текущее горизонтальное положение")]
+    public double CurrentX
+    {
+        get => (double)GetValue(CurrentXProperty);
+        set => SetValue(CurrentXProperty, value);
+    }
+
+    /// <summary>Текущее горизонтальное положение</summary>
+    public static readonly DependencyProperty CurrentXProperty =
+        DependencyProperty.Register(
+            nameof(CurrentX),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(default(double), OnCurrentXChanged));
+
+    private static void OnCurrentXChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+    {
+        if (d is not DragInCanvasBehavior { _InMove: false, } drag) return;
+
+        drag.MoveTo(new((double)args.NewValue, drag.CurrentY));
+    }
+
+    #endregion
+
+    #region CurrentY : double - Текущее вертикальное положение
+
+    /// <summary>Текущее горизонтальное положение</summary>
+    //[Category("")]
+    [Description("Текущее горизонтальное положение")]
+    public double CurrentY
+    {
+        get => (double)GetValue(CurrentYProperty);
+        set => SetValue(CurrentYProperty, value);
+    }
+
+    /// <summary>Текущее горизонтальное положение</summary>
+    public static readonly DependencyProperty CurrentYProperty =
+        DependencyProperty.Register(
+            nameof(CurrentY),
+            typeof(double),
+            typeof(DragInCanvasBehavior),
+            new PropertyMetadata(default(double), OnCurrentYChanged));
+
+    private static void OnCurrentYChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+    {
+        if (d is not DragInCanvasBehavior { _InMove: false, } drag) return;
+
+        drag.MoveTo(new(drag.CurrentX, (double)args.NewValue));
     }
 
     #endregion
@@ -133,31 +274,75 @@ public class DragInCanvasBehavior : Behavior<UIElement>
         IsDragging  = true;
     }
 
+    private bool _InMove;
+
     /// <summary>При перемещении мыши</summary>
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
         // Если режим перетаскивания не активирован, то возврат
         if (!_IsDragging) return;
+
         // Иначе определяем положение указателя относительно канвы
-        var current_point = e.GetPosition(_Canvas);
+        MoveTo(e.GetPosition(_Canvas));
+    }
+
+    private static (double min, double max) CheckMinMax(double min, double max)
+    {
+        if (min is double.NaN) min = double.NegativeInfinity;
+        if (max is double.NaN) max = double.PositiveInfinity;
+        return (Math.Min(min, max), Math.Max(min, max));
+    }
+
+    private void MoveTo(Point point)
+    {
+        _InMove = true;
+
+        var (x_min, x_max) = CheckMinMax(Xmin, Xmax);
+        var (y_min, y_max) = CheckMinMax(Ymin, Ymax);
 
         // Изменяем присоединённые к элементу свойства канвы, отвечающие за положение элемента на ней
         var obj = AssociatedObject;
         if (AllowX)
-        {
             if (obj.ReadLocalValue(Canvas.RightProperty) == DependencyProperty.UnsetValue)
-                obj.SetValue(Canvas.LeftProperty, current_point.X - _StartPoint.X);
+            {
+                var x = point.X - _StartPoint.X;
+                if ((x >= x_min) && x <= x_max)
+                {
+                    obj.SetValue(Canvas.LeftProperty, x);
+                    CurrentX = x;
+                }
+            }
             else
-                obj.SetValue(Canvas.LeftProperty, current_point.X + _StartPoint.X);
-        }
+            {
+                var x = point.X + _StartPoint.X;
+                if (x >= x_min && x <= x_max)
+                {
+                    obj.SetValue(Canvas.RightProperty, x);
+                    CurrentX = x;
+                }
+            }
 
         if (AllowY)
-        {
             if (obj.ReadLocalValue(Canvas.BottomProperty) == DependencyProperty.UnsetValue)
-                obj.SetValue(Canvas.TopProperty, current_point.Y - _StartPoint.Y);
+            {
+                var y = point.Y - _StartPoint.Y;
+                if (y >= y_min && y <= y_max)
+                {
+                    obj.SetValue(Canvas.TopProperty, y);
+                    CurrentY = y;
+                }
+            }
             else
-                obj.SetValue(Canvas.TopProperty, current_point.Y + _StartPoint.Y);
-        }
+            {
+                var y = point.Y + _StartPoint.Y;
+                if (y >= y_min && y <= y_max)
+                {
+                    obj.SetValue(Canvas.BottomProperty, y);
+                    CurrentY = y;
+                }
+            }
+
+        _InMove = false;
     }
 
     /// <summary>При отпускании левой кнопки мыши</summary>

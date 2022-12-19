@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:behaviors="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
@@ -17,19 +17,11 @@
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
     <Grid>
-        <!--<Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
-                fa5:Awesome.Content="Solid_FileDownload"/>-->
-        <Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
-                Command="{Binding TestAsyncCommand}">
-            <!--<fa5:ImageAwesome Icon="Solid_CloudDownloadAlt" Width="50">
-                <fa5:ImageAwesome.Foreground>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#FF1300FF"/>
-                        <GradientStop Color="#FFE40707" Offset="1"/>
-                    </RadialGradientBrush>
-                </fa5:ImageAwesome.Foreground>
-            </fa5:ImageAwesome>-->
-            <fa6:SvgAwesome Icon="Solid_DownLong" Height="30"/>
-        </Button>
+        <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                 Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
+            <i:Interaction.Behaviors>
+                <b:DragBehavior/>
+            </i:Interaction.Behaviors>
+        </Ellipse>
     </Grid>
 </Window>
