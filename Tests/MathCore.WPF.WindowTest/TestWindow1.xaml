@@ -15,9 +15,19 @@
         Style="{StaticResource ModernWindow}"
         Icon="/img/cat.ico" 
         Width="800" Height="450"
+        Background="#1E1E1E"
+        Foreground="#F9F9F9"
         ModernWindow.HeaderButtonMaximizeVisibility="Visible"
-        ModernWindow.HeaderButtonMinimizeVisibility="Visible"
-        >
+        ModernWindow.HeaderButtonMinimizeVisibility="Visible">
+    <Window.Resources>
+        <Style TargetType="Menu" BasedOn="{StaticResource DarkMenuStyle}">
+            <!--<Setter Property="Background" Value="#1E1E1E"/>-->
+            <!--<Setter Property="Foreground" Value="#F9F9F9"/>-->
+        </Style>
+        <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenu.Item.Style}">
+            <Setter Property="BorderBrush" Value="Gray"/>
+        </Style>
+    </Window.Resources>
     <ModernWindow.HeaderContent>
         <Button>qew</Button>
     </ModernWindow.HeaderContent>
@@ -26,17 +36,30 @@
     </Window.DataContext>
     <DockPanel>
         <Menu>
+            <MenuItem Header="Файл" StaysOpenOnClick="True">
+                <MenuItem Header="Выход"  StaysOpenOnClick="True" BorderThickness="0"></MenuItem>
+            </MenuItem>
             <MenuItem Header="Test" Command="{Binding OpenAnotherWindowCommand}"/>
+            <MenuItem Header="123"/>
+            <MenuItem Header="йцу"/>
         </Menu>
-        <Grid>
-            <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
-                     Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
-                <i:Interaction.Behaviors>
-                    <b:DragBehavior/>
-                </i:Interaction.Behaviors>
-            </Ellipse>
-            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"
-                       Text="{Brel Title, Window}"/>
-        </Grid>
+        <Border BorderThickness="1" BorderBrush="Red">
+            <Grid>
+                <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                         Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
+                    <i:Interaction.Behaviors>
+                        <b:DragBehavior x:Name="DragXY" />
+                    </i:Interaction.Behaviors>
+                </Ellipse>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="X:{0};Y:{1}">
+                            <Binding ElementName="DragXY" Path="Xmin"/>
+                            <Binding ElementName="DragXY" Path="Xmax"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Grid>
+        </Border>
     </DockPanel>
 </Window>

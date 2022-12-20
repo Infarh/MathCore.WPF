@@ -401,6 +401,48 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #endregion
 
+    #region CurrentX : double - Текущее положение по OX
+
+    /// <summary>Текущее положение по OX</summary>
+    //[Category("")]
+    [Description("Текущее положение по OX")]
+    public double CurrentX
+    {
+        get => (double)GetValue(CurrentXProperty);
+        set => SetValue(CurrentXProperty, value);
+    }
+
+    /// <summary>Текущее положение по OX</summary>
+    public static readonly DependencyProperty CurrentXProperty =
+        DependencyProperty.Register(
+            nameof(CurrentX),
+            typeof(double),
+            typeof(DragBehavior),
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    #endregion
+
+    #region CurrentY : double - Текущее положение по OY
+
+    /// <summary>Текущее положение по OY</summary>
+    //[Category("")]
+    [Description("Текущее положение по OY")]
+    public double CurrentY
+    {
+        get => (double)GetValue(CurrentYProperty);
+        set => SetValue(CurrentYProperty, value);
+    }
+
+    /// <summary>Текущее положение по OY</summary>
+    public static readonly DependencyProperty CurrentYProperty =
+        DependencyProperty.Register(
+            nameof(CurrentY),
+            typeof(double),
+            typeof(DragBehavior),
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
+    #endregion
+
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -412,7 +454,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         base.OnDetaching();
         AssociatedObject.MouseLeftButtonDown -= OnMouseLeftButtonDown;
         _ObjectMover?.Dispose();
-        _ObjectMover          = null;
+        _ObjectMover = null;
     }
 
     private ObjectMover? _ObjectMover;
@@ -427,10 +469,10 @@ public class DragBehavior : Behavior<FrameworkElement>
 
         _ObjectMover = parent switch
         {
-            Canvas   => new CanvasObjectMover(element, this),
-            Panel    => new ThicknessObjectMover(element, this),
-            GroupBox => new ThicknessObjectMover(element, this),
-            _        => _ObjectMover
+            Canvas         => new CanvasObjectMover(element, this),
+            Panel          => new ThicknessObjectMover(element, this),
+            ContentControl => new ThicknessObjectMover(element, this),
+            _              => _ObjectMover
         };
     }
 }
