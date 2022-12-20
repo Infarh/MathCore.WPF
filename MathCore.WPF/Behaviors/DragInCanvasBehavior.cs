@@ -9,8 +9,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
-[System.Diagnostics.CodeAnalysis.SuppressMessage("Качество кода", "IDE0052:Удалить непрочитанные закрытые члены", Justification = "<Ожидание>")]
-public class DragInCanvasBehavior : Behavior<UIElement>
+public class DragInCanvasBehavior : Behavior<FrameworkElement>
 {
     /// <summary>Ссылка на канву</summary>
     private Canvas? _Canvas;
@@ -290,23 +289,37 @@ public class DragInCanvasBehavior : Behavior<UIElement>
     {
         if (min is double.NaN) min = double.NegativeInfinity;
         if (max is double.NaN) max = double.PositiveInfinity;
-        return (Math.Min(min, max), Math.Max(min, max));
+        return (min, max);
     }
 
     private void MoveTo(Point point)
     {
         _InMove = true;
+        var obj = AssociatedObject;
+        var (width, height) = (obj.ActualWidth, obj.ActualHeight);
 
         var (x_min, x_max) = CheckMinMax(Xmin, Xmax);
         var (y_min, y_max) = CheckMinMax(Ymin, Ymax);
 
+        FrameworkElement? parent = null;
+        if (x_max <= 0)
+        {
+            parent = obj.FindLogicalParent<FrameworkElement>();
+            x_max  = parent.ActualWidth + x_max;
+        }
+
+        if (y_max <= 0)
+        {
+            parent ??= obj.FindLogicalParent<FrameworkElement>();
+            y_max  =   parent.ActualHeight + y_max;
+        }
+
         // Изменяем присоединённые к элементу свойства канвы, отвечающие за положение элемента на ней
-        var obj = AssociatedObject;
         if (AllowX)
             if (obj.ReadLocalValue(Canvas.RightProperty) == DependencyProperty.UnsetValue)
             {
                 var x = point.X - _StartPoint.X;
-                if ((x >= x_min) && x <= x_max)
+                if ((x >= x_min) && x <= x_max - width)
                 {
                     obj.SetValue(Canvas.LeftProperty, x);
                     CurrentX = x;
@@ -315,7 +328,7 @@ public class DragInCanvasBehavior : Behavior<UIElement>
             else
             {
                 var x = point.X + _StartPoint.X;
-                if (x >= x_min && x <= x_max)
+                if (x >= x_min && x <= x_max - width)
                 {
                     obj.SetValue(Canvas.RightProperty, x);
                     CurrentX = x;
@@ -326,7 +339,7 @@ public class DragInCanvasBehavior : Behavior<UIElement>
             if (obj.ReadLocalValue(Canvas.BottomProperty) == DependencyProperty.UnsetValue)
             {
                 var y = point.Y - _StartPoint.Y;
-                if (y >= y_min && y <= y_max)
+                if (y >= y_min && y <= y_max - height)
                 {
                     obj.SetValue(Canvas.TopProperty, y);
                     CurrentY = y;
@@ -335,7 +348,7 @@ public class DragInCanvasBehavior : Behavior<UIElement>
             else
             {
                 var y = point.Y + _StartPoint.Y;
-                if (y >= y_min && y <= y_max)
+                if (y >= y_min && y <= y_max - height)
                 {
                     obj.SetValue(Canvas.BottomProperty, y);
                     CurrentY = y;

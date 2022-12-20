@@ -17,7 +17,7 @@ public class DragBehavior : Behavior<FrameworkElement>
     {
         if (min is double.NaN) min = double.NegativeInfinity;
         if (max is double.NaN) max = double.PositiveInfinity;
-        return (Math.Min(min, max), Math.Max(min, max));
+        return (min, max);
     }
 
     private ((double Min, double Max) X, (double Min, double Max) Y) GetInterval() => ((CheckMinMax(Xmin, Xmax)), CheckMinMax(Ymin, Ymax));
@@ -25,27 +25,34 @@ public class DragBehavior : Behavior<FrameworkElement>
     private abstract class ObjectMover : IDisposable
     {
         private readonly Point _StartMousePos;
-        private readonly IInputElement _ParentElement;
-        private readonly UIElement _MovingElement;
+        protected readonly FrameworkElement _ParentElement;
+        protected readonly FrameworkElement _MovingElement;
         protected readonly DragBehavior _Behavior;
 
-        private double _MinX;
-        private double _MaxX;
-        private double _MinY;
-        private double _MaxY;
+        private readonly double _MinX;
+        private readonly double _MaxX;
+        private readonly double _MinY;
+        private readonly double _MaxY;
 
-        protected ObjectMover(UIElement element, DragBehavior behavior)
+        protected readonly double _Width;
+        protected readonly double _Height;
+
+        protected ObjectMover(FrameworkElement element, DragBehavior behavior)
         {
             _MovingElement = element;
             _Behavior      = behavior;
-            _ParentElement = element.FindLogicalParent<IInputElement>() ?? throw new InvalidOperationException("Не найден родительский элемент");
+            var parent = element.FindLogicalParent<FrameworkElement>() ?? throw new InvalidOperationException("Не найден родительский элемент");
+            _ParentElement = parent;
             _StartMousePos = Mouse.GetPosition(_ParentElement);
-
 
             ((_MinX, _MaxX), (_MinY, _MaxY)) = behavior.GetInterval();
 
-            _MinX = 0;
-            _MaxX = 400;
+            (_Width, _Height) = (element.ActualWidth, element.ActualHeight);
+
+            if (_MaxX <= 0)
+                _MaxX = parent.ActualWidth + _MaxX;
+            if (_MaxY <= 0)
+                _MaxY = parent.ActualHeight + _MaxY;
 
             Mouse.Capture(element, CaptureMode.SubTree);
             element.MouseMove         += OnMouseMove;
@@ -59,19 +66,41 @@ public class DragBehavior : Behavior<FrameworkElement>
             var element = (FrameworkElement)Sender;
             if (Equals(Mouse.Captured, element))
             {
+                var (min_x, min_y, max_x, max_y) = (_MinX, _MinY, _MaxX, _MaxY);
+
                 var parent_point = E.GetPosition(_ParentElement);
 
                 var (x0, y0) = parent_point.Substrate(E.GetPosition(_MovingElement));
                 var (dx, dy) = parent_point.Substrate(_StartMousePos);
+
+                //var delta_x             = 0d;
+                //var delta_y             = 0d;
+                //if (x0 < min_x)
+                //{
+                //    delta_x = x0 - min_x;
+                //    dx      -= delta_x;
+                //}
+
+                //if (y0 < min_y)
+                //{
+                //    delta_y =  y0 - min_y;
+                //    dy      -= delta_y;
+                //}
+
+                //if(delta_x != 0 || delta_y != 0)
+                //    Debug.WriteLine("{0,6:0.00}:{1,6:0.00} == {2,6:0.00}:{3,6:0.00}", 
+                //        delta_x, delta_y,
+                //        dx - delta_x, dy - delta_y);
 
                 var behavior = _Behavior;
 
                 if (!behavior.AllowX) dx = 0;
                 if (!behavior.AllowY) dy = 0;
 
-                Debug.WriteLine(((_MinX, _MaxX), (x0, y0), (dx, dy)));
-
                 if (!OnMouseMove(element, dx, dy)) return;
+
+                behavior.CurrentX = x0;
+                behavior.CurrentY = y0;
 
                 behavior.dx     = dx;
                 behavior.dy     = dy;
@@ -89,6 +118,10 @@ public class DragBehavior : Behavior<FrameworkElement>
             _MovingElement.MouseMove         -= OnMouseMove;
             _MovingElement.MouseLeftButtonUp -= OnLeftMouseUp;
             _MovingElement.ReleaseMouseCapture();
+            _Behavior.Radius = double.NaN;
+            _Behavior.Angle  = double.NaN;
+            _Behavior.dx     = double.NaN;
+            _Behavior.dy     = double.NaN;
         }
     }
 
@@ -133,43 +166,46 @@ public class DragBehavior : Behavior<FrameworkElement>
             var (x_min, x_max) = CheckMinMax(_Behavior.Xmin, _Behavior.Xmax);
             var (y_min, y_max) = CheckMinMax(_Behavior.Ymin, _Behavior.Ymax);
 
+            if (x_max <= 0) x_max = _ParentElement.ActualWidth + x_max;
+            if (y_max <= 0) y_max = _ParentElement.ActualHeight + y_max;
+
             var moved = false;
-            if (!double.IsNaN(_StartLeft))
+            if (dx != 0 && !double.IsNaN(_StartLeft))
             {
                 var x = _StartLeft + dx;
-                if (x >= x_min && x <= x_max)
+                if (x >= x_min && x <= x_max - _Width)
                 {
                     Canvas.SetLeft(element, x);
                     moved = true;
                 }
             }
 
-            if (!double.IsNaN(_StartRight))
+            if (dx != 0 && !double.IsNaN(_StartRight))
             {
                 var x = _StartRight - dx;
-                if (x >= x_min && x <= x_max)
+                if (x >= x_min && x <= x_max - _Width)
                 {
-                    Canvas.SetLeft(element, x);
+                    Canvas.SetRight(element, x);
                     moved = true;
                 }
             }
 
-            if (!double.IsNaN(_StartTop))
+            if (dy != 0 && !double.IsNaN(_StartTop))
             {
                 var y = _StartTop + dy;
-                if (y >= y_min && y <= y_max)
+                if (y >= y_min && y <= y_max - _Height)
                 {
-                    Canvas.SetLeft(element, y);
+                    Canvas.SetTop(element, y);
                     moved = true;
                 }
             }
 
-            if (!double.IsNaN(_StartBottom))
+            if (dy != 0 && !double.IsNaN(_StartBottom))
             {
                 var y = _StartBottom - dy;
-                if (y >= y_min && y <= y_max)
+                if (y >= y_min && y <= y_max - _Height)
                 {
-                    Canvas.SetLeft(element, y);
+                    Canvas.SetBottom(element, y);
                     moved = true;
                 }
             }
@@ -205,7 +241,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(dx),
             typeof(double),
             typeof(DragBehavior),
-            new PropertyMetadata(default(double)));
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     /// <summary>Величина смещения по горизонтали</summary>
     public static readonly DependencyProperty dxProperty = dxPropertyKey.DependencyProperty;
@@ -227,7 +263,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(dy),
             typeof(double),
             typeof(DragBehavior),
-            new PropertyMetadata(default(double)));
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     /// <summary>Величина смещения по вертикали</summary>
     public static readonly DependencyProperty dyProperty = dyPropertyKey.DependencyProperty;
@@ -248,7 +284,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Radius),
             typeof(double),
             typeof(DragBehavior),
-            new PropertyMetadata(default(double)));
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty RadiusProperty = RadiusPropertyKey.DependencyProperty;
 
@@ -267,7 +303,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Angle),
             typeof(double),
             typeof(DragBehavior),
-            new PropertyMetadata(default(double)));
+            new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public static readonly DependencyProperty AngleProperty = AnglePropertyKey.DependencyProperty;
 

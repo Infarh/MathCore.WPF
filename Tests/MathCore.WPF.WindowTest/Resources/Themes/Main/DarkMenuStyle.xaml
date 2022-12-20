@@ -89,7 +89,7 @@
         <Border BorderThickness="{TemplateBinding BorderThickness}" 
                 BorderBrush="{TemplateBinding BorderBrush}"
                 Background="{TemplateBinding Background}">
-            <StackPanel Orientation="Horizontal" ClipToBounds="True" IsItemsHost="True"/>
+            <DockPanel ClipToBounds="True" IsItemsHost="True" LastChildFill="False"/>
         </Border>
     </ControlTemplate>
 

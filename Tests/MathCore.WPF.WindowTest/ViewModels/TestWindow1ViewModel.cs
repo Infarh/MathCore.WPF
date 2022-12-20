@@ -143,4 +143,37 @@ public class TestWindow1ViewModel : TitledViewModel
         });
 
     #endregion
+
+    #region Command TestAsyncCommand2Command - Summary
+
+    private LambdaCommand? _TestAsyncCommand2Command;
+
+    public ICommand TestAsyncCommand2Command => _TestAsyncCommand2Command ??= new(OnTestAsyncCommand2CommandExecuted);
+
+    private CancellationTokenSource? _TestAsyncCommand2CommandCancellation;
+    private void OnTestAsyncCommand2CommandExecuted()
+    {
+        _TestAsyncCommand2CommandCancellation?.Cancel();
+        _TestAsyncCommand2CommandCancellation = new();
+
+        CounterAsyncTask = Task.Run(
+            async () =>
+            {
+                await Task.Delay(1000, _TestAsyncCommand2CommandCancellation.Token).ConfigureAwait(false);
+                return _Counter++;
+            },
+            _TestAsyncCommand2CommandCancellation.Token);
+    }
+
+    private int _Counter = 42;
+
+    #region CounterAsyncTask : Task<int>
+
+    private Task<int>? _CounterAsyncTask;
+
+    public Task<int> CounterAsyncTask { get => _CounterAsyncTask!; private set => Set(ref _CounterAsyncTask, value); }
+
+    #endregion
+
+    #endregion
 }

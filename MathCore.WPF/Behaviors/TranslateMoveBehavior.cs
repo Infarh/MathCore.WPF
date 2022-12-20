@@ -88,25 +88,25 @@ public class TranslateMoveBehavior : Behavior<UIElement>
     private void OnMouseMove(object Sender, MouseEventArgs E) => (_Transform.X, _Transform.Y) = _StartMousePosition.Substrate(E.GetPosition(_Parent));
 }
 
-public class RotateMoveBehavior : Behavior<UIElement>
-{
-    protected override void OnAttached()
-    {
-        throw new NotImplementedException();
-        AssociatedObject.MouseDown += OnMouseDown;
-        //base.OnAttached();
-    }
+//public class RotateMoveBehavior : Behavior<UIElement>
+//{
+//    protected override void OnAttached()
+//    {
+//        throw new NotImplementedException();
+//        AssociatedObject.MouseDown += OnMouseDown;
+//        //base.OnAttached();
+//    }
 
-    protected override void OnDetaching()
-    {
-        AssociatedObject.MouseDown -= OnMouseDown;
+//    protected override void OnDetaching()
+//    {
+//        AssociatedObject.MouseDown -= OnMouseDown;
 
 
-        base.OnDetaching();
-    }
+//        base.OnDetaching();
+//    }
 
-    private void OnMouseDown(object Sender, MouseButtonEventArgs E)
-    {
-        throw new NotImplementedException();
-    }
-}
+//    private void OnMouseDown(object Sender, MouseButtonEventArgs E)
+//    {
+//        throw new NotImplementedException();
+//    }
+//}

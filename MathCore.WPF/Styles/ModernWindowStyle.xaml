@@ -148,7 +148,12 @@
                         <Image Source="{TemplateBinding Icon}" Margin="2,4"
                                WindowChrome.IsHitTestVisibleInChrome="True"
                                Visibility="{wpf:BParent (ModernWindow.HeaderIconVisibility)}"
-                               ContextMenu="{wpf:BParent (ModernWindow.HeaderSystemMenu)}"/>
+                               ContextMenu="{wpf:BParent (ModernWindow.HeaderSystemMenu)}">
+                            <Image.InputBindings>
+                                <MouseBinding MouseAction="LeftDoubleClick" Command="{cmd:CloseWindow}"/>
+                                <MouseBinding Gesture="Ctrl+LeftDoubleClick" Command="{x:Static cmd:AppCommands.Close}"/>
+                            </Image.InputBindings>
+                        </Image>
                         <Grid Margin="3,0,0,0">
                             <ContentPresenter x:Name="PART_HeaderTextActive" 
                                           TextBlock.Foreground="{wpf:BParent (ModernWindow.HeaderTextBrushActive)}"

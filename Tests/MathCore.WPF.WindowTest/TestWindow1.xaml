@@ -41,25 +41,58 @@
             </MenuItem>
             <MenuItem Header="Test" Command="{Binding OpenAnotherWindowCommand}"/>
             <MenuItem Header="123"/>
-            <MenuItem Header="йцу"/>
+            <MenuItem Header="Async task" Command="{Binding TestAsyncCommand2Command}"/>
         </Menu>
         <Border BorderThickness="1" BorderBrush="Red">
             <Grid>
-                <Ellipse HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
-                         Fill="DarkBlue" Stroke="Red" StrokeThickness="3">
+                <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                         Fill="DarkBlue" Stroke="Red" StrokeThickness="2">
                     <i:Interaction.Behaviors>
-                        <b:DragBehavior x:Name="DragXY" />
+                        <b:DragBehavior x:Name="DragXY"
+                                        Xmin="25" Ymin="25"
+                                        Xmax="-25" Ymax="-25"/>
                     </i:Interaction.Behaviors>
-                </Ellipse>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center">
+                </Rectangle>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                           FontFamily="Consolas">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="X:{0};Y:{1}">
-                            <Binding ElementName="DragXY" Path="Xmin"/>
-                            <Binding ElementName="DragXY" Path="Xmax"/>
+                        <MultiBinding StringFormat="x{0,7:0.00};y{1,7:0.00}(dx{2,7:0.00}:dy{3,7:0.00})[r{4,6:0.00}:a{5,7:0.00}]">
+                            <Binding ElementName="DragXY" Path="CurrentX"/>
+                            <Binding ElementName="DragXY" Path="CurrentY"/>
+                            <Binding ElementName="DragXY" Path="dx"/>
+                            <Binding ElementName="DragXY" Path="dy"/>
+                            <Binding ElementName="DragXY" Path="Radius"/>
+                            <Binding ElementName="DragXY" Path="Angle" Converter="{Multiply 57.29577951}"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
+
+                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"
+                      DataContext="{Binding CounterAsyncTask, Converter={AsyncConverter RunningPlaceholder=...}}">
+                    <TextBlock Text="{Binding Result}"/>
+                </Grid>
             </Grid>
+            <!--<Canvas>
+                <Rectangle Canvas.Left="100" Canvas.Top="100"
+                           Fill="DarkBlue" Stroke="Red" StrokeThickness="2"
+                           Width="300" Height="120">
+                    <i:Interaction.Behaviors>
+                        <b:DragBehavior x:Name="DragXY"
+                                        Xmin="25" Ymin="25"
+                                        Xmax="-25" Ymax="-25"/>
+                    </i:Interaction.Behaviors>
+                </Rectangle>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                           Canvas.Left="10" Canvas.Top="10"
+                           FontFamily="Consolas">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="x{0,7:0.00};y{1,7:0.00}(dx{2,7:0.00}:dy{3,7:0.00})[r{4,6:0.00}:a{5,7:0.00}]">
+                            <Binding ElementName="DragXY" Path="CurrentX"/>
+                            <Binding ElementName="DragXY" Path="CurrentY"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Canvas>-->
         </Border>
     </DockPanel>
 </Window>
