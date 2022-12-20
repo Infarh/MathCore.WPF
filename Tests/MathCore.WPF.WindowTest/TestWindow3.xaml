@@ -25,14 +25,14 @@
     </UI.HotKeys>-->
     <Window.Resources>
         <Style TargetType="Menu" BasedOn="{StaticResource DarkMenuStyle}"/>
-        <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenuItemStyle}"/>
+        <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenu.Item.Style}"/>
 
         <dialogs:SelectDirectory x:Key="SelectDirectoryDialog"/>
 
         <dialogs:OpenFile x:Key="OpenFile" Title="123" Enabled="True"/>
     </Window.Resources>
     <DockPanel>
-        <Menu Style="{StaticResource DarkMenuStyle}">
+        <Menu>
             <MenuItem Header="Файл">
                 <MenuItem Header="Показать диалог" Command="{Binding ShowTestDialogCommand}"/>
             </MenuItem>

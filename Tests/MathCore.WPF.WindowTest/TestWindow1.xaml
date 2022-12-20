@@ -7,29 +7,92 @@
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:oxy="http://oxyplot.org/wpf/contrib"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:behaviors="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
+        xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:fa5="http://schemas.fontawesome.com/icons/"
         xmlns:fa6="http://schemas.fontawesome.com/icons/svg"
         Title="{Binding Title}"
-        Width="800" Height="450">
+        Style="{StaticResource ModernWindow}"
+        Icon="/img/cat.ico" 
+        Width="800" Height="450"
+        Background="#1E1E1E"
+        Foreground="#F9F9F9"
+        ModernWindow.HeaderButtonMaximizeVisibility="Visible"
+        ModernWindow.HeaderButtonMinimizeVisibility="Visible">
+    <Window.Resources>
+        <Style TargetType="Menu" BasedOn="{StaticResource DarkMenuStyle}">
+            <!--<Setter Property="Background" Value="#1E1E1E"/>-->
+            <!--<Setter Property="Foreground" Value="#F9F9F9"/>-->
+        </Style>
+        <Style TargetType="MenuItem" BasedOn="{StaticResource DarkMenu.Item.Style}">
+            <Setter Property="BorderBrush" Value="Gray"/>
+        </Style>
+    </Window.Resources>
+    <ModernWindow.HeaderContent>
+        <Button>qew</Button>
+    </ModernWindow.HeaderContent>
     <Window.DataContext>
         <vm:TestWindow1ViewModel/>
     </Window.DataContext>
-    <Grid>
-        <!--<Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
-                fa5:Awesome.Content="Solid_FileDownload"/>-->
-        <Button VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="120" MinHeight="120"
-                Command="{Binding TestAsyncCommand}">
-            <!--<fa5:ImageAwesome Icon="Solid_CloudDownloadAlt" Width="50">
-                <fa5:ImageAwesome.Foreground>
-                    <RadialGradientBrush>
-                        <GradientStop Color="#FF1300FF"/>
-                        <GradientStop Color="#FFE40707" Offset="1"/>
-                    </RadialGradientBrush>
-                </fa5:ImageAwesome.Foreground>
-            </fa5:ImageAwesome>-->
-            <fa6:SvgAwesome Icon="Solid_DownLong" Height="30"/>
-        </Button>
-    </Grid>
+    <DockPanel>
+        <Menu>
+            <MenuItem Header="Файл" StaysOpenOnClick="True">
+                <MenuItem Header="Выход"  StaysOpenOnClick="True" BorderThickness="0"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Test" Command="{Binding OpenAnotherWindowCommand}"/>
+            <MenuItem Header="123"/>
+            <MenuItem Header="Async task" Command="{Binding TestAsyncCommand2Command}"/>
+        </Menu>
+        <Border BorderThickness="1" BorderBrush="Red">
+            <Grid>
+                <Rectangle HorizontalAlignment="Center" VerticalAlignment="Center" Width="300" Height="120"
+                         Fill="DarkBlue" Stroke="Red" StrokeThickness="2">
+                    <i:Interaction.Behaviors>
+                        <b:DragBehavior x:Name="DragXY"
+                                        Xmin="25" Ymin="25"
+                                        Xmax="-25" Ymax="-25"/>
+                    </i:Interaction.Behaviors>
+                </Rectangle>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                           FontFamily="Consolas">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="x{0,7:0.00};y{1,7:0.00}(dx{2,7:0.00}:dy{3,7:0.00})[r{4,6:0.00}:a{5,7:0.00}]">
+                            <Binding ElementName="DragXY" Path="CurrentX"/>
+                            <Binding ElementName="DragXY" Path="CurrentY"/>
+                            <Binding ElementName="DragXY" Path="dx"/>
+                            <Binding ElementName="DragXY" Path="dy"/>
+                            <Binding ElementName="DragXY" Path="Radius"/>
+                            <Binding ElementName="DragXY" Path="Angle" Converter="{Multiply 57.29577951}"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+
+                <Grid VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="10"
+                      DataContext="{Binding CounterAsyncTask, Converter={AsyncConverter RunningPlaceholder=...}}">
+                    <TextBlock Text="{Binding Result}"/>
+                </Grid>
+            </Grid>
+            <!--<Canvas>
+                <Rectangle Canvas.Left="100" Canvas.Top="100"
+                           Fill="DarkBlue" Stroke="Red" StrokeThickness="2"
+                           Width="300" Height="120">
+                    <i:Interaction.Behaviors>
+                        <b:DragBehavior x:Name="DragXY"
+                                        Xmin="25" Ymin="25"
+                                        Xmax="-25" Ymax="-25"/>
+                    </i:Interaction.Behaviors>
+                </Rectangle>
+                <TextBlock VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10"
+                           Canvas.Left="10" Canvas.Top="10"
+                           FontFamily="Consolas">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="x{0,7:0.00};y{1,7:0.00}(dx{2,7:0.00}:dy{3,7:0.00})[r{4,6:0.00}:a{5,7:0.00}]">
+                            <Binding ElementName="DragXY" Path="CurrentX"/>
+                            <Binding ElementName="DragXY" Path="CurrentY"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </Canvas>-->
+        </Border>
+    </DockPanel>
 </Window>

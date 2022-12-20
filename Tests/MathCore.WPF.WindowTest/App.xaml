@@ -6,8 +6,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/ModernWindowStyle.xaml"/>
+
+
                 <ResourceDictionary Source="Resources/Themes/Main.xaml"/>
                 <ResourceDictionary Source="Resources/AppCommands.xaml"/>
+
             </ResourceDictionary.MergedDictionaries>
 
             <l:ServiceLocator x:Key="Locator"/>

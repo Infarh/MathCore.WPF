@@ -156,9 +156,9 @@ public class LambdaCommand<T> : Command, IObservableEx<T?>
 
     protected virtual void OnStartExecuting(CancelEventArgs args) => StartExecuting?.Invoke(this, args);
 
-    public event EventHandler<EventArgs<object?>>? CompleteExecuting;
+    public event EventHandler<EventArgs<T?>>? CompleteExecuting;
 
-    protected virtual void OnCompleteExecuting(EventArgs<object?> args) => CompleteExecuting?.Invoke(this, args);
+    protected virtual void OnCompleteExecuting(EventArgs<T?> args) => CompleteExecuting?.Invoke(this, args);
 
     #endregion
 
@@ -212,8 +212,11 @@ public class LambdaCommand<T> : Command, IObservableEx<T?>
 
     public static T ConvertParameter(object? parameter)
     {
-        if (parameter is null) return default!;
-        if (parameter is T result) return result;
+        switch (parameter)
+        {
+            case null:     return default!;
+            case T result: return result;
+        }
 
         var command_type = typeof(T);
         var parameter_type = parameter.GetType();
@@ -260,12 +263,10 @@ public class LambdaCommand<T> : Command, IObservableEx<T?>
         catch (Exception error)
         {
             _Observable?.OnError(error);
-            if (!HasErrorHandlers)
+            if (!HasErrorHandlers && !OnError(error))
                 throw;
-
-            OnError(error);
         }
-        OnCompleteExecuting(new EventArgs<object?>(parameter));
+        OnCompleteExecuting(value);
     }
 
     public override bool CanExecute(object? obj)

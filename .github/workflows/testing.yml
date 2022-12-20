@@ -1,6 +1,15 @@
 name: Testing
 
-on: [push, pull_request]
+on:
+  push:
+    branches: 
+    - '*'
+    paths-ignore: 
+    - '.github/workflows/**'
+    - '**.md'
+    - '**.docx'
+    - '**.bat'
+    - '**.vssettings'
 
 jobs:
   test:
@@ -9,11 +18,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Use .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 7.0.x
           
       - name: Building
         run: |

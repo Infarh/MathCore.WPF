@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Windows;
+using System.Windows.Input;
 using System.Windows.Markup;
 
 using MathCore.WPF.Commands;
@@ -68,7 +69,7 @@ public class TestWindow1ViewModel : TitledViewModel
     #region Command TestAsyncCommand - Тестовая фоновая команда
 
     /// <summary>Тестовая фоновая команда</summary>
-    private Command? _TestAsyncCommand;
+    private LambdaCommandAsync? _TestAsyncCommand;
 
     /// <summary>Тестовая фоновая команда</summary>
     public ICommand TestAsyncCommand => _TestAsyncCommand ??= Command.NewBackground(OnTestAsyncCommandExecuted);
@@ -121,6 +122,58 @@ public class TestWindow1ViewModel : TitledViewModel
 
         var thread_id_last = Environment.CurrentManagedThreadId;
     }
+
+    #endregion
+
+    #region Command OpenAnotherWindowCommand - Открыть ещё одно окно
+
+    /// <summary>Открыть ещё одно окно</summary>
+    private Command? _OpenAnotherWindowCommand;
+
+    /// <summary>Открыть ещё одно окно</summary>
+    public ICommand OpenAnotherWindowCommand => _OpenAnotherWindowCommand ??= Command.New(
+        () =>
+        {
+            var parent      = Application.Current.MainWindow;
+            var new_window = new TestWindow1
+            {
+                Owner = parent
+            };
+            new_window.Show();
+        });
+
+    #endregion
+
+    #region Command TestAsyncCommand2Command - Summary
+
+    private LambdaCommand? _TestAsyncCommand2Command;
+
+    public ICommand TestAsyncCommand2Command => _TestAsyncCommand2Command ??= new(OnTestAsyncCommand2CommandExecuted);
+
+    private CancellationTokenSource? _TestAsyncCommand2CommandCancellation;
+    private void OnTestAsyncCommand2CommandExecuted()
+    {
+        _TestAsyncCommand2CommandCancellation?.Cancel();
+        _TestAsyncCommand2CommandCancellation = new();
+
+        CounterAsyncTask = Task.Run(
+            async () =>
+            {
+                await Task.Delay(1000, _TestAsyncCommand2CommandCancellation.Token).ConfigureAwait(false);
+                return _Counter++;
+            },
+            _TestAsyncCommand2CommandCancellation.Token);
+    }
+
+    private int _Counter = 42;
+
+    #region CounterAsyncTask : Task<int>
+
+    private Task<int>? _CounterAsyncTask;
+
+    public Task<int> CounterAsyncTask { get => _CounterAsyncTask!; private set => Set(ref _CounterAsyncTask, value); }
+
+    #endregion
 
     #endregion
 }

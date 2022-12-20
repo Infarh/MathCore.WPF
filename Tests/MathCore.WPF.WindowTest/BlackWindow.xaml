@@ -14,15 +14,15 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <Style TargetType="Separator" BasedOn="{StaticResource DarkMenuItem.SeparatorStyle}"/>
+        <Style TargetType="Separator" BasedOn="{StaticResource DarkMenu.Item.Separator.Style}"/>
         <Style TargetType="{x:Type Menu}" BasedOn="{StaticResource DarkMenuStyle}"/>
-        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource DarkMenuItemStyle}"/>
+        <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource DarkMenu.Item.Style}"/>
     </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top" IsMainMenu="True">
             <MenuItem Header="Файл">
                 <MenuItem.Resources>
-                    <Style TargetType="{x:Type Separator}" BasedOn="{StaticResource DarkMenuItem.SeparatorStyle}"/>
+                    <Style TargetType="{x:Type Separator}" BasedOn="{StaticResource DarkMenu.Item.Separator.Style}"/>
                 </MenuItem.Resources>
                 <MenuItem Header="Открыть" IsChecked="True"/>
                 <MenuItem Header="Открыть" IsChecked="True"/>
