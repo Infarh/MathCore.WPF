@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.42</Version>
+    <Version>0.0.43</Version>
     <PackageReleaseNotes>
-      Методы-расширения для работы с потоками GUI/ThreadPool
+      AsyncConverter, DragBehavior, ModernWindow.Style
     </PackageReleaseNotes>
   </PropertyGroup>
 
