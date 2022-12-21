@@ -201,6 +201,8 @@
 
     <Style x:Key="ModernWindow" TargetType="{x:Type Window}">
         <Setter Property="WindowStyle" Value="SingleBorderWindow"/>
+        <Setter Property="Background" Value="#1E1E1E"/>
+        <Setter Property="Foreground" Value="#F9F9F9"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="#5F5F61"/>
         <Setter Property="WindowChrome.WindowChrome">
@@ -218,7 +220,7 @@
 
         <Setter Property="wpf:ModernWindow.HeaderActiveBrush" Value="#214354"/>
         <Setter Property="wpf:ModernWindow.HeaderInActiveBrush" Value="#2B2B2B"/>
-        <Setter Property="wpf:ModernWindow.HeaderTextBrushActive" Value="White"/>
+        <Setter Property="wpf:ModernWindow.HeaderTextBrushActive" Value="#F9F9F9"/>
         <Setter Property="wpf:ModernWindow.HeaderTextBrushInActive" Value="Gray"/>
 
         <Setter Property="wpf:ModernWindow.HeaderButtonTopMostVisibility" Value="Visible"/>

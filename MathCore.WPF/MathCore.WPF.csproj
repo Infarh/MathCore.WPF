@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.43</Version>
+    <Version>0.0.44</Version>
     <PackageReleaseNotes>
-      AsyncConverter, DragBehavior, ModernWindow.Style
+      Стили окна, прогресс-бара, ресурсы
     </PackageReleaseNotes>
   </PropertyGroup>
 

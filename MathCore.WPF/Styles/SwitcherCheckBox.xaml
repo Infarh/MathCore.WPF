@@ -1,0 +1,92 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="SwitcherCheckBox.UncheckedBackgroundBrush" Color="DarkGray" p:Freeze="true"/>
+    <Color x:Key="SwitcherCheckBox.CheckedBackgroundColor">DarkBlue</Color>
+
+    <ControlTemplate x:Key="SwitcherCheckBoxTemplate" TargetType="CheckBox">
+        <ControlTemplate.Resources>
+            <CubicEase x:Key="CubicEase_InOut" EasingMode="EaseInOut" p:Freeze="true"/>
+            <CubicEase x:Key="CubicEase_Out" EasingMode="EaseOut" p:Freeze="true"/>
+            <CubicEase x:Key="CubicEase_In" EasingMode="EaseIn" p:Freeze="true"/>
+        </ControlTemplate.Resources>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" Width="32" Height="18">
+                <Border Name="Back" CornerRadius="9" Background="{StaticResource SwitcherCheckBox.UncheckedBackgroundBrush}">
+                    <Ellipse Name="Dot" Fill="White" Width="16" Height="16" Margin="1" 
+                                 HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Ellipse.RenderTransform>
+                            <TranslateTransform x:Name="DotTranslate"/>
+                        </Ellipse.RenderTransform>
+                        <Ellipse.Effect>
+                            <DropShadowEffect x:Name="DotShadow" ShadowDepth="0"/>
+                        </Ellipse.Effect>
+                    </Ellipse>
+                </Border>
+            </Grid>
+            <ContentPresenter Grid.Column="1"
+                                  Margin="{TemplateBinding Padding}"
+                                  Focusable="False"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                  RecognizesAccessKey="True"/>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Dot" Property="Effect">
+                    <Setter.Value>
+                        <DropShadowEffect ShadowDepth="1"/>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <!--<Setter TargetName="Dot" Property="HorizontalAlignment" Value="Right"/>-->
+                <!--<Setter TargetName="Back" Property="Background" Value="{StaticResource SwitcherCheckBox.CheckedBackgroundBrush}"/>-->
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DotTranslate"
+                                                 Storyboard.TargetProperty="X"
+                                                 To="14" Duration="0:0:0.2"
+                                                 EasingFunction="{StaticResource CubicEase_InOut}"/>
+                            <ColorAnimation Storyboard.TargetName="Back"
+                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                            To="{StaticResource SwitcherCheckBox.CheckedBackgroundColor}"
+                                            Duration="0:0:0.8"
+                                            EasingFunction="{StaticResource CubicEase_InOut}"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DotTranslate"
+                                                 Storyboard.TargetProperty="X"
+                                                 From="14" Duration="0:0:0.2"
+                                                 EasingFunction="{StaticResource CubicEase_InOut}"/>
+                            <ColorAnimation Storyboard.TargetName="Back"
+                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"
+                                                From="{StaticResource SwitcherCheckBox.CheckedBackgroundColor}"
+                                                Duration="0:0:0.8"
+                                                EasingFunction="{StaticResource CubicEase_InOut}"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="SwitcherCheckBoxStyle" TargetType="CheckBox">
+        <Setter Property="Template" Value="{StaticResource SwitcherCheckBoxTemplate}"/>
+    </Style>
+
+</ResourceDictionary>
