@@ -1,0 +1,177 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <CubicEase x:Key="TaggedTextBox.Template.Easing" EasingMode="EaseInOut"/>
+
+    <ControlTemplate x:Key="TaggedTextBox.Template" TargetType="{x:Type TextBox}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border x:Name="border" Grid.Row="1"
+                    Background="{TemplateBinding Background}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    SnapsToDevicePixels="True">
+                <ScrollViewer x:Name="PART_ContentHost" 
+                          Focusable="false" 
+                          HorizontalScrollBarVisibility="Hidden" 
+                          VerticalScrollBarVisibility="Hidden"/>
+            </Border>
+            <TextBlock x:Name="Title" Grid.Row="0" Text="{TemplateBinding Tag}">
+                <TextBlock.RenderTransform>
+                    <TranslateTransform x:Name="TitleTransform"/>
+                </TextBlock.RenderTransform>
+            </TextBlock>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter TargetName="border" Property="BorderBrush" Value="LightBlue"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
+                <Setter TargetName="border" Property="BorderBrush" Value="Blue">
+                </Setter>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Text" Value=""/>
+                    <Condition Property="IsFocused" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <!--<Setter TargetName="Title" Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform X="2" Y="{Binding ActualHeight, ElementName=Title}"/>
+                    </Setter.Value>
+                </Setter>-->
+                <MultiTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
+                                             Storyboard.TargetProperty="X"
+                                             To="2" Duration="0:0:0.3"
+                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
+                                             Storyboard.TargetProperty="Y"
+                                             To="15" Duration="0:0:0.3"
+                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.EnterActions>
+                <MultiTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
+                                             Storyboard.TargetProperty="X"
+                                             From="2" Duration="0:0:0.3"
+                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
+                                             Storyboard.TargetProperty="Y"
+                                             From="15" Duration="0:0:0.3"
+                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiTrigger.ExitActions>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="TaggedTextBox.Template.Validation.ToolTip.Template" TargetType="{x:Type ToolTip}">
+        <Border Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Margin="{TemplateBinding Margin}"
+                Padding="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                CornerRadius="5">
+            <ContentPresenter 
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="TaggedTextBox.Template.Validation.ToolTip.Style" TargetType="ToolTip">
+        <Setter Property="Template" Value="{StaticResource TaggedTextBox.Template.Validation.ToolTip.Template}"/>
+        <Setter Property="Background" Value="Yellow"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="OrangeRed"/>
+        <Setter Property="Foreground" Value="Red"/>
+    </Style>
+
+    <ControlTemplate x:Key="TaggedTextBox.Template.Validation" TargetType="{x:Type Control}">
+        <Grid>
+            <AdornedElementPlaceholder Name="ErrorVisualElement"/>
+            <Border BorderThickness="1" CornerRadius="12"
+                    Width="24" Height="24"
+                    Margin="2"
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    ToolTipService.BetweenShowDelay="0"
+                    ToolTipService.InitialShowDelay="0"
+                    ToolTipService.ShowDuration="65535">
+                <ToolTipService.ToolTip>
+                    <ToolTip Style="{StaticResource TaggedTextBox.Template.Validation.ToolTip.Style}">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top">
+                                Ошибок: <Run Text="{Binding Count, Mode=OneWay}"/>
+                            </TextBlock>
+                            <ItemsControl ItemsSource="{Binding}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="ValidationError">
+                                        <BulletDecorator>
+                                            <BulletDecorator.Bullet>
+                                                <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Fill="Red" Width="5" Height="5"/>
+                                            </BulletDecorator.Bullet>
+                                            <TextBlock Text="{Binding ErrorContent}" Margin="5,0,0,0"/>
+                                        </BulletDecorator>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </DockPanel>
+                    </ToolTip>
+                </ToolTipService.ToolTip>
+                <Border.Background>
+                    <RadialGradientBrush GradientOrigin="0.4,0.3" Center="0.4,0.3">
+                        <GradientStop Color="OrangeRed" Offset="0"/>
+                        <GradientStop Color="DarkRed" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="1" BlurRadius="5" Color="DarkRed"/>
+                </Border.Effect>
+                <Viewbox>
+                    <TextBlock Text="!" Foreground="WhiteSmoke" FontWeight="Bold"/>
+                </Viewbox>
+            </Border>
+        </Grid>
+    </ControlTemplate>
+
+    <Style x:Key="TaggedTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template" Value="{StaticResource TaggedTextBox.Template}"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource TaggedTextBox.Template.Validation}"/>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsInactiveSelectionHighlightEnabled" Value="true"/>
+                    <Condition Property="IsSelectionActive" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="BlueViolet"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

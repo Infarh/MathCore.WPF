@@ -1,0 +1,47 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--<ControlTemplate x:Key="WatermarkTextboxTemplate" TargetType="{x:Type TextBox}">
+        <Border x:Name="border" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                Background="{TemplateBinding Background}" 
+                SnapsToDevicePixels="True">
+            <Grid>
+                <ScrollViewer x:Name="PART_ContentHost" 
+                              Focusable="false" 
+                              HorizontalScrollBarVisibility="Hidden" 
+                              VerticalScrollBarVisibility="Hidden"/>
+                <ContentControl x:Name="PART_Wathermark" 
+                                Margin="{Binding (l:WatermarkTextbox.Margin), RelativeSource={RelativeSource TemplatedParent}}"
+                                Padding="{Binding (l:WatermarkTextbox.Padding), RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalAlignment="{Binding (l:WatermarkTextbox.VerticalAligment), RelativeSource={RelativeSource TemplatedParent}}"
+                                HorizontalAlignment="{Binding (l:WatermarkTextbox.HorizontalAlignment), RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalContentAlignment="{Binding (l:WatermarkTextbox.VerticalContentAligment), RelativeSource={RelativeSource TemplatedParent}}"
+                                HorizontalContentAlignment="{Binding (l:WatermarkTextbox.HorizontalContentAlignment), RelativeSource={RelativeSource TemplatedParent}}"
+                                Foreground="{Binding (TextBlock.Foreground), RelativeSource={RelativeSource TemplatedParent}}"
+                                Content="{Binding (l:WatermarkTextbox.Watermark), RelativeSource={RelativeSource TemplatedParent}}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Text" Value=""/>
+                    <Condition Property="IsKeyboardFocusWithin" Value="false"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Wathermark" Property="Visibility" Value="Visible"/>
+            </MultiTrigger>
+
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" TargetName="border" Value="0.56"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="Blue"/>
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="true">
+                <Setter Property="BorderBrush" TargetName="border" Value="DarkBlue"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>-->
+
+</ResourceDictionary>

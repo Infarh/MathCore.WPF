@@ -3,34 +3,37 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:l="clr-namespace:MathCore.WPF.Views.Windows"
-        xmlns:vm="clr-namespace:MathCore.WPF.ViewModels" 
+        xmlns:vm="clr-namespace:MathCore.WPF.ViewModels"
+        xmlns:b="clr-namespace:MathCore.WPF.Behaviors"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterOwner"
         WindowStyle="ToolWindow"
         Title="{Binding Title, FallbackValue='Прогресс операции'}"
         Width="400" Height="180">
+    <i:Interaction.Behaviors>
+        <b:DragWindow/>
+    </i:Interaction.Behaviors>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
             <RowDefinition Height="4*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0">
-            <Rectangle DockPanel.Dock="Bottom" Height="10">
-                <Rectangle.Fill>
-                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                        <GradientStop Color="DarkBlue"/>
-                        <GradientStop Color="Blue" Offset="0.5"/>
-                        <GradientStop Color="LightBlue" Offset="0.75"/>
-                        <GradientStop Color="Transparent" Offset="1"/>
-                    </LinearGradientBrush>
-                </Rectangle.Fill>
-            </Rectangle>
-            <Border Background="DarkBlue" Padding="15,0">
-                <TextBlock Foreground="WhiteSmoke" Text="{Binding StatusValue, FallbackValue='Выполняется операция...'}"
-                          VerticalAlignment="Center"/>
+
+            <Border Padding="15,0">
+                <Border.Background>
+                    <RadialGradientBrush>
+                        <GradientStop Color="#2768D9"/>
+                        <GradientStop Color="#163882" Offset="1"/>
+                    </RadialGradientBrush>
+                </Border.Background>
+                <TextBlock Foreground="WhiteSmoke" 
+                           Text="{Binding StatusValue, FallbackValue='Выполняется операция...'}"
+                           VerticalAlignment="Center"/>
             </Border>
         </DockPanel>
 
@@ -38,9 +41,9 @@
             <TextBlock Text="{Binding InformationValue}"/>
         </Border>
 
-        <Control Grid.Row="2">
+        <Control Grid.Row="2" Height="30">
             <Control.Style>
-                <Style TargetType="Control">
+                <Style TargetType="{x:Type Control}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="Control">
@@ -48,8 +51,9 @@
                                     <TextBlock DockPanel.Dock="Right" 
                                                Text="{Binding ProgressValue, StringFormat=p1, FallbackValue=100.0%}"
                                                Width="40" 
-                                               Margin="3,0,0,0"/>
-                                    <Border Padding="1" Margin="0,2"
+                                               Margin="3,0,0,0"
+                                               VerticalAlignment="Center"/>
+                                    <Border Padding="2" Margin="0,2"
                                             BorderBrush="DarkBlue"
                                             BorderThickness="1"
                                             CornerRadius="1">
@@ -86,14 +90,23 @@
                 </Style>
             </Control.Style>
         </Control>
-        
-        <Button Grid.Row="3" Margin="0,0,5,5"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="White"
-                Content="_Cancel"
-                Padding="20,4"
-                IsCancel="True"
-                Command="{Binding CancelCommand}"/>
+
+        <DockPanel Grid.Row="3">
+            <Button DockPanel.Dock="Right" Margin="5"
+                    Background="Transparent"
+                    Content="_Cancel"
+                    Padding="20,4"
+                    IsCancel="True"
+                    Command="{Binding CancelCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="3"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Grid Margin="5">
+
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>
