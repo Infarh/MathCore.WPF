@@ -73,14 +73,13 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="Control">
-                                        <Border Padding="1" Margin="5,5"
+                                        <Border Padding="2" Margin="5,5"
                                                 BorderBrush="DarkBlue"
                                                 BorderThickness="1"
                                                 CornerRadius="1">
                                             <ProgressBar IsIndeterminate="True" 
                                                          Foreground="Blue" 
-                                                         Background="White"
-                                                         Height="8"/>
+                                                         Background="White"/>
                                         </Border>
                                     </ControlTemplate>
                                 </Setter.Value>
