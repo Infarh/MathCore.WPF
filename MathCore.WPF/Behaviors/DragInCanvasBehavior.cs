@@ -281,6 +281,8 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
         _StartPoint = e.GetPosition(obj);
         IsDragging  = true;
 
+        Mouse.Capture(obj, CaptureMode.SubTree);
+
         obj.MouseMove         += OnMouseMove;
         obj.MouseLeftButtonUp += OnMouseLeftButtonUp;
 
@@ -293,7 +295,15 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
         // Если режим перетаскивания не активирован, то возврат
-        if (!_IsDragging) return;
+        if (!_IsDragging || !ReferenceEquals(e.MouseDevice.Captured, sender))
+        {
+            Mouse.Capture(null);
+            var obj  = AssociatedObject;
+
+            obj.MouseMove         -= OnMouseMove;
+            obj.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+            return;
+        }
 
         // Иначе определяем положение указателя относительно канвы
         MoveTo(e.GetPosition(_Canvas));
@@ -375,6 +385,8 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     /// <summary>При отпускании левой кнопки мыши</summary>
     private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
+        Mouse.Capture(null);
+
         IsDragging = false;
 
         var associated_object = AssociatedObject;

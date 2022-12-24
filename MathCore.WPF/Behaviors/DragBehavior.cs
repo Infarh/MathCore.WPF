@@ -26,7 +26,7 @@ public class DragBehavior : Behavior<FrameworkElement>
     {
         private readonly Point _StartMousePos;
         protected readonly FrameworkElement _ParentElement;
-        protected readonly FrameworkElement _MovingElement;
+        private readonly FrameworkElement _MovingElement;
         protected readonly DragBehavior _Behavior;
 
         private readonly double _MinX;
@@ -66,7 +66,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             var element = (FrameworkElement)Sender;
             if (Equals(Mouse.Captured, element))
             {
-                var (min_x, min_y, max_x, max_y) = (_MinX, _MinY, _MaxX, _MaxY);
+                //var (min_x, min_y, max_x, max_y) = (_MinX, _MinY, _MaxX, _MaxY);
 
                 var parent_point = E.GetPosition(_ParentElement);
 
