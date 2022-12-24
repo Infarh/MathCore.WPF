@@ -247,8 +247,6 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
         base.OnAttached();
 
         AssociatedObject.MouseLeftButtonDown += OnMouseLeftButtonDown;
-        AssociatedObject.MouseMove           += OnMouseMove;
-        AssociatedObject.MouseLeftButtonUp   += OnMouseLeftButtonUp;
     }
 
     /// <summary>Отсоединение поведения от объекта</summary>
@@ -264,13 +262,29 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     /// <summary>При нажатии левой кнопки мыши</summary><param name="sender">Источник события</param><param name="e">Аргумент события</param>
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
+        var obj          = AssociatedObject;
+        var event_sender = e.OriginalSource;
+
         // Если канва не определена, то её надо найти вверх по визуальному дереву
-        // ReSharper disable once ArrangeRedundantParentheses
-        if ((_Canvas ??= VisualTreeHelper.GetParent(AssociatedObject) as Canvas) is null) return;
+
+        if(VisualTreeHelper.GetParent(obj) is not Canvas parent_canvas)
+            return;
+
+        if (!ReferenceEquals(event_sender, obj)
+            && VisualTreeHelper.GetParent((DependencyObject)event_sender) is Canvas source_canvas
+            && !ReferenceEquals(source_canvas, parent_canvas))
+            return;
+
+        _Canvas = parent_canvas;
 
         // Фиксируем точку нажатия левой кнопки мыши относительно элемента
-        _StartPoint = e.GetPosition(AssociatedObject);
+        _StartPoint = e.GetPosition(obj);
         IsDragging  = true;
+
+        obj.MouseMove         += OnMouseMove;
+        obj.MouseLeftButtonUp += OnMouseLeftButtonUp;
+
+        //e.Handled = true;
     }
 
     private bool _InMove;
@@ -359,5 +373,13 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     }
 
     /// <summary>При отпускании левой кнопки мыши</summary>
-    private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e) => IsDragging = false;
+    private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        IsDragging = false;
+
+        var associated_object = AssociatedObject;
+
+        associated_object.MouseMove         -= OnMouseMove;
+        associated_object.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+    }
 }
