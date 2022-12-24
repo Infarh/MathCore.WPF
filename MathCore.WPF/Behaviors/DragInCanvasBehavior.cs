@@ -246,7 +246,25 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     {
         base.OnAttached();
 
-        AssociatedObject.MouseLeftButtonDown += OnMouseLeftButtonDown;
+        var obj = AssociatedObject;
+        if (VisualTreeHelper.GetParent(obj) is not Canvas canvas)
+            return;
+
+        _Canvas = canvas;
+
+        obj.MouseLeftButtonDown += OnMouseLeftButtonDown;
+
+        var x_value = obj.ReadLocalValue(Canvas.LeftProperty);
+        if (x_value != DependencyProperty.UnsetValue && x_value is double x)
+            CurrentX = x;
+        else
+            CurrentX = obj.GetValue(Canvas.RightProperty) as double? ?? double.NaN;
+
+        var y_value = obj.ReadLocalValue(Canvas.TopProperty);
+        if (y_value != DependencyProperty.UnsetValue && y_value is double y)
+            CurrentY = y;
+        else
+            CurrentY = obj.GetValue(Canvas.BottomProperty) as double? ?? double.NaN;
     }
 
     /// <summary>Отсоединение поведения от объекта</summary>
@@ -254,39 +272,53 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     {
         base.OnDetaching();
 
+        IsDragging  = false;
+        _IsDragging = false;
+
+        CurrentX = double.NaN;
+        CurrentY = double.NaN;
+
         AssociatedObject.MouseLeftButtonDown -= OnMouseLeftButtonDown;
-        AssociatedObject.MouseMove           -= OnMouseMove;
-        AssociatedObject.MouseLeftButtonUp   -= OnMouseLeftButtonUp;
+
+        if (_Canvas is not { } canvas) return;
+        canvas.MouseMove -= OnMouseMove;
+        canvas.MouseLeftButtonUp -= OnMouseLeftButtonUp;
     }
 
     /// <summary>При нажатии левой кнопки мыши</summary><param name="sender">Источник события</param><param name="e">Аргумент события</param>
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var obj          = AssociatedObject;
+        var obj = AssociatedObject;
         var event_sender = e.OriginalSource;
 
         // Если канва не определена, то её надо найти вверх по визуальному дереву
 
-        if(VisualTreeHelper.GetParent(obj) is not Canvas parent_canvas)
-            return;
-
         if (!ReferenceEquals(event_sender, obj)
             && VisualTreeHelper.GetParent((DependencyObject)event_sender) is Canvas source_canvas
-            && !ReferenceEquals(source_canvas, parent_canvas))
+            && !ReferenceEquals(source_canvas, _Canvas))
             return;
-
-        _Canvas = parent_canvas;
 
         // Фиксируем точку нажатия левой кнопки мыши относительно элемента
         _StartPoint = e.GetPosition(obj);
-        IsDragging  = true;
+        IsDragging = true;
 
         Mouse.Capture(obj, CaptureMode.SubTree);
 
-        obj.MouseMove         += OnMouseMove;
-        obj.MouseLeftButtonUp += OnMouseLeftButtonUp;
+        _Canvas!.MouseMove += OnMouseMove;
+        _Canvas.MouseLeftButtonUp += OnMouseLeftButtonUp;
+    }
 
-        //e.Handled = true;
+    /// <summary>При отпускании левой кнопки мыши</summary>
+    private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        Mouse.Capture(null);
+
+        IsDragging = false;
+        _InMove    = false;
+
+        if (_Canvas is not { } canvas) return;
+        canvas.MouseMove         -= OnMouseMove;
+        canvas.MouseLeftButtonUp -= OnMouseLeftButtonUp;
     }
 
     private bool _InMove;
@@ -294,19 +326,20 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
     /// <summary>При перемещении мыши</summary>
     private void OnMouseMove(object sender, MouseEventArgs e)
     {
+        var canvas = _Canvas;
+
         // Если режим перетаскивания не активирован, то возврат
-        if (!_IsDragging || !ReferenceEquals(e.MouseDevice.Captured, sender))
+        if (!_IsDragging || Mouse.LeftButton != MouseButtonState.Pressed)
         {
             Mouse.Capture(null);
-            var obj  = AssociatedObject;
 
-            obj.MouseMove         -= OnMouseMove;
-            obj.MouseLeftButtonUp -= OnMouseLeftButtonUp;
+            canvas!.MouseMove -= OnMouseMove;
+            canvas.MouseLeftButtonUp -= OnMouseLeftButtonUp;
             return;
         }
 
         // Иначе определяем положение указателя относительно канвы
-        MoveTo(e.GetPosition(_Canvas));
+        MoveTo(e.GetPosition(canvas));
     }
 
     private static (double min, double max) CheckMinMax(double min, double max)
@@ -329,13 +362,13 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
         if (x_max <= 0)
         {
             parent = obj.FindLogicalParent<FrameworkElement>();
-            x_max  = parent.ActualWidth + x_max;
+            x_max = parent.ActualWidth + x_max;
         }
 
         if (y_max <= 0)
         {
             parent ??= obj.FindLogicalParent<FrameworkElement>();
-            y_max  =   parent.ActualHeight + y_max;
+            y_max = parent.ActualHeight + y_max;
         }
 
         // Изменяем присоединённые к элементу свойства канвы, отвечающие за положение элемента на ней
@@ -380,18 +413,5 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             }
 
         _InMove = false;
-    }
-
-    /// <summary>При отпускании левой кнопки мыши</summary>
-    private void OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        Mouse.Capture(null);
-
-        IsDragging = false;
-
-        var associated_object = AssociatedObject;
-
-        associated_object.MouseMove         -= OnMouseMove;
-        associated_object.MouseLeftButtonUp -= OnMouseLeftButtonUp;
     }
 }
