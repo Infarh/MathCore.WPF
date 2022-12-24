@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.44.1</Version>
+    <Version>0.0.44.2</Version>
     <PackageReleaseNotes>
-      Стили окна, прогресс-бара, ресурсы
+      Коррекция работы DragInCanvasBehavior
     </PackageReleaseNotes>
   </PropertyGroup>
 
