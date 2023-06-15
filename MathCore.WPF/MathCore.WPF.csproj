@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.44.4</Version>
+    <Version>0.0.44.5</Version>
     <PackageReleaseNotes>
       Коррекция работы DragInCanvasBehavior
     </PackageReleaseNotes>
@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.86" />
+    <PackageReference Include="MathCore" Version="0.0.86.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 
