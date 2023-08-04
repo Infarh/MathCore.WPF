@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Windows;
 using System.Windows.Threading;
 // ReSharper disable UnusedMember.Global

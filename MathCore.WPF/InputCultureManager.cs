@@ -14,7 +14,7 @@ public class InputCultureManager
         set => InputLanguageManager.Current.CurrentInputLanguage = value;
     }
 
-    public event EventHandler CultureChanged;
+    public event EventHandler? CultureChanged;
 
     private InputCultureManager() => InputLanguageManager.Current.InputLanguageChanged += OnInputLanguageChanged;
 

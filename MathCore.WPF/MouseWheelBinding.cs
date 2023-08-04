@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using MathCore.WPF.Commands;
 
 namespace MathCore.WPF;
 
@@ -25,15 +24,4 @@ public class MouseWheelBinding : InputBinding
     public MouseWheelBinding(ICommand command) :base(command, new MouseWheelGesture()) { }
 
     protected override Freezable CreateInstanceCore() => new MouseWheelBinding();
-}
-
-public class MouseWheelGesture : InputGesture
-{
-    /// <inheritdoc />
-    public override bool Matches(object element, InputEventArgs e) => e is MouseWheelEventArgs wheel && wheel.Delta != 0;
-}
-
-public class TestCommand : LambdaCommand
-{
-    public TestCommand() : base(p => MessageBox.Show(p?.ToString() ?? "null", "TestCommand")) { }
 }

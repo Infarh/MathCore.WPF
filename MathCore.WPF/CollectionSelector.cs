@@ -9,7 +9,7 @@ namespace MathCore.WPF;
 
 /// <summary>Селектор элементов в коллекции</summary>
 /// <typeparam name="T">Тип элементов коллекции</typeparam>
-public class CollectionSelector<T> : ViewModel
+public class CollectionSelector<T>(bool SelectFirstItem = true) : ViewModel
 {
     #region Items : IEnumerable<T> - Коллекция
 
@@ -51,14 +51,12 @@ public class CollectionSelector<T> : ViewModel
     #region SelectFirstItem : bool - Выбирать первый элемент для нового значения коллекции
 
     /// <summary>Выбирать первый элемент для нового значения коллекции</summary>
-    private bool _SelectFirstItem;
+    private bool _SelectFirstItem = SelectFirstItem;
 
     /// <summary>Выбирать первый элемент для нового значения коллекции</summary>
     public bool SelectFirstItem { get => _SelectFirstItem; set => Set(ref _SelectFirstItem, value); }
 
     #endregion
-
-    public CollectionSelector(bool SelectFirstItem = true) => _SelectFirstItem = SelectFirstItem;
 
     public CollectionSelector(IEnumerable<T> Items, bool SelectFirstItem = true) : this(SelectFirstItem) => this.Items = Items;
 

@@ -161,7 +161,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
 
     public event ExceptionEventHandler<Exception>? Error;
 
-    protected bool HasErrorHandlers => Error is { };
+    protected bool HasErrorHandlers => Error is not null;
 
     protected virtual bool OnError(Exception error)
     {

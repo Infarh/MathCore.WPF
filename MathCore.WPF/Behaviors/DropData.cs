@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 using Microsoft.Xaml.Behaviors;
 // ReSharper disable UnusedType.Global
@@ -89,6 +91,9 @@ public class DropData : Behavior<UIElement>
     protected override void OnAttached()
     {
         var element = AssociatedObject;
+        if (element is Control { Background: null } control)
+            control.Background = Brushes.Transparent;
+
         _LastAllowDropValue =  element.AllowDrop;
         element.AllowDrop   =  true;
         element.Drop        += OnDropData;
