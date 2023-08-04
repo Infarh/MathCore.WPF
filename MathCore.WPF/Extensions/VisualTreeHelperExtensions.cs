@@ -81,4 +81,32 @@ public static class VisualTreeHelperExtensions
     public static IEnumerable<DependencyObject> GetLogicalChilds(this DependencyObject? obj) => obj is null
         ? Enumerable.Empty<DependencyObject>()
         : LogicalTreeHelper.GetChildren(obj).OfType<DependencyObject>();
+
+    public static IEnumerable<DependencyObject> GetLogicalParents(this DependencyObject? obj)
+    {
+        if (obj is null) yield break;
+
+        var current = obj;
+        do
+        {
+            current = LogicalTreeHelper.GetParent(current);
+            if (current != null)
+                yield return current;
+        }
+        while (current != null);
+    }
+
+    public static IEnumerable<DependencyObject> GetVisualParents(this DependencyObject? obj)
+    {
+        if (obj is null) yield break;
+
+        var current = obj;
+        do
+        {
+            current = VisualTreeHelper.GetParent(current);
+            if (current != null)
+                yield return current;
+        }
+        while (current != null);
+    }
 }

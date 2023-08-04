@@ -6,9 +6,9 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
-public class Average : SimpleDoubleValueConverter
+public class Average(int Length) : SimpleDoubleValueConverter
 {
-    private readonly AverageValue _Value;
+    private readonly AverageValue _Value = new(Length);
 
     public int Length
     {
@@ -16,9 +16,7 @@ public class Average : SimpleDoubleValueConverter
         set => _Value.Length = value;
     }
 
-    public Average() => _Value = new AverageValue(0);
-
-    public Average(int Length) => _Value = new AverageValue(Length);
+    public Average() : this(0) { }
 
     /// <inheritdoc />
     protected override double To(double v, double p)

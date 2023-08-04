@@ -20,4 +20,16 @@ public static class PointExtensions
     public static Point Div(this Point a, double k) => new(a.X / k, a.Y / k);
 
     public static Point Div(this Point a, double kx, double ky) => new(a.X / kx, a.Y / ky);
+
+    public static Point WithX(this Point p, double X) => new(X, p.Y);
+
+    public static Point WithY(this Point p, double Y) => new(p.X, Y);
+
+    public static Point AddX(this Point p, double X) => new(p.X + X, p.Y);
+
+    public static Point AddY(this Point p, double Y) => new(p.X, p.Y + Y);
+
+    public static Point SubstrateX(this Point p, double X) => new(p.X - X, p.Y);
+
+    public static Point SubstrateY(this Point p, double Y) => new(p.X, p.Y - Y);
 }

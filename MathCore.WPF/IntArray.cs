@@ -3,13 +3,11 @@
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(int[]))]
-public class IntArray : MarkupExtension
+public class IntArray(string Data) : MarkupExtension
 {
-    public string Data { get; set; } = "";
+    public string Data { get; set; } = Data;
 
-    public IntArray() { }
-
-    public IntArray(string Data) => this.Data = Data;
+    public IntArray() : this(string.Empty) { }
 
     public override object ProvideValue(IServiceProvider Services)
     {

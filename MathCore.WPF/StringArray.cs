@@ -3,22 +3,21 @@
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(string[]))]
-public class StringArray : MarkupExtension
+public class StringArray(string Data) : MarkupExtension
 {
-    private string _Data;
 
-    public string Data { get => _Data; set => _Data = value; }
+    public string Data { get; set; } = Data;
 
     public char Separator { get; set; }
+
     public bool RemoveEmpty { get; set; }
 
-    public StringArray() { }
-    public StringArray(string Data) => _Data = Data;
+    public StringArray() : this(string.Empty) { }
 
     public override object ProvideValue(IServiceProvider sp)
     {
         var result = new List<string>();
-        foreach (var str in _Data.AsStringPtr().Split(RemoveEmpty, Separator))
+        foreach (var str in Data.AsStringPtr().Split(RemoveEmpty, Separator))
             result.Add(str);
         return result.ToArray();
     }

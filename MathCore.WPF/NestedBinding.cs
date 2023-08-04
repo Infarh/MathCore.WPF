@@ -10,9 +10,7 @@ namespace MathCore.WPF;
 [MarkupExtensionReturnType(typeof(object))]
 public class NestedBinding : MarkupExtension
 {
-    public NestedBinding() => Bindings = new Collection<BindingBase>();
-
-    public Collection<BindingBase> Bindings { get; }
+    public Collection<BindingBase> Bindings { get; } = new();
 
     public IMultiValueConverter Converter { get; set; }
 
@@ -22,10 +20,10 @@ public class NestedBinding : MarkupExtension
 
     public override object ProvideValue(IServiceProvider Services)
     {
-        if (Bindings.Count == 0)
-            throw new ArgumentNullException(nameof(Bindings));
+        if (Bindings.NotNull().Count == 0)
+            throw new ArgumentException(nameof(Bindings));
         if (Converter is null)
-            throw new ArgumentNullException(nameof(Converter));
+            throw new InvalidOperationException("Не заданы Converter");
 
         var target = (IProvideValueTarget)Services.GetService(typeof(IProvideValueTarget));
         if (target.TargetObject is Collection<BindingBase>)
@@ -64,81 +62,5 @@ public class NestedBinding : MarkupExtension
         }
 
         return tree;
-    }
-}
-
-public class NestedBindingNode
-{
-    public NestedBindingNode(int index) => Index = index;
-
-    public int Index { get; }
-
-    public override string ToString() => Index.ToString();
-}
-
-public class NestedBindingsTree : NestedBindingNode
-{
-    public NestedBindingsTree() : base(-1) => Nodes = new List<NestedBindingNode>();
-
-    public IMultiValueConverter Converter { get; set; }
-
-    public object ConverterParameter { get; set; }
-
-    public CultureInfo ConverterCulture { get; set; }
-
-    public List<NestedBindingNode> Nodes { get; }
-}
-
-public class NestedBindingConverter : IMultiValueConverter
-{
-    public NestedBindingConverter(NestedBindingsTree tree) => Tree = tree;
-
-    private NestedBindingsTree Tree { get; }
-
-    public object? Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)
-    {
-        var value = GetTreeValue(Tree, values, TargetType, culture);
-        return value;
-    }
-
-    private static object? GetTreeValue(NestedBindingsTree tree, object[]? values, Type TargetType, CultureInfo culture)
-    {
-        //var objects = tree.Nodes
-        //   .Select(x => x is NestedBindingsTree bindings_tree
-        //        ? GetTreeValue(bindings_tree, values, TargetType, culture)
-        //        : values[x.Index])
-        //   .ToArray();
-
-        var objects = new object[tree.Nodes.Count];
-        for (var i = 0; i < objects.Length; i++)
-        {
-            var element = tree.Nodes[i];
-            objects[i] = element is NestedBindingsTree bindings_tree
-                ? GetTreeValue(bindings_tree, values, TargetType, culture)
-                : values[element.Index];
-        }
-
-        var value = tree.Converter.Convert(objects, TargetType, tree.ConverterParameter, tree.ConverterCulture ?? culture);
-        return value;
-    }
-
-    public object?[]? ConvertBack(object? value, Type[] TargetTypes, object? parameter, CultureInfo culture) => throw new NotSupportedException();
-}
-
-public class JoinStringConverter : IMultiValueConverter
-{
-    public object Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)
-    {
-        var separator = parameter as string ?? " ";
-        return string.Join(separator, values);
-    }
-
-    public object[]? ConvertBack(object? value, Type[] TargetTypes, object? parameter, CultureInfo culture)
-    {
-        if (value is not string { } str) return null;
-
-        var separator = parameter as string ?? " ";
-
-        return str.Split(new[] { separator }, StringSplitOptions.None).Cast<object>().ToArray();
     }
 }
