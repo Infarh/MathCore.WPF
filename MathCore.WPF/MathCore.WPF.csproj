@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.44.6</Version>
+    <Version>0.0.44.7</Version>
     <PackageReleaseNotes>
-      Коррекция работы DragInCanvasBehavior
+      Добавлена команда ThrowExceptionCommand для генерации исключения в целях отладки
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -39,7 +39,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.87" />
+    <PackageReference Include="MathCore" Version="0.0.87.2" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
   </ItemGroup>
 

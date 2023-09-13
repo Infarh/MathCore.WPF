@@ -1,12 +1,7 @@
 ﻿using System.IO;
-using System.Linq;
 using System.Text;
 
-using MathCore.PE.Headers;
-
 using Microsoft.Win32;
-
-using static System.Net.WebRequestMethods;
 
 namespace MathCore.WPF;
 

@@ -17,4 +17,13 @@ public static class CommandExtensions
 
         return new(Command, Name, Description);
     }
+
+    public static bool TryExecute(this ICommand? Command, object Parameter)
+    {
+        if (Command is null || !Command.CanExecute(Parameter)) return false;
+
+        Command.Execute(Parameter);
+
+        return true;
+    }
 }
