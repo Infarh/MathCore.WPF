@@ -128,7 +128,6 @@ public sealed partial class AutoComplete
             typeof(AutoComplete),
             new FrameworkPropertyMetadata(null));
 
-
     private static readonly DependencyProperty AutoCompleteInstance = AutoCompleteInstancePropertyKey.DependencyProperty;
 
     private static AutoComplete? GetAutoCompleteInstance(DependencyObject o) => (AutoComplete?)o.GetValue(AutoCompleteInstance);
