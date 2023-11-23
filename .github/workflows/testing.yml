@@ -21,18 +21,6 @@ on:
         - info
         - warning
         - debug 
-      print_tags:
-        description: 'True to print to STDOUT'
-        required: true 
-        type: boolean 
-      tags:
-        description: 'Test scenario tags'
-        required: true 
-        type: string
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true 
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
