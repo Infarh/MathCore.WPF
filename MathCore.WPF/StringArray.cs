@@ -5,14 +5,13 @@ namespace MathCore.WPF;
 [MarkupExtensionReturnType(typeof(string[]))]
 public class StringArray(string Data) : MarkupExtension
 {
+    public StringArray() : this(string.Empty) { }
 
     public string Data { get; set; } = Data;
 
     public char Separator { get; set; }
 
     public bool RemoveEmpty { get; set; }
-
-    public StringArray() : this(string.Empty) { }
 
     public override object ProvideValue(IServiceProvider sp)
     {

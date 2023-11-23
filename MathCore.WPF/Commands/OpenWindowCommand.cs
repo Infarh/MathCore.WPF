@@ -7,8 +7,9 @@ using System.Windows.Data;
 
 namespace MathCore.WPF.Commands;
 
-public class OpenWindowCommand : LambdaCommand<Window>
+public class OpenWindowCommand() : LambdaCommand<Window>
 {
+    public OpenWindowCommand(Type WindowType) : this() => this.WindowType = WindowType;
 
     private Type? _WindowType;
 
@@ -30,10 +31,6 @@ public class OpenWindowCommand : LambdaCommand<Window>
     public bool IsDialog { get; set; }
 
     public WindowStartupLocation StartupLocation { get; set; } = WindowStartupLocation.Manual;
-
-    public OpenWindowCommand() { }
-
-    public OpenWindowCommand(Type WindowType) => this.WindowType = WindowType;
 
     /// <inheritdoc />
     public override bool CanExecute(object? obj) => obj is Window || _WindowType != null;

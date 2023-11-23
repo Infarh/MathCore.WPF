@@ -10,19 +10,16 @@ public static class DependencyPropertyBuilder
 
 public readonly ref struct DependencyPropertyClassBuilder<T> where T : DependencyObject
 {
-    public DependencyPropertyBuilder<T, TValue> Property<TValue>(Expression<Func<T, TValue>> PropertySelector)
-    {
-        if (PropertySelector is not { Body: MemberExpression { Member.Name: var name } })
-            throw new InvalidOperationException("Селектор должен выбирать свойство объекта");
-        return new(name);
-    }
+    public DependencyPropertyBuilder<T, TValue> Property<TValue>(Expression<Func<T, TValue>> PropertySelector) => PropertySelector is not { Body: MemberExpression { Member.Name: var name } }
+            ? throw new InvalidOperationException("Селектор должен выбирать свойство объекта")
+            : (DependencyPropertyBuilder<T, TValue>)new(name);
 }
 
-public readonly ref struct DependencyPropertyBuilder<T, TValue> where T : DependencyObject
+public readonly ref struct DependencyPropertyBuilder<T, TValue>(string Name) where T : DependencyObject
 {
     public delegate void PropertyChangedHandler(T Sender, TValue? OldValue, TValue? NewValue);
 
-    public string Name { get; init; }
+    public string Name { get; init; } = Name;
 
     public PropertyMetadata? Metadata { get; init; } = new();
 
@@ -30,8 +27,6 @@ public readonly ref struct DependencyPropertyBuilder<T, TValue> where T : Depend
 
     public PropertyChangedCallback? PropertyChangedCallback { get; init; } = null;
     public CoerceValueCallback? CoerceValueCallback { get; init; } = null;
-
-    public DependencyPropertyBuilder(string Name) => this.Name = Name;
 
     public DependencyPropertyBuilder<T, TValue> WithDefaultValue(TValue value) => this with { DefaultValue = value };
 

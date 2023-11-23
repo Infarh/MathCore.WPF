@@ -7,8 +7,13 @@ using MathCore.Annotations;
 namespace MathCore.WPF;
 
 /// <summary>Свойство модели</summary>
-public sealed class ModelProperty : Freezable, INotifyPropertyChanged
+/// <remarks>Инициализация нового свойства модели</remarks>
+/// <param name="Name">Имя свойства модели</param>
+public sealed class ModelProperty(string Name) : Freezable, INotifyPropertyChanged
 {
+    /// <summary>Инициализация нового свойства модели</summary>
+    public ModelProperty() : this("noname") { }
+
     /// <summary>Значение свойства</summary>
     public static readonly DependencyProperty ValueProperty =
         DependencyProperty.Register(
@@ -34,14 +39,7 @@ public sealed class ModelProperty : Freezable, INotifyPropertyChanged
     }
 
     /// <summary>Имя свойства модели</summary>
-    public string Name { get; set; }
-
-    /// <summary>Инициализация нового свойства модели</summary>
-    public ModelProperty() => Name = "noname";
-
-    /// <summary>Инициализация нового свойства модели</summary>
-    /// <param name="Name">Имя свойства модели</param>
-    public ModelProperty(string Name) => this.Name = Name.NotNull();
+    public string Name { get; set; } = Name.NotNull();
 
     /// <summary>Инициализация нового свойства модели</summary>
     /// <param name="Name">Имя свойства модели</param>

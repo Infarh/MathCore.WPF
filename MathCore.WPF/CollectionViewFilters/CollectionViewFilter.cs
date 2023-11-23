@@ -20,13 +20,24 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF;
 
-public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>> where TCriteria : notnull
+public class CollectionViewFilter<TCriteria, TItem>(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) 
+    : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>(filters) 
+    where TCriteria : notnull
 {
+    public CollectionViewFilter(ICollectionView view, Func<TItem, TCriteria> selector, string? Name = null) : this(new())
+    {
+        _Name = Name;
+        _View = view;
+        _Selector = selector;
+        ((INotifyCollectionChanged)view.SourceCollection).CollectionChanged += OnCollectionChanged;
+        view.CollectionChanged += OnViewCollectionChanged;
+    }
+
     private readonly ICollectionView? _View;
     
     private readonly Func<TItem, TCriteria>? _Selector;
     
-    private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
+    private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection = filters;
     
     private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
     
@@ -59,17 +70,6 @@ public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollecti
         }
     }
     public event EventHandler? NameChanged;
-
-    private CollectionViewFilter(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
-
-    public CollectionViewFilter(ICollectionView view, Func<TItem, TCriteria> selector, string? Name = null) : this(new())
-    {
-        _Name = Name;
-        _View = view;
-        _Selector = selector;
-        ((INotifyCollectionChanged)view.SourceCollection).CollectionChanged += OnCollectionChanged;
-        view.CollectionChanged += OnViewCollectionChanged;
-    }
 
     private void OnViewCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs? E)
     {

@@ -7,40 +7,27 @@ using System.Windows.Media;
 namespace MathCore.WPF;
 
 /// <summary>Цвет в формате ARGB</summary>
-public class ARGB : MarkupExtension
+public class ARGB(byte alpha, byte red, byte green, byte blue) : MarkupExtension
 {
+    public ARGB() : this(0) { }
+
+    public ARGB(byte Alpha) : this(Alpha, 0, 0, 0) { }
+
+    public ARGB(byte Red, byte Green, byte Blue) : this(0, Red, Green, Blue) { }
+
     /// <summary>Прозрачность</summary>
-    public byte Alpha { get; set; }
+    public byte Alpha { get; set; } = alpha;
 
     /// <summary>Красный</summary>
-    public byte Red { get; set; }
+    public byte Red { get; set; } = red;
 
     /// <summary>Зелёный</summary>
-    public byte Green { get; set; }
+    public byte Green { get; set; } = green;
 
     /// <summary>Синий</summary>
-    public byte Blue { get; set; }
+    public byte Blue { get; set; } = blue;
 
     public bool FreezeBrush { get; set; }
-
-    public ARGB() { }
-
-    public ARGB(byte Alpha) => this.Alpha = Alpha;
-
-    public ARGB(byte Red, byte Green, byte Blue)
-    {
-        this.Red   = Red;
-        this.Green = Green;
-        this.Blue  = Blue;
-    }
-
-    public ARGB(byte Alpha, byte red, byte green, byte blue)
-        : this(Alpha)
-    {
-        Red   = red;
-        Green = green;
-        Blue  = blue;
-    }
 
     private static readonly ConcurrentDictionary<(Color Color, bool Freeze), SolidColorBrush> __Brushes = new();
 
@@ -50,10 +37,10 @@ public class ARGB : MarkupExtension
 
         var destination_type = sp.GetDestinationTypeProvider()?.GetDestinationType() ?? typeof(object);
 
-        if (destination_type.IsAssignableFrom(typeof(Color))) 
+        if (destination_type.IsAssignableFrom(typeof(Color)))
             return color;
 
-        if (destination_type.IsAssignableFrom(typeof(Brush))) 
+        if (destination_type.IsAssignableFrom(typeof(Brush)))
             return __Brushes.GetOrAdd((color, FreezeBrush), c =>
             {
                 var brush = new SolidColorBrush(c.Color);

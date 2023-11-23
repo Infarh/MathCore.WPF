@@ -1,10 +1,8 @@
 ﻿namespace MathCore.WPF;
 
-public class NestedBindingNode
+public class NestedBindingNode(int index)
 {
-    public NestedBindingNode(int index) => Index = index;
+    public int Index => index;
 
-    public int Index { get; }
-
-    public override string ToString() => Index.ToString();
+    public override string ToString() => index.ToString();
 }

@@ -21,7 +21,7 @@ public class MouseWheelBinding : InputBinding
 
     public MouseWheelBinding() { }
 
-    public MouseWheelBinding(ICommand command) :base(command, new MouseWheelGesture()) { }
+    public MouseWheelBinding(ICommand command) : base(command, new MouseWheelGesture()) { }
 
     protected override Freezable CreateInstanceCore() => new MouseWheelBinding();
 }

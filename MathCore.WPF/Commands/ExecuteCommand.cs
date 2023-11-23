@@ -7,21 +7,19 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Commands;
 
 /// <summary>Команда выполнения процесса в ОС, заданного командной строкой</summary>
-public class ExecuteCommand : LambdaCommand
+public class ExecuteCommand(string Command) : LambdaCommand
 {
+    public ExecuteCommand() : this(null) { }
+
+    public ExecuteCommand(string Command, bool ShellExecute) : this(Command) => this.ShellExecute = ShellExecute;
+
     /// <summary>Выполняемая командная строка</summary>
     [ConstructorArgument(nameof(Command))]
-    public string? Command { get; set; }
+    public string? Command { get; set; } = Command;
 
     /// <summary>Использовать интерпретацию ОС</summary>
     [ConstructorArgument(nameof(ShellExecute))]
     public bool ShellExecute { get; set; }
-
-    public ExecuteCommand() { }
-
-    public ExecuteCommand(string Command) => this.Command = Command;
-
-    public ExecuteCommand(string Command, bool ShellExecute) : this(Command) => this.ShellExecute = ShellExecute;
 
     public override bool CanExecute(object? p) => !string.IsNullOrWhiteSpace(p as string) || !string.IsNullOrWhiteSpace(Command);
 

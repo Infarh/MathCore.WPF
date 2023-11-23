@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace MathCore.WPF;
 
-public class GroupCollectionFilterItem : DependencyObject
+public class GroupCollectionFilterItem(object key) : DependencyObject
 {
     private bool _Enabled = true;
 
@@ -22,9 +22,7 @@ public class GroupCollectionFilterItem : DependencyObject
 
     public ObservableCollection<object> Items { get; } = new();
 
-    public object Key { get; }
+    public object Key => key;
 
-    public GroupCollectionFilterItem(object key) => Key = key;
-
-    public override string ToString() => $"Group[{Key}]({Items.Count}) - enabled:{_Enabled}";
+    public override string ToString() => $"Group[{key}]({Items.Count}) - enabled:{_Enabled}";
 }

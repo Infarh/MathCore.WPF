@@ -4,13 +4,11 @@ using System.Windows.Markup;
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(double[]))]
-public class DoubleArray : MarkupExtension
+public class DoubleArray(string Data) : MarkupExtension
 {
-    public string Data { get; set; } = "";
-    
-    public DoubleArray() { }
-    
-    public DoubleArray(string Data) => this.Data = Data;
+    public DoubleArray() : this(string.Empty) { }
+
+    public string Data { get; set; } = Data;
 
     public override object ProvideValue(IServiceProvider ServiceProvider)
     {

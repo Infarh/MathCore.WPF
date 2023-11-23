@@ -5,7 +5,4 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters.Reflection;
 
 [MarkupExtensionReturnType(typeof(AssemblyTrademark))]
-public class AssemblyTrademark : AssemblyConverter
-{
-    public AssemblyTrademark() : base(Attribute<AssemblyTrademarkAttribute>(a => a.Trademark)) { }
-}
+public class AssemblyTrademark() : AssemblyConverter(Attribute<AssemblyTrademarkAttribute>(a => a.Trademark));

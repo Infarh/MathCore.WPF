@@ -6,8 +6,11 @@ namespace MathCore.WPF.Commands;
 
 /// <summary>Команда запуска процесса</summary>
 [MarkupExtensionReturnType(typeof(StartProcessCommand))]
-public class StartProcessCommand : Command
+public class StartProcessCommand(string Path, string CommandLineArgs) : Command
 {
+    public StartProcessCommand() : this(null) { }
+    public StartProcessCommand(string Path) : this(Path, null) { }
+
     /// <summary>Запущенный процесс</summary>
     private Process? _Process;
 
@@ -16,11 +19,11 @@ public class StartProcessCommand : Command
 
     /// <summary>Путь команды запуска</summary>
     [ConstructorArgument(nameof(Path))]
-    public string? Path { get; set; }
+    public string? Path { get; set; } = Path;
 
     /// <summary>Аргументы командной строки</summary>
     [ConstructorArgument(nameof(CommandLineArgs))]
-    public string? CommandLineArgs { get; set; }
+    public string? CommandLineArgs { get; set; } = CommandLineArgs;
 
     /// <summary>Предоставить возможность оболочке интерпретировать запускаемую команду</summary>
     public bool ShellExecute { get; set; }
@@ -52,10 +55,6 @@ public class StartProcessCommand : Command
     public int? ExitCode { get => _ExitCode; private set => Set(ref _ExitCode, value); }
 
     #endregion
-
-    public StartProcessCommand() { }
-    public StartProcessCommand(string Path) => this.Path = Path;
-    public StartProcessCommand(string Path, string CommandLineArgs) : this(Path) => this.CommandLineArgs = CommandLineArgs;
 
     public override bool CanExecute(object? parameter)
     {
