@@ -7,28 +7,24 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
-public class Range : DoubleValueConverter
+public class Range(Interval interval) : DoubleValueConverter
 {
-    private Interval _Interval = new(double.NegativeInfinity, double.PositiveInfinity);
-
-    [ConstructorArgument(nameof(Min))]
-    public double Min { get => _Interval.Min; set => _Interval = _Interval.SetMin(value); }
-
-    [ConstructorArgument(nameof(Max))]
-    public double Max { get => _Interval.Max; set => _Interval = _Interval.SetMax(value); }
-
-    public bool MinInclude { get => _Interval.MinInclude; set => _Interval = _Interval.IncludeMin(value); }
-
-    public bool MaxInclude { get => _Interval.MaxInclude; set => _Interval = _Interval.IncludeMax(value); }
-
-    public Range() { }
+    public Range() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
     public Range(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
 
     public Range(double Min, double Max) : this(new Interval(Math.Min(Min, Max), Math.Max(Min, Max))) { }
 
-    public Range(Interval interval) => _Interval = interval;
+    [ConstructorArgument(nameof(Min))]
+    public double Min { get => interval.Min; set => interval = interval.SetMin(value); }
+
+    [ConstructorArgument(nameof(Max))]
+    public double Max { get => interval.Max; set => interval = interval.SetMax(value); }
+
+    public bool MinInclude { get => interval.MinInclude; set => interval = interval.IncludeMin(value); }
+
+    public bool MaxInclude { get => interval.MaxInclude; set => interval = interval.IncludeMax(value); }
 
     /// <inheritdoc />
-    protected override double Convert(double v, double? p = null) => _Interval.Normalize(v);
+    protected override double Convert(double v, double? p = null) => interval.Normalize(v);
 }

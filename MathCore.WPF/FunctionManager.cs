@@ -17,7 +17,7 @@ public class FunctionManager<T>(Func<double, T> function, double x1, double x2, 
 
     private readonly Func<T, double> _DoubleConverter = double_converter ?? throw new ArgumentNullException(nameof(double_converter));
     private readonly Func<double, T> _Function = function ?? throw new ArgumentNullException(nameof(function));
-    private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = new();
+    private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = [];
     private double _Eps0;
     private double _Min = double.NaN;
     private double _Max = double.NaN;

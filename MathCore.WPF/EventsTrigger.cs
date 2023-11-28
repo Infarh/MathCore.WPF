@@ -9,7 +9,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
 {
     public abstract class TriggersPool : INotifyCollectionChanged
     {
-        private readonly Dictionary<string, EventsTrigger> _Triggers = new();
+        private readonly Dictionary<string, EventsTrigger> _Triggers = [];
 
         public EventsTrigger? this[string Name]
         {
@@ -79,7 +79,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
     private readonly object _SyncRoot = new();
     private bool _LastState;
 
-    private readonly List<IObserver<bool>> _StateObservers = new();
+    private readonly List<IObserver<bool>> _StateObservers = [];
 
     public bool LastState => _LastState;
 

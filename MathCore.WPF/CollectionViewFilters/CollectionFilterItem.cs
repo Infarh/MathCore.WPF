@@ -21,7 +21,7 @@ public class CollectionFilterItem<TValue, TCriteria>(ObservableCollection<TValue
         }
     }
 
-    public CollectionFilterItem(TCriteria key) : this(new ObservableCollection<TValue>()) => Key = key;
+    public CollectionFilterItem(TCriteria key) : this([]) => Key = key;
 
     public CollectionFilterItem(
 #if NETCOREAPP

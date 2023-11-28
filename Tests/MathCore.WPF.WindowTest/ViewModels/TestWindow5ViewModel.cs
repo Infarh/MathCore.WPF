@@ -17,7 +17,7 @@ public class TestWindow5ViewModel : ViewModel
         Values.SelectedItem = Values.ElementAt(1);
     }
 
-    public SelectableCollection<TestValueViewModel> Values { get; } = new();
+    public SelectableCollection<TestValueViewModel> Values { get; } = [];
 
     #region Command AddValueCommand : string - Добавить значение
 

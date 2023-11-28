@@ -20,7 +20,7 @@ public class GroupCollectionFilterItem(object key) : DependencyObject
 
     public event EventHandler? EnabledChanged;
 
-    public ObservableCollection<object> Items { get; } = new();
+    public ObservableCollection<object> Items { get; } = [];
 
     public object Key => key;
 

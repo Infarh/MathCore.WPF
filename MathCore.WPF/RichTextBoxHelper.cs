@@ -9,7 +9,7 @@ namespace MathCore.WPF;
 
 public static class RichTextBoxHelper
 {
-    private static readonly HashSet<Thread> __RecursionProtection = new();
+    private static readonly HashSet<Thread> __RecursionProtection = [];
 
     public static string GetDocumentXaml(DependencyObject obj) => (string)obj.GetValue(DocumentXamlProperty);
 

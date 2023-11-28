@@ -38,7 +38,7 @@ class SvgPolylineElement
     : SvgDrawableBaseElement
 {
     //==========================================================================
-    public readonly List<SvgPoint> Points = new();
+    public readonly List<SvgPoint> Points = [];
 
     //==========================================================================
     public SvgPolylineElement(SvgDocument document, SvgBaseElement parent, XElement PolylineElement)

@@ -11,7 +11,7 @@ namespace MathCore.WPF.Templates.Selectors;
 [MarkupExtensionReturnType(typeof(CustomDataTemplateSelector))]
 public class Custom : MarkupExtension
 {
-    private readonly Dictionary<string, DataTemplate> _Items = new();
+    private readonly Dictionary<string, DataTemplate> _Items = [];
 
     public IDictionary<string, DataTemplate> Templates => _Items;
 

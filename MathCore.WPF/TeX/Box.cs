@@ -32,7 +32,7 @@ public abstract class Box
 
     protected Box(Brush foreground, Brush background)
     {
-        _Children         = new List<Box>();
+        _Children         = [];
         _ChildrenReadOnly = new ReadOnlyCollection<Box>(_Children);
         Foreground       = foreground;
         Background       = background;

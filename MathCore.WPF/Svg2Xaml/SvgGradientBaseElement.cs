@@ -37,7 +37,7 @@ abstract class SvgGradientBaseElement
     : SvgBaseElement
 {
     //==========================================================================
-    public readonly List<SvgStopElement> Stops = new();
+    public readonly List<SvgStopElement> Stops = [];
 
     //==========================================================================
     public readonly SvgGradientUnits GradientUnits = SvgGradientUnits.ObjectBoundingBox;

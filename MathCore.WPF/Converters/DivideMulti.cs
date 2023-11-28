@@ -11,13 +11,13 @@ public class DivideMulti : MultiValueValueConverter
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
         if (vv is null) return null;
-        if (vv.Length == 1 && vv[0] is null) return double.NaN;
+        if (vv is [null]) return double.NaN;
 
         var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
 
         for (var i = 1; i < vv.Length; i++)
         {
-            if (vv[i] is null) return double.NaN;
+            if (vv[i] is null or double.NaN) return double.NaN;
             var div = vv[i] is double dv ? dv : System.Convert.ToDouble(vv[i]);
             if (div == 0)
                 return v == 0 

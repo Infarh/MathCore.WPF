@@ -10,17 +10,15 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(SingleValue))]
-public class SingleValue : MultiValueValueConverter
+public class SingleValue(int Index, IValueConverter Next) : MultiValueValueConverter
 {
-    public int Index { get; set; }
+    public SingleValue() : this(0, null!) { }
 
-    public IValueConverter? Next { get; set; }
+    public SingleValue(int Index) : this(Index, null!) { }
 
-    public SingleValue() { }
+    public int Index { get; set; } = Index;
 
-    public SingleValue(int Index) => this.Index = Index;
-
-    public SingleValue(int Index, IValueConverter Next) : this(Index) => this.Next = Next;
+    public IValueConverter? Next { get; set; } = Next;
 
     /// <inheritdoc />
     protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)

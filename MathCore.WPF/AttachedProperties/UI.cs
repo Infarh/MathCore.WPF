@@ -46,7 +46,7 @@ public static class UI
         if (element.GetValue(HotKeysProperty) is GlobalHotKeysCollection collection) 
             return collection;
 
-        collection = new GlobalHotKeysCollection();
+        collection = [];
         if (element is FrameworkElement framework_element)
             framework_element.Unloaded += (e, _) =>
             {

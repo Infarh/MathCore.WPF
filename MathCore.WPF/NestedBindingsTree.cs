@@ -11,5 +11,5 @@ public class NestedBindingsTree() : NestedBindingNode(-1)
 
     public CultureInfo ConverterCulture { get; set; }
 
-    public List<NestedBindingNode> Nodes { get; } = new List<NestedBindingNode>();
+    public List<NestedBindingNode> Nodes { get; } = [];
 }

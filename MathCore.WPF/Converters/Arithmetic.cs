@@ -7,10 +7,20 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+#if NET7_0_OR_GREATER
+public partial class Arithmetic : ValueConverter
+#else
 public class Arithmetic : ValueConverter
+#endif
 {
     private const string __ArithmeticParseExpression = "([+\\-*/]{1,1})\\s{0,}(\\-?[\\d\\.]+)";
-    private readonly Regex _Pattern = new(__ArithmeticParseExpression, RegexOptions.Compiled);
+#if NET7_0_OR_GREATER
+    private readonly Regex _Pattern = MyRegex();
+    [GeneratedRegex(__ArithmeticParseExpression, RegexOptions.Compiled)]
+    private static partial Regex MyRegex();
+#else
+    private readonly Regex _Pattern = new(__ArithmeticParseExpression, RegexOptions.Compiled); 
+#endif
 
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c)
     {

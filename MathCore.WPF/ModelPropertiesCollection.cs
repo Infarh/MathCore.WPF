@@ -14,7 +14,7 @@ public sealed class ModelPropertiesCollection : Collection<ModelProperty>
     private void OnPropertyChanged(object sender, EventArgs e) => PropertyChanged?.Invoke(sender, e);
 
     /// <summary>Словарь свойств по имени</summary>
-    private readonly Dictionary<string, ModelProperty> _Properties = new();
+    private readonly Dictionary<string, ModelProperty> _Properties = [];
 
     /// <summary>Определение свойства по имени</summary>
     /// <param name="Name">Имя требуемого свойства</param>

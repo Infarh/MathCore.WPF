@@ -12,5 +12,5 @@ namespace MathCore.WPF.Converters;
 public class IsPositive : DoubleToBool
 {
     /// <inheritdoc />
-    protected override bool? Convert(double v) => v.IsNaN() ? null : v > 0;
+    protected override bool? Convert(double v) => v is double.NaN ? null : v > 0;
 }

@@ -10,7 +10,7 @@ internal class TexSymbolParser
 
     static TexSymbolParser()
     {
-        __TypeMappings = new Dictionary<string, TexAtomType>();
+        __TypeMappings = [];
 
         SetTypeMappings();
     }

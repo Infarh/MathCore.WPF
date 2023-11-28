@@ -40,7 +40,7 @@ public class AnimatedBinding(PropertyPath path) : MarkupExtension
     public bool NotifyOnTargetUpdated { get; set; }
     public bool NotifyOnSourceUpdated { get; set; }
     public UpdateSourceTrigger UpdateSourceTrigger { get; set; } = UpdateSourceTrigger.Default;
-    public Collection<ValidationRule> ValidationRules { get; } = new();
+    public Collection<ValidationRule> ValidationRules { get; } = [];
     public bool IsAsync { get; set; }
     public object? AsyncState { get; set; }
     public bool NotifyOnValidationError { get; set; }

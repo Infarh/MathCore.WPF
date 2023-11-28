@@ -14,7 +14,7 @@ namespace MathCore.WPF.WindowTest;
 [MarkupExtensionReturnType(typeof(TestViewModel))]
 class TestViewModel : ViewModel
 {
-    public Graph Graph { get; } = new Graph();
+    public Graph Graph { get; } = [];
 
     public TestViewModel()
     {

@@ -9,7 +9,7 @@ namespace MathCore.WPF;
 
 public class GroupsCollectionFilterItem : CollectionViewFilterItem
 {
-    public ObservableCollection<GroupCollectionFilterItem> Groups { get; } = new();
+    public ObservableCollection<GroupCollectionFilterItem> Groups { get; } = [];
 
     private IEnumerable? _ViewSource;
 

@@ -24,7 +24,7 @@ public class SwitchConverter : DependencyObject, IValueConverter
         set => SetValue(DefaultValueProperty, value);
     }
 
-    public List<SwitchCase> Cases { get; } = new();
+    public List<SwitchCase> Cases { get; } = [];
 
     // IValueConverter implementation
     public object? Convert(object? v, Type t, object p, CultureInfo c)
