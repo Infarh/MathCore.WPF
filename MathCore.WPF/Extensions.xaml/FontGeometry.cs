@@ -10,10 +10,12 @@ using System.Windows.Media;
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(Geometry))]
-public class FontGeometry : MarkupExtension
+public class FontGeometry(string Text) : MarkupExtension
 {
+    public FontGeometry() : this(null!) { }
+
     [ConstructorArgument(nameof(Text))]
-    public string? Text { get; set; }
+    public string? Text { get; set; } = Text;
 
     public FlowDirection FlowDirection { get; set; } = FlowDirection.LeftToRight;
 
@@ -32,10 +34,6 @@ public class FontGeometry : MarkupExtension
     public double Size { get; set; } = 16;
 
     public Point Location { get; set; } = new(0, 0);
-
-    public FontGeometry() { }
-
-    public FontGeometry(string Text) => this.Text = Text;
 
     public override object ProvideValue(IServiceProvider sp)
     {
