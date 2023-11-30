@@ -19,7 +19,7 @@ public static class CollectionExtensions
 
     private abstract class CollectionConnectorBase
     {
-        private static readonly List<CollectionConnectorBase> __ConnectorsPool = new();
+        private static readonly List<CollectionConnectorBase> __ConnectorsPool = [];
 
         public static ReadOnlyCollection<CollectionConnectorBase> Pool => new(__ConnectorsPool);
 
@@ -35,7 +35,7 @@ public static class CollectionExtensions
         private readonly WeakReference _SourceRef;
         private readonly WeakReference _DestinationRef;
         private readonly Func<TSourceItem, TDestItem> _Converter;
-        private readonly Dictionary<object, TDestItem> _Items = new();
+        private readonly Dictionary<object, TDestItem> _Items = [];
 
         public TSource? Source => (TSource?)_SourceRef.Target;
 
@@ -189,7 +189,7 @@ public static class CollectionExtensions
                     ReferenceEquals(c.Destination, DestinationCollection))?.Close();
 
     private static readonly Dictionary<Type, (Delegate GetItems, Action<object, PropertyChangedEventArgs> OnPropertyChanged, Action<object, NotifyCollectionChangedEventArgs> OnCollectionChanged)> __ItemsDictionary = 
-        new();
+        [];
 
     public static void AddItemsRange<TCollection, TItem>(
         this TCollection collection,

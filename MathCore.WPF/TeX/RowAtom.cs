@@ -32,7 +32,7 @@ internal class RowAtom : Atom, IRow
 
     public DummyAtom PreviousAtom { get; set; }
     public List<Atom> Elements { get; }
-    public RowAtom() => Elements = new List<Atom>();
+    public RowAtom() => Elements = [];
 
     public RowAtom(List<TexFormula> FormulaList)
         : this() =>

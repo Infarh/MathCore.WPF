@@ -9,13 +9,11 @@ namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(LessThanOrEqual))]
 [ValueConversion(typeof(double), typeof(bool?))]
-public class LessThanOrEqual : DoubleToBool
+public class LessThanOrEqual(double value) : DoubleToBool
 {
-    public double Value { get; set; } = double.PositiveInfinity;
+    public LessThanOrEqual() : this(double.PositiveInfinity) { }
 
-    public LessThanOrEqual() { }
+    public double Value { get; set; } = value;
 
-    public LessThanOrEqual(double value) => Value = value;
-
-    protected override bool? Convert(double v) => v.IsNaN() ? null : v <= Value;
+    protected override bool? Convert(double v) => v is double.NaN ? null : v <= Value;
 }

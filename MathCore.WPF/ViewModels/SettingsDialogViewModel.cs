@@ -68,7 +68,7 @@ public class SettingsDialogViewModel : ViewModel
     private Window? _DialogWindow;
 
     /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
-    private readonly Dictionary<string, object?> _PropertiesDictionary = new();
+    private readonly Dictionary<string, object?> _PropertiesDictionary = [];
 
     /// <summary>Текущий словарь значений параметров, которые устанавливаются в окне конфигурации и которые будут применены к объекту после выполнения команды <see cref="CommitCommand"/></summary>
     protected Dictionary<string, object?> PropertiesDictionary => _PropertiesDictionary;

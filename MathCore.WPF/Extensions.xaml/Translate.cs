@@ -8,22 +8,20 @@ using System.Windows.Media;
 namespace MathCore.WPF;
 
 /// <summary>Трансформация смещения</summary>
+/// <remarks>Трансформация смещения</remarks>
+/// <param name="x">Смещение по X</param>
+/// <param name="y">Смещение по Y</param>
 [MarkupExtensionReturnType(typeof(TranslateTransform))]
-public class Translate : MarkupExtension
+public class Translate(double x, double y) : MarkupExtension
 {
+    /// <summary>Трансформация смещения</summary>
+    public Translate() : this(0, 0) { }
+
     /// <summary>Смещение по X</summary>
-    public double X { get; set; } = 1;
+    public double X { get; set; } = x;     
+    
     /// <summary>Смещение по Y</summary>
-    public double Y { get; set; } = 1;
-
-    /// <summary>Трансформация смещения</summary>
-    public Translate() { }
-
-    /// <summary>Трансформация смещения</summary>
-    /// <param name="x">Смещение по X</param>
-    /// <param name="y">Смещение по Y</param>
-    public Translate(double x, double y) { X = x; Y = y; }
-
+    public double Y { get; set; } = y;
     #region Overrides of MarkupExtension
 
     /// <inheritdoc />

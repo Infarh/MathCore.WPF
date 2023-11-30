@@ -20,45 +20,25 @@ public static class DispatcherExtensions
             : new PriorityDispatcherAwaiter(dispatcher, Priority);
 }
 
-public readonly ref struct PriorityDispatcherAwaiter
+public readonly ref struct PriorityDispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
 {
-    private readonly Dispatcher _Dispatcher;
-    private readonly DispatcherPriority _Priority;
-
-    public PriorityDispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
-    {
-        _Dispatcher = dispatcher;
-        _Priority = Priority;
-    }
-
-    public DispatcherAwaiter GetAwaiter() => new(_Dispatcher, _Priority);
+    public DispatcherAwaiter GetAwaiter() => new(dispatcher, Priority);
 }
 
-public readonly struct DispatcherAwaiter : INotifyCompletion
+public readonly struct DispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority) : INotifyCompletion
 {
-    private readonly DispatcherPriority _Priority;
-    private readonly Dispatcher _Dispatcher;
+    public DispatcherAwaiter(Dispatcher dispatcher) : this(dispatcher, DispatcherPriority.Normal) { }
+
+    private readonly Dispatcher _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
 
     public bool IsCompleted => _Dispatcher.CheckAccess();
 
-    public DispatcherAwaiter(Dispatcher dispatcher)
-    {
-        _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-        _Priority = DispatcherPriority.Normal;
-    }
-
-    public DispatcherAwaiter(Dispatcher dispatcher, DispatcherPriority Priority)
-    {
-        _Dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
-        _Priority = Priority;
-    }
-
     public void OnCompleted(Action continuation)
     {
-        if (_Priority == DispatcherPriority.Normal)
+        if (Priority == DispatcherPriority.Normal)
             _Dispatcher.Invoke(continuation);
         else
-            _Dispatcher.Invoke(continuation, _Priority);
+            _Dispatcher.Invoke(continuation, Priority);
     }
 
     public void GetResult() { }

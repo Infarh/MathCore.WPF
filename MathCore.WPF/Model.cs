@@ -28,7 +28,7 @@ public class Model : Freezable, IAddChild
             VerifyAccess();
             if (_Properties != null) return _Properties;
 
-            _Properties                 =  new ModelPropertiesCollection();
+            _Properties                 =  [];
             _Properties.PropertyChanged += OnPropertiesChanged;
             return _Properties;
         }

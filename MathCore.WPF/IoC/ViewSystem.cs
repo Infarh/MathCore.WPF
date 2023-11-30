@@ -9,9 +9,9 @@ namespace MathCore.WPF.IoC;
 public class ViewSystem : IViewSystem
 {
     private readonly IServiceManager _ServiceManager;
-    private readonly Dictionary<Type, Type> _ViewModelMap = new();
-    private readonly Dictionary<Type, Type> _ViewMap = new();
-    private readonly List<Window> _Views = new();
+    private readonly Dictionary<Type, Type> _ViewModelMap = [];
+    private readonly Dictionary<Type, Type> _ViewMap = [];
+    private readonly List<Window> _Views = [];
 
     public ViewSystem(IServiceManager ServiceManager) => _ServiceManager = ServiceManager;
 

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -24,12 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.103" />
+    <PackageReference Include="DotNetProjects.Extended.Wpf.Toolkit" Version="5.0.106" />
     <PackageReference Include="FontAwesome5" Version="2.1.11" />
     <PackageReference Include="FontAwesome6.Svg" Version="2.5.1" />
-    <PackageReference Include="MathCore" Version="0.0.87" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.39" />
+    <PackageReference Include="MathCore" Version="0.0.89.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="OxyPlot.Contrib.Wpf" Version="2.1.2" />
     <PackageReference Include="XPlot.Plotly" Version="4.0.6" />
   </ItemGroup>

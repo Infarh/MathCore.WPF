@@ -410,7 +410,7 @@ internal static class GeometryExtensions
                 false)
         };
 
-        return new PathGeometry { Figures = new PathFigureCollection { new(location, segments, true) } };
+        return new PathGeometry { Figures = [new(location, segments, true)] };
     }
 
     /// <summary>Creates a circle path spilits into the given number of sigments.</summary>

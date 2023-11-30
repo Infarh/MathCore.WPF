@@ -5,7 +5,4 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters.Reflection;
 
 [MarkupExtensionReturnType(typeof(AssemblyCompany))]
-public class AssemblyCopyright : AssemblyConverter
-{
-    public AssemblyCopyright() : base(Attribute<AssemblyCopyrightAttribute>(a => a.Copyright)) { }
-}
+public class AssemblyCopyright() : AssemblyConverter(Attribute<AssemblyCopyrightAttribute>(a => a.Copyright));

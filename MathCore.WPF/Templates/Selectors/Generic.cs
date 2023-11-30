@@ -11,7 +11,7 @@ namespace MathCore.WPF.Templates.Selectors;
 [MarkupExtensionReturnType(typeof(GenericDataTemplateSelector))]
 public class Generic : MarkupExtension
 {
-    private readonly List<DataTemplate> _Items = new();
+    private readonly List<DataTemplate> _Items = [];
 
     public IList Templates => _Items;
 

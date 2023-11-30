@@ -5,7 +5,4 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters.Reflection;
 
 [MarkupExtensionReturnType(typeof(AssemblyTime))]
-public class AssemblyTime : AssemblyConverter
-{
-    public AssemblyTime() : base(a => new FileInfo(a.Location).CreationTime) { }
-}
+public class AssemblyTime() : AssemblyConverter(a => new FileInfo(a.Location).CreationTime);

@@ -29,7 +29,7 @@ public class FirstItemConverter : ValueConverter
             Array { Length: 0 } => null,
             IList { Count: 0 } => null,
             Array array => array.GetValue(0),
-            IList list => list[0],
+            IList and [var first, ..] => first,
             IEnumerable enumerable => GetFirstValue(enumerable),
             _ => Binding.DoNothing
         };
@@ -66,7 +66,7 @@ public class LastItemConverter : ValueConverter
             Array { Length: 0 } => null,
             IList { Count: 0 } => null,
             Array array => array.GetValue(array.Length - 1),
-            IList list => list[^1],
+            IList and [.., var last]  => last,
             IEnumerable enumerable => GetLastValue(enumerable),
             _ => Binding.DoNothing
         };

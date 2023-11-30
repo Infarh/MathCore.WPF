@@ -131,7 +131,7 @@ public class CollectionViewFilterItem : Freezable
 
     protected void RefreshSource() => _Source?.View?.Refresh();
 
-    private static readonly Dictionary<string, Delegate> __Getter = new();
+    private static readonly Dictionary<string, Delegate> __Getter = [];
 
     protected object? GetItemValue(object? item)
     {
@@ -277,7 +277,7 @@ public class CollectionViewFilterItem<TCriteria> : ReadOnlyObservableCollection<
     public TCriteria? Key { get; }
 
     private CollectionViewFilterItem(ObservableCollection<object?> collection) : base(collection) => _InternalCollection = collection;
-    public CollectionViewFilterItem(TCriteria? key) : this(new ObservableCollection<object?>()) => Key = key;
+    public CollectionViewFilterItem(TCriteria? key) : this([]) => Key = key;
 
     public CollectionViewFilterItem(TCriteria? key, IEnumerable items) : this(new ObservableCollection<object?>(items.Cast<object?>())) => Key = key;
 

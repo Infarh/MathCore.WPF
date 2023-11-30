@@ -18,8 +18,8 @@ internal class DefaultTexFontParser
 
     static DefaultTexFontParser()
     {
-        __RangeTypeMappings = new Dictionary<string, int>();
-        __CharChildParsers  = new Dictionary<string, ICharChildParser>();
+        __RangeTypeMappings = [];
+        __CharChildParsers  = [];
 
         SetRangeTypeMappings();
         SetCharChildParsers();
@@ -182,7 +182,7 @@ internal class DefaultTexFontParser
 
     private void ParseTextStyleMappings()
     {
-        _ParsedTextStyles = new Dictionary<string, CharFont[]>();
+        _ParsedTextStyles = [];
 
         var text_style_mappings = _RootElement.Element("TextStyleMappings");
         if(text_style_mappings is null)

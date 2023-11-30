@@ -10,28 +10,24 @@ namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(InRange))]
 [ValueConversion(typeof(double), typeof(bool?))]
-public class InRange : DoubleToBool
+public class InRange(Interval interval) : DoubleToBool
 {
-    private Interval _Interval = new(double.NegativeInfinity, double.PositiveInfinity);
-
-    [ConstructorArgument(nameof(Min))]
-    public double Min { get => _Interval.Min; set => _Interval = _Interval.SetMin(value); }
-
-    [ConstructorArgument(nameof(Max))]
-    public double Max { get => _Interval.Max; set => _Interval = _Interval.SetMax(value); }
-
-    public bool MinInclude { get => _Interval.MinInclude; set => _Interval = _Interval.IncludeMin(value); }
-
-    public bool MaxInclude { get => _Interval.MaxInclude; set => _Interval = _Interval.IncludeMax(value); }
-
-    public InRange() { }
+    public InRange() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
     public InRange(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
 
     public InRange(double min, double max) : this(new Interval(Math.Min(min, max), Math.Max(min, max))) { }
 
-    public InRange(Interval interval) => _Interval = interval;
+    [ConstructorArgument(nameof(Min))]
+    public double Min { get => interval.Min; set => interval = interval.SetMin(value); }
+
+    [ConstructorArgument(nameof(Max))]
+    public double Max { get => interval.Max; set => interval = interval.SetMax(value); }
+
+    public bool MinInclude { get => interval.MinInclude; set => interval = interval.IncludeMin(value); }
+
+    public bool MaxInclude { get => interval.MaxInclude; set => interval = interval.IncludeMax(value); }
 
     /// <inheritdoc />
-    protected override bool? Convert(double v) => v.IsNaN() ? null : _Interval.Check(v);
+    protected override bool? Convert(double v) => v.IsNaN() ? null : interval.Check(v);
 }

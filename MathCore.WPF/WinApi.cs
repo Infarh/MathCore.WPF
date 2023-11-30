@@ -63,7 +63,6 @@ public static class WinApi
     [DllImport("USER32.DLL")]
     public static extern bool SetForegroundWindow(IntPtr hWnd);
 
-
     /// <summary>
     /// Gets the maximum number of milliseconds that can elapse between a
     /// first click and a second click for the OS to consider the
@@ -75,11 +74,9 @@ public static class WinApi
     [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
     public static extern int GetDoubleClickTime();
 
-
     /// <summary>Gets the screen coordinates of the current mouse position.</summary>
     [DllImport("USER32.DLL", SetLastError = true)]
     public static extern bool GetPhysicalCursorPos(ref Point lpPoint);
-
 
     [DllImport("USER32.DLL", SetLastError = true)]
     public static extern bool GetCursorPos(ref Point lpPoint);
@@ -203,11 +200,9 @@ public class WindowMessageSink : IDisposable
         CreateMessageWindow();
     }
 
-
     private WindowMessageSink()
     {
     }
-
 
     /// <summary>
     /// Creates a dummy instance that provides an empty

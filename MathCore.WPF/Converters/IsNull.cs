@@ -6,14 +6,12 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(IsNull))]
-public class IsNull : ValueConverter
+public class IsNull(bool Inverted) : ValueConverter
 {
+    public IsNull() : this(false) { }
+
     [ConstructorArgument(nameof(Inverted))]
-    public bool Inverted { get; set; }
-
-    public IsNull() { }
-
-    public IsNull(bool Inverted) => this.Inverted = Inverted;
+    public bool Inverted { get; set; } = Inverted;
 
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c) => Inverted ^ (v is null);
 }

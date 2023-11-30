@@ -3,15 +3,13 @@ using System.Windows.Data;
 
 namespace MathCore.WPF;
 
-public class NestedBindingsTree : NestedBindingNode
+public class NestedBindingsTree() : NestedBindingNode(-1)
 {
-    public NestedBindingsTree() : base(-1) => Nodes = new List<NestedBindingNode>();
-
     public IMultiValueConverter Converter { get; set; }
 
     public object ConverterParameter { get; set; }
 
     public CultureInfo ConverterCulture { get; set; }
 
-    public List<NestedBindingNode> Nodes { get; }
+    public List<NestedBindingNode> Nodes { get; } = [];
 }

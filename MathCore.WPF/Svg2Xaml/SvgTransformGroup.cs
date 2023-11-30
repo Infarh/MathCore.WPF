@@ -36,7 +36,7 @@ class SvgTransformGroup
     : SvgTransform
 {
     //==========================================================================
-    public readonly List<SvgTransform> Transforms = new();
+    public readonly List<SvgTransform> Transforms = [];
 
     //==========================================================================
     public SvgTransformGroup(SvgTransform[] transforms)

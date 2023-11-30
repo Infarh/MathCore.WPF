@@ -5,7 +5,4 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters.Reflection;
 
 [MarkupExtensionReturnType(typeof(AssemblyTitle))]
-public class AssemblyTitle : AssemblyConverter
-{
-    public AssemblyTitle() : base(Attribute<AssemblyTitleAttribute>(a => a.Title)) { }
-}
+public class AssemblyTitle() : AssemblyConverter(Attribute<AssemblyTitleAttribute>(a => a.Title));

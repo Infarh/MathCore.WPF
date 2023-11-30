@@ -7,13 +7,12 @@ using MathCore.WPF.ViewModels;
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(Visibility))]
-public class DebugVisible : MarkupExtension
+public class DebugVisible(Visibility DebugVisibility) : MarkupExtension
 {
-    public Visibility Visibility { get; set; } = Visibility.Collapsed;
-    public Visibility DebugVisibility { get; set; } = Visibility.Visible;
+    public DebugVisible() : this(default) { }
 
-    public DebugVisible() { }
-    public DebugVisible(Visibility DebugVisibility) => this.DebugVisibility = DebugVisibility;
+    public Visibility Visibility { get; set; } = Visibility.Collapsed;
+    public Visibility DebugVisibility { get; set; } = DebugVisibility;
 
     public override object ProvideValue(IServiceProvider sp) => ViewModel.IsDesignMode ? DebugVisibility : Visibility;
 }

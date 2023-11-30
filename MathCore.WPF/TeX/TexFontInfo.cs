@@ -29,8 +29,8 @@ internal class TexFontInfo
     public TexFontInfo(int FontId, GlyphTypeface font, double XHeight, double space, double quad)
     {
         _Metrics    = new double[CharCodesCount][];
-        _Ligatures  = new Dictionary<Tuple<char, char>, char>();
-        _Kerns      = new Dictionary<Tuple<char, char>, double>();
+        _Ligatures  = [];
+        _Kerns      = [];
         _NextLarger = new CharFont[CharCodesCount];
         _Extensions = new int[CharCodesCount][];
 

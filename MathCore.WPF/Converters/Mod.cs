@@ -10,13 +10,11 @@ namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Mod))]
-public class Mod : DoubleValueConverter
+public class Mod(double M) : DoubleValueConverter
 {
-    public double M { get; set; }
-
     public Mod() : this(double.NaN) { }
 
-    public Mod(double M) => this.M = M;
+    public double M { get; set; } = M;
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => 

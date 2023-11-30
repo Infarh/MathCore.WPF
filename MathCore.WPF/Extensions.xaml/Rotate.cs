@@ -9,24 +9,22 @@ using System.Windows.Media;
 namespace MathCore.WPF;
 
 /// <summary>Трансформация поворота</summary>
+/// <remarks>Трансформация поворота</remarks>
+/// <param name="angle">Угол</param>
 [MarkupExtensionReturnType(typeof(RotateTransform))]
-public class Rotate : MarkupExtension
+public class Rotate(double angle) : MarkupExtension
 {
+    /// <summary>Трансформация поворота</summary>
+    public Rotate() : this(0) { }
+
     /// <summary>Угол</summary>
-    public double Angle { get; set; }
+    public double Angle { get; set; } = angle;
 
     /// <summary>X-центра</summary>
     public double X { get; set; }
 
     /// <summary>Y-центра</summary>
     public double Y { get; set; }
-
-    /// <summary>Трансформация поворота</summary>
-    public Rotate() { }
-
-    /// <summary>Трансформация поворота</summary>
-    /// <param name="angle">Угол</param>
-    public Rotate(double angle) => Angle = angle;
 
     #region Overrides of MarkupExtension
 

@@ -9,11 +9,16 @@ using System.Windows.Media.Effects;
 namespace MathCore.WPF;
 
 /// <summary>Эффект тени</summary>
+/// <remarks>Эффект тени</remarks>
+/// <param name="depth">Глубина</param>
 [MarkupExtensionReturnType(typeof(DropShadowEffect))]
-public class Shadow : MarkupExtension
+public class Shadow(double depth) : MarkupExtension
 {
+    /// <summary>Эффект тени</summary>
+    public Shadow() : this(5) { }
+
     /// <summary>Глубина тени</summary>
-    public double Depth { get; set; } = 5;
+    public double Depth { get; set; } = depth;
 
     /// <summary>Алгоритм рендринга</summary>
     public RenderingBias Bias { get; set; } = RenderingBias.Performance;
@@ -29,13 +34,6 @@ public class Shadow : MarkupExtension
 
     /// <summary>Размытие</summary>
     public double Blur { get; set; } = 5;
-
-    /// <summary>Эффект тени</summary>
-    public Shadow() { }
-
-    /// <summary>Эффект тени</summary>
-    /// <param name="depth">Глубина</param>
-    public Shadow(double depth) => Depth = depth;
 
     #region Overrides of MarkupExtension
 

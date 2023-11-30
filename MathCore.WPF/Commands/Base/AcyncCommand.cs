@@ -41,8 +41,10 @@ public abstract class AsyncTaskCommandBase : IAsyncTaskCommand
 /// CountUrlBytesCommand = new AsyncCommand(MyService.DownloadAndCountBytesAsync(Url));
 /// </example>
 [Copyright("Шаблоны для асинхронных MVVM-приложений: команды", url = "http://www.oszone.net/24584/")]
-public class AsyncTaskCommand<TResult> : AsyncTaskCommandBase, INotifyPropertyChanged
+public class AsyncTaskCommand<TResult>(Func<object?, CancellationToken, Task<TResult>> TaskFunction, Func<object?, bool>? CanExecute = null) : AsyncTaskCommandBase, INotifyPropertyChanged
 {
+    public AsyncTaskCommand(Task<TResult> task) : this(async (_, _) => await task) { }
+
     private sealed class CancelAsyncCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged
@@ -84,9 +86,7 @@ public class AsyncTaskCommand<TResult> : AsyncTaskCommandBase, INotifyPropertyCh
     [NotifyPropertyChangedInvocator]
     protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
 
-    private readonly Func<object?, CancellationToken, Task<TResult>> _TaskFunction;
-
-    private readonly Func<object?, bool>? _CanExecute;
+    private readonly Func<object?, bool>? _CanExecute = CanExecute;
 
     private NotifyTaskCompletion<TResult>? _Execution;
     public NotifyTaskCompletion<TResult>? Execution
@@ -101,23 +101,14 @@ public class AsyncTaskCommand<TResult> : AsyncTaskCommandBase, INotifyPropertyCh
     }
 
     // ReSharper disable once ConvertToAutoPropertyWhenPossible
-    private CancelAsyncCommand CancelCommand { get; }
-
-    public AsyncTaskCommand(Func<object?, CancellationToken, Task<TResult>> TaskFunction, Func<object?, bool>? CanExecute = null)
-    {
-        _TaskFunction = TaskFunction;
-        _CanExecute = CanExecute;
-        CancelCommand = new CancelAsyncCommand();
-    }
-
-    public AsyncTaskCommand(Task<TResult> task) : this(async (_, _) => await task) { }
+    private CancelAsyncCommand CancelCommand { get; } = new CancelAsyncCommand();
 
     public override bool CanExecute(object? parameter) => (_CanExecute?.Invoke(parameter) ?? true) && (Execution?.IsCompleted ?? false);
 
     public override async Task ExecuteTaskAsync(object? parameter)
     {
         CancelCommand.NotifyCommandStarting();
-        Execution = new NotifyTaskCompletion<TResult>(_TaskFunction(parameter, CancelCommand.Token));
+        Execution = new NotifyTaskCompletion<TResult>(TaskFunction(parameter, CancelCommand.Token));
         Invoke_OnCanExecuteChanged();
         CancelCommand.NotifyCommandFinished();
         await Execution.Task;

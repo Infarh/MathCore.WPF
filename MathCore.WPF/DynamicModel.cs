@@ -23,7 +23,7 @@ public class DynamicModelContent : Decorator
     public static DynamicModel GetModel(DependencyObject d)
     {
         if(d.GetValue(ModelProperty) is DynamicModel model) return model;
-        model = new(); 
+        model = []; 
         SetModel(d, model);
         return model;
     }
@@ -66,7 +66,7 @@ public class DynamicModelContent : Decorator
 
 public class DynamicModel : FreezableCollection<DynamicModelField>
 {
-    private readonly Dictionary<string, DynamicModelField> _Fields = new();
+    private readonly Dictionary<string, DynamicModelField> _Fields = [];
 
     public DynamicModelField this[string FieldName] => _Fields[FieldName];
 
@@ -193,7 +193,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
         _HandledFields.Clear();
     }
 
-    private readonly List<DynamicModelField> _HandledFields = new();
+    private readonly List<DynamicModelField> _HandledFields = [];
 
 
     private void AddEventHandler(IEnumerable<DynamicModelField> fields)
