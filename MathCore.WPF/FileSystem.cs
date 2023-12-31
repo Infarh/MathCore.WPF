@@ -142,7 +142,7 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
         {
             if (!CanEnumItems) return null;
             if (_Directories != null) return _Directories.AsThreadSave();
-            _Directories = new();
+            _Directories = [];
             if (!CreateWatcher())
             {
                 _CanEnumItems = false;
@@ -362,7 +362,7 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
         if (!CanEnumItems) return null;
         if (_Directories is { Count: > 0 })
             return _Directories.FirstOrDefault(m => string.Equals(m.Directory.Name, DirectoryName, StringComparison.InvariantCultureIgnoreCase));
-        var dirs = _Directories = new ObservableCollection<DirectoryViewModel>();
+        var dirs = _Directories = [];
         if (!CreateWatcher())
         {
             _CanEnumItems = false;

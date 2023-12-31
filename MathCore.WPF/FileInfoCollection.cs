@@ -4,4 +4,4 @@ using System.IO;
 namespace MathCore.WPF;
 
 [Serializable]
-public class FileInfoCollection : ObservableCollection<FileInfo> { }
+public class FileInfoCollection : ObservableCollection<FileInfo>;

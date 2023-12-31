@@ -37,7 +37,7 @@ class SvgContainerBaseElement
     : SvgBaseElement
 {
     //==========================================================================
-    public readonly List<SvgBaseElement> Children = new();
+    public readonly List<SvgBaseElement> Children = [];
 
     //==========================================================================
     public SvgContainerBaseElement(SvgDocument document, SvgBaseElement parent, XElement ContainerElement)

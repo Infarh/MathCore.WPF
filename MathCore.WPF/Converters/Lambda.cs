@@ -6,29 +6,23 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
-public class Lambda<TValue, TResult> : ValueConverter
+public class Lambda<TValue, TResult>(Lambda<TValue, TResult>.Converter Converter, Lambda<TValue, TResult>.ConverterBack? BackConverter = null) : ValueConverter
 {
+    public Lambda(
+       Func<TValue, TResult> Converter,
+       Func<TResult, TValue>? BackConverter = null)
+       : this((v, _, _, _) => Converter(v), BackConverter is null ? null : ((v, _, _, _) => BackConverter(v)))
+    { }
+
     public delegate TResult Converter(TValue Value, Type? TargetValueType, object? Parameter, CultureInfo? Culture);
 
     public delegate TValue ConverterBack(TResult Value, Type? SourceValueType, object? Parameter, CultureInfo? Culture);
 
-    private readonly Converter _Converter;
+    private readonly Converter _Converter = Converter;
 
-    private readonly ConverterBack _BackConverter;
+    private readonly ConverterBack _BackConverter = BackConverter ?? ((_, _, _, _) => throw new NotSupportedException());
 
-    public Lambda(
-        Func<TValue, TResult> Converter, 
-        Func<TResult, TValue>? BackConverter = null)
-        : this((v, _, _, _) => Converter(v), BackConverter is null ? null : ((v, _, _, _) => BackConverter(v)))
-    { }
-
-    public Lambda(Converter Converter, ConverterBack? BackConverter = null)
-    {
-        _Converter = Converter;
-        _BackConverter = BackConverter ?? ((_, _, _, _) => throw new NotSupportedException());
-    }
-
-    /// <inheritdoc />
+   /// <inheritdoc />
     protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => 
         v is null 
             ? null 

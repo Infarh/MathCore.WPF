@@ -10,7 +10,7 @@ namespace MathCore.WPF;
 [MarkupExtensionReturnType(typeof(object))]
 public class NestedBinding : MarkupExtension
 {
-    public Collection<BindingBase> Bindings { get; } = new();
+    public Collection<BindingBase> Bindings { get; } = [];
 
     public IMultiValueConverter Converter { get; set; }
 

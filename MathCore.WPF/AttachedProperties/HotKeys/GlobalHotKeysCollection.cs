@@ -89,7 +89,7 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         {
             if (__HotKeyBindings is null)
             {
-                __HotKeyBindings                            =  new();
+                __HotKeyBindings                            =  [];
                 ComponentDispatcher.ThreadPreprocessMessage += OnFilterMessage;
             }
             return __HotKeyBindings;
@@ -113,7 +113,7 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
     }
 
     /// <summary>Словарь, определяющий соответствие зарегистрированных клавиш их идентификаторам</summary>
-    private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = new();
+    private static readonly Dictionary<(Keys Key, ModifierKeys Modifer), ushort> __HotKeyIds = [];
 
     /// <summary>Метод, позволяющий получить идентификатор клавиши</summary>
     /// <param name="Key">Определение клавиши</param>
@@ -132,7 +132,7 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
     }
 
     /// <summary>Таблица идентификаторов зарегистрированных горячих клавиш</summary>
-    private static readonly HashSet<ushort> __RegisteredHotKeys = new();
+    private static readonly HashSet<ushort> __RegisteredHotKeys = [];
 
     /// <summary>Зарегистрировать клавишу</summary>
     /// <param name="KeyId">Идентификатор клавиши</param>

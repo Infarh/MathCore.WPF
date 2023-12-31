@@ -17,7 +17,7 @@ public class CustomDataTemplateSelector : DataTemplateSelector
 
     public CustomDataTemplateSelector()
     {
-        _Items      = new Dictionary<string, DataTemplate>();
+        _Items      = [];
         KeySelector = o => o.GetType().Name;
     }
 

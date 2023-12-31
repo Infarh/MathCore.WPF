@@ -26,7 +26,7 @@ public class ObservableCollectionSyncWrapper<T> : ICollection<T>, INotifyCollect
     private readonly SendOrPostCallback _PropertyChanged;
 
     public object? SyncRoot { get; set; }
-    public ObservableCollectionSyncWrapper() : this(new ObservableCollection<T>()) { }
+    public ObservableCollectionSyncWrapper() : this([]) { }
 
     public ObservableCollectionSyncWrapper(ObservableCollection<T> Collection)
     {
@@ -123,7 +123,7 @@ public class RangeObservableCollection<T> : ObservableCollection<T>
 
 public class DeferEventObservableCollection<T> : ObservableCollection<T>
 {
-    private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = new();
+    private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = [];
     private bool _HasQueuedDispatcherUpdate;
     private readonly int _Threshold;
     private readonly object _SyncRoot = new();

@@ -3,10 +3,10 @@ using MathCore.ViewModels;
 
 namespace System.Collections.Generic;
 
-public class FunctionManager<T> : ViewModel
+public class FunctionManager<T>(Func<double, T> function, double x1, double x2, Func<T, double> double_converter) : ViewModel
 {
-    private readonly double _X1;
-    private readonly double _X2;
+    private readonly double _X1 = x1;
+    private readonly double _X2 = x2;
 
     private static double GetEps(double x1, double x2, double y1, double y2)
     {
@@ -15,9 +15,9 @@ public class FunctionManager<T> : ViewModel
         return x2 * x2 + y2 * y2;
     }
 
-    private readonly Func<T, double> _DoubleConverter;
-    private readonly Func<double, T> _Function;
-    private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = new();
+    private readonly Func<T, double> _DoubleConverter = double_converter ?? throw new ArgumentNullException(nameof(double_converter));
+    private readonly Func<double, T> _Function = function ?? throw new ArgumentNullException(nameof(function));
+    private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = [];
     private double _Eps0;
     private double _Min = double.NaN;
     private double _Max = double.NaN;
@@ -29,14 +29,6 @@ public class FunctionManager<T> : ViewModel
     public double Integral => _Integral;
 
     public ObservableLinkedList<KeyValuePair<double, T>> Values => _Values;
-
-    public FunctionManager(Func<double, T> function, double x1, double x2, Func<T, double> double_converter)
-    {
-        _Function        = function ?? throw new ArgumentNullException(nameof(function));
-        _DoubleConverter = double_converter ?? throw new ArgumentNullException(nameof(double_converter));
-        _X1              = x1;
-        _X2              = x2;
-    }
 
     public void Reset()
     {

@@ -7,7 +7,7 @@ namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Mapper))]
-public class Mapper : DoubleValueConverter
+public class Mapper() : DoubleValueConverter
 {
     private double _k = 1;
 
@@ -58,8 +58,6 @@ public class Mapper : DoubleValueConverter
             _k = (_MaxScale - _MinScale) / (_MaxValue - _MinValue);
         }
     }
-
-    public Mapper() { }
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null)

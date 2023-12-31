@@ -6,9 +6,11 @@
 
 namespace MathCore.WPF.Commands;
 
-public class ShowMessageCommand : Command
+public class ShowMessageCommand(string? Title) : Command
 {
-    public string? Title { get; set; }
+    public ShowMessageCommand() : this(null) { }
+
+    public string? Title { get; set; } = Title;
 
     public MessageBoxButton Buttons { get; set; } = MessageBoxButton.OK;
 
@@ -31,9 +33,6 @@ public class ShowMessageCommand : Command
     }
 
     #endregion
-
-    public ShowMessageCommand() { }
-    public ShowMessageCommand(string? Title) => this.Title = Title;
 
     public override bool CanExecute(object? parameter) => !string.IsNullOrEmpty(parameter as string);
 

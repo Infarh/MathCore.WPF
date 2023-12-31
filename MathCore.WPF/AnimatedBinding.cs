@@ -14,13 +14,13 @@ using System.Windows.Media.Animation;
 namespace MathCore.WPF;
 
 [MarkupExtensionReturnType(typeof(Binding))]
-public class AnimatedBinding : MarkupExtension
+public class AnimatedBinding(PropertyPath path) : MarkupExtension
 {
     private static readonly DependencyPropertyDescriptor __DoubleAnimationToPropertyDescriptor =
         DependencyPropertyDescriptor.FromProperty(DoubleAnimation.ToProperty, typeof(DoubleAnimation));
 
     [ConstructorArgument("path")]
-    public PropertyPath Path { get; set; }
+    public PropertyPath Path { get; set; } = path;
     public string? XPath { get; set; }
     public string? ElementName { get; set; }
     public RelativeSource? RelativeSource { get; set; }
@@ -40,7 +40,7 @@ public class AnimatedBinding : MarkupExtension
     public bool NotifyOnTargetUpdated { get; set; }
     public bool NotifyOnSourceUpdated { get; set; }
     public UpdateSourceTrigger UpdateSourceTrigger { get; set; } = UpdateSourceTrigger.Default;
-    public Collection<ValidationRule> ValidationRules { get; } = new();
+    public Collection<ValidationRule> ValidationRules { get; } = [];
     public bool IsAsync { get; set; }
     public object? AsyncState { get; set; }
     public bool NotifyOnValidationError { get; set; }
@@ -49,7 +49,6 @@ public class AnimatedBinding : MarkupExtension
     public string BindingGroupName { get; set; } = "";
     public bool BindsDirectlyToSource { get; set; }
     public UpdateSourceExceptionFilterCallback? UpdateSourceExceptionFilter { get; set; }
-    public AnimatedBinding(PropertyPath path) => Path = path;
 
     /// <inheritdoc />
     public override object ProvideValue(IServiceProvider service)

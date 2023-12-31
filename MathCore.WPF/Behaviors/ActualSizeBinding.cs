@@ -61,7 +61,6 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
 
     #endregion
 
-
     protected override void OnAttached()
     {
         base.OnAttached();

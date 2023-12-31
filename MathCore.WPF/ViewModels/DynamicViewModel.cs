@@ -33,7 +33,7 @@ public class DynamicViewModel : DynamicObject, INotifyPropertyChanged
                 HashFunction: k => k.GetComplexHashCode()));
 
     /// <summary>Инициализация новой динамической модели-представления</summary>
-    public DynamicViewModel() => _PropertiesValues = new ();
+    public DynamicViewModel() => _PropertiesValues = [];
 
     /// <summary>Инициализация новой динамической модели-представления</summary><param name="PropertiesDictionary">Словарь для хранения значений свойств объекта</param>
     public DynamicViewModel(Dictionary<string, object?> PropertiesDictionary) => _PropertiesValues = PropertiesDictionary;

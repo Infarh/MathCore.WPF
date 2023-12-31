@@ -16,7 +16,7 @@ public class CollectionFilter<TValue, TCriteria> : ReadOnlyObservableCollection<
         _InternalCollection = internal_collection;
 
     public CollectionFilter(ObservableCollection<TValue?> collection, Func<TValue, TCriteria> selector)
-        : this(new ObservableCollection<CollectionFilterItem<TValue, TCriteria>>())
+        : this([])
     {
         _Collection = collection;
         _Selector = selector;

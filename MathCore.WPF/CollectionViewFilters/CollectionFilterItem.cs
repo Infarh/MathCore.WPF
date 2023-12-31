@@ -4,10 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MathCore.WPF;
 
-public class CollectionFilterItem<TValue, TCriteria> : ReadOnlyObservableCollection<TValue>
+public class CollectionFilterItem<TValue, TCriteria>(ObservableCollection<TValue?> list) : ReadOnlyObservableCollection<TValue>(list)
 {
-    private readonly ObservableCollection<TValue?> _InternalCollection;
-
     public TCriteria? Key { get; }
 
     private bool _Enabled;
@@ -23,9 +21,7 @@ public class CollectionFilterItem<TValue, TCriteria> : ReadOnlyObservableCollect
         }
     }
 
-    public CollectionFilterItem(ObservableCollection<TValue?> list) : base(list) => _InternalCollection = list;
-
-    public CollectionFilterItem(TCriteria key) : this(new ObservableCollection<TValue>()) => Key = key;
+    public CollectionFilterItem(TCriteria key) : this([]) => Key = key;
 
     public CollectionFilterItem(
 #if NETCOREAPP
@@ -37,9 +33,9 @@ public class CollectionFilterItem<TValue, TCriteria> : ReadOnlyObservableCollect
 
     internal void Add(TValue? value)
     {
-        if (!_InternalCollection.Contains(value))
-            _InternalCollection.Add(value);
+        if (!list.Contains(value))
+            list.Add(value);
     }
 
-    internal bool Remove(TValue? value) => _InternalCollection.Remove(value);
+    internal bool Remove(TValue? value) => list.Remove(value);
 }

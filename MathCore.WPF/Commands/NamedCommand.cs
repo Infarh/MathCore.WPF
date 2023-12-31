@@ -2,11 +2,13 @@
 
 namespace MathCore.WPF.Commands;
 
-public class NamedCommand : Command
+public class NamedCommand(ICommand BaseCommand, string Name, string? Description) : Command
 {
-    private readonly ICommand _BaseCommand;
-    private string _Name;
-    private string? _Description;
+    public NamedCommand(ICommand BaseCommand) : this(BaseCommand, null, null) { }
+
+    private readonly ICommand _BaseCommand = BaseCommand;
+    private string _Name = Name;
+    private string? _Description = Description;
 
     public ICommand BaseCommand => _BaseCommand;
 
@@ -27,14 +29,6 @@ public class NamedCommand : Command
                 command.IsCanExecute = value;
             base.IsCanExecute = value;
         }
-    }
-
-    public NamedCommand(ICommand BaseCommand) => _BaseCommand = BaseCommand;
-
-    public NamedCommand(ICommand BaseCommand, string Name, string? Description) : this(BaseCommand)
-    {
-        _Name = Name;
-        _Description = Description;
     }
 
     public override void Execute(object? parameter) => _BaseCommand.Execute(parameter);

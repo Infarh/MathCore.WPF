@@ -38,7 +38,7 @@ class SvgFilterElement
     : SvgBaseElement
 {
     //==========================================================================
-    public readonly List<SvgFilterEffectBaseElement> FilterEffects = new();
+    public readonly List<SvgFilterEffectBaseElement> FilterEffects = [];
 
     //==========================================================================
     public SvgFilterElement(SvgDocument document, SvgBaseElement parent, XElement FilterElement)

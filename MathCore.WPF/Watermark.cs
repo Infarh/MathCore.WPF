@@ -143,7 +143,7 @@ public static class Watermark
     #endregion
 
     /// <summary>Словарь объектов ItemsControls, которым установлен водяной знак</summary>
-    private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = new();
+    private static readonly Dictionary<object, ItemsControl> __ItemsControlsDictionary = [];
 
     private static readonly List<Control> __AttachedControlsList = new(50);
 

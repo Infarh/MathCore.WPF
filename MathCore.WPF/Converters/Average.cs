@@ -8,6 +8,8 @@ namespace MathCore.WPF.Converters;
 
 public class Average(int Length) : SimpleDoubleValueConverter
 {
+    public Average() : this(0) { }
+
     private readonly AverageValue _Value = new(Length);
 
     public int Length
@@ -15,8 +17,6 @@ public class Average(int Length) : SimpleDoubleValueConverter
         get => _Value.Length;
         set => _Value.Length = value;
     }
-
-    public Average() : this(0) { }
 
     /// <inheritdoc />
     protected override double To(double v, double p)

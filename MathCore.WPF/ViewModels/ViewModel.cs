@@ -73,7 +73,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             Dictionary<string, List<string>> dependencies_dictionary;
             if (_PropertiesDependenciesDictionary is null)
             {
-                dependencies_dictionary = new Dictionary<string, List<string>>();
+                dependencies_dictionary = [];
                 _PropertiesDependenciesDictionary = dependencies_dictionary;
             }
             else dependencies_dictionary = _PropertiesDependenciesDictionary;
@@ -116,7 +116,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <returns>Истина, если найден цикл</returns>
     private Queue<string>? IsLoopDependency(string property, string dependence, string? next_property = null, Stack<string>? invoke_stack = null)
     {
-        invoke_stack ??= new Stack<string> { property };
+        invoke_stack ??= [property];
         if (string.Equals(property, next_property))
             return invoke_stack.ToQueueReverse().AddValue(property);
 
@@ -177,7 +177,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     {
         lock (_PropertiesDependenciesSyncRoot)
         {
-            var handlers = _PropertyChangedHandlers ??= new Dictionary<string, Action>();
+            var handlers = _PropertyChangedHandlers ??= [];
             if (handlers.ContainsKey(PropertyName))
                 handlers[PropertyName] += handler;
             else
@@ -265,7 +265,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     }
 
     /// <summary>Словарь, хранящий время последней генерации события изменения указанного свойства в асинхронном режиме</summary>
-    private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = new();
+    private readonly Dictionary<string, DateTime> _PropertyAsyncInvokeTime = [];
 
     /// <summary>Асинхронная генерация события изменения свойства с возможностью указания таймаута ожидания повторных изменений</summary>
     /// <param name="PropertyName">Имя свойства</param>
@@ -337,7 +337,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         }
     }
 
-    private readonly Dictionary<string, object?> _ModelPropertyValues = new();
+    private readonly Dictionary<string, object?> _ModelPropertyValues = [];
 
     protected bool Set<T>(
         T? value,

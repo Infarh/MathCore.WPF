@@ -35,11 +35,9 @@ public static class TypeConvertersRegistrator
     }
 }
 
-public class BindingTypeDescriptionProvider : TypeDescriptionProvider
+public class BindingTypeDescriptionProvider() : TypeDescriptionProvider(__DefaultTypeProvider)
 {
     private static readonly TypeDescriptionProvider __DefaultTypeProvider = typeof(Binding).GetProvider();
-
-    public BindingTypeDescriptionProvider() : base(__DefaultTypeProvider) { }
 
     /// <inheritdoc />
     public override ICustomTypeDescriptor GetTypeDescriptor(Type ObjectType, object? Instance) => 
@@ -48,10 +46,8 @@ public class BindingTypeDescriptionProvider : TypeDescriptionProvider
             : new BindingCustomTypeDescriptor(base.GetTypeDescriptor(ObjectType, Instance)!);
 }
 
-public class BindingCustomTypeDescriptor : CustomTypeDescriptor
+public class BindingCustomTypeDescriptor(ICustomTypeDescriptor parent) : CustomTypeDescriptor(parent)
 {
-    public BindingCustomTypeDescriptor(ICustomTypeDescriptor parent) : base(parent) { }
-
     /// <inheritdoc />
     public override PropertyDescriptorCollection GetProperties() => GetProperties(Array.Empty<Attribute>());
 

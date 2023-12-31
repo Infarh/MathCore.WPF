@@ -18,7 +18,7 @@ public static class DataFlowing
     {
         var data_flow_collection = (DataFlowCollection)d.GetValue(DataFlowsProperty);
         if (data_flow_collection is null)
-            SetDataFlows(d, data_flow_collection = new DataFlowCollection());
+            SetDataFlows(d, data_flow_collection = []);
         return data_flow_collection;
     }
 

@@ -16,9 +16,9 @@ internal class TexPredefinedFormulaParser
 
     static TexPredefinedFormulaParser()
     {
-        __TypeMappings    = new Dictionary<string, Type>();
-        __ArgValueParsers = new Dictionary<string, ArgumentValueParser>();
-        __ActionParsers   = new Dictionary<string, ActionParser>();
+        __TypeMappings    = [];
+        __ArgValueParsers = [];
+        __ActionParsers   = [];
         //__FormulaParser   = new TexFormulaParser();
 
         __TypeMappings.Add("Formula", typeof(TexFormula));

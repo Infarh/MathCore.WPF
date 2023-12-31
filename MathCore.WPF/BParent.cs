@@ -24,14 +24,12 @@ public class BParent : MarkupExtension
     }
 }
 
-public class B : MarkupExtension
+public class B(string Path) : MarkupExtension
 {
+    public B() : this(null) { }
+
     [ConstructorArgument(nameof(Path))]
-    public string Path { get; set; } = null!;
-
-    public B() { }
-
-    public B(string Path) => this.Path = Path;
+    public string Path { get; set; } = Path;
 
     public override object ProvideValue(IServiceProvider sp)
     {
@@ -44,14 +42,12 @@ public class B : MarkupExtension
     }
 }
 
-public class Bself : MarkupExtension
+public class Bself(string Path) : MarkupExtension
 {
+    public Bself() : this(null) { }
+
     [ConstructorArgument(nameof(Path))]
-    public string Path { get; set; } = null!;
-
-    public Bself() { }
-
-    public Bself(string Path) => this.Path = Path;
+    public string Path { get; set; } = Path;
 
     public override object ProvideValue(IServiceProvider sp)
     {
@@ -65,20 +61,20 @@ public class Bself : MarkupExtension
     }
 }
 
-public class Brel : MarkupExtension
+public class Brel(string Path) : MarkupExtension
 {
+    public Brel() : this(null) { }
+
+    public Brel(string Path, Type AncessorType) : this(Path) => this.AncessorType = AncessorType;
+
+    public Brel(string Path, Type AncessorType, int AncessorLevel) : this(Path, AncessorType) => this.AncessorLevel = AncessorLevel;
+
     [ConstructorArgument(nameof(Path))]
-    public string Path { get; set; } = null!;
+    public string Path { get; set; } = Path;
 
     public Type AncessorType { get; set; } = null!;
 
     public int AncessorLevel { get; set; } = 1;
-
-    public Brel() { }
-
-    public Brel(string Path) => this.Path = Path;
-    public Brel(string Path, Type AncessorType) : this(Path) => this.AncessorType = AncessorType;
-    public Brel(string Path, Type AncessorType, int AncessorLevel) : this(Path, AncessorType) => this.AncessorLevel = AncessorLevel;
 
     public override object ProvideValue(IServiceProvider sp)
     {

@@ -10,23 +10,17 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(CombineMulti))]
-public class CombineMulti : MultiValueValueConverter
+public class CombineMulti(IMultiValueConverter First, IValueConverter Then) : MultiValueValueConverter
 {
+    public CombineMulti() : this(null, null) { }
+
+    public CombineMulti(IMultiValueConverter First) : this(First, null) { }
+
     [ConstructorArgument("First")]
-    public IMultiValueConverter? First { get; set; }
+    public IMultiValueConverter? First { get; set; } = First;
 
     [ConstructorArgument("Then")]
-    public IValueConverter? Then { get; set; }
-
-    public CombineMulti() { }
-
-    public CombineMulti(IMultiValueConverter First) => this.First = First;
-
-    public CombineMulti(IMultiValueConverter First, IValueConverter Then)
-    {
-        this.First = First;
-        this.Then = Then;
-    }
+    public IValueConverter? Then { get; set; } = Then;
 
     protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {

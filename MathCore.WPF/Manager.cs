@@ -20,7 +20,7 @@ public static class ElementManager
     {
         var collection = (ElementControllersCollection?)obj.GetValue(ControllersProperty);
         if(collection != null) return collection;
-        collection = new ElementControllersCollection();
+        collection = [];
         obj.SetValue(ControllersProperty, collection);
         return collection;
     }
@@ -86,7 +86,7 @@ public abstract class ElementController<TElement> : ElementController
 
 public class ElementControllersCollection : IList<ElementController>
 {
-    private readonly List<ElementController> _Items = new();
+    private readonly List<ElementController> _Items = [];
     private DependencyObject _Element;
 
     public DependencyObject Element

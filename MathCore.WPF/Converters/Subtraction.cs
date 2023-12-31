@@ -8,9 +8,7 @@ namespace MathCore.WPF.Converters;
 
 /// <summary>Преобразователь вычитания вещественного числа из значения</summary>
 [MarkupExtensionReturnType(typeof(Subtraction))]
-public class Subtraction : SimpleDoubleValueConverter
+public class Subtraction(double P) : SimpleDoubleValueConverter(P, (v, p) => v - p, (r, p) => r + p)
 {
     public Subtraction() : this(0) { }
-
-    public Subtraction(double P) : base(P, (v, p) => v - p, (r, p) => r + p) { }
 }

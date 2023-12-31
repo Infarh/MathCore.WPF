@@ -13,8 +13,8 @@ public class Deviation : DoubleValueConverter
 
     protected override double Convert(double v, double? p = null)
     {
-        var deviation = v - _LastValue;
+        var dev = v - _LastValue;
         _LastValue = v;
-        return deviation;
+        return dev;
     }
 }

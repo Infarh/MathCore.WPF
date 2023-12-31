@@ -48,13 +48,13 @@ public class TexFormulaParser
     {
         __IsInitialized = false;
 
-        __PredefinedFormulas = new Dictionary<string, TexFormula>();
+        __PredefinedFormulas = [];
         Initialize();
     }
 
     private static void Initialize()
     {
-        __Commands = new HashSet<string> { "frac", "sqrt" };
+        __Commands = ["frac", "sqrt"];
 
         var formula_settings_parser = new TexPredefinedFormulaSettingsParser();
         __Symbols    = formula_settings_parser.GetSymbolMappings();

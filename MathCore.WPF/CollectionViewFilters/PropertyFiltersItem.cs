@@ -39,7 +39,7 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
 
     #endregion
 
-    private readonly ObservableCollection<PropertyFilterItem> _Filters = new();
+    private readonly ObservableCollection<PropertyFilterItem> _Filters = [];
 
     public ICommand AddNewFilterCommand { get; }
 

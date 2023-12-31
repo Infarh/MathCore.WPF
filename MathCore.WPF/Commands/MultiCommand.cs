@@ -11,9 +11,11 @@ using MathCore.WPF.ViewModels;
 namespace MathCore.WPF.Commands;
 
 [ContentProperty("Commands")]
-public class MultiCommand : LambdaCommand, IAddChild
+public class MultiCommand(params ICommand[] commands) : LambdaCommand, IAddChild
 {
-    private readonly Collection<ICommand> _Commands = new();
+    public MultiCommand() : this(Array.Empty<ICommand>()) { }
+
+    private readonly Collection<ICommand> _Commands = new(commands);
 
     private bool _ExecuteIndependently = true;
 
@@ -26,9 +28,6 @@ public class MultiCommand : LambdaCommand, IAddChild
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
     public Collection<ICommand> Commands => _Commands;
 
-    public MultiCommand() { }
-
-    public MultiCommand(params ICommand[] commands) => _Commands.AddItems(commands);
 
     /// <inheritdoc />
     public override bool CanExecute(object? parameter)

@@ -18,11 +18,7 @@ public class EnumValues : MarkupExtension
 
     public EnumValues() { }
 
-    public EnumValues(Type type)
-    {
-        if (!type.IsEnum) throw new ArgumentException("Тип не является перечислением", nameof(type));
-        Type = type;
-    }
+    public EnumValues(Type type) => Type = type;
 
     public override object? ProvideValue(IServiceProvider sp) => _Type?.GetEnumValues();
 }

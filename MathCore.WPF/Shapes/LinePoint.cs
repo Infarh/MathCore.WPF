@@ -8,8 +8,8 @@ namespace MathCore.WPF.Shapes;
 
 public static class LinePoint
 {
-    private static readonly List<WeakReference> __StartPointAttachedLinesList = new();
-    private static readonly List<WeakReference> __EndPointAttachedLinesList = new();
+    private static readonly List<WeakReference> __StartPointAttachedLinesList = [];
+    private static readonly List<WeakReference> __EndPointAttachedLinesList = [];
 
     private static bool IsStartAttached(Line line)
     {

@@ -9,43 +9,36 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 /// <summary>Преобразователь значений, комбинирующий действие нескольких вложенных преобразователей</summary>
+/// <remarks>Инициализация нового комбинированного преобразователя значений</remarks>
+/// <param name="First">Первый вложенный преобразователь значения</param>
+/// <param name="Then">Второй вложенный преобразователь значения</param>
+/// <param name="Other">Остальные вложенные преобразователя значений</param>
 [MarkupExtensionReturnType(typeof(Combine))]
-public class Combine : ValueConverter
+public class Combine(IValueConverter First, IValueConverter Then, params IValueConverter[] Other) : ValueConverter
 {
+    /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
+    public Combine() : this(null, null, null!) { }
+
+    /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
+    /// <param name="First">Первый вложенный преобразователь значения</param>
+    /// <param name="Then">Второй вложенный преобразователь значения</param>
+    public Combine(IValueConverter First, IValueConverter Then) : this(First, Then, null!)
+    {
+        this.First = First;
+        this.Then = Then;
+    }
+
     /// <summary>Первый применяемый вложенный преобразователь</summary>
     [ConstructorArgument("First")]
-    public IValueConverter? First { get; set; }
+    public IValueConverter? First { get; set; } = First;
 
     /// <summary>Второй применяемый вложенный преобразователь</summary>
     [ConstructorArgument("Then")]
-    public IValueConverter? Then { get; set; }
+    public IValueConverter? Then { get; set; } = Then;
 
     /// <summary>Массив остальных вложенных преобразователей</summary>
     [ConstructorArgument("Other")]
-    public IValueConverter[]? Other { get; set; }
-
-    /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
-    public Combine() { }
-
-    /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
-    /// <param name="First">Первый вложенный преобразователь значения</param>
-    /// <param name="Then">Второй вложенный преобразователь значения</param>
-    public Combine(IValueConverter First, IValueConverter Then)
-    {
-        this.First = First;
-        this.Then = Then;
-    }
-
-    /// <summary>Инициализация нового комбинированного преобразователя значений</summary>
-    /// <param name="First">Первый вложенный преобразователь значения</param>
-    /// <param name="Then">Второй вложенный преобразователь значения</param>
-    /// <param name="Other">Остальные вложенные преобразователя значений</param>
-    public Combine(IValueConverter First, IValueConverter Then, params IValueConverter[] Other)
-    {
-        this.First = First;
-        this.Then = Then;
-        this.Other = Other;
-    }
+    public IValueConverter[]? Other { get; set; } = Other;
 
     /// <inheritdoc />
     protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c)

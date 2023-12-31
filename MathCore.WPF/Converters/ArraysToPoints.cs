@@ -13,14 +13,9 @@ public class ArraysToPoints : MultiValueValueConverter
 {
     protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
-        if(vv is null) throw new ArgumentNullException(nameof(vv));
-        if(vv.Length != 2) throw new ArgumentOutOfRangeException(nameof(vv));
+        if (vv is not [IEnumerable e1, IEnumerable e2])
+            throw new ArgumentException("Параметр конвертера должен быть массивом из двух ячеек с перечислениями IEnumerable", nameof(vv));
 
-        if(vv[0] is not IEnumerable) throw new InvalidCastException("Argument #0 is not IEnumerable<object>");
-        if(vv[1] is not IEnumerable) throw new InvalidCastException("Argument #1 is not IEnumerable<object>");
-
-        var e1 = (IEnumerable)vv[0];
-        var e2 = (IEnumerable)vv[1];
         Func<object, object>? f1 = null;
         Func<object, object>? f2 = null;
         Point Func(object x, object y) => 

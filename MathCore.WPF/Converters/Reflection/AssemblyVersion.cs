@@ -4,7 +4,4 @@
 namespace MathCore.WPF.Converters.Reflection;
 
 [MarkupExtensionReturnType(typeof(AssemblyVersion))]
-public class AssemblyVersion : AssemblyConverter
-{
-    public AssemblyVersion() : base(a => a.GetName().Version) { }
-}
+public class AssemblyVersion() : AssemblyConverter(a => a.GetName().Version);

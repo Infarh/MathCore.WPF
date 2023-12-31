@@ -11,8 +11,8 @@ internal class GlueSettingsParser
 
     static GlueSettingsParser()
     {
-        __TypeMappings  = new Dictionary<string, TexAtomType>();
-        __StyleMappings = new Dictionary<string, TexStyle>();
+        __TypeMappings  = [];
+        __StyleMappings = [];
 
         SetTypeMappings();
         SetStyleMappings();
@@ -83,8 +83,8 @@ internal class GlueSettingsParser
 
     private void ParseGlueTypes()
     {
-        _GlueTypes        = new List<Glue>();
-        _GlueTypeMappings = new Dictionary<string, int>();
+        _GlueTypes        = [];
+        _GlueTypeMappings = [];
 
         var default_index = -1;
         var index        = 0;

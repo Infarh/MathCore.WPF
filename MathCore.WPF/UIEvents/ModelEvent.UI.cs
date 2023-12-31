@@ -61,7 +61,7 @@ public partial class ModelEvent
     }
 
     private static readonly Dictionary<(UIElement element, IModelEvent e), EventSourceHandler> __Handlers = 
-        new();
+        [];
 
     private static void OnSourceChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {

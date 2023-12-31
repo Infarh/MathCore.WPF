@@ -8,8 +8,8 @@ namespace MathCore.WPF.WindowTest.ViewModels;
 
 class Graph : ViewModel, IEnumerable<Node>, IEnumerable<Link>
 {
-    private readonly ObservableCollection<Node> _Nodes = new ObservableCollection<Node>();
-    private readonly ObservableCollection<Link> _Links = new ObservableCollection<Link>();
+    private readonly ObservableCollection<Node> _Nodes = [];
+    private readonly ObservableCollection<Link> _Links = [];
 
     public IEnumerable<Node> Nodes => _Nodes;
     public IEnumerable<Link> Links => _Links;

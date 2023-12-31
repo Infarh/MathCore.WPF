@@ -8,13 +8,13 @@ using MathCore.WPF.ViewModels;
 namespace MathCore.WPF.Operations;
 
 /// <summary>Операция</summary>
-public class Operation : ViewModel, IOperation
+/// <remarks>Инициализация новой операции</remarks>
+/// <param name="Execute">Функция, выполняемая операцией</param>
+/// <param name="CanExecute">Проверка возможности выполнения операции</param>
+public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute = null) : ViewModel, IOperation
 {
     /// <summary>Выполняемая операция</summary>
-    private readonly OperationAction _Execute;
-
-    /// <summary>Проверка возможности выполнения операции</summary>
-    private readonly Func<object?, bool>? _CanExecute;
+    private readonly OperationAction _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
 
     /// <summary>Задача операции</summary>
     private Task? _OperationTask;
@@ -25,22 +25,13 @@ public class Operation : ViewModel, IOperation
     /// <summary>Таймер замера времени выполнения операции</summary>
     private Stopwatch? _Timer;
 
-    /// <summary>Инициализация новой операции</summary>
-    /// <param name="Execute">Функция, выполняемая операцией</param>
-    /// <param name="CanExecute">Проверка возможности выполнения операции</param>
-    public Operation(OperationAction Execute, Func<object?, bool>? CanExecute = null)
-    {
-        _Execute    = Execute ?? throw new ArgumentNullException(nameof(Execute));
-        _CanExecute = CanExecute;
-    }
-
     #region Command Start - Выполнить операцию
 
     /// <summary>Выполнить операцию</summary>
     private Command? _Start;
 
     /// <summary>Выполнить операцию</summary>
-    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, _CanExecute);
+    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, CanExecute);
 
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(object? p)
@@ -189,13 +180,13 @@ public class Operation : ViewModel, IOperation
 }
 
 /// <summary>Операция</summary>
-public class Operation<T> : ViewModel, IOperation
+/// <remarks>Инициализация новой операции</remarks>
+/// <param name="Execute">Функция, выполняемая операцией</param>
+/// <param name="CanExecute">Проверка возможности выполнения операции</param>
+public class Operation<T>(OperationAction<T> Execute, Func<T?, bool>? CanExecute = null) : ViewModel, IOperation
 {
     /// <summary>Выполняемая операция</summary>
-    private readonly OperationAction<T> _Execute;
-
-    /// <summary>Проверка возможности выполнения операции</summary>
-    private readonly Func<T?, bool>? _CanExecute;
+    private readonly OperationAction<T> _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
 
     /// <summary>Задача операции</summary>
     private Task? _OperationTask;
@@ -206,22 +197,13 @@ public class Operation<T> : ViewModel, IOperation
     /// <summary>Таймер замера времени выполнения операции</summary>
     private Stopwatch? _Timer;
 
-    /// <summary>Инициализация новой операции</summary>
-    /// <param name="Execute">Функция, выполняемая операцией</param>
-    /// <param name="CanExecute">Проверка возможности выполнения операции</param>
-    public Operation(OperationAction<T> Execute, Func<T?, bool>? CanExecute = null)
-    {
-        _Execute    = Execute ?? throw new ArgumentNullException(nameof(Execute));
-        _CanExecute = CanExecute;
-    }
-
     #region Command Start - Выполнить операцию
 
     /// <summary>Выполнить операцию</summary>
     private Command? _Start;
 
     /// <summary>Выполнить операцию</summary>
-    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, _CanExecute);
+    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, CanExecute);
 
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(T? p)
@@ -370,13 +352,13 @@ public class Operation<T> : ViewModel, IOperation
 }
 
 /// <summary>Операция</summary>
-public class Operation<T, TResult> : ViewModel, IOperation
+/// <remarks>Инициализация новой операции</remarks>
+/// <param name="Execute">Функция, выполняемая операцией</param>
+/// <param name="CanExecute">Проверка возможности выполнения операции</param>
+public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, bool>? CanExecute = null) : ViewModel, IOperation
 {
     /// <summary>Выполняемая операция</summary>
-    private readonly OperationFunc<T, TResult> _Execute;
-
-    /// <summary>Проверка возможности выполнения операции</summary>
-    private readonly Func<T?, bool>? _CanExecute;
+    private readonly OperationFunc<T, TResult> _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
 
     /// <summary>Задача операции</summary>
     private Task<TResult>? _OperationTask;
@@ -387,22 +369,13 @@ public class Operation<T, TResult> : ViewModel, IOperation
     /// <summary>Таймер замера времени выполнения операции</summary>
     private Stopwatch? _Timer;
 
-    /// <summary>Инициализация новой операции</summary>
-    /// <param name="Execute">Функция, выполняемая операцией</param>
-    /// <param name="CanExecute">Проверка возможности выполнения операции</param>
-    public Operation(OperationFunc<T, TResult> Execute, Func<T?, bool>? CanExecute = null)
-    {
-        _Execute    = Execute ?? throw new ArgumentNullException(nameof(Execute));
-        _CanExecute = CanExecute;
-    }
-
     #region Command Start - Выполнить операцию
 
     /// <summary>Выполнить операцию</summary>
     private Command? _Start;
 
     /// <summary>Выполнить операцию</summary>
-    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, _CanExecute);
+    public ICommand Start => _Start ??= Command.New(OnStartCommandExecutedAsync, CanExecute);
 
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(T? p)

@@ -9,30 +9,22 @@ namespace MathCore.WPF.Commands;
 public abstract partial class Command
 {
     /// <summary>Построитель команды</summary>
-    public readonly ref struct Builder
+    public readonly ref struct Builder(Action<object?> Execute, Func<object?, bool>? CanExecute = null, string? Name = null, string? Description = null)
     {
-        /// <summary>Название команды</summary>
-        public string? Name { get; init; }
-
-        /// <summary>Описание команды</summary>
-        public string? Description { get; init; }
-
-        /// <summary>Выполняемый командой делегат</summary>
-        public Action<object?> Execute { get; init; }
-
-        /// <summary>Делегат проверки возможности выполнения команды</summary>
-        public Func<object?, bool>? CanExecute { get; init; }
-
         public Builder(Action Execute, Func<bool>? CanExecute = null, string? Name = null, string? Description = null)
             : this(_ => Execute(), CanExecute is null ? null : _ => CanExecute(), Name, Description) { }
 
-        public Builder(Action<object?> Execute, Func<object?, bool>? CanExecute = null, string? Name = null, string? Description = null)
-        {
-            this.Execute = Execute;
-            this.CanExecute = CanExecute;
-            this.Name = Name;
-            this.Description = Description;
-        }
+        /// <summary>Название команды</summary>
+        public string? Name { get; init; } = Name;
+
+        /// <summary>Описание команды</summary>
+        public string? Description { get; init; } = Description;
+
+        /// <summary>Выполняемый командой делегат</summary>
+        public Action<object?> Execute { get; init; } = Execute;
+
+        /// <summary>Делегат проверки возможности выполнения команды</summary>
+        public Func<object?, bool>? CanExecute { get; init; } = CanExecute;
 
         /// <summary>Добавить выполняемый делегат в конец</summary>
         /// <param name="Execute">Выполняемый командой делегат</param>
@@ -68,23 +60,15 @@ public abstract partial class Command
         public static implicit operator Command(Builder builder) => builder.Build();
     }
 
-    public readonly ref struct BuilderAsync
+    public readonly ref struct BuilderAsync(Func<object?, Task> Execute, Func<object?, bool>? CanExecute = null, string? Name = null, string? Description = null)
     {
-        public string? Name { get; init; }
-        public string? Description { get; init; }
-        public Func<object?, Task> Execute { get; init; }
-        public Func<object?, bool>? CanExecute { get; init; }
-
         public BuilderAsync(Func<Task> Execute, Func<bool>? CanExecute = null, string? Name = null, string? Description = null)
-            : this(_ => Execute(), CanExecute is null ? null : _ => CanExecute(), Name, Description) { }
+           : this(_ => Execute(), CanExecute is null ? null : _ => CanExecute(), Name, Description) { }
 
-        public BuilderAsync(Func<object?, Task> Execute, Func<object?, bool>? CanExecute = null, string? Name = null, string? Description = null)
-        {
-            this.Execute = Execute;
-            this.CanExecute = CanExecute;
-            this.Name = Name;
-            this.Description = Description;
-        }
+        public string? Name { get; init; } = Name;
+        public string? Description { get; init; } = Description;
+        public Func<object?, Task> Execute { get; init; } = Execute;
+        public Func<object?, bool>? CanExecute { get; init; } = CanExecute;
 
         //public Builder Invoke(Func<object?, Task> Execute) => this with { Execute = this.Execute + Execute };
         //public Builder InvokeBefore(Func<object?, Task> Execute) => this with { Execute = Execute + this.Execute };
@@ -113,16 +97,10 @@ public abstract partial class Command
         public static implicit operator Command(BuilderAsync builder) => builder.Build();
     }
 
-    public readonly ref struct BuilderT<T>
+    public readonly ref struct BuilderT<T>(Action<T?> Execute, Func<T?, bool>? CanExecute = null, string? Name = null, string? Description = null)
     {
-        public Action<T?> Execute { get; init; }
-        public Func<T?, bool>? CanExecute { get; init; }
-
-        public BuilderT(Action<T?> Execute, Func<T?, bool>? CanExecute = null, string? Name = null, string? Description = null)
-        {
-            this.Execute = Execute;
-            this.CanExecute = CanExecute;
-        }
+        public Action<T?> Execute { get; init; } = Execute;
+        public Func<T?, bool>? CanExecute { get; init; } = CanExecute;
 
         public BuilderT<T> Invoke(Action<T?> Execute) => this with { Execute = this.Execute + Execute };
         public BuilderT<T> InvokeBefore(Action<T?> Execute) => this with { Execute = Execute + this.Execute };

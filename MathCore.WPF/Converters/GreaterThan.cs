@@ -10,13 +10,11 @@ namespace MathCore.WPF.Converters;
 
 [MarkupExtensionReturnType(typeof(GreaterThan))]
 [ValueConversion(typeof(double), typeof(bool?))]
-public class GreaterThan : DoubleToBool
+public class GreaterThan(double value) : DoubleToBool
 {
-    public double Value { get; set; } = double.NegativeInfinity;
+    public GreaterThan() : this(double.NegativeInfinity) { }
 
-    public GreaterThan() { }
-
-    public GreaterThan(double value) => Value = value;
+    public double Value { get; set; } = value;
 
     protected override bool? Convert(double v) => v.IsNaN() ? null : v > Value;
 }

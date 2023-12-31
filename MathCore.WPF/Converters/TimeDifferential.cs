@@ -10,18 +10,16 @@ namespace MathCore.WPF.Converters;
 
 /// <summary>Конвертер дифференцирования значения по времени</summary>
 [MarkupExtensionReturnType(typeof(TimeDifferential))]
-public class TimeDifferential : SimpleDoubleValueConverter
+public class TimeDifferential(double K, bool IgnoreNaN = false) : SimpleDoubleValueConverter(K)
 {
+    public TimeDifferential() : this(1) { }
+
     private DateTime _LastTime = DateTime.Now;
 
     private double _LastValue = double.NaN;
 
     [ConstructorArgument(nameof(IgnoreNaN))]
-    public bool IgnoreNaN { get; set; }
-
-    public TimeDifferential() : this(1) { }
-
-    public TimeDifferential(double K, bool IgnoreNaN = false) : base(K) => this.IgnoreNaN = IgnoreNaN;
+    public bool IgnoreNaN { get; set; } = IgnoreNaN;
 
     /// <inheritdoc />
     protected override double To(double v, double p)

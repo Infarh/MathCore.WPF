@@ -15,10 +15,7 @@ public class ArrayToStringConverter : ValueConverter
 
         var result = new StringBuilder();
         for (var i = 0; i < array.Length; i++)
-        {
-            result.Append(array.GetValue(i));
-            result.Append(',');
-        }
+            result.Append(array.GetValue(i)).Append(',');
 
         if (result.Length > 0)
             result.Length--;

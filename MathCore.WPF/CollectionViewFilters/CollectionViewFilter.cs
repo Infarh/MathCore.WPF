@@ -20,15 +20,26 @@ using MathCore.Annotations;
 
 namespace MathCore.WPF;
 
-public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>> where TCriteria : notnull
+public class CollectionViewFilter<TCriteria, TItem>(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) 
+    : ReadOnlyObservableCollection<CollectionViewFilterItem<TCriteria>>(filters) 
+    where TCriteria : notnull
 {
+    public CollectionViewFilter(ICollectionView view, Func<TItem, TCriteria> selector, string? Name = null) : this([])
+    {
+        _Name = Name;
+        _View = view;
+        _Selector = selector;
+        ((INotifyCollectionChanged)view.SourceCollection).CollectionChanged += OnCollectionChanged;
+        view.CollectionChanged += OnViewCollectionChanged;
+    }
+
     private readonly ICollectionView? _View;
     
     private readonly Func<TItem, TCriteria>? _Selector;
     
-    private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
+    private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection = filters;
     
-    private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
+    private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = [];
     
     private bool _Enabled;
     
@@ -59,17 +70,6 @@ public class CollectionViewFilter<TCriteria, TItem> : ReadOnlyObservableCollecti
         }
     }
     public event EventHandler? NameChanged;
-
-    private CollectionViewFilter(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
-
-    public CollectionViewFilter(ICollectionView view, Func<TItem, TCriteria> selector, string? Name = null) : this(new())
-    {
-        _Name = Name;
-        _View = view;
-        _Selector = selector;
-        ((INotifyCollectionChanged)view.SourceCollection).CollectionChanged += OnCollectionChanged;
-        view.CollectionChanged += OnViewCollectionChanged;
-    }
 
     private void OnViewCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs? E)
     {
@@ -169,7 +169,7 @@ public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<Coll
     
     private readonly ObservableCollection<CollectionViewFilterItem<TCriteria>> _FiltersCollection;
     
-    private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = new();
+    private readonly Dictionary<TCriteria, CollectionViewFilterItem<TCriteria>> _Filters = [];
     
     private bool _Enabled;
     
@@ -204,7 +204,7 @@ public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<Coll
 
     private CollectionViewFilter(ObservableCollection<CollectionViewFilterItem<TCriteria>> filters) : base(filters) => _FiltersCollection = filters;
 
-    public CollectionViewFilter(ICollectionView view, Func<object, TCriteria> selector, string? Name = null) : this(new())
+    public CollectionViewFilter(ICollectionView view, Func<object, TCriteria> selector, string? Name = null) : this([])
     {
         _Name = Name;
         _View = view;
@@ -322,7 +322,7 @@ public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<Coll
 public static class CollectionViewFilter
 {
     /// <summary>Задействованные представления</summary>
-    private static readonly HashSet<CollectionViewSource> __Collections = new();
+    private static readonly HashSet<CollectionViewSource> __Collections = [];
 
     /// <summary>Регулярное выражение проверки корректности имени свойства</summary>
     private static readonly Regex __PropertyNameRegex = new(@"@?[a-zA-Z][\w_]*", RegexOptions.Compiled | RegexOptions.Singleline);
@@ -540,7 +540,7 @@ public static class CollectionViewFilter
     }
 
     /// <summary>Словарь свойств типов объектов</summary>
-    private static readonly Dictionary<TypeProperty, Delegate> __Properties = new();
+    private static readonly Dictionary<TypeProperty, Delegate> __Properties = [];
 
     /// <summary>Метод фильтрации элементов модели представления коллекции</summary>
     /// <param name="sender">Модель представления коллекции, фильтрацию объекта которой требуется осуществить</param>

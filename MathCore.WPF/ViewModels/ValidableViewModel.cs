@@ -39,7 +39,7 @@ public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDat
         public string? GetErrorMessageIfInvalid() => IsPropertyValid(out var error) ? null : error;
     }
 
-    private readonly Dictionary<string, List<PropertyValidator>> _Validators = new();
+    private readonly Dictionary<string, List<PropertyValidator>> _Validators = [];
 
     protected ValidableViewModel(bool CheckDependencies = true)
         : base(CheckDependencies)

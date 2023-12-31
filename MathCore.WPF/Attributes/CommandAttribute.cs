@@ -3,12 +3,10 @@
 namespace MathCore.WPF.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class CommandAttribute : Attribute
+public class CommandAttribute(string Name) : Attribute
 {
+    public CommandAttribute() : this(null) { }
+
     [ConstructorArgument(nameof(Name))]
-    public string? Name { get; set; }
-
-    public CommandAttribute() { }
-
-    public CommandAttribute(string Name) => this.Name = Name;
+    public string? Name { get; set; } = Name;
 }

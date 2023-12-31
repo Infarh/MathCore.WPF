@@ -11,19 +11,17 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
-public class Round : DoubleValueConverter
+public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
 {
+    public Round() : this(0) { }
+
+    public Round(int Digits) : this(Digits, default) { }
+
     [ConstructorArgument(nameof(Digits))]
-    public int Digits { get; set; }
+    public int Digits { get; set; } = Digits;
 
     [ConstructorArgument(nameof(Rounding))]
-    public MidpointRounding Rounding { get; set; }
-
-    public Round() {}
-
-    public Round(int Digits) => this.Digits = Digits;
-
-    public Round(int Digits, MidpointRounding Rounding) : this(Digits) => this.Rounding = Rounding;
+    public MidpointRounding Rounding { get; set; } = Rounding;
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => Digits > 0 
