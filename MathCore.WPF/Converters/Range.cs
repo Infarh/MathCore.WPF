@@ -7,6 +7,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Range))]
 public class Range(Interval interval) : DoubleValueConverter
 {
     public Range() : this(double.NegativeInfinity, double.PositiveInfinity) { }

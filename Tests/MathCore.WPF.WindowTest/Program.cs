@@ -17,7 +17,7 @@ internal static class Program
         app.Run();
     }
 }
-
+    
 internal class TestControl : Control
 {
     public string Title { get; set; }

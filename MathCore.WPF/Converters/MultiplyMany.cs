@@ -1,15 +1,22 @@
 ﻿using System.Globalization;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(MultiplyMany))]
 public class MultiplyMany : MultiValueValueConverter
 {
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
-        if (vv is null) return null;
-        if (vv.Length == 1 && vv[0] is null) return double.NaN;
+        switch (vv)
+        {
+            case null:
+                return null;
+            case [null]:
+                return double.NaN;
+        }
 
         var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
 

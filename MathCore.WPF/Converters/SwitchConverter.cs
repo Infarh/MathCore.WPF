@@ -27,7 +27,7 @@ public class SwitchConverter : DependencyObject, IValueConverter
     public List<SwitchCase> Cases { get; } = [];
 
     // IValueConverter implementation
-    public object? Convert(object? v, Type t, object p, CultureInfo c)
+    public object? Convert(object? v, Type t, object? p, CultureInfo c)
     {
         foreach (var switch_case in Cases)
             if (Equals(switch_case.In, v))
@@ -36,7 +36,7 @@ public class SwitchConverter : DependencyObject, IValueConverter
         return DefaultValue;
     }
 
-    public object? ConvertBack(object? v, Type t, object p, CultureInfo c)
+    public object? ConvertBack(object? v, Type t, object? p, CultureInfo c)
     {
         if (Equals(v, DefaultValue))
             return null;

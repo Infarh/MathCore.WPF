@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows.Markup;
+using System.Windows.Media;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 // ReSharper disable once IdentifierTypo
+[MarkupExtensionReturnType(typeof(CSplineInterp))]
 public class CSplineInterp(PointCollection points) : DoubleValueConverter
 {
     public CSplineInterp() : this([]) { }

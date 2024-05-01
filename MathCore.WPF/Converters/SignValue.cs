@@ -13,8 +13,15 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
+[MarkupExtensionReturnType(typeof(SignValue))]
 public class SignValue : DoubleValueConverter
 {
+    public double K { get; set; } = 1;
+
+    public double B { get; set; } = 0;
+
+    public double W { get; set; } = 1;
+
     [ConstructorArgument(nameof(Delta))]
     public double Delta { get; set; }
 
@@ -33,6 +40,6 @@ public class SignValue : DoubleValueConverter
             : Math.Abs(v) <= Delta 
                 ? 0 
                 : Inverse 
-                    ? -Math.Sign(v) 
-                    : Math.Sign(v);
+                    ? -Math.Sign(W * v) * K + B
+                    : Math.Sign(W * v) * K + B;
 }

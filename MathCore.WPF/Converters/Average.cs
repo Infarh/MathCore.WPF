@@ -1,4 +1,6 @@
-﻿using MathCore.Values;
+﻿using System.Windows.Markup;
+
+using MathCore.Values;
 using MathCore.WPF.Converters.Base;
 
 // ReSharper disable UnusedType.Global
@@ -6,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Average))]
 public class Average(int Length) : SimpleDoubleValueConverter
 {
     public Average() : this(0) { }

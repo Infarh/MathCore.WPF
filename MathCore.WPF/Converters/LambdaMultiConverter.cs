@@ -5,8 +5,10 @@ using System.Windows.Data;
 
 namespace MathCore.WPF.Converters;
 
-public class LambdaMultiConverter(LambdaMultiConverter.Converter Conversation,
-LambdaMultiConverter.ConverterBack? BackConversation = null) : IMultiValueConverter
+public class LambdaMultiConverter(
+    LambdaMultiConverter.Converter Conversation,
+    LambdaMultiConverter.ConverterBack? BackConversation = null) 
+    : IMultiValueConverter
 {
     public LambdaMultiConverter(Func<object[]?, object?> SimpleConverter, Func<object?, object[]?>? SimpleBackConverter = null)
         : this(

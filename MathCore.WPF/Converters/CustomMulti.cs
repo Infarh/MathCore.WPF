@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(CustomMulti))]
 public class CustomMulti : MultiValueValueConverter
 {
     public Func<object[]?, object?>? Forward { get; set; }

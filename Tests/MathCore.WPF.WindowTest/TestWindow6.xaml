@@ -1,0 +1,45 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindow6"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        DataContext="{vm:TestWindow6ViewModel}"
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="List 1">
+            <ListBox ItemsSource="{Binding Values}" local:ListBoxEx.DraggableItems="True">
+                <!--<ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>-->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox Header="{Binding Title}" Content="{Binding Value}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="List 2">
+            <ListBox ItemsSource="{Binding Values}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <GroupBox Header="{Binding Title}" Content="{Binding Value}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </GroupBox>
+    </Grid>
+</Window>

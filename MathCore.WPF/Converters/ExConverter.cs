@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(ExConverter))]
 public class ExConverter : ValueConverter
 {
     public IValueConverter? From { get; set; }

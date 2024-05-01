@@ -12,6 +12,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ContentProperty("Converters")]
+[MarkupExtensionReturnType(typeof(Composite))]
 public class Composite : ValueConverter, IAddChild
 {
     private readonly List<IValueConverter> _Converters = [];

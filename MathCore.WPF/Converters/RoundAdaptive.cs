@@ -12,6 +12,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
+[MarkupExtensionReturnType(typeof(RoundAdaptive))]
 public class RoundAdaptive(int Digits, MidpointRounding Rounding) : DoubleValueConverter
 {
     public RoundAdaptive() : this(0) { }

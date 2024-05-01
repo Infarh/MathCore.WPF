@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,13 +8,14 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Arithmetic))]
 #if NET7_0_OR_GREATER
 public partial class Arithmetic : ValueConverter
 #else
 public class Arithmetic : ValueConverter
 #endif
 {
-    private const string __ArithmeticParseExpression = "([+\\-*/]{1,1})\\s{0,}(\\-?[\\d\\.]+)";
+    private const string __ArithmeticParseExpression = @"([+\-*/]{1,1})\s{0,}(\-?[\d\.]+)";
 #if NET7_0_OR_GREATER
     private readonly Regex _Pattern = MyRegex();
     [GeneratedRegex(__ArithmeticParseExpression, RegexOptions.Compiled)]

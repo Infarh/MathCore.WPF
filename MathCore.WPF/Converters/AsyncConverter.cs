@@ -6,18 +6,19 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(Task), typeof(AsyncConverterTaskCompletionNotifier))]
+[MarkupExtensionReturnType(typeof(AsyncConverter))]
 public class AsyncConverter : MarkupExtension, IValueConverter
 {
     public object? RunningPlaceholder { get; set; }
 
-    public object? Convert(object v, Type t, object p, CultureInfo c) => v switch
+    public object? Convert(object? v, Type t, object? p, CultureInfo c) => v switch
     {
         Task task => new AsyncConverterTaskCompletionNotifier(task, RunningPlaceholder),
-        { }       => throw new InvalidOperationException($"Тип значения {v.GetType()} не поддерживается"),
+        not null  => throw new InvalidOperationException($"Тип значения {v.GetType()} не поддерживается"),
         _         => null
     };
 
-    public object? ConvertBack(object v, Type t, object p, CultureInfo c) => throw new NotSupportedException();
+    public object? ConvertBack(object? v, Type t, object? p, CultureInfo c) => throw new NotSupportedException();
 
     public override object ProvideValue(IServiceProvider sp) => this;
 }
@@ -86,18 +87,18 @@ public sealed class AsyncConverterTaskCompletionNotifier : INotifyPropertyChange
     {
         if (PropertyChanged is not { } on_property_changed) return;
 
-        on_property_changed(this, new("IsCompleted"));
+        on_property_changed(this, new(nameof(IsCompleted)));
         if (task.IsCanceled)
-            on_property_changed(this, new("IsCanceled"));
+            on_property_changed(this, new(nameof(IsCanceled)));
         else if (task.IsFaulted)
         {
-            on_property_changed(this, new("IsFaulted"));
-            on_property_changed(this, new("ErrorMessage"));
+            on_property_changed(this, new(nameof(IsFaulted)));
+            on_property_changed(this, new(nameof(ErrorMessage)));
         }
         else
         {
-            on_property_changed(this, new("IsSuccessfullyCompleted"));
-            on_property_changed(this, new("Result"));
+            on_property_changed(this, new(nameof(IsSuccessfullyCompleted)));
+            on_property_changed(this, new(nameof(Result)));
         }
     }
 

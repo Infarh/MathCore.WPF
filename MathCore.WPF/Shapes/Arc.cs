@@ -53,17 +53,17 @@ public class Arc : ShapeBase
         r /= 2;
         var x = (0.5 + r * Math.Cos(a)) * rect.Width + rect.Left;
         var y = (0.5 + r * Math.Sin(a)) * rect.Height + rect.Top;
-        return new Point(x, y);
+        return new(x, y);
     }
 
     private static Geometry GetGeometry(Rect rect, double Start, double End, double Radius)
     {
         var w = rect.Width;
         var h = rect.Height;
-        if(w.Equals(0d) || h.Equals(0d)) return Geometry.Empty;
+        if(w == 0 || h == 0) return Geometry.Empty;
+
         var d = Math.Abs(End - Start);
         if(d >= 360) return new EllipseGeometry(rect);
-
 
         var p1 = GetPoint(Math.Min(Start, End), Radius, rect);
         var p2 = GetPoint(Math.Max(Start, End), Radius, rect);

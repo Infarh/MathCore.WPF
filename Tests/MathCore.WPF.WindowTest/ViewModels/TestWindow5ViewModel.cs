@@ -112,5 +112,13 @@ public class TestWindow5ViewModel : ViewModel
 
 public class TestValueViewModel : TitledViewModel
 {
+    #region Value : int - Значение
 
+    /// <summary>Значение</summary>
+    private int _Value = 5;
+
+    /// <summary>Значение</summary>
+    public int Value { get => _Value; set => Set(ref _Value, value); }
+
+    #endregion
 }

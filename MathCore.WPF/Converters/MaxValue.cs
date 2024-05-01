@@ -8,6 +8,7 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(IEnumerable), typeof(object))]
+[MarkupExtensionReturnType(typeof(MaxValue))]
 public class MaxValue : MarkupExtension, IMultiValueConverter, IValueConverter
 {
     public override object ProvideValue(IServiceProvider sp) => this;

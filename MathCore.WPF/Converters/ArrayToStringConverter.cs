@@ -1,11 +1,13 @@
 ﻿using System.Globalization;
 using System.Text;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(ArrayToStringConverter))]
 public class ArrayToStringConverter : ValueConverter
 {
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c)

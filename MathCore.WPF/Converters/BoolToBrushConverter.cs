@@ -12,8 +12,11 @@ namespace MathCore.WPF.Converters;
 public class BoolToBrushConverter : ValueConverter
 {
     public Brush TrueColorBrush { get; set; } = new SolidColorBrush(Colors.Green);
+
     public Brush FalseColorBrush { get; set; } = new SolidColorBrush(Colors.Orange);
+
     public Brush NullColorBrush { get; set; } = new SolidColorBrush(Colors.Transparent);
+
     protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) => v switch
     {
         null => NullColorBrush,
