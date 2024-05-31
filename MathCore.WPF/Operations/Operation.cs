@@ -37,7 +37,7 @@ public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute 
     private Task OnStartCommandExecutedAsync(object? p)
     {
         Error         = null;
-        _Cancellation = new CancellationTokenSource();
+        _Cancellation = new();
         var cancel = _Cancellation.Token;
         _Timer         = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);
@@ -209,7 +209,7 @@ public class Operation<T>(OperationAction<T> Execute, Func<T?, bool>? CanExecute
     private Task OnStartCommandExecutedAsync(T? p)
     {
         Error         = null;
-        _Cancellation = new CancellationTokenSource();
+        _Cancellation = new();
         var cancel = _Cancellation.Token;
         _Timer         = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);
@@ -381,7 +381,7 @@ public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, b
     private Task OnStartCommandExecutedAsync(T? p)
     {
         Error         = null;
-        _Cancellation = new CancellationTokenSource();
+        _Cancellation = new();
         var cancel = _Cancellation.Token;
         _Timer         = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);

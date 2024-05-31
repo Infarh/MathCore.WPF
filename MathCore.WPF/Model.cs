@@ -49,14 +49,14 @@ public class Model : Freezable, IAddChild
             var property = GetProperty(Name);
             if (property != null) return property;
 
-            property = new ModelProperty(Name);
+            property = new(Name);
             Properties.Add(property);
             return property;
         }
     }
 
     /// <summary>Инициализация новой динамической модели объекта</summary>
-    public Model() => _ModelObject = new ModelObject(this);
+    public Model() => _ModelObject = new(this);
 
     /// <summary>Получить свойство объекта по указанному имени</summary>
     /// <param name="Name">Имя свойства объекта</param>
@@ -75,7 +75,7 @@ public class Model : Freezable, IAddChild
         else if (!CreateNewProperty) return false;
         else
         {
-            property = new ModelProperty(PropertyName, Value);
+            property = new(PropertyName, Value);
             Properties.Add(property);
         }
 

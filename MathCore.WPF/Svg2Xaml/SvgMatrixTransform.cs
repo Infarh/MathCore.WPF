@@ -63,7 +63,7 @@ class SvgMatrixTransform
     {
         var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
         if(tokens.Length == 6)
-            return new SvgMatrixTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+            return new(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[2].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[3].Trim(), CultureInfo.InvariantCulture.NumberFormat), 

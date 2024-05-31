@@ -44,7 +44,7 @@ abstract class SvgDrawableBaseElement : SvgBaseElement
     public readonly SvgLength FillOpacity = new(1.0);
     public readonly SvgLength StrokeOpacity = new(1.0);
     public readonly SvgTransform? Transform;
-    public readonly SvgPaint? Fill = new SvgColorPaint(new SvgColor(0, 0, 0));
+    public readonly SvgPaint? Fill = new SvgColorPaint(new(0, 0, 0));
     public readonly SvgPaint? Stroke; /* new SvgColorPaint(new SvgColor(0, 0, 0)); */
     public readonly SvgLength StrokeWidth = new(1);
     public readonly SvgStrokeLinecap StrokeLinecap = SvgStrokeLinecap.Butt;

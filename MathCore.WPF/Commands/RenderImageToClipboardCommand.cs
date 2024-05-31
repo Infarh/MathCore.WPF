@@ -23,7 +23,7 @@ public class RenderImageToClipboardCommand : LambdaCommand<FrameworkElement>
     {
         var height = e.ActualHeight;
         var width = e.ActualWidth;
-        e.Arrange(new Rect(0, 0, width, height));
+        e.Arrange(new(0, 0, width, height));
         e.UpdateLayout();
 
         var bitmap_height = height * PictureFactor;

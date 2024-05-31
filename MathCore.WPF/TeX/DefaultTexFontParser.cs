@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using System.IO;
-using System.IO.Packaging;
 using System.Reflection;
 using System.Windows.Media;
 using System.Xml.Linq;
@@ -56,29 +54,27 @@ internal class DefaultTexFontParser
         var result = new TexFontInfo[__FontIdCount];
 
         var font_descriptions = _RootElement.Element("FontDescriptions");
-        if(font_descriptions != null)
+        if (font_descriptions == null) return result;
+        foreach(var font_element in font_descriptions.Elements("Font"))
         {
-            foreach(var font_element in font_descriptions.Elements("Font"))
-            {
-                var font_name = font_element.AttributeValue("name");
-                var font_id   = font_element.AttributeInt32Value("id");
-                var space    = font_element.AttributeDoubleValue("space");
-                var x_height  = font_element.AttributeDoubleValue("xHeight");
-                var quad     = font_element.AttributeDoubleValue("quad");
-                var skew_char = font_element.AttributeInt32Value("skewChar", -1);
+            var font_name = font_element.AttributeValue("name");
+            var font_id   = font_element.AttributeInt32Value("id");
+            var space    = font_element.AttributeDoubleValue("space");
+            var x_height  = font_element.AttributeDoubleValue("xHeight");
+            var quad     = font_element.AttributeDoubleValue("quad");
+            var skew_char = font_element.AttributeInt32Value("skewChar", -1);
 
-                var font     = CreateFont(font_name);
-                var font_info = new TexFontInfo(font_id, font, x_height, space, quad);
-                if(skew_char != -1)
-                    font_info.SkewCharacter = (char)skew_char;
+            var font     = CreateFont(font_name);
+            var font_info = new TexFontInfo(font_id, font, x_height, space, quad);
+            if(skew_char != -1)
+                font_info.SkewCharacter = (char)skew_char;
 
-                foreach(var char_element in font_element.Elements("Char"))
-                    ProcessCharElement(char_element, font_info);
+            foreach(var char_element in font_element.Elements("Char"))
+                ProcessCharElement(char_element, font_info);
 
-                if(result[font_id] != null)
-                    throw new InvalidOperationException($"Multiple entries for font with ID {font_id}.");
-                result[font_id] = font_info;
-            }
+            if(result[font_id] != null)
+                throw new InvalidOperationException($"Multiple entries for font with ID {font_id}.");
+            result[font_id] = font_info;
         }
 
         return result;
@@ -118,7 +114,7 @@ internal class DefaultTexFontParser
             var character  = mapping_element.AttributeInt32Value("ch");
             var font_id     = mapping_element.AttributeInt32Value("fontId");
 
-            result.Add(symbol_name, new CharFont((char)character, font_id));
+            result.Add(symbol_name, new((char)character, font_id));
         }
 
         if(!result.ContainsKey("sqrt"))
@@ -199,20 +195,19 @@ internal class DefaultTexFontParser
                 var code        = map_range_element.AttributeValue("code");
                 var code_mapping = __RangeTypeMappings[code];
 
-                char_fonts[code_mapping] = new CharFont((char)character, font_id);
+                char_fonts[code_mapping] = new((char)character, font_id);
             }
             _ParsedTextStyles.Add(text_style_name, char_fonts);
         }
     }
 
-    private GlyphTypeface CreateFont(string name)
+    private static GlyphTypeface CreateFont(string name)
     {
-        GlyphTypeface glyph_typeface;
-        using var     memory_package  = new MemoryPackage();
-        using var     font_stream     = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}");
-        var           typeface_source = memory_package.CreatePart(font_stream);
+        using var memory_package  = new MemoryPackage();
+        using var font_stream     = Assembly.GetExecutingAssembly().GetManifestResourceStream($"{TexUtilities.ResourcesFontsNamespace}{name}");
+        var       typeface_source = memory_package.CreatePart(font_stream);
 
-        glyph_typeface = new GlyphTypeface(typeface_source);
+        GlyphTypeface glyph_typeface = new(typeface_source);
 
         memory_package.DeletePart(typeface_source);
 
@@ -257,48 +252,5 @@ internal class DefaultTexFontParser
     public interface ICharChildParser
     {
         void Parse(XElement element, char character, TexFontInfo FontInfo);
-    }
-}
-
-sealed class MemoryPackage : IDisposable
-{
-    private static int __PackageCounter;
-
-    private readonly Uri _PackageUri = new("payload://memorypackage" + Interlocked.Increment(ref __PackageCounter), UriKind.Absolute);
-    private readonly Package _Package = Package.Open(new MemoryStream(), FileMode.Create);
-    private int _PartCounter;
-
-    public MemoryPackage() => PackageStore.AddPackage(this._PackageUri, this._Package);
-
-    public Uri CreatePart(Stream stream, string ContentType = "application/octet-stream")
-    {
-        var part_uri = new Uri("/stream" + ++_PartCounter, UriKind.Relative);
-
-        var part = _Package.CreatePart(part_uri, ContentType);
-
-        Debug.Assert(part != null, "part != null");
-        using(var part_stream = part.GetStream())
-            CopyStream(stream, part_stream);
-
-        // Each packUri must be globally unique because WPF might perform some caching based on it.
-        return PackUriHelper.Create(this._PackageUri, part_uri);
-    }
-
-    public void DeletePart(Uri PackUri) => _Package.DeletePart(PackUriHelper.GetPartUri(PackUri));
-
-    public void Dispose()
-    {
-        PackageStore.RemovePackage(_PackageUri);
-        _Package.Close();
-    }
-
-    private static void CopyStream(Stream source, Stream destination)
-    {
-        const int buffer_size = 4096;
-
-        var buffer = new byte[buffer_size];
-        int read;
-        while((read = source.Read(buffer, 0, buffer.Length)) != 0)
-            destination.Write(buffer, 0, read);
     }
 }

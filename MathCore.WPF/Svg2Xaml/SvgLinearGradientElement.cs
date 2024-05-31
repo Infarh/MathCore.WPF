@@ -71,8 +71,8 @@ class SvgLinearGradientElement
     protected override GradientBrush SetBrush(GradientBrush brush)
     {
         if (base.SetBrush(brush) is not LinearGradientBrush linear_gradient_brush) return brush;
-        linear_gradient_brush.StartPoint = new Point(X1.ToDouble(), Y1.ToDouble());
-        linear_gradient_brush.EndPoint   = new Point(X2.ToDouble(), Y2.ToDouble());
+        linear_gradient_brush.StartPoint = new(X1.ToDouble(), Y1.ToDouble());
+        linear_gradient_brush.EndPoint   = new(X2.ToDouble(), Y2.ToDouble());
         return brush;
     }
 

@@ -54,14 +54,14 @@ public readonly ref struct FileDialogEx
         public bool Equals(FileFilterItem other) => Title == other.Title && Values.SequenceEqual(other.Values, StringComparer.OrdinalIgnoreCase);
     }
 
-    public static FileDialogEx OpenFile() => new FileDialogEx { IsSaveFileDialog = false };
-    public static FileDialogEx OpenFile(string Title) => new FileDialogEx { IsSaveFileDialog = false, Title = Title };
+    public static FileDialogEx OpenFile() => new() { IsSaveFileDialog = false };
+    public static FileDialogEx OpenFile(string Title) => new() { IsSaveFileDialog = false, Title = Title };
 
-    public static FileDialogEx CreateFile() => new FileDialogEx { IsSaveFileDialog = true };
-    public static FileDialogEx CreateFile(string Title) => new FileDialogEx { IsSaveFileDialog = true, Title = Title };
+    public static FileDialogEx CreateFile() => new() { IsSaveFileDialog = true };
+    public static FileDialogEx CreateFile(string Title) => new() { IsSaveFileDialog = true, Title = Title };
 
     public static FileDialogEx New() => new();
-    public static FileDialogEx New(string Title) => new FileDialogEx { Title = Title };
+    public static FileDialogEx New(string Title) => new() { Title = Title };
 
     public bool IsSaveFileDialog { get; init; }
 

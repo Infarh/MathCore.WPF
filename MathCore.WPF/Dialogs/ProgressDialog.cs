@@ -19,7 +19,7 @@ public static class ProgressDialog
         var current_window = UserDialogService.CurrentWindow;
 
         var progress_view = Application.Current.Dispatcher.CheckAccess()
-            ? new ProgressDialogWindow { DataContext = progress_model, Owner = current_window }
+            ? new() { DataContext = progress_model, Owner = current_window }
             : Application.Current.Dispatcher.Invoke(() => new ProgressDialogWindow { DataContext = progress_model, Owner = current_window });
 
         void OnDisposed(object? s, EventArgs e)
@@ -73,7 +73,7 @@ public static class ProgressDialog
         var current_window = UserDialogService.CurrentWindow;
 
         var progress_view = Application.Current.Dispatcher.CheckAccess()
-            ? new ProgressDialogWindow { DataContext = progress_model, Owner = current_window }
+            ? new() { DataContext = progress_model, Owner = current_window }
             : Application.Current.Dispatcher.Invoke(() => new ProgressDialogWindow { DataContext = progress_model, Owner = current_window });
 
         void OnDisposed(object? s, EventArgs e)

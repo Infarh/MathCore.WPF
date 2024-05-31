@@ -46,8 +46,8 @@ public static class CollectionExtensions
             TDest Destination,
             Func<TSourceItem, TDestItem>? Converter = null)
         {
-            _SourceRef = new WeakReference(Source);
-            _DestinationRef = new WeakReference(Destination);
+            _SourceRef = new(Source);
+            _DestinationRef = new(Destination);
             _Converter = Converter ?? (s => (TDestItem)(object)s!);
             AddItems();
             Source.CollectionChanged += OnCollectionChanged;
@@ -235,10 +235,10 @@ public static class CollectionExtensions
             var count = 0;
             items_collection.AddItemsRange(items.ForeachLazy(i => { if (count++ == 0) I = i; else I = null; }));
             if (count == 0) return;
-            p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Count"));
-            p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Item[]"));
+            p.OnPropertyChanged(collection, new("Count"));
+            p.OnPropertyChanged(collection, new("Item[]"));
             var e = count == 1
-                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, I)
+                ? new(NotifyCollectionChangedAction.Add, I)
                 : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
             p.OnCollectionChanged(collection, e);
         }
@@ -278,10 +278,10 @@ public static class CollectionExtensions
             var count = 0;
             items_collection.RemoveItemsRange(items.ForeachLazy(i => { if (count++ == 0) I = i; else I = null; }));
             if (count == 0) return;
-            p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Count"));
-            p.OnPropertyChanged(collection, new PropertyChangedEventArgs("Item[]"));
+            p.OnPropertyChanged(collection, new("Count"));
+            p.OnPropertyChanged(collection, new("Item[]"));
             var e = count == 1
-                ? new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, I)
+                ? new(NotifyCollectionChangedAction.Remove, I)
                 : new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset);
             p.OnCollectionChanged(collection, e);
         }

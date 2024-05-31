@@ -104,7 +104,7 @@ public class GroupsCollectionFilterItem : CollectionViewFilterItem
 
     private void CreateGroup(out GroupCollectionFilterItem Group, object Value)
     {
-        Group = new GroupCollectionFilterItem(Value);
+        Group = new(Value);
         if (Value is IComparable comparable && Groups.Count > 0)
         {
             int i;

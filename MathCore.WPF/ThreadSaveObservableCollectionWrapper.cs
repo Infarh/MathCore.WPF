@@ -81,7 +81,7 @@ public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollect
         ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
 
         _BaseCollection = collection;
-        OnBaseCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        OnBaseCollectionChanged(this, new(NotifyCollectionChangedAction.Reset));
     }
 
     public static implicit operator ThreadSaveObservableCollectionWrapper<T>(ObservableCollection<T> collection) => new(collection);

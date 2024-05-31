@@ -115,8 +115,8 @@ public class Pie : Shape
 
     public Pie()
     {
-        _Cycle = new CombinedGeometry(GeometryCombineMode.Exclude, _OuterEllipse, _InnerEllipse);
-        _Pie   = new CombinedGeometry(GeometryCombineMode.Exclude, _OuterEllipse, _InnerEllipse);
+        _Cycle = new(GeometryCombineMode.Exclude, _OuterEllipse, _InnerEllipse);
+        _Pie   = new(GeometryCombineMode.Exclude, _OuterEllipse, _InnerEllipse);
     }
 
     protected override Size MeasureOverride(Size ConstraintSize)
@@ -132,7 +132,7 @@ public class Pie : Shape
         var m    = t / 2;
         _Rect = size.IsEmpty || size.Width.Equals(0d) || size.Height.Equals(0d)
             ? Rect.Empty
-            : new Rect(m, m, Math.Max(0, size.Width - t), Math.Max(0, size.Height - t));
+            : new(m, m, Math.Max(0, size.Width - t), Math.Max(0, size.Height - t));
 
         switch(Stretch)
         {
@@ -210,7 +210,7 @@ public class Pie : Shape
         r /= 2;
         var x = (0.5 + r * Math.Cos(a)) * rect.Width + rect.Left;
         var y = (0.5 + r * Math.Sin(a)) * rect.Height + rect.Top;
-        return new Point(x, y);
+        return new(x, y);
     }
 
     private static void DrawGeometry(StreamGeometryContext g, Rect rect, double R, double r, double start, double stop, bool aligned)

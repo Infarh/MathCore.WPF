@@ -19,7 +19,7 @@ public class DropData : Behavior<UIElement>
             nameof(DropDataCommand),
             typeof(ICommand),
             typeof(DropData),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая в момент получения данных</summary>
     public ICommand? DropDataCommand
@@ -38,7 +38,7 @@ public class DropData : Behavior<UIElement>
             nameof(DataFormat),
             typeof(string),
             typeof(DropData),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Предпочитаемый формат данных</summary>
     public string? DataFormat
@@ -57,7 +57,7 @@ public class DropData : Behavior<UIElement>
             nameof(DataFormatAutoConversation),
             typeof(bool),
             typeof(DropData),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Автоматически преобразовывать данные</summary>
     public bool DataFormatAutoConversation
@@ -76,7 +76,7 @@ public class DropData : Behavior<UIElement>
             nameof(DataType),
             typeof(Type),
             typeof(DropData),
-            new PropertyMetadata(default(Type)));
+            new(default(Type)));
 
     /// <summary>Предпочитаемый тип данных</summary>
     public Type? DataType

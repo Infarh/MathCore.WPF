@@ -53,7 +53,7 @@ class SvgCoordinate
     {
         var length = SvgLength.Parse(value);
 
-        return new SvgCoordinate(length.Value, length.Unit);
+        return new(length.Value, length.Unit);
 
     }
 

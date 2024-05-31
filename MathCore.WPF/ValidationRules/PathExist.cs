@@ -22,6 +22,6 @@ public class PathExist : Base.NullValueValidation
             && (AllowNull && string.IsNullOrWhiteSpace(path) || Directory.Exists(path) || File.Exists(path));
         return exist 
             ? ValidationResult.ValidResult 
-            : new ValidationResult(false, ErrorMessage ?? "Путь не существует");
+            : new(false, ErrorMessage ?? "Путь не существует");
     }
 }

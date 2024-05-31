@@ -66,6 +66,6 @@ class SvgEllipseElement
 
     //==========================================================================
     public override Geometry GetBaseGeometry() => new EllipseGeometry(
-        new Point(CenterX.ToDouble(), CenterY.ToDouble()), RadiusX.ToDouble(),
+        new(CenterX.ToDouble(), CenterY.ToDouble()), RadiusX.ToDouble(),
         RadiusY.ToDouble());
 } // class SvgEllipseElement

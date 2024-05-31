@@ -57,7 +57,7 @@ public class NestedBinding : MarkupExtension
                 continue;
             }
 
-            tree.Nodes.Add(new NestedBindingNode(MultiBinding.Bindings.Count));
+            tree.Nodes.Add(new(MultiBinding.Bindings.Count));
             MultiBinding.Bindings.Add(binding_base);
         }
 

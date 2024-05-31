@@ -133,7 +133,7 @@ public class DragBehavior : Behavior<FrameworkElement>
 
         protected override bool OnMouseMove(FrameworkElement element, double dx, double dy)
         {
-            element.Margin = new Thickness(
+            element.Margin = new(
                 _StartThickness.Left + dx,
                 _StartThickness.Top + dy,
                 _StartThickness.Right - dx,
@@ -221,7 +221,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Enabled),
             typeof(bool),
             typeof(DragBehavior),
-            new PropertyMetadata(default(bool), (s, e) => { if (!(bool)e.NewValue) ((DragBehavior)s)?._ObjectMover?.Dispose(); }));
+            new(default(bool), (s, e) => { if (!(bool)e.NewValue) ((DragBehavior)s)?._ObjectMover?.Dispose(); }));
 
     /// <summary></summary>
     public bool Enabled
@@ -331,7 +331,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Xmin),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -352,7 +352,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Xmax),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -373,7 +373,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Ymin),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -394,7 +394,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(Ymax),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -406,7 +406,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(AllowX),
             typeof(bool),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Разрешено перемещение по оси X</summary>
     public bool AllowX
@@ -425,7 +425,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             nameof(AllowY),
             typeof(bool),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Разрешено перетаскивание по оси Y</summary>
     public bool AllowY

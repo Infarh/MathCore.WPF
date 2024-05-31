@@ -20,7 +20,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(WindowStyle),
             typeof(Style),
             typeof(UserDialog),
-            new PropertyMetadata(default(Style)));
+            new(default(Style)));
 
     /// <summary>Стиль окна диалога</summary>
     [Category("Other")]
@@ -41,7 +41,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(IsDialogDefault),
             typeof(bool),
             typeof(UserDialog),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Отображение по умолчанию в виде диалога</summary>
     [Category("Other")]
@@ -62,7 +62,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(WindowContent),
             typeof(object),
             typeof(UserDialog),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Содержимое окна</summary>
     [Category("Other")]
@@ -79,7 +79,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(Template),
             typeof(DataTemplate),
             typeof(UserDialog),
-            new PropertyMetadata(default(DataTemplate)));
+            new(default(DataTemplate)));
 
     /// <summary>Шаблон диалога</summary>
     [Category("Other")]
@@ -100,7 +100,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(WindowIcon),
             typeof(ImageSource),
             typeof(UserDialog),
-            new PropertyMetadata(default(ImageSource)));
+            new(default(ImageSource)));
 
     /// <summary>Иконка окна диалога</summary>
     [Category("Other")]
@@ -121,7 +121,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(WindowWidth),
             typeof(double),
             typeof(UserDialog),
-            new PropertyMetadata(default(double)));
+            new(default(double)));
 
     /// <summary>Ширина окна</summary>
     [Category("Other")]
@@ -142,7 +142,7 @@ public sealed class UserDialog : FrameworkElement, ICommand
             nameof(WindowHeight),
             typeof(double),
             typeof(UserDialog),
-            new PropertyMetadata(default(double)));
+            new(default(double)));
 
     /// <summary>Высота окна</summary>
     [Category("Other")]

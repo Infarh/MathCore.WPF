@@ -19,7 +19,7 @@ public class DropFile : Behavior<FrameworkElement>
             nameof(DropFileCommand),
             typeof(ICommand),
             typeof(DropFile),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда получения файла</summary>
     //[Category("")]
@@ -55,7 +55,7 @@ public class DropFile : Behavior<FrameworkElement>
         element.Drop -= OnDrop;
     }
 
-    private void OnDragEnter(object Sender, DragEventArgs E)
+    private static void OnDragEnter(object Sender, DragEventArgs E)
     {
         if (!E.Data.GetDataPresent(DataFormats.FileDrop)) return;
         if (!((string[])E.Data.GetData(DataFormats.FileDrop)!).Any(File.Exists)) return;

@@ -20,7 +20,7 @@ public class ResizingAdorner : Adorner
     /// <inheritdoc />
     public ResizingAdorner(UIElement AdornedElement) : base(AdornedElement)
     {
-        _VisualChildren = new VisualCollection(this);
+        _VisualChildren = new(this);
         BuildAdornerCorner(ref _TopLeft, Cursors.SizeNWSE);
         BuildAdornerCorner(ref _TopRight, Cursors.SizeNESW);
         BuildAdornerCorner(ref _BottomLeft, Cursors.SizeNESW);
@@ -129,10 +129,10 @@ public class ResizingAdorner : Adorner
         var adorner_width  = DesiredSize.Width;
         var adorner_height = DesiredSize.Height;
 
-        _TopLeft.Arrange(new Rect(-adorner_width / 2, -adorner_height / 2, adorner_width, adorner_height));
-        _TopRight.Arrange(new Rect(size_width - adorner_width / 2, -adorner_height / 2, adorner_width, adorner_height));
-        _BottomLeft.Arrange(new Rect(-adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
-        _BottomRight.Arrange(new Rect(size_width - adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
+        _TopLeft.Arrange(new(-adorner_width / 2, -adorner_height / 2, adorner_width, adorner_height));
+        _TopRight.Arrange(new(size_width - adorner_width / 2, -adorner_height / 2, adorner_width, adorner_height));
+        _BottomLeft.Arrange(new(-adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
+        _BottomRight.Arrange(new(size_width - adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
 
         // Return the final size.
         return FinalSize;
@@ -144,7 +144,7 @@ public class ResizingAdorner : Adorner
     {
         if (thumb != null) return;
         // Set some arbitrary visual characteristics.
-        _VisualChildren.Add(thumb = new Thumb
+        _VisualChildren.Add(thumb = new()
         {
             Cursor     = cursor,
             Height     = 10,

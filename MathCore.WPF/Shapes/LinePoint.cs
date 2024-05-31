@@ -30,7 +30,7 @@ public static class LinePoint
             }
             for(var i = 0; i < to_remove.Count; i++)
                 __StartPointAttachedLinesList.Remove(to_remove[i]);
-            if(!exist) __StartPointAttachedLinesList.Add(new WeakReference(line));
+            if(!exist) __StartPointAttachedLinesList.Add(new(line));
             return exist;
         }
     }
@@ -54,7 +54,7 @@ public static class LinePoint
             }
             for(var i = 0; i < to_remove.Count; i++)
                 __EndPointAttachedLinesList.Remove(to_remove[i]);
-            if(!exist) __EndPointAttachedLinesList.Add(new WeakReference(line));
+            if(!exist) __EndPointAttachedLinesList.Add(new(line));
             return exist;
         }
     }
@@ -74,8 +74,8 @@ public static class LinePoint
         line.SetBinding(Line.X1Property, new Binding
         {
             Source              = line,
-            Path                = new PropertyPath("(0)", StartProperty),
-            Converter           = new Lambda<Point, double>(start => start.X, x1 => new Point(x1, line.Y1)),
+            Path                = new("(0)", StartProperty),
+            Converter           = new Lambda<Point, double>(start => start.X, x1 => new(x1, line.Y1)),
             UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             Mode                = BindingMode.TwoWay
         });
@@ -83,8 +83,8 @@ public static class LinePoint
         line.SetBinding(Line.Y1Property, new Binding
         {
             Source              = line,
-            Path                = new PropertyPath("(0)", StartProperty),
-            Converter           = new Lambda<Point, double>(start => start.Y, y1 => new Point(line.X1, y1)),
+            Path                = new("(0)", StartProperty),
+            Converter           = new Lambda<Point, double>(start => start.Y, y1 => new(line.X1, y1)),
             UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             Mode                = BindingMode.TwoWay
         });
@@ -107,16 +107,16 @@ public static class LinePoint
         line.SetBinding(Line.X2Property, new Binding
         {
             Source              = line,
-            Path                = new PropertyPath("(0)", EndProperty),
-            Converter           = new Lambda<Point, double>(end => end.X, x2 => new Point(x2, line.Y2)),
+            Path                = new("(0)", EndProperty),
+            Converter           = new Lambda<Point, double>(end => end.X, x2 => new(x2, line.Y2)),
             UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             Mode                = BindingMode.TwoWay
         });
         line.SetBinding(Line.Y2Property, new Binding
         {
             Source              = line,
-            Path                = new PropertyPath("(0)", EndProperty),
-            Converter           = new Lambda<Point, double>(end => end.Y, y2 => new Point(line.X2, y2)),
+            Path                = new("(0)", EndProperty),
+            Converter           = new Lambda<Point, double>(end => end.Y, y2 => new(line.X2, y2)),
             UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
             Mode                = BindingMode.TwoWay
         });

@@ -114,7 +114,7 @@ public class LambdaCommand : Command
             OnError(e);
         }
 
-        OnCompleteExecuting(new EventArgs<object?>(parameter));
+        OnCompleteExecuting(new(parameter));
     }
 
     /// <summary>Проверка возможности выполнения команды</summary>
@@ -304,8 +304,8 @@ public class LambdaCommand<T> : Command, IObservableEx<T?>
 
     private SimpleObservableEx<T?>? _Observable;
 
-    public IDisposable Subscribe(IObserverEx<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer);
-    public IDisposable Subscribe(IObserver<T?> observer) => (_Observable ??= new SimpleObservableEx<T?>()).Subscribe(observer);
+    public IDisposable Subscribe(IObserverEx<T?> observer) => (_Observable ??= new()).Subscribe(observer);
+    public IDisposable Subscribe(IObserver<T?> observer) => (_Observable ??= new()).Subscribe(observer);
 
     #endregion
 

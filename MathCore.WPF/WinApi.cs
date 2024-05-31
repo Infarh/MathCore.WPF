@@ -807,23 +807,23 @@ internal class AppBarInfo
             bResult = SystemParametersInfo(SPI_GETWORKAREA, 0, rawRect, 0);
             rc      = (RECT)Marshal.PtrToStructure(rawRect, rc.GetType());
 
-            if (bResult != 1) return new Rectangle(0, 0, 0, 0);
+            if (bResult != 1) return new(0, 0, 0, 0);
             Marshal.FreeHGlobal(rawRect);
-            return new Rectangle(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+            return new(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
         }
     }
 
 
     public void GetPosition(string strClassName, string strWindowName)
     {
-        m_data        = new APPBARDATA();
+        m_data        = new();
         m_data.cbSize = (uint)Marshal.SizeOf(m_data.GetType());
 
         if (FindWindow(strClassName, strWindowName) == IntPtr.Zero)
-            throw new Exception("Failed to find an AppBar that matched the given criteria");
+            throw new("Failed to find an AppBar that matched the given criteria");
 
         if (SHAppBarMessage(ABM_GETTASKBARPOS, ref m_data) != 1)
-            throw new Exception("Failed to communicate with the given AppBar");
+            throw new("Failed to communicate with the given AppBar");
     }
 
 

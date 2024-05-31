@@ -15,7 +15,7 @@ public sealed class ModelObject(Model Model) : DynamicObject, INotifyPropertyCha
     /// <summary>Метод генерации события изменения свойства модели</summary>
     /// <param name="PropertyName"></param>
     [NotifyPropertyChangedInvocator]
-    private void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    private void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new(PropertyName));
 
     /// <summary>Модель, доступ к свойствам которой осуществляет динамический объект</summary>
     private readonly Model _Model = Model.NotNull();

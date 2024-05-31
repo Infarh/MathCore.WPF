@@ -15,9 +15,9 @@ public class OutRange(Interval interval) : DoubleToBool
 {
     public OutRange() : this(0, 0) { }
 
-    public OutRange(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
+    public OutRange(double MinMax) : this(new(-MinMax, MinMax)) { }
 
-    public OutRange(double Min, double Max) : this(new Interval(Math.Min(Min, Max), Math.Max(Min, Max))) { }
+    public OutRange(double Min, double Max) : this(new(Math.Min(Min, Max), Math.Max(Min, Max))) { }
 
     [ConstructorArgument(nameof(Min))]
     public double Min { get => interval.Min; set => interval = interval.SetMin(value); }

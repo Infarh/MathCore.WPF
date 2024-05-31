@@ -13,7 +13,7 @@ public class RangeCollectionFilterItem : CollectionViewFilterItem
             nameof(Min),
             typeof(IComparable),
             typeof(RangeCollectionFilterItem),
-            new PropertyMetadata(default(IComparable), RefreshSource));
+            new(default(IComparable), RefreshSource));
 
     /// <summary>Свойство минимального фильтруемого значения</summary>
     public IComparable? Min
@@ -32,7 +32,7 @@ public class RangeCollectionFilterItem : CollectionViewFilterItem
             nameof(MinInclude),
             typeof(bool),
             typeof(RangeCollectionFilterItem),
-            new PropertyMetadata(true, RefreshSource));
+            new(true, RefreshSource));
 
     /// <summary>Включать нижний предел в выборку</summary>
     public bool MinInclude
@@ -51,7 +51,7 @@ public class RangeCollectionFilterItem : CollectionViewFilterItem
             nameof(Max),
             typeof(IComparable),
             typeof(RangeCollectionFilterItem),
-            new PropertyMetadata(default(IComparable), RefreshSource));
+            new(default(IComparable), RefreshSource));
 
     /// <summary>Свойство максимума фильтра</summary>
     public IComparable? Max
@@ -70,7 +70,7 @@ public class RangeCollectionFilterItem : CollectionViewFilterItem
             nameof(MaxInclude),
             typeof(bool),
             typeof(RangeCollectionFilterItem),
-            new PropertyMetadata(true, RefreshSource));
+            new(true, RefreshSource));
 
     /// <summary>Включать верхний предел в выборку</summary>
     public bool MaxInclude

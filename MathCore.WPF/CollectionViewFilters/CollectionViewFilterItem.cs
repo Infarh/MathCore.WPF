@@ -24,7 +24,7 @@ public class CollectionViewFilterItem : Freezable
             nameof(ValueConverter),
             typeof(IValueConverter),
             typeof(CollectionViewFilterItem),
-            new PropertyMetadata(default(IValueConverter)));
+            new(default(IValueConverter)));
 
     /// <summary>Конвертер фильтруемого значения</summary>
     public IValueConverter? ValueConverter
@@ -43,7 +43,7 @@ public class CollectionViewFilterItem : Freezable
             nameof(FiltredProperty),
             typeof(string),
             typeof(CollectionViewFilterItem),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Имя фильтруемого свойства объекта</summary>
     public string? FiltredProperty
@@ -62,7 +62,7 @@ public class CollectionViewFilterItem : Freezable
             nameof(FiltredValue),
             typeof(object),
             typeof(CollectionViewFilterItem),
-            new PropertyMetadata(default, RefreshSource));
+            new(default, RefreshSource));
 
     /// <summary>Значение фильтруемого свойства</summary>
     public object? FiltredValue
@@ -81,7 +81,7 @@ public class CollectionViewFilterItem : Freezable
             nameof(Enabled),
             typeof(bool),
             typeof(CollectionViewFilterItem),
-            new PropertyMetadata(true, RefreshSource));
+            new(true, RefreshSource));
 
     /// <summary>Активность фильтра</summary>
     public bool Enabled
@@ -254,7 +254,7 @@ public class CollectionViewFilterItem<TCriteria> : ReadOnlyObservableCollection<
         {
             if (_Enabled == value) return;
             _Enabled = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
+            OnPropertyChanged(new(nameof(Enabled)));
             EnabledChanged?.Invoke(this, EventArgs.Empty);
         }
     }
@@ -268,7 +268,7 @@ public class CollectionViewFilterItem<TCriteria> : ReadOnlyObservableCollection<
         {
             if (_ExistInView == value) return;
             _ExistInView = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(ExistInView)));
+            OnPropertyChanged(new(nameof(ExistInView)));
         }
     }
 

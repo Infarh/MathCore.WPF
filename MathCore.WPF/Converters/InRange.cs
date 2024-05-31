@@ -14,9 +14,9 @@ public class InRange(Interval interval) : DoubleToBool
 {
     public InRange() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
-    public InRange(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
+    public InRange(double MinMax) : this(new(-MinMax, MinMax)) { }
 
-    public InRange(double min, double max) : this(new Interval(Math.Min(min, max), Math.Max(min, max))) { }
+    public InRange(double min, double max) : this(new(Math.Min(min, max), Math.Max(min, max))) { }
 
     [ConstructorArgument(nameof(Min))]
     public double Min { get => interval.Min; set => interval = interval.SetMin(value); }

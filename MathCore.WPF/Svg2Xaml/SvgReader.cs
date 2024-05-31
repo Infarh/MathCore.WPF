@@ -54,7 +54,7 @@ public static class SvgReader
     /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
     public static DrawingImage Load(XmlReader reader, SvgReaderOptions options)
     {
-        options ??= new SvgReaderOptions();
+        options ??= new();
 
         var document = XDocument.Load(reader);
         if(document.Root.Name.NamespaceName != "http://www.w3.org/2000/svg")
@@ -92,7 +92,7 @@ public static class SvgReader
     /// <returns>  A <see cref="DrawingImage"/> containing the rendered SVG document.</returns>
     public static DrawingImage Load(Stream stream, SvgReaderOptions options)
     {
-        using var reader = XmlReader.Create(stream, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore });
+        using var reader = XmlReader.Create(stream, new() { DtdProcessing = DtdProcessing.Ignore });
         return Load(reader, options);
     }
 

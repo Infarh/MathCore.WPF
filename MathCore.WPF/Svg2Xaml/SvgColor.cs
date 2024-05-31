@@ -79,7 +79,7 @@ class SvgColor
                     var r = (float)(byte.Parse(string.Format("{0}{0}", sr), NumberStyles.HexNumber) / 255.0);
                     var g = (float)(byte.Parse(string.Format("{0}{0}", sg), NumberStyles.HexNumber) / 255.0);
                     var b = (float)(byte.Parse(string.Format("{0}{0}", sb), NumberStyles.HexNumber) / 255.0);
-                    return new SvgColor(r, g, b);
+                    return new(r, g, b);
                 }
 
                 case { Length: 6 }:
@@ -87,7 +87,7 @@ class SvgColor
                     var r = (float)(byte.Parse(color[..2], NumberStyles.HexNumber) / 255.0);
                     var g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
                     var b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
-                    return new SvgColor(r, g, b);
+                    return new(r, g, b);
                 }
             }
         }
@@ -131,7 +131,7 @@ class SvgColor
                     else
                         b = (float)(byte.Parse(components[2]) / 255.0);
 
-                    return new SvgColor(r, g, b);
+                    return new(r, g, b);
                 }
             }
         }

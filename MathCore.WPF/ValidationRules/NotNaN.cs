@@ -19,24 +19,24 @@ public class NotNaN : Base.FormattedValueValidation
         if (value is null)
             return AllowNull
                 ? ValidationResult.ValidResult 
-                : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
+                : new(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
         try
         {
             return !double.IsNaN(Convert.ToDouble(value, c)) 
                 ? ValidationResult.ValidResult 
-                : new ValidationResult(false, ErrorMessage ?? "Значение является не-числом");
+                : new(false, ErrorMessage ?? "Значение является не-числом");
         }
         catch (OverflowException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
         }
         catch (InvalidCastException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
         }
         catch (FormatException e)
         {
-            return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
+            return new(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
         }
     }
 }

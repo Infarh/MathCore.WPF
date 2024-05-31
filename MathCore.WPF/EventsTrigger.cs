@@ -21,14 +21,14 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
                     {
                         _Triggers.Add(Name, value);
                         CollectionChanged.ThreadSafeInvoke(this,
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new { value }));
+                            new(NotifyCollectionChangedAction.Add, new { value }));
                     }
                     else
                     {
                         var old_value = _Triggers[Name];
                         _Triggers[Name] = value;
                         CollectionChanged.ThreadSafeInvoke(this,
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, old_value));
+                            new(NotifyCollectionChangedAction.Replace, value, old_value));
                     }
             }
         }
@@ -44,7 +44,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
                 if (!_Triggers.ContainsKey(Name)) return false;
                 var trigger    = _Triggers[Name];
                 var is_removed = _Triggers.Remove(Name);
-                CollectionChanged.ThreadSafeInvoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new { trigger }));
+                CollectionChanged.ThreadSafeInvoke(this, new(NotifyCollectionChangedAction.Remove, new { trigger }));
                 return is_removed;
             }
         }

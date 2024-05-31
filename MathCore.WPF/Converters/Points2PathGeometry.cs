@@ -19,7 +19,7 @@ public class Points2PathGeometry : ValueConverter
         v is Point[] and [var start, .. { Length: > 0 } tail]
             ? new PathGeometry
             {
-                Figures = { new PathFigure(start, tail.Select(p => new LineSegment(p, true)), false) }
+                Figures = { new(start, tail.Select(p => new LineSegment(p, true)), false) }
             }
             : null;
 

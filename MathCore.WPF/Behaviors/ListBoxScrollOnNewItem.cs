@@ -17,7 +17,7 @@ public class ListBoxScrollOnNewItem : Behavior<ListBox>
             nameof(Enabled),
             typeof(bool),
             typeof(ListBoxScrollOnNewItem),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Включено</summary>
     //[Category("")]

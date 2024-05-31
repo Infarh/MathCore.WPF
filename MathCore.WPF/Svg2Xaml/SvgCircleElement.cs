@@ -67,6 +67,6 @@ class SvgCircleElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry() => new EllipseGeometry(new Point(CenterX.ToDouble(), CenterY.ToDouble()), 
+    public override Geometry GetBaseGeometry() => new EllipseGeometry(new(CenterX.ToDouble(), CenterY.ToDouble()), 
         Radius.ToDouble(), Radius.ToDouble());
 } // class SvgCircleElement

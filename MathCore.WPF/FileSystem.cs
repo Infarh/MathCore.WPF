@@ -282,24 +282,24 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
                     if (_Files is null) break;
                     foreach (var old_file in _Files.Where(f => !f.Exists).ToArray())
                         _Files.Remove(old_file);
-                    _Files.Add(new FileInfo(path));
+                    _Files.Add(new(path));
                 }
                 else if (System.IO.Directory.Exists(path))
                 {
                     if (_Directories is null) break;
                     foreach (var old_dir in _Directories.Where(d => !System.IO.Directory.Exists(d.Directory.FullName)).ToArray())
                         _Directories.Remove(old_dir);
-                    _Directories.Add(new DirectoryViewModel(path));
+                    _Directories.Add(new(path));
                     OnPropertyChanged(nameof(SubDirectories));
                 }
                 break;
             case WatcherChangeTypes.Created:
                 if (File.Exists(path))
-                    _Files?.Add(new FileInfo(path));
+                    _Files?.Add(new(path));
                 else if (System.IO.Directory.Exists(path))
                 {
                     if (_Directories is null) break;
-                    _Directories.Add(new DirectoryViewModel(path));
+                    _Directories.Add(new(path));
                     OnPropertyChanged(nameof(SubDirectories));
                 }
                 break;

@@ -79,7 +79,7 @@ public static class Watermark
             "VerticalAlignment",
             typeof(VerticalAlignment),
             typeof(Watermark),
-            new PropertyMetadata(VerticalAlignment.Center));
+            new(VerticalAlignment.Center));
 
 
     /// <summary>Установка значения <see cref="value"/> типа <see cref="VerticalAlignment"/> свйоству <see cref="Watermark"/>.<see cref="VerticalAlignmentProperty"/> целевого объекта <see cref="element"/></summary>
@@ -102,7 +102,7 @@ public static class Watermark
             "HorizontalAlignment",
             typeof(HorizontalAlignment),
             typeof(Watermark),
-            new PropertyMetadata(HorizontalAlignment.Left));
+            new(HorizontalAlignment.Left));
 
 
     /// <summary>Установка значения <see cref="value"/> типа <see cref="HorizontalAlignment"/> свйоству <see cref="Watermark"/>.<see cref="HorizontalAlignmentProperty"/> целевого объекта <see cref="element"/></summary>
@@ -125,7 +125,7 @@ public static class Watermark
             "FontSize",
             typeof(double),
             typeof(Watermark),
-            new PropertyMetadata(SystemFonts.MessageFontSize));
+            new(SystemFonts.MessageFontSize));
 
 
     /// <summary>Установка значения <see cref="value"/> типа <see cref="double"/> свйоству <see cref="Watermark"/>.<see cref="FontSizeProperty"/> целевого объекта <see cref="element"/></summary>
@@ -358,7 +358,7 @@ public static class Watermark
             IsHitTestVisible = false;
 
             // Новый компонент, содержащий водяной знак
-            _ContentPresenter = new ContentPresenter();
+            _ContentPresenter = new();
             // Если значение водяного знака - строка
             if (watermark is UIElement)
                 _ContentPresenter.Content = watermark;
@@ -366,38 +366,38 @@ public static class Watermark
                 _ContentPresenter.Content = new TextBlock
                 {
                     Text              = watermark.ToString(),
-                    Margin            = new Thickness(4, 0, 4, 0),
+                    Margin            = new(4, 0, 4, 0),
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
             _ContentPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", ValueProperty),
+                Path                = new("(0)", ValueProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
 
             _ContentPresenter.SetBinding(VerticalAlignmentProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", Watermark.VerticalAlignmentProperty),
+                Path                = new("(0)", Watermark.VerticalAlignmentProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(HorizontalAlignmentProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", Watermark.HorizontalAlignmentProperty),
+                Path                = new("(0)", Watermark.HorizontalAlignmentProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(TextElement.ForegroundProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", Watermark.ForegroundProperty),
+                Path                = new("(0)", Watermark.ForegroundProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(TextElement.FontSizeProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", Watermark.FontSizeProperty),
+                Path                = new("(0)", Watermark.FontSizeProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
@@ -405,12 +405,12 @@ public static class Watermark
             _ContentPresenter.Opacity = GetOpacity(Control);
             _ContentPresenter.SetBinding(OpacityProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", Watermark.OpacityProperty),
+                Path                = new("(0)", Watermark.OpacityProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
 
-            _ContentPresenter.Margin = new Thickness(
+            _ContentPresenter.Margin = new(
                 Control.Margin.Left + Control.Padding.Left,
                 Control.Margin.Top + Control.Padding.Top,
                 Control.Margin.Right + Control.Padding.Right,
@@ -435,7 +435,7 @@ public static class Watermark
 
             binding_item.SetBinding(TextElement.ForegroundProperty, new Binding
             {
-                Path                = new PropertyPath("(0)", ForegroundProperty),
+                Path                = new("(0)", ForegroundProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
@@ -479,7 +479,7 @@ public static class Watermark
         /// <param name="FinalSize">Итоговая область в родительском элементе, которую этот элемент должен использовать для собственного размещения и размещения своих дочерних элементов.</param>
         protected override Size ArrangeOverride(Size FinalSize)
         {
-            _ContentPresenter.Arrange(new Rect(FinalSize));
+            _ContentPresenter.Arrange(new(FinalSize));
             return FinalSize;
         }
 

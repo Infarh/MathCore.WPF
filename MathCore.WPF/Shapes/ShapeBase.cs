@@ -17,7 +17,7 @@ public abstract class ShapeBase : Shape
         var y1   = size.Height - t;
         _VisibleRect = size.IsEmpty || size.Width.Equals(0d) || size.Height.Equals(0d)
             ? Rect.Empty
-            : new Rect(m, m, Math.Max(0, y), Math.Max(0, y1));
+            : new(m, m, Math.Max(0, y), Math.Max(0, y1));
 
         switch(Stretch)
         {

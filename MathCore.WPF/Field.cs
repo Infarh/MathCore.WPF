@@ -15,7 +15,7 @@ public class Field : FreezableCollection<FieldValue>
             nameof(Value),
             typeof(object),
             typeof(Field),
-            new PropertyMetadata(default, OnValuePropertyChaged));
+            new(default, OnValuePropertyChaged));
 
     private static void OnValuePropertyChaged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -73,7 +73,7 @@ public class FieldValue : Freezable
             nameof(Value),
             typeof(object),
             typeof(FieldValue),
-            new PropertyMetadata(default, OnValuePropertyChanged));
+            new(default, OnValuePropertyChanged));
 
     private static void OnValuePropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {

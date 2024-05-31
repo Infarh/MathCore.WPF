@@ -16,7 +16,7 @@ public class PasswordBoxBinder : Behavior<PasswordBox>
             nameof(Password),
             typeof(SecureString),
             typeof(PasswordBoxBinder),
-            new PropertyMetadata(default(SecureString)));
+            new(default(SecureString)));
 
     /// <summary>Пароль</summary>
     //[Category("")]

@@ -16,7 +16,7 @@ public static class PasswordBoxEx
             "Attach",
             typeof(bool),
             typeof(PasswordBoxEx),
-            new PropertyMetadata(default(bool), OnAttachChanged));
+            new(default(bool), OnAttachChanged));
 
     /// <summary>Установка значения свойства присоединения</summary>
     /// <param name="o">Объект для которого производится установка значения</param>
@@ -92,7 +92,7 @@ public static class PasswordBoxEx
             "WaterMarkText",
             typeof(string),
             typeof(PasswordBoxEx),
-            new PropertyMetadata("Введите пароль"));
+            new("Введите пароль"));
 
     public static void SetWaterMarkText(DependencyObject element, string value) => element.SetValue(WaterMarkTextProperty, value);
 
@@ -108,7 +108,7 @@ public static class PasswordBoxEx
             "WatermarkOpacity",
             typeof(double),
             typeof(PasswordBoxEx),
-            new PropertyMetadata(0.8));
+            new(0.8));
 
     /// <summary>Прозрачность водяного знака</summary>
     [AttachedPropertyBrowsableForType(typeof(PasswordBox))]
@@ -127,7 +127,7 @@ public static class PasswordBoxEx
             "WatermarkTextBrush",
             typeof(Brush),
             typeof(PasswordBoxEx),
-            new PropertyMetadata(Brushes.DarkGray));
+            new(Brushes.DarkGray));
 
     /// <summary>Кисть рисования текста водяного знака</summary>
     [AttachedPropertyBrowsableForType(typeof(PasswordBox))]
@@ -146,7 +146,7 @@ public static class PasswordBoxEx
             "WatermarkMargin",
             typeof(Thickness),
             typeof(PasswordBoxEx),
-            new PropertyMetadata(default(Thickness)));
+            new(default(Thickness)));
 
     /// <summary>Внешняя рамка до водяного знака</summary>
     [AttachedPropertyBrowsableForType(typeof(PasswordBox))]

@@ -75,7 +75,7 @@ class SvgRectElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry() => new RectangleGeometry(new Rect(new Point(X.ToDouble(), Y.ToDouble()),
+    public override Geometry GetBaseGeometry() => new RectangleGeometry(new(new(X.ToDouble(), Y.ToDouble()),
             new Size(Width.ToDouble(), Height.ToDouble())), 
         CornerRadiusX.ToDouble(),
         CornerRadiusY.ToDouble());

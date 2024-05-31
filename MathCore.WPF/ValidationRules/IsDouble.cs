@@ -22,7 +22,7 @@ public class IsDouble : Base.FormattedValueValidation
         if (value is null) 
             return AllowNull 
                 ? ValidationResult.ValidResult 
-                : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
+                : new(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
         try
         {
             _ = Convert.ToDouble(value, c);
@@ -30,15 +30,15 @@ public class IsDouble : Base.FormattedValueValidation
         }
         catch (OverflowException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
         }
         catch (InvalidCastException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
         }
         catch (FormatException e)
         {
-            return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
+            return new(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
         }
     }
 }

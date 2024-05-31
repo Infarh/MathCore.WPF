@@ -45,7 +45,7 @@ sealed class SvgDocument
     //==========================================================================
     public SvgDocument(XElement root, SvgReaderOptions options)
     {
-        Root    = new SvgSvgElement(this, null, root);
+        Root    = new(this, null, root);
         Options = options;
     }
 

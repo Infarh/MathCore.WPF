@@ -34,7 +34,7 @@ public class DynamicModelContent : Decorator
             "ModelShadow",
             typeof(DynamicModel),
             typeof(DynamicModelContent),
-            new PropertyMetadata(default(DynamicModel)));
+            new(default(DynamicModel)));
 
     #endregion
 
@@ -131,7 +131,7 @@ public class DynamicModelField : Freezable, INotifyPropertyChanged
             nameof(Value),
             typeof(object),
             typeof(DynamicModelField),
-            new PropertyMetadata(default, (d, _) => ((DynamicModelField)d).OnPropertyChanged(nameof(Value))));
+            new(default, (d, _) => ((DynamicModelField)d).OnPropertyChanged(nameof(Value))));
 
     #endregion
 
@@ -139,7 +139,7 @@ public class DynamicModelField : Freezable, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new(PropertyName));
 }
 
 internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
@@ -147,7 +147,7 @@ internal sealed class DynamicModelObject : DynamicObject, INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    private void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    private void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new(PropertyName));
 
     private readonly DynamicModel _Fields;
 

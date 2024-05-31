@@ -16,7 +16,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(Position),
             typeof(Point),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(Point)));
+            new(default(Point)));
 
     /// <summary>Положение мыши в координатах элемента</summary>
     //[Category("")]
@@ -33,7 +33,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(LeftMouseDownCommand),
             typeof(ICommand),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая в момент нажатия левой кнопки мыши</summary>
     //[Category("")]
@@ -50,7 +50,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(LeftMouseUpCommand),
             typeof(ICommand),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая в момент отпускания левой кнопки мыши</summary>
     //[Category("")]
@@ -67,7 +67,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(MouseWheelCommand),
             typeof(ICommand),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая при прокрутке колёсика мышки</summary>
     //[Category("")]
@@ -84,7 +84,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(KeyDownCommand),
             typeof(ICommand),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
     //[Category("")]
@@ -101,7 +101,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             nameof(KeyUpCommand),
             typeof(ICommand),
             typeof(UserInputBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
     //[Category("")]

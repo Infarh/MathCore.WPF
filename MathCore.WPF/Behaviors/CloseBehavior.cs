@@ -16,7 +16,7 @@ public class CloseBehavior : Behavior<Window>
             nameof(CloseWithDialogResult),
             typeof(bool),
             typeof(CloseBehavior),
-            new PropertyMetadata(default(bool), OnCloseTriggerChanged));
+            new(default(bool), OnCloseTriggerChanged));
 
     private static void OnCloseTriggerChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
@@ -43,7 +43,7 @@ public class CloseBehavior : Behavior<Window>
             "StoryboardShadow", //nameof(Storyboard), 
             typeof(Storyboard),
             typeof(CloseBehavior),
-            new PropertyMetadata(default(Storyboard)));
+            new(default(Storyboard)));
 
     public Storyboard? Storyboard
     {

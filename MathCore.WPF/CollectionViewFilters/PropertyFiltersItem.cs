@@ -21,7 +21,7 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
             nameof(CollectionItemType),
             typeof(Type),
             typeof(PropertyFiltersItem),
-            new PropertyMetadata(default(Type), OnCollectionItemTypeChanged));
+            new(default(Type), OnCollectionItemTypeChanged));
 
     private static void OnCollectionItemTypeChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
@@ -51,7 +51,7 @@ public class PropertyFiltersItem : CollectionViewFilterItem, ICollection<Propert
 
         AddNewFilterCommand = new LambdaCommand(OnAddNewCommandExecuted);
         RemoveCommand = new LambdaCommand(OnRemoveCommandExecuted);
-        _Filters.Add(new PropertyFilterItem());
+        _Filters.Add(new());
     }
 
     private void OnAddNewCommandExecuted(object? Obj) => _Filters.Add(Obj as PropertyFilterItem ?? new());

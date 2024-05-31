@@ -14,7 +14,7 @@ public partial class MathView : FrameworkElement
             nameof(Scale),
             typeof(double),
             typeof(MathView),
-            new PropertyMetadata(20d, OnDataChanged), v => v is null || v is double value && value > 0);
+            new(20d, OnDataChanged), v => v is null || v is double value && value > 0);
 
     /// <summary>Маштаб</summary>
     public double Scale
@@ -33,7 +33,7 @@ public partial class MathView : FrameworkElement
             nameof(Foreground),
             typeof(Brush),
             typeof(MathView),
-            new PropertyMetadata(default(Brush), OnDataChanged));
+            new(default(Brush), OnDataChanged));
 
     /// <summary>Кисть отрисовки текста формулы</summary>
     public Brush? Foreground
@@ -52,7 +52,7 @@ public partial class MathView : FrameworkElement
             nameof(Background),
             typeof(Brush),
             typeof(MathView),
-            new PropertyMetadata(default(Brush), OnDataChanged));
+            new(default(Brush), OnDataChanged));
 
     /// <summary>Кисть отрисовки заднего фона</summary>
     public Brush? Background
@@ -71,7 +71,7 @@ public partial class MathView : FrameworkElement
             nameof(Data),
             typeof(string),
             typeof(MathView),
-            new PropertyMetadata(default(string), OnDataChanged));
+            new(default(string), OnDataChanged));
 
     private static void OnDataChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {

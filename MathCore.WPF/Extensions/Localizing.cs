@@ -24,7 +24,7 @@ public class Localizing : BindingExtension
             set
             {
                 _SourceManager = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SourceManager)));
+                PropertyChanged?.Invoke(this, new(nameof(SourceManager)));
             }
         }
 
@@ -54,14 +54,14 @@ public class Localizing : BindingExtension
     public Localizing()
     {
         Source = ActiveManager;
-        Path = new PropertyPath(nameof(ActiveManager.SourceManager));
+        Path = new(nameof(ActiveManager.SourceManager));
     }
 
     public Localizing(string key)
     {
         Key = key;
         Source = ActiveManager;
-        Path = new PropertyPath(nameof(ActiveManager.SourceManager));
+        Path = new(nameof(ActiveManager.SourceManager));
     }
 
     public override string ToString() => 

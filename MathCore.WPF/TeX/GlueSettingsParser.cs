@@ -24,7 +24,7 @@ internal class GlueSettingsParser
         var values = new double[names.Length];
         for(var i = 0; i < names.Length; i++)
             values[i] = type.AttributeDoubleValue(names[i], 0d);
-        return new Glue(values[0], values[1], values[2], name);
+        return new(values[0], values[1], values[2], name);
     }
 
     private static void SetTypeMappings()
@@ -104,7 +104,7 @@ internal class GlueSettingsParser
         if(default_index < 0)
         {
             default_index = index;
-            _GlueTypes.Add(new Glue(0, 0, 0, "default"));
+            _GlueTypes.Add(new(0, 0, 0, "default"));
         }
 
         // Insure that default glue type is first in list.

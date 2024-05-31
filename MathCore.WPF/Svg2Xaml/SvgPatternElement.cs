@@ -82,7 +82,7 @@ class SvgPatternElement
         DrawingBrush brush;
 
         if(Reference is null)
-            brush = new DrawingBrush(Draw());
+            brush = new(Draw());
         else
         {
             if(Document.Elements[Reference] is SvgPatternElement pattern_element)

@@ -19,7 +19,7 @@ public static class DataGridEx
             "UseDataAnnotations",
             typeof(bool),
             typeof(DataGridEx),
-            new PropertyMetadata(OnUseDataAnnotationsPropertyChanged));
+            new(OnUseDataAnnotationsPropertyChanged));
 
     /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
     [AttachedPropertyBrowsableForType(typeof(DataGrid))]
@@ -136,7 +136,7 @@ public static class DataGridEx
             "AddRowNumber",
             typeof(bool),
             typeof(DataGridEx),
-            new PropertyMetadata(OnAddRowNumberToRowHeaderPropertyChanged));
+            new(OnAddRowNumberToRowHeaderPropertyChanged));
 
     /// <summary>Добавить номера строк в их заголовки</summary>
     [AttachedPropertyBrowsableForType(typeof(DataGrid))]

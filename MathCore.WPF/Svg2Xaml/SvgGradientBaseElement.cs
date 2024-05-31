@@ -94,7 +94,7 @@ abstract class SvgGradientBaseElement
             switch(element.Name.LocalName)
             {
                 case "stop":
-                    Stops.Add(new SvgStopElement(Document, this, element));
+                    Stops.Add(new(Document, this, element));
                     break;
 
                 default:

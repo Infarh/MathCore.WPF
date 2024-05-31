@@ -83,7 +83,7 @@ public class PropertyFilterItem : ViewModel
 
             var property_type = Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType;
             if (Type.GetTypeCode(property_type) != TypeCode.Object)
-                yield return new PropertyDescription(property.Name, display_name, BaseProperty, BasePropertyDisplayName);
+                yield return new(property.Name, display_name, BaseProperty, BasePropertyDisplayName);
             else
                 foreach (var sub_property in GetProperties(property_type, $"{BaseProperty}.{property.Name}", $"{BasePropertyDisplayName}.{display_name}"))
                     yield return sub_property;

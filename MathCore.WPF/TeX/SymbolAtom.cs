@@ -15,7 +15,7 @@ internal class SymbolAtom : CharSymbol
     {
         __Symbols = new TexSymbolParser().GetSymbols();
 
-        __ValidSymbolTypes = new BitArray(16);
+        __ValidSymbolTypes = new(16);
         __ValidSymbolTypes.Set((int)TexAtomType.Ordinary, true);
         __ValidSymbolTypes.Set((int)TexAtomType.BigOperator, true);
         __ValidSymbolTypes.Set((int)TexAtomType.BinaryOperator, true);

@@ -57,7 +57,7 @@ internal class TexFontInfo
         _Metrics[character] = metrics;
 
     public void SetNextLarger(char character, char LargerCharacter, int LargerFont) =>
-        _NextLarger[character] = new CharFont(LargerCharacter, LargerFont);
+        _NextLarger[character] = new(LargerCharacter, LargerFont);
 
     public int[] GetExtension(char character) => _Extensions[character];
 

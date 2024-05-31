@@ -112,10 +112,10 @@ public class SettingsDialogViewModel : ViewModel
     /// <remarks>Создаёт все команды, но не производит инициализацию модели устанавливая конфигурируемый объект и окно диалога</remarks>
     protected SettingsDialogViewModel()
     {
-        CommitCommand  = new LambdaCommand<bool?>(OnCommitCommandExecuted, _ => _ValueObject != null);
-        RejectCommand  = new LambdaCommand<bool?>(OnRejectCommandExecuted, _ => _ValueObject != null);
-        RestoreCommand = new LambdaCommand(OnRestoreCommandExecuted, _ => _ValueObject != null && HasChanges);
-        CloseCommand   = new LambdaCommand<bool?>(OnCloseCommandExecuted, _ => _ValueObject != null);
+        CommitCommand  = new(OnCommitCommandExecuted, _ => _ValueObject != null);
+        RejectCommand  = new(OnRejectCommandExecuted, _ => _ValueObject != null);
+        RestoreCommand = new(OnRestoreCommandExecuted, _ => _ValueObject != null && HasChanges);
+        CloseCommand   = new(OnCloseCommandExecuted, _ => _ValueObject != null);
     }
 
     /// <summary>Инициализация модели-представления диалога конфигурации</summary>
@@ -126,7 +126,7 @@ public class SettingsDialogViewModel : ViewModel
         if (IsDesignMode || Equals(_DialogWindow, window) && Equals(_ValueObject, value)) return;
         if (window is null) throw new ArgumentNullException(nameof(window));
         if (Value != null) Value.PropertyChanged -= OnValuePropertyChanged;
-        Value                 =  new SettingsObjectManager(_ValueObject = value, _DialogWindow = window, _PropertiesDictionary);
+        Value                 =  new(_ValueObject = value, _DialogWindow = window, _PropertiesDictionary);
         Value.PropertyChanged += OnValuePropertyChanged;
         OnPropertyChanged(nameof(Value));
         OnPropertyChanged(nameof(DialogWindow));

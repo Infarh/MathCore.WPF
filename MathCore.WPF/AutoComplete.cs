@@ -181,7 +181,7 @@ public sealed partial class AutoComplete
     {
         var auto_complete = GetAutoCompleteInstance(d);
         if (auto_complete != null) return auto_complete;
-        auto_complete = new AutoComplete { Control = (Control)d };
+        auto_complete = new() { Control = (Control)d };
         d.SetValue(AutoCompleteInstancePropertyKey, auto_complete);
         return auto_complete;
     }

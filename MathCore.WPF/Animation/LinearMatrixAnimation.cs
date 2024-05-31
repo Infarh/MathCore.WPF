@@ -18,7 +18,7 @@ public class LinearMatrixAnimation : MatrixAnimationBase
             nameof(From),
             typeof(TransformMatrix?),
             typeof(LinearMatrixAnimation),
-            new PropertyMetadata(default(TransformMatrix?)));
+            new(default(TransformMatrix?)));
 
     /// <summary>Начальная матрица</summary>
     public TransformMatrix? From
@@ -37,7 +37,7 @@ public class LinearMatrixAnimation : MatrixAnimationBase
             nameof(To),
             typeof(TransformMatrix?),
             typeof(LinearMatrixAnimation),
-            new PropertyMetadata(default(TransformMatrix?)));
+            new(default(TransformMatrix?)));
 
     /// <summary>Конечная матрица</summary>
     public TransformMatrix? To
@@ -56,7 +56,7 @@ public class LinearMatrixAnimation : MatrixAnimationBase
             nameof(EasingFunction),
             typeof(IEasingFunction),
             typeof(LinearMatrixAnimation),
-            new PropertyMetadata(default(IEasingFunction)));
+            new(default(IEasingFunction)));
 
     /// <summary>Функция плавности</summary>
     public IEasingFunction EasingFunction
@@ -102,7 +102,7 @@ public class LinearMatrixAnimation : MatrixAnimationBase
         var from = From ?? DefaultOriginValue;
         var to   = To ?? DefaultDestinationValue;
 
-        return new TransformMatrix(
+        return new(
             (to.M11 - from.M11) * time + from.M11,
             (to.M12 - from.M12) * time + from.M12,
             (to.M21 - from.M21) * time + from.M21,

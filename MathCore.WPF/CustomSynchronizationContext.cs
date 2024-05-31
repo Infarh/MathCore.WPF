@@ -38,9 +38,9 @@ public class CustomSynchronizationContext : SynchronizationContext, IDisposable
 
     public CustomSynchronizationContext()
     {
-        _WorkerResetEvent = new AutoResetEvent(false);
-        _WorkItems        = new ConcurrentQueue<WorkItem>();
-        _Thread           = new Thread(DoWork);
+        _WorkerResetEvent = new(false);
+        _WorkItems        = new();
+        _Thread           = new(DoWork);
         _Thread.Start();
     }
 

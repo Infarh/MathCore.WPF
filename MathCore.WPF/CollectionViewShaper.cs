@@ -123,7 +123,7 @@ public class CollectionViewShaper<T>
     {
         var path = GetPropertyPath(selector.Body);
         if (clear) _SortDescriptions.Clear();
-        _SortDescriptions.Add(new SortDescription(path, direction));
+        _SortDescriptions.Add(new(path, direction));
         return this;
     }
 

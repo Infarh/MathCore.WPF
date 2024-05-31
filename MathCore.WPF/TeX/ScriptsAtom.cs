@@ -62,7 +62,7 @@ internal class ScriptsAtom : Atom
                 char_box.Shift = -(char_box.Height + char_box.Depth) / 2
                     - environment.TexFont.GetAxisHeight(
                         environment.Style);
-                result_box = new HorizontalBox(char_box);
+                result_box = new(char_box);
 
                 delta = char_info.Metrics.Italic;
                 if (delta > TexUtilities.FloatPrecision && SubscriptAtom is null)

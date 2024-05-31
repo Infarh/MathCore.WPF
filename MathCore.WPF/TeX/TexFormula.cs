@@ -31,7 +31,7 @@ public sealed class TexFormula
     public TexRenderer GetRenderer(TexStyle style, double scale)
     {
         var environment = new TexEnvironment(style, new DefaultTexFont(scale));
-        return new TexRenderer(CreateBox(environment), scale);
+        return new(CreateBox(environment), scale);
     }
 
     public void Add(TexFormula formula)

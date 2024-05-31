@@ -20,10 +20,10 @@ public class FileExist : Base.FormattedValueValidation
     public override ValidationResult Validate(object? value, CultureInfo c) =>
         value switch
         {
-            null => AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Отсутствует ссылка на объект"),
+            null => AllowNull ? ValidationResult.ValidResult : new(false, NullReferenceMessage ?? ErrorMessage ?? "Отсутствует ссылка на объект"),
             FileInfo { Exists: true } => ValidationResult.ValidResult,
             string file when File.Exists(file) => ValidationResult.ValidResult,
-            string file => new ValidationResult(false, ErrorMessage?.Contains("{0}") == true ? string.Format(c, ErrorMessage, file) : ErrorMessage ?? $"Файл {file} не найден"),
-            _ => new ValidationResult(false, $"Тип {value.GetType()} не поддерживается")
+            string file => new(false, ErrorMessage?.Contains("{0}") == true ? string.Format(c, ErrorMessage, file) : ErrorMessage ?? $"Файл {file} не найден"),
+            _ => new(false, $"Тип {value.GetType()} не поддерживается")
         };
 }

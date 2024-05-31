@@ -20,11 +20,11 @@ public class DirectoryExist : Base.FormattedValueValidation
     public override ValidationResult Validate(object? value, CultureInfo c) =>
         value switch
         {
-            null => AllowNull ? ValidationResult.ValidResult : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Отсутствует ссылка на объект"),
+            null => AllowNull ? ValidationResult.ValidResult : new(false, NullReferenceMessage ?? ErrorMessage ?? "Отсутствует ссылка на объект"),
             DirectoryInfo { Exists: true } => ValidationResult.ValidResult,
             string dir when Directory.Exists(dir) => ValidationResult.ValidResult,
-            string { Length: 2 } str when str[1] == ':' => new ValidationResult(false, FormatErrorMessage ?? "Некорректный формат пути"),
-            string dir => new ValidationResult(false, ErrorMessage?.Contains("{0}") == true ? string.Format(c, ErrorMessage, dir) : ErrorMessage ?? $"Директория {dir} не найдена"),
-            _ => new ValidationResult(false, $"Тип {value.GetType()} не поддерживается")
+            string { Length: 2 } str when str[1] == ':' => new(false, FormatErrorMessage ?? "Некорректный формат пути"),
+            string dir => new(false, ErrorMessage?.Contains("{0}") == true ? string.Format(c, ErrorMessage, dir) : ErrorMessage ?? $"Директория {dir} не найдена"),
+            _ => new(false, $"Тип {value.GetType()} не поддерживается")
         };
 }

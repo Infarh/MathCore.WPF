@@ -64,7 +64,7 @@ class SvgLength
             throw new ArgumentException("value must not be empty", nameof(value));
 
         if(value == "inherit")
-            return new SvgLength(double.NaN, null);
+            return new(double.NaN, null);
 
         string unit = null;
 
@@ -76,7 +76,7 @@ class SvgLength
                 break;
             }
 
-        return new SvgLength(double.Parse(value, CultureInfo.InvariantCulture.NumberFormat), unit);
+        return new(double.Parse(value, CultureInfo.InvariantCulture.NumberFormat), unit);
     }
 
     //==========================================================================

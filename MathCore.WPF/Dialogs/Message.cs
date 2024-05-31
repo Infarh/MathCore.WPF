@@ -12,7 +12,7 @@ public class Message : Dialog
             nameof(Buttons),
             typeof(MessageBoxButton),
             typeof(Message),
-            new PropertyMetadata(default(MessageBoxButton)));
+            new(default(MessageBoxButton)));
 
     public MessageBoxButton Buttons
     {
@@ -25,7 +25,7 @@ public class Message : Dialog
             nameof(Image),
             typeof(MessageBoxImage),
             typeof(Message),
-            new PropertyMetadata(default(MessageBoxImage)));
+            new(default(MessageBoxImage)));
 
     public MessageBoxImage Image
     {
@@ -38,7 +38,7 @@ public class Message : Dialog
             nameof(DefaultResult),
             typeof(MessageBoxResult),
             typeof(Message),
-            new PropertyMetadata(default(MessageBoxResult)));
+            new(default(MessageBoxResult)));
 
     public MessageBoxResult DefaultResult
     {
@@ -51,7 +51,7 @@ public class Message : Dialog
             nameof(Options),
             typeof(MessageBoxOptions),
             typeof(Message),
-            new PropertyMetadata(default(MessageBoxOptions)));
+            new(default(MessageBoxOptions)));
 
     public MessageBoxOptions Options
     {
@@ -64,7 +64,7 @@ public class Message : Dialog
             nameof(Result),
             typeof(MessageBoxResult),
             typeof(Message),
-            new PropertyMetadata(default(MessageBoxResult)));
+            new(default(MessageBoxResult)));
 
     public MessageBoxResult Result
     {
@@ -77,7 +77,7 @@ public class Message : Dialog
             nameof(Text),
             typeof(string),
             typeof(Message),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     public string Text
     {

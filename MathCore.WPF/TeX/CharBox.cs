@@ -35,7 +35,7 @@ internal class CharBox : Box
             pixelsPerDip: 96,
 #endif
             glyphIndices: new[] { glyph_index },
-            baselineOrigin: new Point(x * scale, y * scale),
+            baselineOrigin: new(x * scale, y * scale),
             advanceWidths: new[] { typeface.AdvanceWidths[glyph_index] },
             glyphOffsets: null,
             characters: null,

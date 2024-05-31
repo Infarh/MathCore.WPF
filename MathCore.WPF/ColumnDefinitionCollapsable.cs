@@ -28,7 +28,7 @@ public class ColumnDefinitionCollapsible : ColumnDefinition
             nameof(Visible),
             typeof(bool),
             typeof(ColumnDefinitionCollapsible),
-            new PropertyMetadata(true, OnVisibleChanged));
+            new(true, OnVisibleChanged));
 
     private static void OnVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

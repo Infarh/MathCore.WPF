@@ -50,7 +50,7 @@ public class GridLengthAnimation : AnimationTimeline
 
         var clock_current_progress = clock.CurrentProgress ?? double.NaN;
         return from_val > to_val
-            ? new GridLength((1 - clock_current_progress) * (from_val - to_val) + to_val, GridUnitType.Star)
+            ? new((1 - clock_current_progress) * (from_val - to_val) + to_val, GridUnitType.Star)
             : new GridLength(clock_current_progress * (to_val - from_val) + from_val, GridUnitType.Star);
     }
 }

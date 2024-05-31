@@ -17,7 +17,7 @@ public class CollectionFilterItem<TValue, TCriteria>(ObservableCollection<TValue
         {
             if (_Enabled == value) return;
             _Enabled = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
+            OnPropertyChanged(new(nameof(Enabled)));
         }
     }
 

@@ -23,7 +23,7 @@ public class ScaleValue : Freezable
             nameof(ScreenLength),
             typeof(double),
             typeof(ScaleValue),
-            new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
+            new(default(double), (d, _) => ((ScaleValue)d).Update()));
 
     /// <summary>Размер экрана</summary>
     [Bindable(true)]
@@ -43,7 +43,7 @@ public class ScaleValue : Freezable
             nameof(ValueMin),
             typeof(double),
             typeof(ScaleValue),
-            new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
+            new(default(double), (d, _) => ((ScaleValue)d).Update()));
 
     /// <summary>Отображаемый минимум</summary>
     [Bindable(true)]
@@ -63,7 +63,7 @@ public class ScaleValue : Freezable
             nameof(ValueMax),
             typeof(double),
             typeof(ScaleValue),
-            new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
+            new(default(double), (d, _) => ((ScaleValue)d).Update()));
 
     /// <summary>Отображаемый максимум</summary>
     [Bindable(true)]
@@ -83,7 +83,7 @@ public class ScaleValue : Freezable
             nameof(ValueOffset),
             typeof(double),
             typeof(ScaleValue),
-            new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
+            new(default(double), (d, _) => ((ScaleValue)d).Update()));
 
     /// <summary>Смещение значения</summary>
     [Bindable(true)]
@@ -103,7 +103,7 @@ public class ScaleValue : Freezable
             nameof(ScreenOffset),
             typeof(double),
             typeof(ScaleValue),
-            new PropertyMetadata(default(double), (d, _) => ((ScaleValue)d).Update()));
+            new(default(double), (d, _) => ((ScaleValue)d).Update()));
 
     /// <summary>Экранное смещение</summary>
     [Bindable(true)]
@@ -163,9 +163,9 @@ public class ScaleValue : Freezable
 
     public ScaleValue()
     {
-        _ValueBinding = new Binding(nameof(Value))
+        _ValueBinding = new(nameof(Value))
         {
-            RelativeSource = new RelativeSource(RelativeSourceMode.Self),
+            RelativeSource = new(RelativeSourceMode.Self),
             Converter      = new LambdaConverter(Convert, ConvertBack),
             Mode           = BindingMode.TwoWay
         };

@@ -19,7 +19,7 @@ public class IsInteger : Base.FormattedValueValidation
         if (value is null)
             return AllowNull
                 ? ValidationResult.ValidResult
-                : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано"); 
+                : new(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано"); 
         try
         {
             _ = Convert.ToInt32(value, c);
@@ -27,15 +27,15 @@ public class IsInteger : Base.FormattedValueValidation
         }
         catch (OverflowException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к целочисленному (4 байта) типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к целочисленному (4 байта) типу: {e.Message}");
         }
         catch (InvalidCastException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к целочисленному (4 байта) типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка приведения {value} к целочисленному (4 байта) типу: {e.Message}");
         }
         catch (FormatException e)
         {
-            return new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к целочисленному (4 байта) типу: {e.Message}");
+            return new(false, FormatErrorMessage ?? ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к целочисленному (4 байта) типу: {e.Message}");
         }
     }
 }

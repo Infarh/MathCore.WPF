@@ -63,9 +63,9 @@ internal class DefaultTexFont : ITeXFont
                     CharInfo.Font,
                     size_factor,
                     CharInfo.FontId,
-                    GetMetrics(new CharFont((char)extension[i], CharInfo.FontId), size_factor));
+                    GetMetrics(new((char)extension[i], CharInfo.FontId), size_factor));
 
-        return new ExtensionChar(parts[TexFontUtilities.ExtensionTop], parts[TexFontUtilities.ExtensionMiddle],
+        return new(parts[TexFontUtilities.ExtensionTop], parts[TexFontUtilities.ExtensionMiddle],
             parts[TexFontUtilities.ExtensionBottom], parts[TexFontUtilities.ExtensionRepeat]);
     }
 
@@ -77,7 +77,7 @@ internal class DefaultTexFont : ITeXFont
     public CharInfo GetNextLargerCharInfo(CharInfo CharInfo, TexStyle style)
     {
         var char_font = __FontInfoList[CharInfo.FontId].GetNextLarger(CharInfo.Character);
-        return new CharInfo(char_font.Character, __FontInfoList[char_font.FontId].Font, GetSizeFactor(style), char_font.FontId,
+        return new(char_font.Character, __FontInfoList[char_font.FontId].Font, GetSizeFactor(style), char_font.FontId,
             GetMetrics(char_font, GetSizeFactor(style)));
     }
 
@@ -126,7 +126,7 @@ internal class DefaultTexFont : ITeXFont
     public CharInfo GetCharInfo(CharFont CharFont, TexStyle style)
     {
         var size = GetSizeFactor(style);
-        return new CharInfo(CharFont.Character, __FontInfoList[CharFont.FontId].Font, size, CharFont.FontId, GetMetrics(CharFont, size));
+        return new(CharFont.Character, __FontInfoList[CharFont.FontId].Font, size, CharFont.FontId, GetMetrics(CharFont, size));
     }
 
     public CharInfo GetCharInfo(string SymbolName, TexStyle style)
@@ -148,7 +148,7 @@ internal class DefaultTexFont : ITeXFont
     public double GetSkew(CharFont CharFont, TexStyle style)
     {
         var skew_char = __FontInfoList[CharFont.FontId].SkewCharacter;
-        return skew_char == 1 ? 0 : GetKern(CharFont, new CharFont(skew_char, CharFont.FontId), style);
+        return skew_char == 1 ? 0 : GetKern(CharFont, new(skew_char, CharFont.FontId), style);
     }
 
     public bool HasSpace(int FontId) => __FontInfoList[FontId].HasSpace();
@@ -209,7 +209,7 @@ internal class DefaultTexFont : ITeXFont
     private static TexFontMetrics GetMetrics(CharFont CharFont, double size)
     {
         var metrics = __FontInfoList[CharFont.FontId].GetMetrics(CharFont.Character);
-        return new TexFontMetrics(metrics[TexFontUtilities.MetricsWidth], metrics[TexFontUtilities.MetricsHeight],
+        return new(metrics[TexFontUtilities.MetricsWidth], metrics[TexFontUtilities.MetricsHeight],
             metrics[TexFontUtilities.MetricsDepth], metrics[TexFontUtilities.MetricsItalic],
             size * TexFontUtilities.PixelsPerPoint);
     }

@@ -121,6 +121,6 @@ public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDat
         if (event_handler is null) return;
 
         if (_Validators.TryGetValue(Property, out var validators) && validators.Any(v => !v.IsValid))
-            OnErrorsChanged(new DataErrorsChangedEventArgs(Property));
+            OnErrorsChanged(new(Property));
     }
 }

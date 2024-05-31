@@ -62,7 +62,7 @@ public class AsyncTaskCommand<TResult>(Func<object?, CancellationToken, Task<TRe
             _CommandExecuting = true;
             if (!_CancellationToken.IsCancellationRequested)
                 return;
-            _CancellationToken = new CancellationTokenSource();
+            _CancellationToken = new();
             Invoke_OnCanExecuteChanged();
         }
 
@@ -84,7 +84,7 @@ public class AsyncTaskCommand<TResult>(Func<object?, CancellationToken, Task<TRe
     public event PropertyChangedEventHandler? PropertyChanged;
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string PropertyName = null!) => PropertyChanged?.Invoke(this, new(PropertyName));
 
     private readonly Func<object?, bool>? _CanExecute = CanExecute;
 
@@ -101,14 +101,14 @@ public class AsyncTaskCommand<TResult>(Func<object?, CancellationToken, Task<TRe
     }
 
     // ReSharper disable once ConvertToAutoPropertyWhenPossible
-    private CancelAsyncCommand CancelCommand { get; } = new CancelAsyncCommand();
+    private CancelAsyncCommand CancelCommand { get; } = new();
 
     public override bool CanExecute(object? parameter) => (_CanExecute?.Invoke(parameter) ?? true) && (Execution?.IsCompleted ?? false);
 
     public override async Task ExecuteTaskAsync(object? parameter)
     {
         CancelCommand.NotifyCommandStarting();
-        Execution = new NotifyTaskCompletion<TResult>(TaskFunction(parameter, CancelCommand.Token));
+        Execution = new(TaskFunction(parameter, CancelCommand.Token));
         Invoke_OnCanExecuteChanged();
         CancelCommand.NotifyCommandFinished();
         await Execution.Task;

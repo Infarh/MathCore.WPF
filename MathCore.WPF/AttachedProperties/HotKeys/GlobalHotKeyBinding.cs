@@ -23,7 +23,7 @@ public class GlobalHotKeyBinding : Freezable, IDisposable
             nameof(Key),
             typeof(Keys),
             typeof(GlobalHotKeyBinding),
-            new PropertyMetadata(default(Keys), (d, _) => ((GlobalHotKeyBinding)d).UpdateHotkey()));
+            new(default(Keys), (d, _) => ((GlobalHotKeyBinding)d).UpdateHotkey()));
 
     /// <summary>Клавиша</summary>
     //[Category("")]
@@ -40,7 +40,7 @@ public class GlobalHotKeyBinding : Freezable, IDisposable
             nameof(Modifer),
             typeof(ModifierKeys),
             typeof(GlobalHotKeyBinding),
-            new PropertyMetadata(ModifierKeys.None, (d, _) => ((GlobalHotKeyBinding)d).UpdateHotkey()));
+            new(ModifierKeys.None, (d, _) => ((GlobalHotKeyBinding)d).UpdateHotkey()));
 
     /// <summary>Модификатор клавиши</summary>
     //[Category("")]
@@ -59,7 +59,7 @@ public class GlobalHotKeyBinding : Freezable, IDisposable
             nameof(Command),
             typeof(ICommand),
             typeof(GlobalHotKeyBinding),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, привязываемая к горячей клавише</summary>
     //[Category("")]
@@ -76,7 +76,7 @@ public class GlobalHotKeyBinding : Freezable, IDisposable
             nameof(CommandParameter),
             typeof(object),
             typeof(GlobalHotKeyBinding),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Параметр команды</summary>
     //[Category("")]

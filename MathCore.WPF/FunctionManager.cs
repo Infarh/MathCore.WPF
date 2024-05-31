@@ -3,7 +3,7 @@ using MathCore.ViewModels;
 
 namespace System.Collections.Generic;
 
-public class FunctionManager<T>(Func<double, T> function, double x1, double x2, Func<T, double> double_converter) : ViewModel
+public class FunctionManager<T>(Func<double, T> function, double x1, double x2, Func<T, double> DoubleConverter) : ViewModel
 {
     private readonly double _X1 = x1;
     private readonly double _X2 = x2;
@@ -15,7 +15,7 @@ public class FunctionManager<T>(Func<double, T> function, double x1, double x2, 
         return x2 * x2 + y2 * y2;
     }
 
-    private readonly Func<T, double> _DoubleConverter = double_converter ?? throw new ArgumentNullException(nameof(double_converter));
+    private readonly Func<T, double> _DoubleConverter = DoubleConverter ?? throw new ArgumentNullException(nameof(DoubleConverter));
     private readonly Func<double, T> _Function = function ?? throw new ArgumentNullException(nameof(function));
     private readonly ObservableLinkedList<KeyValuePair<double, T>> _Values = [];
     private double _Eps0;
@@ -46,8 +46,8 @@ public class FunctionManager<T>(Func<double, T> function, double x1, double x2, 
         var v1 = _Function(x1);
         var x2 = _X2;
         var v2 = _Function(x2);
-        _Values.Add(new KeyValuePair<double, T>(x1, v1));
-        _Values.Add(new KeyValuePair<double, T>(x2, v2));
+        _Values.Add(new(x1, v1));
+        _Values.Add(new(x2, v2));
         var y1 = _DoubleConverter(v1);
         var y2 = _DoubleConverter(v2);
         _Eps0     = GetEps(x1, x2, y1, y2);
@@ -93,7 +93,7 @@ public class FunctionManager<T>(Func<double, T> function, double x1, double x2, 
             }
 
             x2 = (x1 + x2) / 2;
-            v2 = new KeyValuePair<double, T>(x2, _Function(x2));
+            v2 = new(x2, _Function(x2));
             n2 = _Values.AddAfter(n1, v2);
         } while (n2 != null);
 
@@ -147,7 +147,7 @@ public class FunctionManager<T>(Func<double, T> function, double x1, double x2, 
             }
 
             x2 = (x1 + x2) / 2;
-            v2 = new KeyValuePair<double, T>(x2, _Function(x2));
+            v2 = new(x2, _Function(x2));
             n2 = _Values.AddAfter(n1, v2);
         } while (n2 != null);
         progress?.Report(1d);

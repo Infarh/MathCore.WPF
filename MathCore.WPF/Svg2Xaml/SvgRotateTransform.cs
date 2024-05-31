@@ -51,7 +51,7 @@ class SvgRotateTransform
         var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
 
         if(tokens.Length == 1)
-            return new SvgRotateTransform(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
+            return new(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat));
       
         throw new NotSupportedException();
     }
