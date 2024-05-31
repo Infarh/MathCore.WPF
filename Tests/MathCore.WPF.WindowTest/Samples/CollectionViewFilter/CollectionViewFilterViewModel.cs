@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Markup;
-using MathCore.Annotations;
+﻿using System.Windows.Markup;
+
 using MathCore.WPF.ViewModels;
 
 namespace MathCore.WPF.WindowTest.Samples.CollectionViewFilter;
@@ -10,10 +8,8 @@ namespace MathCore.WPF.WindowTest.Samples.CollectionViewFilter;
 internal class CollectionViewFilterViewModel : ViewModel
 {
     /// <summary>Сотрудники</summary>
-    [NotNull]
     public IEnumerable<Employee> Employees { get; } = CreateEmployees();
 
-    [NotNull]
     private static IEnumerable<Employee> CreateEmployees()
     {
         var rnd = new Random();

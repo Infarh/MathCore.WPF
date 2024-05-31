@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace MathCore.WPF.ConsoleTest;
+﻿namespace MathCore.WPF.ConsoleTest;
 
 internal class ThreadProcessor<T> : IDisposable where T : class
 {

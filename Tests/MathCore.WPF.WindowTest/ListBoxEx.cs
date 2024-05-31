@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -16,7 +15,7 @@ public static class ListBoxEx
             "DraggableItems",
             typeof(bool),
             typeof(ListBoxEx),
-            new PropertyMetadata(default(bool), OnDraggableItemsChanged));
+            new(default(bool), OnDraggableItemsChanged));
 
     /// <summary>Перетаскиваемые элементы</summary>
     [AttachedPropertyBrowsableForType(typeof(ListBox))]
