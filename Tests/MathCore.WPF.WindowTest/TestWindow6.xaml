@@ -8,38 +8,13 @@
         DataContext="{vm:TestWindow6ViewModel}"
         Title="{Binding Title}"
         Width="800" Height="450">
+    <x:Code>
+        <![CDATA[
+            private double ConvertPow2(double x) => x * x;
+        ]]>
+    </x:Code>
+   
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Header="List 1">
-            <ListBox ItemsSource="{Binding Values}" local:ListBoxEx.DraggableItems="True">
-                <!--<ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>-->
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <GroupBox Header="{Binding Title}" Content="{Binding Value}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
-        <GroupBox Grid.Column="1" Header="List 2">
-            <ListBox ItemsSource="{Binding Values}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <GroupBox Header="{Binding Title}" Content="{Binding Value}"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-        </GroupBox>
+        <!--<TextBlock Text="{Binding Value, Converter={StaticResource TestConverter}}"/>-->
     </Grid>
 </Window>

@@ -7,10 +7,10 @@ internal static class Program
     [STAThread]
     public static void Main(string[] Args)
     {
-        var property = DependencyPropertyBuilder
-           .Register<TestControl>()
-           .Property(p => p.Title)
-           .OnChanged((_, _, _) => { });
+        //var property = DependencyPropertyBuilder
+        //   .Register<TestControl>()
+        //   .Property(p => p.Title)
+        //   .OnChanged((_, _, _) => { });
 
         var app = new App();
         app.InitializeComponent();

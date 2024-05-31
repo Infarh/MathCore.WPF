@@ -48,7 +48,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.90" />
+    <PackageReference Include="MathCore" Version="0.0.91" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net4.6.1-windows'">
@@ -150,6 +150,10 @@
     <EmbeddedResource Include="TeX\Styles\PredefinedTexFormulas.xml" />
     <EmbeddedResource Include="TeX\Styles\TexFormulaSettings.xml" />
     <EmbeddedResource Include="TeX\Styles\TexSymbols.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MathCore.WPF.Generators\MathCore.WPF.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
