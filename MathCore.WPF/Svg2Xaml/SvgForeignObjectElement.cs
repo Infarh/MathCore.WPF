@@ -31,17 +31,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;foreignObject&gt; element.</summary>
-class SvgForeignObjectElement
-    : SvgDrawableContainerBaseElement
-{
-
-    //==========================================================================
-    public SvgForeignObjectElement(SvgDocument document, SvgBaseElement parent, XElement ForeignObjectElement)
-        : base(document, parent, ForeignObjectElement)
-    {
-        // ...
-    }
-
-} // class SvgForeignObjectElement
+internal class SvgForeignObjectElement(SvgDocument document, SvgBaseElement parent, XElement ForeignObjectElement)
+    : SvgDrawableContainerBaseElement(document, parent, ForeignObjectElement);

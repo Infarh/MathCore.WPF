@@ -32,7 +32,7 @@ internal class OverUnderDelimiter : Atom
         this.BaseAtom = BaseAtom;
         Script        = script;
         Symbol        = symbol;
-        Kern          = new SpaceAtom(KernUnit, 0, kern, 0);
+        Kern          = new(KernUnit, 0, kern, 0);
         Over          = over;
     }
 

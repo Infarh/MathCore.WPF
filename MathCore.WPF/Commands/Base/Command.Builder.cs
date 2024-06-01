@@ -99,6 +99,10 @@ public abstract partial class Command
 
     public readonly ref struct BuilderT<T>(Action<T?> Execute, Func<T?, bool>? CanExecute = null, string? Name = null, string? Description = null)
     {
+        public string? Name { get; init; } = Name;
+
+        public string? Description { get; init; } = Description;
+
         public Action<T?> Execute { get; init; } = Execute;
         public Func<T?, bool>? CanExecute { get; init; } = CanExecute;
 

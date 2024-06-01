@@ -187,7 +187,7 @@ public class ConditionalEventTrigger : FrameworkContentElement
             nameof(ExcludedSourceNames), 
             typeof(List<string>), 
             typeof(ConditionalEventTrigger), 
-            new PropertyMetadata(new List<string>()));
+            new(new List<string>()));
 
     public List<string> ExcludedSourceNames
     {
@@ -200,7 +200,7 @@ public class ConditionalEventTrigger : FrameworkContentElement
             nameof(Actions),
             typeof(List<TriggerAction>),
             typeof(ConditionalEventTrigger),
-            new PropertyMetadata(new List<TriggerAction>()));
+            new(new List<TriggerAction>()));
 
     public List<TriggerAction> Actions
     {
@@ -217,7 +217,7 @@ public class ConditionalEventTrigger : FrameworkContentElement
             "Triggers",
             typeof(ConditionalEventTriggerCollection),
             typeof(ConditionalEventTrigger),
-            new PropertyMetadata
+            new()
             {
                 PropertyChangedCallback = (s, e) =>
                 {
@@ -242,7 +242,7 @@ public class ConditionalEventTrigger : FrameworkContentElement
         element.Triggers.Add(trigger);
         try
         {
-            element.RaiseEvent(new RoutedEventArgs(TriggerActionsEvent));
+            element.RaiseEvent(new(TriggerActionsEvent));
         }
         finally
         {
@@ -251,4 +251,4 @@ public class ConditionalEventTrigger : FrameworkContentElement
     }
 }
 
-public class ConditionalEventTriggerCollection : List<ConditionalEventTrigger> { }
+public class ConditionalEventTriggerCollection : List<ConditionalEventTrigger>;

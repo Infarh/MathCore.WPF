@@ -26,7 +26,7 @@ public static class PasswordBoxHelper
             "PasswordBindingMarshaller",
             typeof(PasswordBindingMarshaller),
             typeof(PasswordBoxHelper),
-            new PropertyMetadata());
+            new());
 
     public static void SetSecurePassword(PasswordBox element, SecureString SecureString) => element.SetValue(SecurePasswordBindingProperty, SecureString);
 
@@ -40,7 +40,7 @@ public static class PasswordBoxHelper
         var password_box = (PasswordBox)d;
         if (password_box.GetValue(__PasswordBindingMarshallerProperty) is not PasswordBindingMarshaller binding_marshaller)
         {
-            binding_marshaller = new PasswordBindingMarshaller(password_box);
+            binding_marshaller = new(password_box);
             password_box.SetValue(__PasswordBindingMarshallerProperty, binding_marshaller);
         }
 

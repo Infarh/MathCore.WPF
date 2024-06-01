@@ -14,7 +14,7 @@ public static class ControlEx
             "BrushBackgroundMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при наведении мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -33,7 +33,7 @@ public static class ControlEx
             "BrushForegroundMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при наведении мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -52,7 +52,7 @@ public static class ControlEx
             "BrushBorderMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при наведении мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -72,7 +72,7 @@ public static class ControlEx
             "BrushBackgroundMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при нажатии мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -91,7 +91,7 @@ public static class ControlEx
             "BrushForegroundMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при нажатии мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -110,7 +110,7 @@ public static class ControlEx
             "BrushBorderMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при нажатии мыши</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -130,7 +130,7 @@ public static class ControlEx
             "BrushBackgroundDisabled",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при выключении элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -149,7 +149,7 @@ public static class ControlEx
             "BrushForegroundDisabled",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при выключении элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -168,7 +168,7 @@ public static class ControlEx
             "BrushBorderDisabled",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при выключении элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -188,7 +188,7 @@ public static class ControlEx
             "BrushBackgroundSelected",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при выборе элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -207,7 +207,7 @@ public static class ControlEx
             "BrushForegroundSelected",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при выборе элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -226,7 +226,7 @@ public static class ControlEx
             "BrushBorderSelected",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при выборе элемента</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -246,7 +246,7 @@ public static class ControlEx
             "BrushBackgroundSelectedMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при наведении мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -265,7 +265,7 @@ public static class ControlEx
             "BrushForegroundSelectedMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при наведении мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -284,7 +284,7 @@ public static class ControlEx
             "BrushBorderSelectedMouseOver",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при наведении мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -304,7 +304,7 @@ public static class ControlEx
             "BrushBackgroundSelectedMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к фону при нажатии мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -323,7 +323,7 @@ public static class ControlEx
             "BrushForegroundSelectedMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Основная кисть при нажатии мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -342,7 +342,7 @@ public static class ControlEx
             "BrushBorderSelectedMousePressed",
             typeof(Brush),
             typeof(ControlEx),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть, применяемая к рамке при нажатии мыши на выбранный элемент</summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]

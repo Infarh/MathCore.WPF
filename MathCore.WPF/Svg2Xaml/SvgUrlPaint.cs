@@ -32,21 +32,17 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgUrlPaint : SvgPaint
+internal class SvgUrlPaint(string url) : SvgPaint
 {
-    public readonly string Url;
-    
-    //==========================================================================
-    public SvgUrlPaint(string url) => Url = url;
+    public readonly string Url = url;
 
-    //==========================================================================
     public override Brush? ToBrush(SvgBaseElement element) =>
-        !element.Document.Elements.ContainsKey(Url)
-            ? null
-            : element.Document.Elements[Url] switch
+        element.Document.Elements.TryGetValue(Url, out var e)
+            ? e switch
             {
                 SvgGradientBaseElement base_element => base_element.ToBrush(),
-                SvgPatternElement pattern_element   => pattern_element.ToBrush(),
-                _                                   => throw new NotImplementedException()
-            };
-} // class SvgUrlPaint
+                SvgPatternElement pattern_element => pattern_element.ToBrush(),
+                _ => throw new NotImplementedException()
+            }
+            : null;
+}

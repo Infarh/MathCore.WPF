@@ -61,7 +61,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(Xmin),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -82,7 +82,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(Xmax),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -103,7 +103,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(Ymin),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -124,7 +124,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(Ymax),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(double.NaN));
+            new(double.NaN));
 
     #endregion
 
@@ -136,7 +136,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(AllowX),
             typeof(bool),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Разрешено перемещение по оси X</summary>
     public bool AllowX
@@ -155,7 +155,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(AllowY),
             typeof(bool),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Разрешено перетаскивание по оси Y</summary>
     public bool AllowY
@@ -183,7 +183,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(CurrentX),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(default(double), OnCurrentXChanged));
+            new(default(double), OnCurrentXChanged));
 
     private static void OnCurrentXChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
     {
@@ -211,7 +211,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(CurrentY),
             typeof(double),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(default(double), OnCurrentYChanged));
+            new(default(double), OnCurrentYChanged));
 
     private static void OnCurrentYChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
     {
@@ -230,7 +230,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
             nameof(Enabled),
             typeof(bool),
             typeof(DragInCanvasBehavior),
-            new PropertyMetadata(true, (d, e) => ((DragInCanvasBehavior)d).IsDragging &= (bool)e.NewValue));
+            new(true, (d, e) => ((DragInCanvasBehavior)d).IsDragging &= (bool)e.NewValue));
 
     /// <summary>Перетаскивание активно</summary>
     public bool Enabled

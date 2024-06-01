@@ -116,8 +116,8 @@ internal class SvgImageElement : SvgDrawableBaseElement
         using(var writer = new BinaryWriter(file_stream))
             writer.Write(Data);
 
-        return new ImageDrawing(new BitmapImage(new Uri(temp_file)), new Rect(
-            new Point(X.ToDouble(), Y.ToDouble()),
+        return new ImageDrawing(new BitmapImage(new(temp_file)), new(
+            new(X.ToDouble(), Y.ToDouble()),
             new Size(Width.ToDouble(), Height.ToDouble())
         ));
     }

@@ -20,7 +20,7 @@ public class XAMLContentValue : DependencyObject
             nameof(Content),
             typeof(object),
             typeof(XAMLContentValue),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Содержимое</summary>
     //[Category("")]
@@ -34,7 +34,7 @@ public class XAMLContentValue : DependencyObject
         if (URI is not { Length: > 0 })
             throw new ArgumentException(nameof(URI));
 
-        this.URI         = new Uri(URI);
+        this.URI         = new(URI);
         _LoadContentTask = LoadContentAsync();
         if(!this.URI.IsFile || !File.Exists(URI))
             return;

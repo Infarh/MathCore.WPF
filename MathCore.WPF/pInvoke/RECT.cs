@@ -7,12 +7,12 @@
 namespace MathCore.WPF.pInvoke;
 
 [StructLayout(LayoutKind.Sequential, Pack = 0), System.Diagnostics.CodeAnalysis.SuppressMessage("ReSharper", "InconsistentNaming")]
-public struct Rect : IEquatable<Rect>
+public struct Rect(int left, int top, int right, int bottom) : IEquatable<Rect>
 {
-    public int Left;
-    public int Top;
-    public int Right;
-    public int Bottom;
+    public int Left = left;
+    public int Top = top;
+    public int Right = right;
+    public int Bottom = bottom;
 
     public static readonly Rect Empty;
 
@@ -20,25 +20,13 @@ public struct Rect : IEquatable<Rect>
 
     public int Height => Bottom - Top;
 
-    public Rect(int left, int top, int right, int bottom)
+    public Rect(Rect rcSrc) : this(rcSrc.Left, rcSrc.Top, rcSrc.Right, rcSrc.Bottom)
     {
-        Left   = left;
-        Top    = top;
-        Right  = right;
-        Bottom = bottom;
-    }
-
-    public Rect(Rect rcSrc)
-    {
-        Left   = rcSrc.Left;
-        Top    = rcSrc.Top;
-        Right  = rcSrc.Right;
-        Bottom = rcSrc.Bottom;
     }
 
     public bool IsEmpty => Left >= Right || Top >= Bottom;
 
-    /// <summary> Return a user friendly representation of this struct </summary>
+    /// <summary> Return a user-friendly representation of this struct </summary>
     public override string ToString() => Equals(Empty) ? "RECT {Empty}" : $"RECT {{ left : {Left} / top : {Top} / right : {Right} / bottom : {Bottom} }}";
 
     public bool Equals(Rect other) => Left == other.Left && Top == other.Top && Right == other.Right && Bottom == other.Bottom;

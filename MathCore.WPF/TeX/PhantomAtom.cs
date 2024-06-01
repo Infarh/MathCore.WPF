@@ -13,7 +13,7 @@ internal class PhantomAtom : Atom, IRow
 
     public PhantomAtom(Atom BaseAtom, bool UseWidth = true, bool UseHeight = true, bool UseDepth = true)
     {
-        RowAtom        = BaseAtom is null ? new RowAtom() : new RowAtom(BaseAtom);
+        RowAtom        = BaseAtom is null ? new() : new RowAtom(BaseAtom);
         this._UseWidth  = UseWidth;
         this._UseHeight = UseHeight;
         this._UseDepth  = UseDepth;

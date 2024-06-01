@@ -33,7 +33,7 @@ public abstract class Box
     protected Box(Brush foreground, Brush background)
     {
         _Children         = [];
-        _ChildrenReadOnly = new ReadOnlyCollection<Box>(_Children);
+        _ChildrenReadOnly = new(_Children);
         Foreground       = foreground;
         Background       = background;
     }
@@ -42,7 +42,7 @@ public abstract class Box
     {
         if(Background is null) return;
         // Fill background of box with color.
-        Context.DrawRectangle(Background, null, new Rect(x * scale, (y - Height) * scale,
+        Context.DrawRectangle(Background, null, new(x * scale, (y - Height) * scale,
             Width * scale, (Height + Depth) * scale));
     }
 

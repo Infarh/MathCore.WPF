@@ -123,7 +123,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     }
 
     [NotifyPropertyChangedInvocator]
-    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChangedHandlers?.Invoke(this, new(PropertyName));
 
     [NotifyPropertyChangedInvocator]
     protected virtual bool Set<T>(ref T? field, T? value, [CallerMemberName] string? PropertyName = null)
@@ -322,8 +322,8 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
 
     private SimpleObservableEx<object?>? _Observable;
 
-    public IDisposable Subscribe(IObserverEx<object?> observer) => (_Observable ??= new SimpleObservableEx<object?>()).Subscribe(observer);
-    public IDisposable Subscribe(IObserver<object?> observer) => (_Observable ??= new SimpleObservableEx<object?>()).Subscribe(observer);
+    public IDisposable Subscribe(IObserverEx<object?> observer) => (_Observable ??= new()).Subscribe(observer);
+    public IDisposable Subscribe(IObserver<object?> observer) => (_Observable ??= new()).Subscribe(observer);
 
     #endregion 
 }

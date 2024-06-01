@@ -11,8 +11,11 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
+[MarkupExtensionReturnType(typeof(Round))]
 public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
 {
+    public double K { get; set; } = 1;
+
     public Round() : this(0) { }
 
     public Round(int Digits) : this(Digits, default) { }
@@ -25,8 +28,8 @@ public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => Digits > 0 
-        ? Math.Round(v, Digits) 
-        : Math.Round(v);
+        ? Math.Round(v * K, Digits) / K
+        : Math.Round(v * K) / K;
 
     /// <inheritdoc />
     protected override double ConvertBack(double v, double? p = null) => v;

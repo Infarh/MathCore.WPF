@@ -22,7 +22,7 @@ public static class ModernWindow
             "HeaderContent",
             typeof(object),
             typeof(ModernWindow),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     #endregion
 
@@ -41,7 +41,7 @@ public static class ModernWindow
             "HeaderHeight",
             typeof(double),
             typeof(ModernWindow),
-            new PropertyMetadata(30d, null, (d, v) => (double)v > 0 ? v : 0), v => (double)v >= 0);
+            new(30d, null, (d, v) => (double)v > 0 ? v : 0), v => (double)v >= 0);
 
     #endregion
 
@@ -60,7 +60,7 @@ public static class ModernWindow
             "HeaderActiveBrush",
             typeof(Brush),
             typeof(ModernWindow),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     #endregion
 
@@ -79,7 +79,7 @@ public static class ModernWindow
             "HeaderInActiveBrush",
             typeof(Brush),
             typeof(ModernWindow),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     #endregion
 
@@ -98,7 +98,7 @@ public static class ModernWindow
             "HeaderButtonTopMostVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -117,7 +117,7 @@ public static class ModernWindow
             "HeaderButtonMinimizeVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -136,7 +136,7 @@ public static class ModernWindow
             "HeaderButtonMaximizeVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -155,7 +155,7 @@ public static class ModernWindow
             "HeaderButtonCloseVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -174,7 +174,7 @@ public static class ModernWindow
             "HeaderIconVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -193,7 +193,7 @@ public static class ModernWindow
             "HeaderAdditionalContentVisibility",
             typeof(Visibility),
             typeof(ModernWindow),
-            new PropertyMetadata(Visibility.Visible));
+            new(Visibility.Visible));
 
     #endregion
 
@@ -212,7 +212,7 @@ public static class ModernWindow
             "HeaderTextBrushActive",
             typeof(Brush),
             typeof(ModernWindow),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     #endregion
 
@@ -231,7 +231,7 @@ public static class ModernWindow
             "HeaderTextBrushInActive",
             typeof(Brush),
             typeof(ModernWindow),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     #endregion
 
@@ -250,7 +250,7 @@ public static class ModernWindow
             "HeaderSystemMenu",
             typeof(ContextMenu),
             typeof(ModernWindow),
-            new PropertyMetadata(default(ContextMenu)));
+            new(default(ContextMenu)));
 
     #endregion
 }

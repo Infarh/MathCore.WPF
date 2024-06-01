@@ -33,15 +33,9 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  A paint with a solid color.</summary>
-class SvgColorPaint
-    : SvgPaint
+internal class SvgColorPaint(SvgColor color) : SvgPaint
 {
-    //==========================================================================
-    public readonly SvgColor Color;
+    public readonly SvgColor Color = color;
 
-    //==========================================================================
-    public SvgColorPaint(SvgColor color) => Color = color;
-
-    //==========================================================================
     public override Brush ToBrush(SvgBaseElement element) => new SolidColorBrush(Color.ToColor());
-} // class SvgColorPaint
+}

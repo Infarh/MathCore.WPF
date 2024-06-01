@@ -57,7 +57,7 @@ public class GIF : Image
             typeof(GIF),
             new UIPropertyMetadata(0, ChangingFrameIndex));
 
-    static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
+    private static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
     {
         var gifImage = obj as GIF;
         gifImage.Source = gifImage._GifDecoder.Frames[(int)ev.NewValue];

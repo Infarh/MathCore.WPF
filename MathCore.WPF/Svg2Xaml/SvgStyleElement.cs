@@ -31,17 +31,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;style&gt; element.</summary>
-class SvgStyleElement
-    : SvgBaseElement
-{
-
-    //==========================================================================
-    public SvgStyleElement(SvgDocument document, SvgBaseElement parent, XElement StyleElement)
-        : base(document, parent, StyleElement)
-    {
-        // ...
-    }
-
-} // class SvgStyleElement
+internal class SvgStyleElement(SvgDocument document, SvgBaseElement parent, XElement StyleElement)
+    : SvgBaseElement(document, parent, StyleElement);

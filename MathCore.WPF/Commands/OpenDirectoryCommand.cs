@@ -5,10 +5,8 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Commands;
 
 [MarkupExtensionReturnType(typeof(OpenDirectoryCommand))]
-public class OpenDirectoryCommand : LambdaCommand
+public class OpenDirectoryCommand() : LambdaCommand(OnOpenDirectoryExecuted, OnOpenDirectoryCanExecuteCheck)
 {
-    public OpenDirectoryCommand() : base(OnOpenDirectoryExecuted, OnOpenDirectoryCanExecuteCheck) { }
-
     private static bool OnOpenDirectoryCanExecuteCheck(object? path) =>
         File.Exists(path as string) 
         || (path as FileInfo)?.Exists == true

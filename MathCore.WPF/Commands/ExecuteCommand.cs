@@ -32,11 +32,11 @@ public class ExecuteCommand(string Command) : LambdaCommand
             if(cmd is null)
                 throw new ArgumentNullException(nameof(p),
                     @"Не задан параметр команды при отсутствии текста команды");
-            info = new ProcessStartInfo(cmd);
+            info = new(cmd);
         }
         else
         {
-            info = new ProcessStartInfo(Command);
+            info = new(Command);
             if(p?.ToString() is { Length: > 0 } args)
                 info.Arguments = args;
         }

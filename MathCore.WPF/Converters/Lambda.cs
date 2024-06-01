@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -6,6 +7,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Lambda<,>))]
 public class Lambda<TValue, TResult>(Lambda<TValue, TResult>.Converter Converter, Lambda<TValue, TResult>.ConverterBack? BackConverter = null) : ValueConverter
 {
     public Lambda(

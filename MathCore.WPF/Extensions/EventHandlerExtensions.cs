@@ -16,7 +16,7 @@ public static class EventHandlerExtensions
             switch (d.Target)
             {
                 case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
-                    synchronize_invoke.Invoke(d, args ??= new[] { Sender, e });
+                    synchronize_invoke.Invoke(d, args ??= [Sender, e]);
                     break;
 
                 case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess():
@@ -39,7 +39,7 @@ public static class EventHandlerExtensions
             switch (d.Target)
             {
                 case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
-                    synchronize_invoke.Invoke(d, args ??= new[] { Sender, E });
+                    synchronize_invoke.Invoke(d, args ??= [Sender, E]);
                     break;
 
                 case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess():

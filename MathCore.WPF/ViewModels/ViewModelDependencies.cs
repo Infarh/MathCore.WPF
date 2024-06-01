@@ -8,10 +8,7 @@ using System.Reflection;
 
 namespace MathCore.WPF.ViewModels;
 
-partial class ViewModel
-{
-
-}
+public partial class ViewModel;
 
 public static class ViewModelExtensions
 {
@@ -69,9 +66,9 @@ public static class ViewModelExtensions
 
         private Property<TValue>? _Property;
 
-        public IDisposable Subscribe(IObserver<TValue> observer) => (_Property ??= new Property<TValue>(_Model, _PropertName)).Subscribe(observer);
+        public IDisposable Subscribe(IObserver<TValue> observer) => (_Property ??= new(_Model, _PropertName)).Subscribe(observer);
 
-        public IDisposable Subscribe(IObserverEx<TValue> observer) => (_Property ??= new Property<TValue>(_Model, _PropertName)).Subscribe(observer);
+        public IDisposable Subscribe(IObserverEx<TValue> observer) => (_Property ??= new(_Model, _PropertName)).Subscribe(observer);
     }
 
     public static ViewModelPropertyObserver<T, TValue> When<T, TValue>(this T model, Expression<Func<T, TValue>> PropertySelector)
@@ -86,6 +83,6 @@ public static class ViewModelExtensions
 
         var property_name = member_expression.Member.Name;
 
-        return new ViewModelPropertyObserver<T, TValue>(model, property_name);
+        return new(model, property_name);
     }
 }

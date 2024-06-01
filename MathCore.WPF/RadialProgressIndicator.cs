@@ -49,7 +49,7 @@ public class RadialProgressIndicator : FrameworkElement
     {
         _IsListening   =  false;
         _Radius        =  0;
-        _Center        =  new Point();
+        _Center        =  new();
         _RotationAngle =  0;
         Unloaded       += OnUnloaded;
     }
@@ -291,7 +291,7 @@ public class RadialProgressIndicator : FrameworkElement
         _ForegroundBrush = NewValue.Clone();
         _ForegroundBrush.Freeze();
 
-        _ForegourndPen = new Pen(_ForegroundBrush, 2);
+        _ForegourndPen = new(_ForegroundBrush, 2);
         _ForegourndPen.Freeze();
     }
 
@@ -300,7 +300,7 @@ public class RadialProgressIndicator : FrameworkElement
         _ActiveForegourndBrush = NewValue.Clone();
         _ActiveForegourndBrush.Freeze();
 
-        _ActivePen = new Pen(_ActiveForegourndBrush, 2);
+        _ActivePen = new(_ActiveForegourndBrush, 2);
         _ActivePen.Freeze();
     }
 
@@ -394,23 +394,23 @@ internal static class GeometryExtensions
         {
             new LineSegment(location with { Y = location.Y - radius }, false),
             new ArcSegment(
-                new Point(location.X + arc_point.X, location.Y + arc_point.Y),
-                new Size(radius, radius),
+                new(location.X + arc_point.X, location.Y + arc_point.Y),
+                new(radius, radius),
                 0,
                 is_large_arc,
                 SweepDirection.Clockwise,
                 false),
-            new LineSegment(new Point(location.X + inner_arc_point.X, location.Y + inner_arc_point.Y), false),
+            new LineSegment(new(location.X + inner_arc_point.X, location.Y + inner_arc_point.Y), false),
             new ArcSegment(
                 location with { Y = location.Y - InnerRadius },
-                new Size(InnerRadius, InnerRadius),
+                new(InnerRadius, InnerRadius),
                 0,
                 is_large_arc,
                 SweepDirection.Counterclockwise,
                 false)
         };
 
-        return new PathGeometry { Figures = [new(location, segments, true)] };
+        return new() { Figures = [new(location, segments, true)] };
     }
 
     /// <summary>Creates a circle path spilits into the given number of sigments.</summary>
@@ -471,7 +471,7 @@ internal static class GeometryExtensions
         var angle_radius = PI / (__FullCircleInDegrees / 2) * (angle - __FullCircleInDegrees / 4);
         var x            = radius * Cos(angle_radius);
         var y            = radius * Sin(angle_radius);
-        return new Point(x, y);
+        return new(x, y);
     }
 
     /// <summary>    Normalizes the specified angle in degrees to angles between 0 to 360;</summary>

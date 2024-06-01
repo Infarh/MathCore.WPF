@@ -13,7 +13,7 @@ public class ValueFilterItem : CollectionViewFilterItem
             nameof(FilterText),
             typeof(string),
             typeof(ValueFilterItem),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Текст фильтра</summary>
     public string? FilterText

@@ -26,39 +26,32 @@ public class TreeViewBindableSelectedItem : Behavior<TreeView>
         SelectTreeViewItem(tree_view, item);
     }
 
-    private static bool SelectTreeViewItem(ItemsControl ParentContainer, object target)
+    private static bool SelectTreeViewItem(ItemsControl ParentContainer, object item)
     {
         if (ParentContainer is null) throw new ArgumentNullException(nameof(ParentContainer));
 
-        foreach (var item in ParentContainer.Items)
+        foreach (var tree_item in ParentContainer.Items)
         {
-            var view = (TreeViewItem)ParentContainer.ItemContainerGenerator.ContainerFromItem(item);
-            if (view is null) continue;
+            if (ParentContainer.ItemContainerGenerator.ContainerFromItem(tree_item) is not TreeViewItem view_item) continue;
 
-            if (Equals(item, target))
+            if (Equals(tree_item, item))
             {
-                view.IsSelected = true;
-                view.BringIntoView();
+                view_item.IsSelected = true;
+                view_item.BringIntoView();
                 return true;
             }
 
-            if (view.Items.Count == 0) continue;
-            var is_expanded = view.IsExpanded;
-            view.IsExpanded = true;
-            view.UpdateLayout();
-            if (SelectTreeViewItem(view, target)) return true;
-            view.IsExpanded = is_expanded;
+            if (view_item.Items.Count == 0) continue;
+
+            var is_expanded = view_item.IsExpanded;
+            view_item.IsExpanded = true;
+            view_item.UpdateLayout();
+
+            if (SelectTreeViewItem(view_item, item)) return true;
+
+            view_item.IsExpanded = is_expanded;
         }
 
-        //foreach (var item in ParentContainer.Items)
-        //{
-        //    var view = (TreeViewItem)ParentContainer.ItemContainerGenerator.ContainerFromItem(item);
-        //    if (view is null || view.Items.Count == 0) continue;
-        //    view.IsExpanded = true;
-        //    view.UpdateLayout();
-        //    if (SelectTreeViewItem(view, target)) return true;
-        //    view.IsExpanded = false;
-        //}
         return false;
     }
 
@@ -66,13 +59,14 @@ public class TreeViewBindableSelectedItem : Behavior<TreeView>
 
     private Style? _CustomItemContainerStyle;
     private EventSetter? _TreeViewItemStyleLoadedEventSetter;
+
     protected override void OnAttached()
     {
         base.OnAttached();
         var tree_view = AssociatedObject;
         tree_view.SelectedItemChanged += OnTreeViewSelectedItemChanged;
-        var style = tree_view.ItemContainerStyle ?? (_CustomItemContainerStyle = tree_view.ItemContainerStyle = new Style(typeof(TreeViewItem)));
-        style.Setters.Add(_TreeViewItemStyleLoadedEventSetter = new EventSetter(FrameworkElement.LoadedEvent, new RoutedEventHandler(OnTreeViewItem_Loaded)));
+        var style = tree_view.ItemContainerStyle ?? (_CustomItemContainerStyle = tree_view.ItemContainerStyle = new(typeof(TreeViewItem)));
+        style.Setters.Add(_TreeViewItemStyleLoadedEventSetter = new(FrameworkElement.LoadedEvent, new RoutedEventHandler(OnTreeViewItem_Loaded)));
     }
 
     protected override void OnDetaching()

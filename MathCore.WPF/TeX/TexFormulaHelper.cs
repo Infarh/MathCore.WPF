@@ -8,7 +8,7 @@ internal sealed class TexFormulaHelper
 
     public TexFormulaHelper(TexFormula formula)
     {
-        FormulaParser = new TexFormulaParser();
+        FormulaParser = new();
         Formula       = formula;
     }
 

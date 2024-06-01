@@ -7,7 +7,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters.Reflection;
 
 [ValueConversion(typeof(Assembly), typeof(object))]
-public abstract class AssemblyConverter : ValueConverter
+public abstract class AssemblyConverter(Func<Assembly, object?> Converter) : ValueConverter
 {
     protected static Func<Assembly, object?> Attribute<T>(Func<T, object?> Converter) where T : Attribute => asm =>
     {
@@ -15,10 +15,6 @@ public abstract class AssemblyConverter : ValueConverter
         return a is null ? null : Converter(a);
     };
 
-    private readonly Func<Assembly, object?> _Converter;
-
-    protected AssemblyConverter(Func<Assembly, object?> Converter) => _Converter = Converter;
-
     /// <inheritdoc />
-    protected override object? Convert(object? v, Type t, object? p, CultureInfo c) => v is null ? null : _Converter((Assembly)v);
+    protected override object? Convert(object? v, Type t, object? p, CultureInfo c) => v is null ? null : Converter((Assembly)v);
 }

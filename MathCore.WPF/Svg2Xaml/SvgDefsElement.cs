@@ -32,14 +32,5 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;defs&gt; element.</summary>
-class SvgDefsElement
-    : SvgContainerBaseElement
-{
-    //==========================================================================
-    public SvgDefsElement(SvgDocument document, SvgBaseElement parent, XElement DefsElement)
-        : base(document, parent, DefsElement)
-    {
-        // ...
-    }
-
-} // class SvgDefsElement
+internal class SvgDefsElement(SvgDocument document, SvgBaseElement parent, XElement DefsElement)
+    : SvgContainerBaseElement(document, parent, DefsElement);

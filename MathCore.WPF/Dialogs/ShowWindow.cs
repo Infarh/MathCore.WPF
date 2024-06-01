@@ -20,7 +20,7 @@ public class ShowWindow : Dialog
             nameof(IsModal),
             typeof(bool),
             typeof(ShowWindow),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Отобразить окно как модальное</summary>
     public bool IsModal
@@ -39,7 +39,7 @@ public class ShowWindow : Dialog
             nameof(DialogResult),
             typeof(bool?),
             typeof(ShowWindow),
-            new PropertyMetadata(default(bool?)));
+            new(default(bool?)));
 
     /// <summary>Результат диалога</summary>
     public bool? DialogResult
@@ -58,7 +58,7 @@ public class ShowWindow : Dialog
             nameof(Style),
             typeof(Style),
             typeof(ShowWindow),
-            new PropertyMetadata(default(Style))); /*,
+            new(default(Style))); /*,
                 s => s is null
                      || s is Style
                         && ((Style)s).TargetType is null
@@ -104,7 +104,7 @@ public class ShowWindow : Dialog
             nameof(ContentTemplate),
             typeof(DataTemplate),
             typeof(ShowWindow),
-            new PropertyMetadata(default(DataTemplate)));
+            new(default(DataTemplate)));
 
     /// <summary>Шаблон содержимого окна</summary>
     public DataTemplate ContentTemplate
@@ -123,7 +123,7 @@ public class ShowWindow : Dialog
             nameof(Width),
             typeof(double),
             typeof(ShowWindow),
-            new PropertyMetadata(default(double)), w => (double)w >= 0);
+            new(default(double)), w => (double)w >= 0);
 
     /// <summary>Ширина окна</summary>
     public double Width
@@ -142,7 +142,7 @@ public class ShowWindow : Dialog
             nameof(Height),
             typeof(double),
             typeof(ShowWindow),
-            new PropertyMetadata(default(double)), h => (double)h >= 0);
+            new(default(double)), h => (double)h >= 0);
 
     /// <summary>Высота окна</summary>
     public double Height
@@ -161,7 +161,7 @@ public class ShowWindow : Dialog
             nameof(MaxWidth),
             typeof(double),
             typeof(ShowWindow),
-            new PropertyMetadata(default(double)), w => (double)w >= 0);
+            new(default(double)), w => (double)w >= 0);
 
     /// <summary>Максимальная ширина окна</summary>
     public double MaxWidth
@@ -180,7 +180,7 @@ public class ShowWindow : Dialog
             nameof(MaxHeight),
             typeof(double),
             typeof(ShowWindow),
-            new PropertyMetadata(default(double)), h => (double)h >= 0);
+            new(default(double)), h => (double)h >= 0);
 
     /// <summary>Максимальная высота окна</summary>
     public double MaxHeight
@@ -199,7 +199,7 @@ public class ShowWindow : Dialog
             nameof(DataContext),
             typeof(object),
             typeof(ShowWindow),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Контекст данных окна</summary>
     public object DataContext
@@ -218,7 +218,7 @@ public class ShowWindow : Dialog
             nameof(Content),
             typeof(object),
             typeof(ShowWindow),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Содержимое окна</summary>
     public object Content
@@ -237,7 +237,7 @@ public class ShowWindow : Dialog
             nameof(Icon),
             typeof(ImageSource),
             typeof(ShowWindow),
-            new PropertyMetadata(default(ImageSource)), v => v is null or ImageSource);
+            new(default(ImageSource)), v => v is null or ImageSource);
 
     /// <summary>Иконка окна</summary>
     public ImageSource Icon
@@ -277,7 +277,7 @@ public class ShowWindow : Dialog
             nameof(Topmost),
             typeof(bool),
             typeof(ShowWindow),
-            new PropertyMetadata(default(bool)), v => v is null or bool);
+            new(default(bool)), v => v is null or bool);
 
     /// <summary>Окно является окном верхнего уровня</summary>
     public bool Topmost
@@ -296,7 +296,7 @@ public class ShowWindow : Dialog
             nameof(Owner),
             typeof(Window),
             typeof(ShowWindow),
-            new PropertyMetadata(default(Window)), v => v is null or System.Windows.Window);
+            new(default(Window)), v => v is null or System.Windows.Window);
 
     /// <summary>Окно - владелец</summary>
     public Window Owner
@@ -315,7 +315,7 @@ public class ShowWindow : Dialog
             nameof(WindowState),
             typeof(WindowState),
             typeof(ShowWindow),
-            new PropertyMetadata(default(WindowState)), v => v is null or System.Windows.WindowState);
+            new(default(WindowState)), v => v is null or System.Windows.WindowState);
 
     /// <summary>Состояние окна</summary>
     public WindowState WindowState
@@ -334,7 +334,7 @@ public class ShowWindow : Dialog
             nameof(StartupLocation),
             typeof(WindowStartupLocation),
             typeof(ShowWindow),
-            new PropertyMetadata(default(WindowStartupLocation)), v => v is null or WindowStartupLocation);
+            new(default(WindowStartupLocation)), v => v is null or WindowStartupLocation);
 
     /// <summary>Начальное положение окна</summary>
     public WindowStartupLocation StartupLocation
@@ -353,7 +353,7 @@ public class ShowWindow : Dialog
             nameof(SizeToContent),
             typeof(SizeToContent),
             typeof(ShowWindow),
-            new PropertyMetadata(default(SizeToContent)), v => v is null or System.Windows.SizeToContent);
+            new(default(SizeToContent)), v => v is null or System.Windows.SizeToContent);
 
     /// <summary>Принцип автоматического изменения размеров окна</summary>
     public SizeToContent SizeToContent

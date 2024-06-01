@@ -24,7 +24,7 @@ public static class FrameworkElementExtensions
         var prop = DependencyProperty.RegisterAttached($"ListenAttached{PropertyName}",
             typeof(object),
             element.GetType(),
-            new PropertyMetadata(callback));
+            new(callback));
 
         element.SetBinding(prop, binding);
     }
@@ -104,7 +104,7 @@ public static class FrameworkElementExtensions
 
             var width = element.Visibility == Visibility.Collapsed ? 0.0 : actual_width;
             var height = element.Visibility == Visibility.Collapsed ? 0.0 : actual_height;
-            return new Size(width, height);
+            return new(width, height);
         }
 
         private readonly FrameworkElement _Element;
@@ -134,7 +134,7 @@ public static class FrameworkElementExtensions
                 SkewTransform transform => new SkewTransform { AngleX = transform.AngleX, AngleY = transform.AngleY, CenterX = transform.CenterX, CenterY = transform.CenterY },
                 TranslateTransform transform => new TranslateTransform { X = transform.X, Y = transform.Y },
                 MatrixTransform transform => new MatrixTransform { Matrix = transform.Matrix },
-                TransformGroup transform => new TransformGroup { Children = new TransformCollection(transform.Children.Select(GetElementTransform)) },
+                TransformGroup transform => new TransformGroup { Children = new(transform.Children.Select(GetElementTransform)) },
                 _ => null
             };
 
@@ -178,8 +178,8 @@ public static class FrameworkElementExtensions
         private static Vector GetTransformVector(GeneralTransform? transform, double X, double Y)
         {
             if (transform is null) return new();
-            var start_point = transform.Transform(new Point());
-            var end_point = transform.Transform(new Point(X, Y));
+            var start_point = transform.Transform(new());
+            var end_point = transform.Transform(new(X, Y));
             return end_point - start_point;
         }
 
@@ -237,7 +237,7 @@ public static class FrameworkElementExtensions
                         if (tr_count > 0 && transforms[tr_count-1] is TranslateTransform t)
                             translate_transform = t;
                         else
-                            transforms.Add(translate_transform = new TranslateTransform());
+                            transforms.Add(translate_transform = new());
                         break;
 
                     case MatrixTransform transform_matrix:
@@ -251,7 +251,7 @@ public static class FrameworkElementExtensions
                         var new_transform_group = new TransformGroup();
                         if (transform != null)
                             new_transform_group.Children.Add(transform);
-                        new_transform_group.Children.Add(translate_transform = new TranslateTransform());
+                        new_transform_group.Children.Add(translate_transform = new());
                         RenderTransform = new_transform_group;
                         break;
                 }

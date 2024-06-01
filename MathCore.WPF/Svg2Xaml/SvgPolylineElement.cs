@@ -34,7 +34,7 @@ using System.Globalization;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgPolylineElement
+internal class SvgPolylineElement
     : SvgDrawableBaseElement
 {
     //==========================================================================
@@ -59,7 +59,7 @@ class SvgPolylineElement
             }
 
             for(var i = 0; i < coordinates.Count - 1; i += 2)
-                Points.Add(new SvgPoint(coordinates[i], coordinates[i + 1]));
+                Points.Add(new(coordinates[i], coordinates[i + 1]));
         }
     }
 

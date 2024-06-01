@@ -33,7 +33,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgRadialGradientElement
+internal class SvgRadialGradientElement
     : SvgGradientBaseElement
 {
     //==========================================================================
@@ -86,10 +86,10 @@ class SvgRadialGradientElement
         var fx = Fx?.ToDouble() ?? cx;
         var fy = Fy?.ToDouble() ?? cy;
 
-        radial_gradient_brush.GradientOrigin = new Point(fx, fy);
+        radial_gradient_brush.GradientOrigin = new(fx, fy);
         radial_gradient_brush.RadiusX        = R.ToDouble();
         radial_gradient_brush.RadiusY        = R.ToDouble();
-        radial_gradient_brush.Center         = new Point(cx, cy);
+        radial_gradient_brush.Center         = new(cx, cy);
         return brush;
     }
 } // class SvgRadialGradientElement

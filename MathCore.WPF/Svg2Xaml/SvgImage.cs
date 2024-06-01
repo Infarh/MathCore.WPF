@@ -83,7 +83,7 @@ public class SvgImage : MarkupExtension
                 stream = new FileStream(_Uri.ToString(), FileMode.Open);
             else
                 return null;
-            return SvgReader.Load(stream, new SvgReaderOptions { IgnoreEffects = _MIgnoreEffects });
+            return SvgReader.Load(stream, new() { IgnoreEffects = _MIgnoreEffects });
         }
         finally
         {

@@ -6,7 +6,7 @@ public partial class ModelEvent : IModelEvent
 
     protected virtual void OnEvent(ModelEventArgs e) => Event?.Invoke(this, e);
 
-    protected virtual void OnEvent(object? Model, object? Parameter) => OnEvent(new ModelEventArgs(Model, Parameter));
+    protected virtual void OnEvent(object? Model, object? Parameter) => OnEvent(new(Model, Parameter));
 
     protected virtual void OnEvent(object? Parameter) => OnEvent(_Model, Parameter);
 

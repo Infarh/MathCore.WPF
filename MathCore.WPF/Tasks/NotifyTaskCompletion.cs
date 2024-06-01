@@ -128,21 +128,21 @@ public sealed class NotifyTaskCompletion<T> : INotifyPropertyChanged
     {
         var handlers = PropertyChanged;
         if (handlers is null) return;
-        handlers(this, new PropertyChangedEventArgs(nameof(Status)));
-        handlers(this, new PropertyChangedEventArgs(nameof(IsCompleted)));
-        handlers(this, new PropertyChangedEventArgs(nameof(IsNotCompleted)));
-        if (task.IsCanceled) handlers(this, new PropertyChangedEventArgs(nameof(IsCanceled)));
+        handlers(this, new(nameof(Status)));
+        handlers(this, new(nameof(IsCompleted)));
+        handlers(this, new(nameof(IsNotCompleted)));
+        if (task.IsCanceled) handlers(this, new(nameof(IsCanceled)));
         else if (task.IsFaulted)
         {
-            handlers(this, new PropertyChangedEventArgs(nameof(IsFaulted)));
-            handlers(this, new PropertyChangedEventArgs(nameof(Exception)));
-            handlers(this, new PropertyChangedEventArgs(nameof(InnerException)));
-            handlers(this, new PropertyChangedEventArgs(nameof(ErrorMessage)));
+            handlers(this, new(nameof(IsFaulted)));
+            handlers(this, new(nameof(Exception)));
+            handlers(this, new(nameof(InnerException)));
+            handlers(this, new(nameof(ErrorMessage)));
         }
         else
         {
-            handlers(this, new PropertyChangedEventArgs(nameof(IsSuccessfullyCompleted)));
-            handlers(this, new PropertyChangedEventArgs(nameof(Result)));
+            handlers(this, new(nameof(IsSuccessfullyCompleted)));
+            handlers(this, new(nameof(Result)));
         }
     }
 

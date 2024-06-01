@@ -32,22 +32,13 @@ using System.Diagnostics;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents an &lt;feColorMatrix&gt; element.</summary>
-class SvgFeColorMatrixElement : SvgFilterEffectBaseElement
+internal class SvgFeColorMatrixElement(SvgDocument document, SvgBaseElement parent, XElement FeColorMatrixElement)
+    : SvgFilterEffectBaseElement(document, parent, FeColorMatrixElement)
 {
-
-    //==========================================================================
-    public SvgFeColorMatrixElement(SvgDocument document, SvgBaseElement parent, XElement FeColorMatrixElement)
-        : base(document, parent, FeColorMatrixElement)
-    {
-        // ...
-    }
-
-    //==========================================================================
     public override BitmapEffect? ToBitmapEffect()
     {
         Debug.WriteLine("feColorMatrix is not supported yet!");
         return null;
     }
-} // class SvgFEColorMatrixElement
+}

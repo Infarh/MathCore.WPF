@@ -23,7 +23,7 @@ public class SelectDirectory : Dialog
             nameof(SelectedDirectory),
             typeof(DirectoryInfo),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(DirectoryInfo?), (d, e) => d.SetValue(SelectedDirectoryPathProperty, ((DirectoryInfo?)e.NewValue)?.FullName)));
+            new(default(DirectoryInfo?), (d, e) => d.SetValue(SelectedDirectoryPathProperty, ((DirectoryInfo?)e.NewValue)?.FullName)));
 
     /// <summary>Выбранная директория</summary>
     public DirectoryInfo? SelectedDirectory
@@ -42,7 +42,7 @@ public class SelectDirectory : Dialog
             nameof(SelectedDirectoryPath),
             typeof(string),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(string), OnSelectedDirectoryPathChanged));
+            new(default(string), OnSelectedDirectoryPathChanged));
 
     private static void OnSelectedDirectoryPathChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
@@ -66,7 +66,7 @@ public class SelectDirectory : Dialog
             nameof(ShowNewFolderButton),
             typeof(bool),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     public bool ShowNewFolderButton
     {
@@ -83,7 +83,7 @@ public class SelectDirectory : Dialog
             nameof(RootFolder),
             typeof(Environment.SpecialFolder),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(Environment.SpecialFolder)));
+            new(default(Environment.SpecialFolder)));
 
     public Environment.SpecialFolder RootFolder
     {
@@ -101,7 +101,7 @@ public class SelectDirectory : Dialog
             nameof(OkButtonText),
             typeof(string),
             typeof(SelectDirectory),
-            new PropertyMetadata("Ok"));
+            new("Ok"));
 
     /// <summary>Текст кнопки Ok</summary>
     //[Category("")]
@@ -118,7 +118,7 @@ public class SelectDirectory : Dialog
             nameof(FileNameCaption),
             typeof(string),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Текст подписи имени файла</summary>
     //[Category("")]
@@ -135,7 +135,7 @@ public class SelectDirectory : Dialog
             nameof(ForceFileSystem),
             typeof(bool),
             typeof(SelectDirectory),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Принудительный выбор файловой системы</summary>
     //[Category("")]
@@ -254,9 +254,7 @@ public class SelectDirectory : Dialog
     private const int __DialogResultCancel = unchecked((int)0x800704C7);
 
     [ComImport, Guid("DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7")] // CLSID_FileOpenDialog
-    private class FileOpenDialog
-    {
-    }
+    private class FileOpenDialog;
 
     [ComImport, Guid("42f85136-db7e-439c-85f1-e4075d135fc8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     private interface IFileOpenDialog

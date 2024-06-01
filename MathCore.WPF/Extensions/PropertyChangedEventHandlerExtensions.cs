@@ -22,7 +22,7 @@ namespace System.ComponentModel
                 switch (d.Target)
                 {
                     case ISynchronizeInvoke { InvokeRequired: true } synchronize_invoke:
-                        foreach (var arg in args) synchronize_invoke.Invoke(d, new[] { sender, arg });
+                        foreach (var arg in args) synchronize_invoke.Invoke(d, [sender, arg]);
                         break;
                     case DispatcherObject dispatcher_obj when !dispatcher_obj.CheckAccess():
                         foreach (var arg in args) dispatcher_obj.Dispatcher.Invoke(d, sender, arg);

@@ -18,7 +18,7 @@ public class Resize : Behavior<Control>
             nameof(AreaSize),
             typeof(double),
             typeof(Resize),
-            new PropertyMetadata(3d));
+            new(3d));
 
     public double AreaSize
     {
@@ -35,7 +35,7 @@ public class Resize : Behavior<Control>
             nameof(TopResizing),
             typeof(bool),
             typeof(Resize),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Изменение размера сверху</summary>
     public bool TopResizing
@@ -55,7 +55,7 @@ public class Resize : Behavior<Control>
             nameof(BottomResizing),
             typeof(bool),
             typeof(Resize),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Изменение размера снизу</summary>
     public bool BottomResizing
@@ -75,7 +75,7 @@ public class Resize : Behavior<Control>
             nameof(LeftResizing),
             typeof(bool),
             typeof(Resize),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Изменение размера слева</summary>
     public bool LeftResizing
@@ -94,7 +94,7 @@ public class Resize : Behavior<Control>
             nameof(RightResizing),
             typeof(bool),
             typeof(Resize),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Изменение размера справа</summary>
     public bool RightResizing

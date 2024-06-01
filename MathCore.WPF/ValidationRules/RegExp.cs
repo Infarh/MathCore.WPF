@@ -42,17 +42,17 @@ public class RegExp : Base.FormattedValueValidation
         if (value is null) 
             return AllowNull 
                 ? valid 
-                : new ValidationResult(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
+                : new(false, NullReferenceMessage ?? ErrorMessage ?? "Значение не указано");
 
 
         if (value is not string str) 
             return AllowNotString 
                 ? valid
-                : new ValidationResult(false, NotStringErrorMessage ?? ErrorMessage ?? $"Значение {value} не является строкой");
+                : new(false, NotStringErrorMessage ?? ErrorMessage ?? $"Значение {value} не является строкой");
 
         var match = Regex.Match(str, expr);
         return match.Success 
             ? valid 
-            : new ValidationResult(false, FormatErrorMessage ?? ErrorMessage ?? $"Выражение {expr} не найдено в строке {str}");
+            : new(false, FormatErrorMessage ?? ErrorMessage ?? $"Выражение {expr} не найдено в строке {str}");
     }
 }

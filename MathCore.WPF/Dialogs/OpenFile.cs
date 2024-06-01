@@ -22,7 +22,7 @@ public class OpenFile : Dialog
             nameof(SelectedFile),
             typeof(FileInfo),
             typeof(OpenFile),
-            new PropertyMetadata(
+            new(
                 default(FileInfo), 
                 (d, e) => d.SetValue(SelectedFileNameProperty, ((FileInfo?)e.NewValue)?.FullName)));
 
@@ -43,7 +43,7 @@ public class OpenFile : Dialog
             nameof(SelectedFileName),
             typeof(string),
             typeof(OpenFile),
-            new PropertyMetadata(default(string), OnSelectedFileNameChanged));
+            new(default(string), OnSelectedFileNameChanged));
 
     /// <summary>Обработчик события изменения свойства <see cref="SelectedFileName"/></summary>
     private static void OnSelectedFileNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -94,7 +94,7 @@ public class OpenFile : Dialog
             nameof(Filter),
             typeof(string),
             typeof(OpenFile),
-            new PropertyMetadata("*.*|*.*"));
+            new("*.*|*.*"));
 
     /// <summary>Фильтр в формате - Текст (*.*)|*.* - маска файлов фильтра</summary>
     public string Filter
@@ -134,7 +134,7 @@ public class OpenFile : Dialog
             nameof(MultiSelect),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Разрешить множественный выбор</summary>
     public bool MultiSelect
@@ -153,7 +153,7 @@ public class OpenFile : Dialog
             nameof(AddExtension),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Добавлять расширение</summary>
     public bool AddExtension
@@ -172,7 +172,7 @@ public class OpenFile : Dialog
             nameof(CheckFileExists),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Проверять что файл существует</summary>
     public bool CheckFileExists
@@ -191,7 +191,7 @@ public class OpenFile : Dialog
             nameof(CheckPathExists),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Проверять что путь существует</summary>
     public bool CheckPathExists
@@ -210,7 +210,7 @@ public class OpenFile : Dialog
             nameof(DefaultExt),
             typeof(string),
             typeof(OpenFile),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Расширение по умолчанию</summary>
     public string DefaultExt
@@ -228,7 +228,7 @@ public class OpenFile : Dialog
             nameof(DereferenceLinks),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     public bool DereferenceLinks
     {
@@ -246,7 +246,7 @@ public class OpenFile : Dialog
             nameof(FilterIndex),
             typeof(int),
             typeof(OpenFile),
-            new PropertyMetadata(default(int)), v => v is >= 0);
+            new(default(int)), v => v is >= 0);
 
     /// <summary>Выбранный индекс фильтра</summary>
     public int FilterIndex
@@ -265,7 +265,7 @@ public class OpenFile : Dialog
             nameof(InitialDirectory),
             typeof(string),
             typeof(OpenFile),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Начальная директория</summary>
     public string InitialDirectory
@@ -284,7 +284,7 @@ public class OpenFile : Dialog
             nameof(ReadOnlyChecked),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Выбран режим - Только для чтения</summary>
     public bool ReadOnlyChecked
@@ -303,7 +303,7 @@ public class OpenFile : Dialog
             nameof(RestoreDirectory),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Восстанавливать директорию</summary>
     public bool RestoreDirectory
@@ -322,7 +322,7 @@ public class OpenFile : Dialog
             nameof(ShowReadOnly),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Показать кнопку ReadOnly</summary>
     public bool ShowReadOnly
@@ -341,7 +341,7 @@ public class OpenFile : Dialog
             nameof(ValidateNames),
             typeof(bool),
             typeof(OpenFile),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Проверять имена файлов</summary>
     public bool ValidateNames
@@ -360,7 +360,7 @@ public class OpenFile : Dialog
             nameof(CustomPlaces),
             typeof(IList<FileDialogCustomPlace>),
             typeof(OpenFile),
-            new PropertyMetadata(default(IList<FileDialogCustomPlace>)));
+            new(default(IList<FileDialogCustomPlace>)));
 
     /// <summary>Собственные расположения</summary>
     public IList<FileDialogCustomPlace> CustomPlaces
@@ -399,6 +399,6 @@ public class OpenFile : Dialog
 
         if (result != true && !UpdateIfResultFalse) return;
         SelectedFiles = dialog.FileNames.Select(f => new FileInfo(f)).ToArray();
-        SelectedFile  = new FileInfo(dialog.FileName);
+        SelectedFile  = new(dialog.FileName);
     }
 }

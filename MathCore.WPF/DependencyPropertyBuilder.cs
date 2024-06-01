@@ -6,13 +6,16 @@ namespace MathCore.WPF;
 public static class DependencyPropertyBuilder
 {
     public static DependencyPropertyClassBuilder<T> Register<T>() where T : DependencyObject => new();
+
+    public static DependencyPropertyBuilder<T, TValue> Register<T, TValue>(Expression<Func<T, TValue>> PropertySelector)
+        where T : DependencyObject => Register<T>().Property(PropertySelector);
 }
 
 public readonly ref struct DependencyPropertyClassBuilder<T> where T : DependencyObject
 {
     public DependencyPropertyBuilder<T, TValue> Property<TValue>(Expression<Func<T, TValue>> PropertySelector) => PropertySelector is not { Body: MemberExpression { Member.Name: var name } }
             ? throw new InvalidOperationException("Селектор должен выбирать свойство объекта")
-            : (DependencyPropertyBuilder<T, TValue>)new(name);
+            : new(name);
 }
 
 public readonly ref struct DependencyPropertyBuilder<T, TValue>(string Name) where T : DependencyObject
@@ -26,6 +29,7 @@ public readonly ref struct DependencyPropertyBuilder<T, TValue>(string Name) whe
     public TValue? DefaultValue { get; init; } = default;
 
     public PropertyChangedCallback? PropertyChangedCallback { get; init; } = null;
+
     public CoerceValueCallback? CoerceValueCallback { get; init; } = null;
 
     public DependencyPropertyBuilder<T, TValue> WithDefaultValue(TValue value) => this with { DefaultValue = value };
@@ -73,4 +77,6 @@ public readonly ref struct DependencyPropertyBuilder<T, TValue>(string Name) whe
 
         return property;
     }
+
+    public static implicit operator DependencyProperty(DependencyPropertyBuilder<T, TValue> builder) => builder.Build();
 }

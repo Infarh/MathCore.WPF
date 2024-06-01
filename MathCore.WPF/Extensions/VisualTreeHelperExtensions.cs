@@ -13,7 +13,8 @@ public static class VisualTreeHelperExtensions
     {
         if (obj is null) return null;
         var target = obj;
-        do { target = VisualTreeHelper.GetParent(target); } while (target != null && target is not T);
+        do target = VisualTreeHelper.GetParent(target);
+        while (target != null && target is not T);
         return target as T;
     }
 
@@ -22,8 +23,7 @@ public static class VisualTreeHelperExtensions
         if (obj is null) return null;
         do
         {
-            var parent = LogicalTreeHelper.GetParent(obj);
-            if (parent is null) return obj;
+            if (LogicalTreeHelper.GetParent(obj) is not { } parent) return obj;
             obj = parent;
         } while (true);
     }
@@ -79,7 +79,7 @@ public static class VisualTreeHelperExtensions
     }
 
     public static IEnumerable<DependencyObject> GetLogicalChilds(this DependencyObject? obj) => obj is null
-        ? Enumerable.Empty<DependencyObject>()
+        ? []
         : LogicalTreeHelper.GetChildren(obj).OfType<DependencyObject>();
 
     public static IEnumerable<DependencyObject> GetLogicalParents(this DependencyObject? obj)

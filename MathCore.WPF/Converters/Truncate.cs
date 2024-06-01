@@ -1,4 +1,5 @@
 ﻿using System.Windows.Data;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(double), typeof(double))]
+[MarkupExtensionReturnType(typeof(Truncate))]
 public class Truncate : DoubleValueConverter
 {
     /// <inheritdoc />

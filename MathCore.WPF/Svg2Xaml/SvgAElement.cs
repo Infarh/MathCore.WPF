@@ -32,14 +32,5 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;a&gt; element.</summary>
-class SvgAElement
-    : SvgDrawableContainerBaseElement
-{
-    //==========================================================================
-    public SvgAElement(SvgDocument document, SvgBaseElement parent, XElement AElement)
-        : base(document, parent, AElement)
-    {
-        // ...
-    }
-
-} // class SvgAElement
+internal class SvgAElement(SvgDocument document, SvgBaseElement parent, XElement AElement)
+    : SvgDrawableContainerBaseElement(document, parent, AElement);

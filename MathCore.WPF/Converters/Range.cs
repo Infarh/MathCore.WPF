@@ -7,13 +7,14 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Range))]
 public class Range(Interval interval) : DoubleValueConverter
 {
     public Range() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
-    public Range(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
+    public Range(double MinMax) : this(new(-MinMax, MinMax)) { }
 
-    public Range(double Min, double Max) : this(new Interval(Math.Min(Min, Max), Math.Max(Min, Max))) { }
+    public Range(double Min, double Max) : this(new(Math.Min(Min, Max), Math.Max(Min, Max))) { }
 
     [ConstructorArgument(nameof(Min))]
     public double Min { get => interval.Min; set => interval = interval.SetMin(value); }

@@ -30,15 +30,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;metadata&gt; element.</summary>
-class SvgMetadataElement
-    : SvgBaseElement
-{
-    //==========================================================================
-    public SvgMetadataElement(SvgDocument document, SvgBaseElement parent, XElement MetadataElement)
-        : base(document, parent, MetadataElement)
-    {
-    }
-
-} // class SvgMetadataElement
+internal class SvgMetadataElement(SvgDocument document, SvgBaseElement parent, XElement MetadataElement)
+    : SvgBaseElement(document, parent, MetadataElement);

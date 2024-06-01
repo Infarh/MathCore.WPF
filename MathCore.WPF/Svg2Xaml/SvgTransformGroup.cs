@@ -32,7 +32,7 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgTransformGroup
+internal class SvgTransformGroup
     : SvgTransform
 {
     //==========================================================================

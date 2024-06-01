@@ -36,7 +36,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;mask&gt; element.</summary>
-class SvgMaskElement
+internal class SvgMaskElement
     : SvgContainerBaseElement
 {
 
@@ -165,7 +165,7 @@ class SvgMaskElement
                     }
 
                     bitmap.WritePixels(
-                        new Int32Rect(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixels,
+                        new(0, 0, bitmap.PixelWidth, bitmap.PixelHeight), pixels,
                         (bitmap.PixelWidth * bitmap.Format.BitsPerPixel + 7) / 8, 0);
 
                     image_drawing.ImageSource = bitmap;

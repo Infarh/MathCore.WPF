@@ -20,7 +20,7 @@ internal sealed class StyledAtom : Atom, IRow
 
     public StyledAtom(Atom atom, Brush BackgroundColor, Brush ForegroundColor)
     {
-        RowAtom    = new RowAtom(atom);
+        RowAtom    = new(atom);
         Background = BackgroundColor;
         Foreground = ForegroundColor;
     }

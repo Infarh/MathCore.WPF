@@ -21,7 +21,7 @@ public abstract class Dialog : DependencyObject, ICommand
             nameof(Title),
             typeof(string),
             typeof(Dialog),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     /// <summary>Заголовок диалога</summary>
     public string Title
@@ -63,7 +63,7 @@ public abstract class Dialog : DependencyObject, ICommand
             nameof(UpdateIfResultFalse),
             typeof(bool),
             typeof(Dialog),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Обновлять состояние в случае отрицательного выбора пользователя</summary>
     public bool UpdateIfResultFalse
@@ -81,7 +81,7 @@ public abstract class Dialog : DependencyObject, ICommand
             nameof(LastException),
             typeof(Exception),
             typeof(Dialog),
-            new PropertyMetadata(default(Exception)));
+            new(default(Exception)));
 
     public Exception LastException
     {
@@ -99,7 +99,7 @@ public abstract class Dialog : DependencyObject, ICommand
             nameof(Enabled),
             typeof(bool),
             typeof(Dialog),
-            new PropertyMetadata(default(bool)));
+            new(default(bool)));
 
     /// <summary>Включить диалог</summary>
     //[Category("")]

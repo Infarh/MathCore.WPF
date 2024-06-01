@@ -28,7 +28,7 @@ public class RowDefinitionCollapsable : RowDefinition
             nameof(Visible),
             typeof(bool),
             typeof(RowDefinitionCollapsable),
-            new PropertyMetadata(true, OnVisibleChanged));
+            new(true, OnVisibleChanged));
 
     private static void OnVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

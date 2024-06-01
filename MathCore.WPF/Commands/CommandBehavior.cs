@@ -110,7 +110,7 @@ public class CommandBehavior
     {
         var binding = Get__Behavior(d);
         if(binding != null) return binding;
-        binding = new CommandBehaviorBinding();
+        binding = new();
         Set__Behavior(d, binding);
         return binding;
     }

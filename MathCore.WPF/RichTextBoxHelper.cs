@@ -45,7 +45,7 @@ public static class RichTextBoxHelper
                     }
                     catch (Exception)
                     {
-                        rich_text_box.Document = new FlowDocument();
+                        rich_text_box.Document = new();
                     }
 
                     // When the document changes update the source
@@ -76,7 +76,7 @@ public static class RichTextBoxHelper
             word_start_position = word_end_position.GetPositionAtWordBoundary(/*WordBreakDirection*/ LogicalDirection.Backward);
 
         if (word_start_position != null && word_end_position != null)
-            word_range = new TextRange(word_start_position, word_end_position);
+            word_range = new(word_start_position, word_end_position);
 
         return word_range;
     }

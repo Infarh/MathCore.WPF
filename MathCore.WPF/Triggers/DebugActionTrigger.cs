@@ -26,7 +26,7 @@ public class DebugActionTrigger : TriggerAction<DependencyObject>
             nameof(Message),
             typeof(string),
             typeof(DebugActionTrigger),
-            new PropertyMetadata(default(string)));
+            new(default(string)));
 
     #endregion
 
@@ -47,7 +47,7 @@ public class DebugActionTrigger : TriggerAction<DependencyObject>
             nameof(MessageParameter),
             typeof(object),
             typeof(DebugActionTrigger),
-            new PropertyMetadata(default));
+            new(default));
 
     #endregion
 

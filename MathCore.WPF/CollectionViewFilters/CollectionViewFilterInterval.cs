@@ -62,7 +62,7 @@ public class CollectionViewFilterInterval<TItem, TCriteria> : ViewModel where TC
         view.Filter += FilterItems;
     }
 
-    private void FilterItems(object Sender, FilterEventArgs E)
+    private static void FilterItems(object Sender, FilterEventArgs E)
     {
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows.Media;
+﻿using System.Windows.Markup;
+using System.Windows.Media;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 // ReSharper disable once IdentifierTypo
+[MarkupExtensionReturnType(typeof(CSplineInterp))]
 public class CSplineInterp(PointCollection points) : DoubleValueConverter
 {
     public CSplineInterp() : this([]) { }
@@ -28,8 +30,8 @@ public class CSplineInterp(PointCollection points) : DoubleValueConverter
         var y = Points.Select(p => p.Y).ToArray();
         (_MinX, _MaxX) = x.GetMinMax();
         (_MinY, _MaxY) = y.GetMinMax();
-        _SplineTo = new MathCore.Interpolation.CubicSpline(x, y);
-        _SplineFrom = new MathCore.Interpolation.CubicSpline(y, x);
+        _SplineTo = new(x, y);
+        _SplineFrom = new(y, x);
 
         return base.ProvideValue(sp);
     }

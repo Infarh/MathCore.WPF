@@ -29,7 +29,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgStrokeLinejoin
+internal enum SvgStrokeLinejoin
 {
 
     Miter,

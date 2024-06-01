@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;line&gt; element.</summary>
-class SvgLineElement
+internal class SvgLineElement
     : SvgDrawableBaseElement
 {
     //==========================================================================
@@ -65,6 +65,6 @@ class SvgLineElement
     }
 
     //==========================================================================
-    public override Geometry GetBaseGeometry() => new LineGeometry(new Point(X1.ToDouble(), Y1.ToDouble()),
-        new Point(X2.ToDouble(), Y2.ToDouble()));
+    public override Geometry GetBaseGeometry() => new LineGeometry(new(X1.ToDouble(), Y1.ToDouble()),
+        new(X2.ToDouble(), Y2.ToDouble()));
 } // class SvgLineElement

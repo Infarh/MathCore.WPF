@@ -34,8 +34,8 @@ public class StringLength : ValidationRule
     public override ValidationResult Validate(object? value, CultureInfo c)
     {
         var valid = ValidationResult.ValidResult;
-        if (value is null) return AllowNull ? valid : new ValidationResult(false, "Значение не указано");
-        if (value is not string str) return AllowNotString ? valid : new ValidationResult(false, $"Значение {value} не является строкой");
+        if (value is null) return AllowNull ? valid : new(false, "Значение не указано");
+        if (value is not string str) return AllowNotString ? valid : new(false, $"Значение {value} не является строкой");
 
         var len = Length;
         return (str.Length - len) switch
@@ -44,9 +44,9 @@ public class StringLength : ValidationRule
             < 0 when Less     => valid,
             > 0 when Gatherer => valid,
 
-            0   => new ValidationResult(false, $"Длина строки {str} не равна {len}"),
-            < 0 => new ValidationResult(false, $"Длина строки {str} меньше чем {len}"),
-            > 0 => new ValidationResult(false, $"Длина строки {str} больше чем {len}"),
+            0   => new(false, $"Длина строки {str} не равна {len}"),
+            < 0 => new(false, $"Длина строки {str} меньше чем {len}"),
+            > 0 => new(false, $"Длина строки {str} больше чем {len}"),
         };
 
         //if (str_length == len) return Equal ? valid : new ValidationResult(false, $"Длина строки {value} не равна {len}");

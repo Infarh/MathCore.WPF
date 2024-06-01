@@ -27,17 +27,17 @@ public class ValueLessThan : ValidationRule
     /// <inheritdoc />
     public override ValidationResult Validate(object? value, CultureInfo CultureInfo)
     {
-        if (value is null) return new ValidationResult(false, "Значение не указано");
+        if (value is null) return new(false, "Значение не указано");
         try
         {
             var v = Convert.ToDouble(value);
             return v < Value || IsEquals && v.Equals(Value)
                 ? ValidationResult.ValidResult
-                : new ValidationResult(false, ErrorMessage ?? $"Значение {value} больше чем {Value}");
+                : new(false, ErrorMessage ?? $"Значение {value} больше чем {Value}");
         }
         catch (Exception e)
         {
-            return new ValidationResult(false, $"Значение {value} не может быть преобразовано в вещественное число: {e.Message}");
+            return new(false, $"Значение {value} не может быть преобразовано в вещественное число: {e.Message}");
         }
     }
 }

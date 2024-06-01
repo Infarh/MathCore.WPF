@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
-using MathCore.WPF.Converters;
-
 using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
@@ -19,7 +17,7 @@ public class ListBoxScrollOnNewItem : Behavior<ListBox>
             nameof(Enabled),
             typeof(bool),
             typeof(ListBoxScrollOnNewItem),
-            new PropertyMetadata(true));
+            new(true));
 
     /// <summary>Включено</summary>
     //[Category("")]

@@ -8,6 +8,7 @@ using System.Windows.Markup;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(IEnumerable), typeof(object))]
+[MarkupExtensionReturnType(typeof(MinValue))]
 public class MinValue : MarkupExtension, IMultiValueConverter, IValueConverter
 {
     public override object ProvideValue(IServiceProvider sp) => this;

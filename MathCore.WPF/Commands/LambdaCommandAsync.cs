@@ -2,10 +2,10 @@
 
 namespace MathCore.WPF.Commands;
 
-public class LambdaCommandAsync : Command
+public class LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<object?, bool>? CanExecuteAsync = null)
+    : Command
 {
-    private readonly Func<object?, Task> _ExecuteAsync;
-    private readonly Func<object?, bool>? _CanExecuteAsync;
+    private readonly Func<object?, Task> _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
 
     private volatile Task? _ExecutingTask;
 
@@ -22,15 +22,9 @@ public class LambdaCommandAsync : Command
         : this(ExecuteAsync, CanExecute is null ? null : _ => CanExecute!())
     { }
 
-    public LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<object?, bool>? CanExecuteAsync = null)
-    {
-        _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
-        _CanExecuteAsync = CanExecuteAsync;
-    }
-
     public override bool CanExecute(object? parameter) =>
         (_ExecutingTask is null || _ExecutingTask.IsCompleted)
-        && (_CanExecuteAsync?.Invoke(parameter) ?? true);
+        && (CanExecuteAsync?.Invoke(parameter) ?? true);
 
     public override async void Execute(object? parameter)
     {
@@ -59,10 +53,10 @@ public class LambdaCommandAsync : Command
     }
 }
 
-public class LambdaCommandAsync<T> : Command
+public class LambdaCommandAsync<T>(Func<T?, Task> ExecuteAsync, Func<T?, bool>? CanExecuteAsync = null)
+    : Command
 {
-    private readonly Func<T?, Task> _ExecuteAsync;
-    private readonly Func<T?, bool>? _CanExecuteAsync;
+    private readonly Func<T?, Task> _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
 
     private volatile Task? _ExecutingTask;
 
@@ -79,15 +73,9 @@ public class LambdaCommandAsync<T> : Command
         : this(ExecuteAsync, CanExecuteAsync is null ? null : new Func<T?, bool>(_ => CanExecuteAsync()))
     { }
 
-    public LambdaCommandAsync(Func<T?, Task> ExecuteAsync, Func<T?, bool>? CanExecuteAsync = null)
-    {
-        _ExecuteAsync = ExecuteAsync ?? throw new ArgumentNullException(nameof(ExecuteAsync));
-        _CanExecuteAsync = CanExecuteAsync;
-    }
-
     public override bool CanExecute(object? parameter) =>
         (_ExecutingTask is null || _ExecutingTask.IsCompleted)
-        && (_CanExecuteAsync?.Invoke(LambdaCommand<T?>.ConvertParameter(parameter)) ?? true);
+        && (CanExecuteAsync?.Invoke(LambdaCommand<T?>.ConvertParameter(parameter)) ?? true);
 
     public override async void Execute(object? parameter)
     {

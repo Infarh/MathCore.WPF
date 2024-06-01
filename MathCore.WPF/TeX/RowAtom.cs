@@ -13,14 +13,14 @@ internal class RowAtom : Atom, IRow
 
     static RowAtom()
     {
-        __BinaryOperatorChangeSet = new BitArray(16);
+        __BinaryOperatorChangeSet = new(16);
         __BinaryOperatorChangeSet.Set((int)TexAtomType.BinaryOperator, true);
         __BinaryOperatorChangeSet.Set((int)TexAtomType.BigOperator, true);
         __BinaryOperatorChangeSet.Set((int)TexAtomType.Relation, true);
         __BinaryOperatorChangeSet.Set((int)TexAtomType.Opening, true);
         __BinaryOperatorChangeSet.Set((int)TexAtomType.Punctuation, true);
 
-        __LigatureKernChangeSet = new BitArray(16);
+        __LigatureKernChangeSet = new(16);
         __LigatureKernChangeSet.Set((int)TexAtomType.Ordinary, true);
         __LigatureKernChangeSet.Set((int)TexAtomType.BigOperator, true);
         __LigatureKernChangeSet.Set((int)TexAtomType.BinaryOperator, true);
@@ -96,7 +96,7 @@ internal class RowAtom : Atom, IRow
                     else
                     {
                         // Atom is part of ligature.
-                        current_atom.SetLigature(new FixedCharAtom(ligature_char_font));
+                        current_atom.SetLigature(new(ligature_char_font));
                         i++;
                     }
                 }

@@ -62,7 +62,7 @@ public static class TypeExtensions
                 : (Func<object, object>)c_to.ConvertFrom)
            .Method;
         var exprs_converter = c_to is null
-            ? new Expression[] { expr_from2_t_object, Expression.Constant(ToType) }
+            ? [expr_from2_t_object, Expression.Constant(ToType)]
             : new Expression[] { expr_from2_t_object };
         var expr_conversation = Expression.Call(expr_converter, method, exprs_converter);
 
@@ -82,7 +82,7 @@ public static class TypeExtensions
                 : (Func<object, object>)c_to.ConvertFrom)
            .Method;
         var exprs_converter = c_to is null
-            ? new Expression[] { expr_from, Expression.Constant(ToType) }
+            ? [expr_from, Expression.Constant(ToType)]
             : new Expression[] { expr_from };
         var expr_conversation = Expression.Call(expr_converter, method, exprs_converter);
 

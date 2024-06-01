@@ -20,7 +20,7 @@ public sealed class ModelProperty(string Name) : Freezable, INotifyPropertyChang
             nameof(Value),
             typeof(object),
             typeof(ModelProperty),
-            new PropertyMetadata(default, (d, _) => ((ModelProperty)d).OnPropertyChanged(nameof(Value))));
+            new(default, (d, _) => ((ModelProperty)d).OnPropertyChanged(nameof(Value))));
 
     /// <summary>Событие, возникает когда значение свойства модели меняется</summary>
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -29,7 +29,7 @@ public sealed class ModelProperty(string Name) : Freezable, INotifyPropertyChang
     /// <param name="PropertyName">Имя изменившегося свойства</param>
     [NotifyPropertyChangedInvocator]
     private void OnPropertyChanged([CallerMemberName] string PropertyName = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+        PropertyChanged?.Invoke(this, new(PropertyName));
 
     /// <summary>Значение свойства</summary>
     public object Value

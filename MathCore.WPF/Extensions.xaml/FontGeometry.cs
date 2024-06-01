@@ -46,7 +46,7 @@ public class FontGeometry(string Text) : MarkupExtension
                 Text ?? string.Empty,
                 CultureInfo.CurrentCulture,
                 FlowDirection,
-                new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
+                new(Font, Style, Weight, Stretch, FallBackFontFamily),
                 Size,
                 Brushes.Black,
                 numbers_format);
@@ -56,7 +56,7 @@ public class FontGeometry(string Text) : MarkupExtension
             Text ?? string.Empty,
             CultureInfo.CurrentCulture,
             FlowDirection,
-            new Typeface(Font, Style, Weight, Stretch, FallBackFontFamily),
+            new(Font, Style, Weight, Stretch, FallBackFontFamily),
             Size,
             Brushes.Black,
             numbers_format,

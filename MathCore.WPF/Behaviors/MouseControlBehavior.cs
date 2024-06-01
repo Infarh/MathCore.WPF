@@ -25,7 +25,7 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
         var behavior = (MouseControlBehavior)D;
         var pos      = (Point)E.NewValue;
         var size     = behavior.AssociatedObject.RenderSize;
-        behavior.MousePositionRelative = new Point(pos.X / size.Width, pos.Y / size.Height);
+        behavior.MousePositionRelative = new(pos.X / size.Width, pos.Y / size.Height);
     }
 
     /// <summary>Положение указателя мыши</summary>
@@ -71,7 +71,7 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
         var behavior = (MouseControlBehavior)D;
         var pos      = behavior.MousePosition;
         var size     = (Size)E.NewValue;
-        behavior.MousePositionRelative = new Point(pos.X / size.Width, pos.Y / size.Height);
+        behavior.MousePositionRelative = new(pos.X / size.Width, pos.Y / size.Height);
     }
 
     /// <summary>Размер элемента управления</summary>
@@ -110,7 +110,7 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
             nameof(LeftMouseClick),
             typeof(ICommand),
             typeof(MouseControlBehavior),
-            new PropertyMetadata(default(ICommand)));
+            new(default(ICommand)));
 
     /// <summary>Команда, выполняемая при щелчке мышью</summary>
     public ICommand LeftMouseClick

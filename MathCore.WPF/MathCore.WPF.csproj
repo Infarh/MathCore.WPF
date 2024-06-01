@@ -26,9 +26,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.44.9</Version>
+    <Version>0.0.45</Version>
     <PackageReleaseNotes>
-      Добавлена команда ThrowExceptionCommand для генерации исключения в целях отладки
+      Добавлены ограничители для математических конвертеров
+      Добавлен конвертер математических выражений
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -48,7 +49,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.90" />
+    <PackageReference Include="MathCore" Version="0.0.91" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net4.6.1-windows'">

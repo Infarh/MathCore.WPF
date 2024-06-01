@@ -55,20 +55,12 @@ public static class CollectionViewShaper
     public static CollectionViewShaper<T> Shape<T>(this ICollectionView view) => new(view);
 }
 
-public class CollectionViewShaper<T>
+public class CollectionViewShaper<T>(ICollectionView view)
 {
-    private readonly ICollectionView _View;
-    private Predicate<object>? _Filter;
-    private readonly List<SortDescription> _SortDescriptions;
-    private readonly List<GroupDescription> _GroupDescriptions;
-
-    public CollectionViewShaper(ICollectionView view)
-    {
-        _View              = view ?? throw new ArgumentNullException(nameof(view));
-        _Filter            = view.Filter;
-        _SortDescriptions  = view.SortDescriptions.ToList();
-        _GroupDescriptions = view.GroupDescriptions.ToList();
-    }
+    private readonly ICollectionView _View = view ?? throw new ArgumentNullException(nameof(view));
+    private Predicate<object>? _Filter = view.Filter;
+    private readonly List<SortDescription> _SortDescriptions = view.SortDescriptions.ToList();
+    private readonly List<GroupDescription> _GroupDescriptions = view.GroupDescriptions.ToList();
 
     public void Apply()
     {
@@ -123,7 +115,7 @@ public class CollectionViewShaper<T>
     {
         var path = GetPropertyPath(selector.Body);
         if (clear) _SortDescriptions.Clear();
-        _SortDescriptions.Add(new SortDescription(path, direction));
+        _SortDescriptions.Add(new(path, direction));
         return this;
     }
 
@@ -137,7 +129,7 @@ public class CollectionViewShaper<T>
     {
         var names = new Stack<string>();
         var expr  = expression;
-        while (expr is { } and not ParameterExpression and not ConstantExpression)
+        while (expr is not null and not ParameterExpression and not ConstantExpression)
         {
             if (expr is not MemberExpression member)
                 throw new ArgumentException("The selector body must contain only property or field access expressions", nameof(expression));

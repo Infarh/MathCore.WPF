@@ -36,7 +36,7 @@ public static class LongPress
             "Command",
             typeof(ICommand),
             typeof(LongPress),
-            new PropertyMetadata(default(ICommand), OnCommandPropertyChanged));
+            new(default(ICommand), OnCommandPropertyChanged));
 
     private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -87,7 +87,7 @@ public static class LongPress
         var parameter = control.GetValue(CommandParameterProperty);
         command.TryExecute(parameter);
 
-        control.RaiseEvent(new RoutedEventArgs(ClickEvent, control));
+        control.RaiseEvent(new(ClickEvent, control));
     }
 
     private static void OnMouseUp(object sender, MouseButtonEventArgs e) => ((DependencyObject)sender).ClearValue(__LastClickTime);
@@ -124,7 +124,7 @@ public static class LongPress
             "Timeout",
             typeof(int),
             typeof(LongPress),
-            new PropertyMetadata(3000, null, (_, v) => Math.Max(100, (int)v)));
+            new(3000, null, (_, v) => Math.Max(100, (int)v)));
 
     /// <Summary>Задержка (не меньше 100) мс</Summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -144,7 +144,7 @@ public static class LongPress
             "AnimationTimeout",
             typeof(int),
             typeof(LongPress),
-            new PropertyMetadata(100, null, (_, v) => Math.Max(10, (int)v)));
+            new(100, null, (_, v) => Math.Max(10, (int)v)));
 
     /// <Summary>Шаг анимации</Summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -164,7 +164,7 @@ public static class LongPress
             "PropName",
             typeof(string),
             typeof(LongPress),
-            new PropertyMetadata(default(string), OnPropNamePropertyChanged));
+            new(default(string), OnPropNamePropertyChanged));
 
     public static readonly DependencyProperty PropNameProperty = __PropNameProperty.DependencyProperty;
 

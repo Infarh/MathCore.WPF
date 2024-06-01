@@ -33,7 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;pattern&gt; element.</summary>
-class SvgPatternElement
+internal class SvgPatternElement
     : SvgDrawableContainerBaseElement
 {
     //==========================================================================
@@ -82,7 +82,7 @@ class SvgPatternElement
         DrawingBrush brush;
 
         if(Reference is null)
-            brush = new DrawingBrush(Draw());
+            brush = new(Draw());
         else
         {
             if(Document.Elements[Reference] is SvgPatternElement pattern_element)

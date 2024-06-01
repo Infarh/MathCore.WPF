@@ -79,7 +79,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             else dependencies_dictionary = _PropertiesDependenciesDictionary;
 
             // Извлекаем из словаря зависимостей список зависящих от указанного свойства свойств (если он не существует, то создаём новый
-            var dependencies = dependencies_dictionary.GetValueOrAddNew(PropertyName, () => new List<string>());
+            var dependencies = dependencies_dictionary.GetValueOrAddNew(PropertyName, () => new());
 
             // Перебираем все зависимые свойства среди указанных исключая исходное свойство
             foreach (var dependence_property in Dependencies.Where(name => name != PropertyName))
@@ -239,7 +239,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         if (ThreadSafe)
             handlers?.ThreadSafeInvoke(this, PropertyName);
         else
-            handlers?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+            handlers?.Invoke(this, new(PropertyName));
 
         string[]? dependencies = null;
         var properties_dependencies_dictionary = _PropertiesDependenciesDictionary;
@@ -373,7 +373,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     {
         if (Equals(field, value)) return false;
         field = value;
-        OnPropertyChanged(Sender, new PropertyChangedEventArgs(PropertyName));
+        OnPropertyChanged(Sender, new(PropertyName));
         return true;
     }
 
@@ -417,21 +417,21 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         [CallerMemberName] string PropertyName = null!)
     {
         if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
-        if (Equals(field, value)) return new SetStaticValueResult<T>(false, field, field, OnPropertyChanged);
+        if (Equals(field, value)) return new(false, field, field, OnPropertyChanged);
         var old_value = field;
         field = value;
         OnPropertyChanged(PropertyName);
-        return new SetStaticValueResult<T>(true, old_value, value, OnPropertyChanged);
+        return new(true, old_value, value, OnPropertyChanged);
     }
 
     public static SetStaticValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, Func<T?, bool> value_checker, Action<string> OnPropertyChanged, [CallerMemberName] string PropertyName = null!)
     {
         if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
-        if (Equals(field, value) || !value_checker(value)) return new SetStaticValueResult<T>(false, field, value, OnPropertyChanged);
+        if (Equals(field, value) || !value_checker(value)) return new(false, field, value, OnPropertyChanged);
         var old_value = field;
         field = value;
         OnPropertyChanged(PropertyName);
-        return new SetStaticValueResult<T>(true, old_value, value, OnPropertyChanged);
+        return new(true, old_value, value, OnPropertyChanged);
     }
 
     public static string? CheckDesignModeFilePath(
@@ -480,22 +480,22 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     [NotifyPropertyChangedInvocator]
     protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
-        if (Equals(field, value)) return new SetValueResult<T>(false, field, field, this);
+        if (Equals(field, value)) return new(false, field, field, this);
         var old_value = field;
         field = value;
         OnPropertyChanged(PropertyName);
-        return new SetValueResult<T>(true, old_value, value, this);
+        return new(true, old_value, value, this);
     }
 
     [NotifyPropertyChangedInvocator]
     protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
     {
         if (Equals(field, value) || !value_checker(value))
-            return new SetValueResult<T>(false, field, value, this);
+            return new(false, field, value, this);
         var old_value = field;
         field = value;
         OnPropertyChanged(PropertyName);
-        return new SetValueResult<T>(true, old_value, value, this);
+        return new(true, old_value, value, this);
     }
 
     public readonly ref struct SetValueResult<T>
@@ -811,7 +811,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <returns>Задача, возвращающая истину, если свойство изменило своё значение</returns>
     protected virtual ValueTask<bool> SetAsync<T>([Attributes.NotNullIfNotNull("value")] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
-        if (Equals(field, value)) return new ValueTask<bool>(false);
+        if (Equals(field, value)) return new(false);
         field = value;
 
         return SetPropertyAsync(PropertyName);

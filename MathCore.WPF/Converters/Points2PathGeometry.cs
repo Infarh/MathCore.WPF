@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 using MathCore.WPF.Converters.Base;
@@ -9,6 +10,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 [ValueConversion(typeof(Point[]), typeof(PathGeometry))]
+[MarkupExtensionReturnType(typeof(Points2PathGeometry))]
 public class Points2PathGeometry : ValueConverter
 {
     #region IValueConverter Members
@@ -17,7 +19,7 @@ public class Points2PathGeometry : ValueConverter
         v is Point[] and [var start, .. { Length: > 0 } tail]
             ? new PathGeometry
             {
-                Figures = { new PathFigure(start, tail.Select(p => new LineSegment(p, true)), false) }
+                Figures = { new(start, tail.Select(p => new LineSegment(p, true)), false) }
             }
             : null;
 

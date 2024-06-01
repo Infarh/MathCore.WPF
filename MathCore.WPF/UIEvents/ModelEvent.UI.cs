@@ -32,7 +32,7 @@ public partial class ModelEvent
             "Source",
             typeof(IModelEvent),
             typeof(ModelEvent),
-            new PropertyMetadata(default(IModelEvent), OnSourceChanged));
+            new(default(IModelEvent), OnSourceChanged));
 
     private class EventSourceHandler : IDisposable
     {
@@ -41,8 +41,8 @@ public partial class ModelEvent
 
         public EventSourceHandler(UIElement element, IModelEvent ModelEvent)
         {
-            _Element    = new WeakReference<UIElement>(element);
-            _ModelEvent = new WeakReference<IModelEvent>(ModelEvent);
+            _Element    = new(element);
+            _ModelEvent = new(ModelEvent);
 
             ModelEvent.Event += OnEventInvoked;
         }
@@ -75,7 +75,7 @@ public partial class ModelEvent
 
         if (E.NewValue is IModelEvent new_event)
         {
-            __Handlers[(ui_element, new_event)] = new EventSourceHandler(ui_element, new_event);
+            __Handlers[(ui_element, new_event)] = new(ui_element, new_event);
         }
     }
 

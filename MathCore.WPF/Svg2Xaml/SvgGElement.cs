@@ -30,16 +30,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;g&gt; element.</summary>
-class SvgGElement
-    : SvgDrawableContainerBaseElement
-{
-    //==========================================================================
-    public SvgGElement(SvgDocument document, SvgBaseElement parent, XElement GElement)
-        : base(document, parent, GElement)
-    {
-        // ...
-    }
-
-} // class SvgGElement
+internal class SvgGElement(SvgDocument document, SvgBaseElement parent, XElement GElement)
+    : SvgDrawableContainerBaseElement(document, parent, GElement);

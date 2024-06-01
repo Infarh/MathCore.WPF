@@ -30,7 +30,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgFillRule
+internal enum SvgFillRule
 {   
     Nonzero, 
     Evenodd,

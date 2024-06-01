@@ -30,17 +30,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;flowSpan&gt; element.</summary>
-class SvgFlowSpanElement
-    : SvgDrawableContainerBaseElement
-{
-
-    //==========================================================================
-    public SvgFlowSpanElement(SvgDocument document, SvgBaseElement parent, XElement FlowSpanElement)
-        : base(document, parent, FlowSpanElement)
-    {
-        // ...
-    }
-
-} // class SvgFlowSpanElement
+internal class SvgFlowSpanElement(SvgDocument document, SvgBaseElement parent, XElement FlowSpanElement)
+    : SvgDrawableContainerBaseElement(document, parent, FlowSpanElement);

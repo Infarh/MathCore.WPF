@@ -16,6 +16,6 @@ public class NotNull : Base.ValueValidation
     /// <returns>Корректный результат, если значение не является <see langword="null"/></returns>
     public override ValidationResult Validate(object? value, CultureInfo? c) => 
         value is null
-            ? new ValidationResult(false, ErrorMessage ?? "Значение не указано")
+            ? new(false, ErrorMessage ?? "Значение не указано")
             : ValidationResult.ValidResult;
 }

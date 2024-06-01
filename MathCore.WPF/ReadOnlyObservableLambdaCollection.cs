@@ -38,7 +38,7 @@ public class ReadOnlyObservableLambdaCollection<TSourceItem, TCollectionItem> : 
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
-                new_e = new NotifyCollectionChangedEventArgs(e.Action, e.NewItems.OfType<TSourceItem>().Select(_Converter).ToArray());
+                new_e = new(e.Action, e.NewItems.OfType<TSourceItem>().Select(_Converter).ToArray());
                 break;
             case NotifyCollectionChangedAction.Reset: OnCollectionChanged(e); return;
             default:

@@ -31,17 +31,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;text&gt; element.</summary>
-class SvgTextElement
-    : SvgDrawableContainerBaseElement
-{
-
-    //==========================================================================
-    public SvgTextElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
-        : base(document, parent, SvgElement)
-    {
-        // ...
-    }
-
-} // class SvgTextElement
+internal class SvgTextElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
+    : SvgDrawableContainerBaseElement(document, parent, SvgElement);

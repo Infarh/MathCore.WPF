@@ -46,7 +46,7 @@ internal class TexSymbolParser
             var symbol_type        = symbol_element.AttributeValue("type");
             var symbol_is_delimeter = symbol_element.AttributeBooleanValue("del", false);
 
-            result.Add(symbol_name, new SymbolAtom(symbol_name, __TypeMappings[symbol_type],
+            result.Add(symbol_name, new(symbol_name, __TypeMappings[symbol_type],
                 symbol_is_delimeter));
         }
 

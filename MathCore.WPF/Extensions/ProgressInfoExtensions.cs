@@ -20,21 +20,12 @@ public static class ProgressInfoExtensions
 
     public static ProgressValue<T> With<T>(this IProgressInfo Progress, T value) => new(Progress, value);
 
-    public readonly struct ProgressValue<TValue>
+    public readonly struct ProgressValue<TValue>(IProgressInfo Progress, TValue Value)
     {
-        private readonly IProgressInfo _Progress;
-        private readonly TValue _Value;
-
-        public ProgressValue(IProgressInfo Progress, TValue Value)
-        {
-            _Progress = Progress;
-            _Value = Value;
-        }
-
         public async ValueTask<T> Do<T>(Func<IProgressInfo, TValue, Task<T>> Selector)
         {
-            using (_Progress)
-                return await Selector(_Progress, _Value).ConfigureAwait(false);
+            using (Progress)
+                return await Selector(Progress, Value).ConfigureAwait(false);
         }
     }
 

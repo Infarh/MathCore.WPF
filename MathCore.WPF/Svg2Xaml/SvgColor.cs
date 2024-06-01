@@ -32,40 +32,22 @@ using System.Windows.Media;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents an RGB color.</summary>
-class SvgColor
+internal class SvgColor(float red, float green, float blue)
 {
 
-    //==========================================================================
-    public readonly float Red;
+    public readonly float Red = red;
     
-    //==========================================================================
-    public readonly float Green;
+    public readonly float Green = green;
     
-    //==========================================================================
-    public readonly float Blue;
+    public readonly float Blue = blue;
 
-    //==========================================================================
-    public SvgColor(float red, float green, float blue)
+    public SvgColor(byte red, byte green, byte blue) : this(red / 255f, green / 255f, blue / 255f)
     {
-        Red   = red;
-        Green = green;
-        Blue  = blue;
     }
 
-    //==========================================================================
-    public SvgColor(byte red, byte green, byte blue)
-    {
-        Red   = red / 255.0f;
-        Green = green / 255.0f;
-        Blue  = blue / 255.0f;
-    }
-
-    //==========================================================================
     public Color ToColor() => Color.FromScRgb(1, Red, Green, Blue);
 
-    //==========================================================================
     public static SvgColor? Parse(string value)
     {
         if(value.StartsWith("#"))
@@ -76,18 +58,18 @@ class SvgColor
             {
                 case [ var sr, var sg, var sb ]:
                 {
-                    var r = (float)(byte.Parse(string.Format("{0}{0}", sr), NumberStyles.HexNumber) / 255.0);
-                    var g = (float)(byte.Parse(string.Format("{0}{0}", sg), NumberStyles.HexNumber) / 255.0);
-                    var b = (float)(byte.Parse(string.Format("{0}{0}", sb), NumberStyles.HexNumber) / 255.0);
-                    return new SvgColor(r, g, b);
+                    var r = byte.Parse(string.Format("{0}{0}", sr), NumberStyles.HexNumber) / 255f;
+                    var g = byte.Parse(string.Format("{0}{0}", sg), NumberStyles.HexNumber) / 255f;
+                    var b = byte.Parse(string.Format("{0}{0}", sb), NumberStyles.HexNumber) / 255f;
+                    return new(r, g, b);
                 }
 
                 case { Length: 6 }:
                 {
-                    var r = (float)(byte.Parse(color[..2], NumberStyles.HexNumber) / 255.0);
-                    var g = (float)(byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255.0);
-                    var b = (float)(byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255.0);
-                    return new SvgColor(r, g, b);
+                    var r = byte.Parse(color[..2], NumberStyles.HexNumber) / 255f;
+                    var g = byte.Parse(color.Substring(2, 2), NumberStyles.HexNumber) / 255f;
+                    var b = byte.Parse(color.Substring(4, 2), NumberStyles.HexNumber) / 255f;
+                    return new(r, g, b);
                 }
             }
         }
@@ -108,30 +90,30 @@ class SvgColor
                     if(components[0].EndsWith("%"))
                     {
                         components[0] = components[0][..^1].Trim();
-                        r             = (float)(double.Parse(components[0], CultureInfo.InvariantCulture.NumberFormat) / 100.0);
+                        r             = (float)(double.Parse(components[0], CultureInfo.InvariantCulture.NumberFormat) / 100);
                     }
                     else
-                        r = (float)(byte.Parse(components[0]) / 255.0);
+                        r = byte.Parse(components[0]) / 255f;
 
                     components[1] = components[1].Trim();
                     if(components[1].EndsWith("%"))
                     {
                         components[1] = components[1][..^1].Trim();
-                        g             = (float)(double.Parse(components[1], CultureInfo.InvariantCulture.NumberFormat) / 100.0);
+                        g             = (float)(double.Parse(components[1], CultureInfo.InvariantCulture.NumberFormat) / 100);
                     }
                     else
-                        g = (float)(byte.Parse(components[1]) / 255.0);
+                        g = byte.Parse(components[1]) / 255f;
 
                     components[2] = components[1].Trim();
                     if(components[2].EndsWith("%"))
                     {
                         components[2] = components[2][..^1].Trim();
-                        b             = (float)(double.Parse(components[2], CultureInfo.InvariantCulture.NumberFormat) / 100.0);
+                        b             = (float)(double.Parse(components[2], CultureInfo.InvariantCulture.NumberFormat) / 100);
                     }
                     else
-                        b = (float)(byte.Parse(components[2]) / 255.0);
+                        b = byte.Parse(components[2]) / 255f;
 
-                    return new SvgColor(r, g, b);
+                    return new(r, g, b);
                 }
             }
         }
@@ -139,26 +121,29 @@ class SvgColor
         if(value == "none")
             return null;
 
+        const float f000_255 = 0 / 255f;
+        const float f128_255 = 128 / 255f;
+        const float f192_255 = 192 / 255f;
+        const float f255_255 = 255 / 255f;
         return value switch
         {
-            "black"   => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
-            "green"   => new((float)(0 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)),
-            "silver"  => new((float)(192 / 255.0), (float)(192 / 255.0), (float)(192 / 255.0)),
-            "lime"    => new((float)(0 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)),
-            "gray"    => new((float)(128 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)),
-            "olive"   => new((float)(128 / 255.0), (float)(128 / 255.0), (float)(0 / 255.0)),
-            "white"   => new((float)(255 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)),
-            "yellow"  => new((float)(255 / 255.0), (float)(255 / 255.0), (float)(0 / 255.0)),
-            "maroon"  => new((float)(128 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
-            "navy"    => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)),
-            "red"     => new((float)(255 / 255.0), (float)(0 / 255.0), (float)(0 / 255.0)),
-            "blue"    => new((float)(0 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)),
-            "purple"  => new((float)(128 / 255.0), (float)(0 / 255.0), (float)(128 / 255.0)),
-            "teal"    => new((float)(0 / 255.0), (float)(128 / 255.0), (float)(128 / 255.0)),
-            "fuchsia" => new((float)(255 / 255.0), (float)(0 / 255.0), (float)(255 / 255.0)),
-            "aqua"    => new((float)(0 / 255.0), (float)(255 / 255.0), (float)(255 / 255.0)),
+            "black"   => new(f000_255, f000_255, f000_255),
+            "green"   => new(f000_255, f128_255, f000_255),
+            "silver"  => new(f192_255, f192_255, f192_255),
+            "lime"    => new(f000_255, f255_255, f000_255),
+            "gray"    => new(f128_255, f128_255, f128_255),
+            "olive"   => new(f128_255, f128_255, f000_255),
+            "white"   => new(f255_255, f255_255, f255_255),
+            "yellow"  => new(f255_255, f255_255, f000_255),
+            "maroon"  => new(f128_255, f000_255, f000_255),
+            "navy"    => new(f000_255, f000_255, f128_255),
+            "red"     => new(f255_255, f000_255, f000_255),
+            "blue"    => new(f000_255, f000_255, f255_255),
+            "purple"  => new(f128_255, f000_255, f128_255),
+            "teal"    => new(f000_255, f128_255, f128_255),
+            "fuchsia" => new(f255_255, f000_255, f255_255),
+            "aqua"    => new(f000_255, f255_255, f255_255),
             _         => throw new ArgumentException($"Unsupported color value: {value}")
         };
     }
-
-} // class SvgColor
+}

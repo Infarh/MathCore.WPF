@@ -20,7 +20,7 @@ public static class Taskbar
     private static AppBarData _AppBarData;
 
     /// <summary>Static initializer of the <see cref="Taskbar" /> class.</summary>
-    static Taskbar() => _AppBarData = new AppBarData
+    static Taskbar() => _AppBarData = new()
     {
         cbSize = (uint)Marshal.SizeOf(typeof(AppBarData)),
         hWnd   = User32.FindWindow(ClassName, null)

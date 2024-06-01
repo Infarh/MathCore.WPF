@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
@@ -8,6 +9,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+[MarkupExtensionReturnType(typeof(Custom))]
 public class Custom : ValueConverter
 {
     public Func<object?, object?>? Forward { get; set; }

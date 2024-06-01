@@ -23,25 +23,25 @@ public class ValueInInterval : ValidationRule
     /// <inheritdoc />
     public override ValidationResult Validate(object? value, CultureInfo c)
     {
-        if (value is null) return new ValidationResult(false, "Значение не указано");
+        if (value is null) return new(false, "Значение не указано");
         try
         {
             var v = Convert.ToDouble(value, c);
-            if (v < Min || !MinEquals && v.Equals(Min)) return new ValidationResult(false, ErrorMessage ?? $"Значение {v} меньше чем {Min}");
-            if (v > Max || !MaxEquals && v.Equals(Max)) return new ValidationResult(false, ErrorMessage ?? $"Значение {v} больше чем {Max}");
+            if (v < Min || !MinEquals && v.Equals(Min)) return new(false, ErrorMessage ?? $"Значение {v} меньше чем {Min}");
+            if (v > Max || !MaxEquals && v.Equals(Max)) return new(false, ErrorMessage ?? $"Значение {v} больше чем {Max}");
             return ValidationResult.ValidResult;
         }
         catch (OverflowException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка переполнения при преобразовании {value} к вещественному типу: {e.Message}");
         }
         catch (InvalidCastException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка приведения {value} к вещественному типу: {e.Message}");
         }
         catch (FormatException e)
         {
-            return new ValidationResult(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
+            return new(false, ErrorMessage ?? $"Ошибка формата данных {value} при преобразовании к вещественному типу: {e.Message}");
         }
     }
 }

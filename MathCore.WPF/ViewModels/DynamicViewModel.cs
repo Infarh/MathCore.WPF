@@ -20,7 +20,7 @@ public class DynamicViewModel : DynamicObject, INotifyPropertyChanged
 
     /// <summary>Генерация события изменения значения свойства</summary>
     /// <param name="PropertyName">Имя изменившегося свойства</param>
-    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PropertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string? PropertyName = null) => PropertyChanged?.Invoke(this, new(PropertyName));
 
     /// <summary>Словарь значений свойств модели</summary>
     protected readonly Dictionary<string, object?> _PropertiesValues;

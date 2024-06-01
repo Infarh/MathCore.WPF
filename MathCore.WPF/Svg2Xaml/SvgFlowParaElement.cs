@@ -30,17 +30,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;flowPara&gt; element.</summary>
-class SvgFlowParaElement
-    : SvgDrawableContainerBaseElement
-{
-
-    //==========================================================================
-    public SvgFlowParaElement(SvgDocument document, SvgBaseElement parent, XElement FlowParaElement)
-        : base(document, parent, FlowParaElement)
-    {
-        
-    }
-
-} // class SvgFlowParaElement
+internal class SvgFlowParaElement(SvgDocument document, SvgBaseElement parent, XElement FlowParaElement)
+    : SvgDrawableContainerBaseElement(document, parent, FlowParaElement);

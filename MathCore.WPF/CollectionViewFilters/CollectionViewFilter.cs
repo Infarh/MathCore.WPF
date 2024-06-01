@@ -54,7 +54,7 @@ public class CollectionViewFilter<TCriteria, TItem>(ObservableCollection<Collect
         {
             if (_Enabled == value) return;
             _Enabled = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
+            OnPropertyChanged(new(nameof(Enabled)));
             _View?.Refresh();
         }
     }
@@ -122,7 +122,7 @@ public class CollectionViewFilter<TCriteria, TItem>(ObservableCollection<Collect
             var key = selector(value);
             if (!_Filters.TryGetValue(key, out var filter))
             {
-                filter = new CollectionViewFilterItem<TCriteria>(key);
+                filter = new(key);
                 filter.EnabledChanged += OnFilterEnableChanged;
                 _Filters.Add(key, filter);
                 _FiltersCollection.Add(filter);
@@ -184,7 +184,7 @@ public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<Coll
         {
             if (_Enabled == value) return;
             _Enabled = value;
-            OnPropertyChanged(new PropertyChangedEventArgs(nameof(Enabled)));
+            OnPropertyChanged(new(nameof(Enabled)));
             _View?.Refresh();
         }
     }
@@ -276,7 +276,7 @@ public class CollectionViewFilter<TCriteria> : ReadOnlyObservableCollection<Coll
             var key = selector(value);
             if (!_Filters.TryGetValue(key, out var filter))
             {
-                filter = new CollectionViewFilterItem<TCriteria>(key);
+                filter = new(key);
                 filter.EnabledChanged += OnFilterEnableChanged;
                 _Filters.Add(key, filter);
                 _FiltersCollection.Add(filter);
@@ -335,7 +335,7 @@ public static class CollectionViewFilter
             "Converter",
             typeof(IValueConverter),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(default(IValueConverter)));
+            new(default(IValueConverter)));
 
     /// <summary>Объект-конвертер, выделяющий из объектов фильтруемое значение</summary>
     public static void SetConverter(DependencyObject element, IValueConverter value) => element.SetValue(ConverterProperty, value);
@@ -354,7 +354,7 @@ public static class CollectionViewFilter
             "StringComparisonType",
             typeof(StringComparison),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(StringComparison.InvariantCultureIgnoreCase, PropertyChanged));
+            new(StringComparison.InvariantCultureIgnoreCase, PropertyChanged));
 
     /// <summary>Установка метода сравнения строк для указанной модели представления коллекции</summary>
     /// <param name="element">Представление, для которой производится установка значения метода сравнения строк</param>
@@ -377,7 +377,7 @@ public static class CollectionViewFilter
             "TextCompareType",
             typeof(TextCompareType),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(TextCompareType.Contains, PropertyChanged));
+            new(TextCompareType.Contains, PropertyChanged));
 
     /// <summary>Установка способа сравнения строк для модели представления коллекции</summary>
     /// <param name="element">Модель представления коллекции, для которой устанавливается способ сравнения строк</param>
@@ -400,7 +400,7 @@ public static class CollectionViewFilter
             "PropertyName",
             typeof(string),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(
+            new(
                 default(string), PropertyChanged),
             v => v is null || v is string value && (value.Length == 0 || __PropertyNameRegex.IsMatch(value)));
 
@@ -425,7 +425,7 @@ public static class CollectionViewFilter
             "FilterText",
             typeof(string),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(default(string), PropertyChanged));
+            new(default(string), PropertyChanged));
 
     /// <summary>Установить текст фильтра для модели представления коллекции</summary>
     /// <param name="element">Модель представления коллекции, текст фильтра для которой требуется установить</param>
@@ -448,7 +448,7 @@ public static class CollectionViewFilter
             "DelayTime",
             typeof(int),
             typeof(CollectionViewFilter),
-            new PropertyMetadata(500));
+            new(500));
 
     public static void SetDelayTime(DependencyObject element, int value) => element.SetValue(DelayTimeProperty, value);
 
@@ -554,7 +554,7 @@ public static class CollectionViewFilter
         var item = e.Item;
         if (GetPropertyName(view_source) is { Length: > 0 } path)
         {
-            var property = __Properties.GetValueOrAddNew(new TypeProperty(item, path), tp => tp.GetProperty());
+            var property = __Properties.GetValueOrAddNew(new(item, path), tp => tp.GetProperty());
             item = property.DynamicInvoke(item)!;
         }
         else if (GetConverter(view_source) is { } converter)
@@ -606,7 +606,7 @@ public static class CollectionViewFilter
     public static CollectionViewFiltersCollection GetFilters(DependencyObject element)
     {
         if (element.GetValue(FiltersProperty) is not CollectionViewFiltersCollection filters)
-            SetFilters(element, filters = new CollectionViewFiltersCollection((CollectionViewSource)element));
+            SetFilters(element, filters = new((CollectionViewSource)element));
         return filters;
     }
 

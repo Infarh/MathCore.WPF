@@ -25,19 +25,19 @@ public class TexFormulaParser
     private static readonly Dictionary<string, TexFormula> __PredefinedFormulas;
 
     private static readonly string[][] __DelimiterNames =
-    {
-        new[] { "lbrace", "rbrace" },
-        new[] { "lsqbrack", "rsqbrack" },
-        new[] { "lbrack", "rbrack" },
-        new[] { "downarrow", "downarrow" },
-        new[] { "uparrow", "uparrow" },
-        new[] { "updownarrow", "updownarrow" },
-        new[] { "Downarrow", "Downarrow" },
-        new[] { "Uparrow", "Uparrow" },
-        new[] { "Updownarrow", "Updownarrow" },
-        new[] { "vert", "vert" },
-        new[] { "Vert", "Vert" }
-    };
+    [
+        ["lbrace", "rbrace"],
+        ["lsqbrack", "rsqbrack"],
+        ["lbrack", "rbrack"],
+        ["downarrow", "downarrow"],
+        ["uparrow", "uparrow"],
+        ["updownarrow", "updownarrow"],
+        ["Downarrow", "Downarrow"],
+        ["Uparrow", "Uparrow"],
+        ["Updownarrow", "Updownarrow"],
+        ["vert", "vert"],
+        ["Vert", "Vert"]
+    ];
 
     /// <summary>True if parser has been initialized</summary>
     private static bool __IsInitialized;

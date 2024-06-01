@@ -117,18 +117,15 @@ public class RangeObservableCollection<T> : ObservableCollection<T>
 
         foreach (var item in list) Add(item);
         _SuppressNotification = false;
-        OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+        OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
     }
 }
 
-public class DeferEventObservableCollection<T> : ObservableCollection<T>
+public class DeferEventObservableCollection<T>(int threshold = 10) : ObservableCollection<T>
 {
     private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = [];
     private bool _HasQueuedDispatcherUpdate;
-    private readonly int _Threshold;
     private readonly object _SyncRoot = new();
-
-    public DeferEventObservableCollection(int threshold = 10) => _Threshold = threshold;
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
@@ -140,9 +137,9 @@ public class DeferEventObservableCollection<T> : ObservableCollection<T>
                 {
                     lock (_SyncRoot)
                     {
-                        if (_DeferredEvents.Count > _Threshold)
+                        if (_DeferredEvents.Count > threshold)
                             base.OnCollectionChanged(
-                                new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                                new(NotifyCollectionChangedAction.Reset));
                         else
                             foreach (var ev in _DeferredEvents) base.OnCollectionChanged(ev);
                         _DeferredEvents.Clear();
@@ -195,7 +192,7 @@ public class DeferredRefreshObservableCollection<T> : ObservableCollection<T>
             _Owner = null;
 
             if (0 == --temp._RefreshDeferred && temp._Modified)
-                temp.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                temp.OnCollectionChanged(new(NotifyCollectionChangedAction.Reset));
         }
     }
 }
@@ -249,8 +246,8 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
             new_items.Add(item);
         }
         if (new_items.Count == 0) return;
-        OnPropertyChanged(new PropertyChangedEventArgs(__CountString));
-        OnPropertyChanged(new PropertyChangedEventArgs(__IndexerName));
+        OnPropertyChanged(new(__CountString));
+        OnPropertyChanged(new(__IndexerName));
         var e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new_items);
         OnCollectionChanged(e);
     }
@@ -264,8 +261,8 @@ public class ObservableRangeCollection<T> : ObservableCollection<T>
             old_items.Add(item);
         }
         if (old_items.Count == 0) return;
-        OnPropertyChanged(new PropertyChangedEventArgs(__CountString));
-        OnPropertyChanged(new PropertyChangedEventArgs(__IndexerName));
+        OnPropertyChanged(new(__CountString));
+        OnPropertyChanged(new(__IndexerName));
         var e = new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, old_items);
         OnCollectionChanged(e);
     }

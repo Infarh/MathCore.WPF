@@ -14,9 +14,9 @@ public class InIntervalValue(Interval interval) : DoubleValueConverter
 {
     public InIntervalValue() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
-    public InIntervalValue(double MinMax) : this(new Interval(-MinMax, MinMax)) { }
+    public InIntervalValue(double MinMax) : this(new(-MinMax, MinMax)) { }
 
-    public InIntervalValue(double Min, double Max) : this(new Interval(Math.Min(Min, Max), Math.Max(Min, Max))) { }
+    public InIntervalValue(double Min, double Max) : this(new(Math.Min(Min, Max), Math.Max(Min, Max))) { }
 
 
     [ConstructorArgument(nameof(Min))]

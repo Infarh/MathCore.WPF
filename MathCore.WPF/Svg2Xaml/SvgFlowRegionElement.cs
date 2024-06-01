@@ -32,20 +32,10 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;flowRegíon&gt; element.</summary>
-class SvgFlowRegionElement
-    : SvgDrawableContainerBaseElement
+internal class SvgFlowRegionElement(SvgDocument document, SvgBaseElement parent, XElement FlowRegionElement)
+    : SvgDrawableContainerBaseElement(document, parent, FlowRegionElement)
 {
-
-    //==========================================================================
-    public SvgFlowRegionElement(SvgDocument document, SvgBaseElement parent, XElement FlowRegionElement)
-        : base(document, parent, FlowRegionElement)
-    {
-        // ...
-    }
-
-    //==========================================================================
     public Geometry GetClipGeometry()
     {
         var geometry_group = new GeometryGroup();
@@ -63,4 +53,4 @@ class SvgFlowRegionElement
         return geometry_group;
     }
 
-} // class SvgFlowRegionElement
+}

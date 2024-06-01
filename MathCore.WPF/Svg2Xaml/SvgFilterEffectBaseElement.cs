@@ -31,18 +31,9 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;filterEffect&gt; element.</summary>
-abstract class SvgFilterEffectBaseElement : SvgBaseElement
+internal abstract class SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement FilterEffectElement)
+    : SvgBaseElement(document, parent, FilterEffectElement)
 {
-    //==========================================================================
-    protected SvgFilterEffectBaseElement(SvgDocument document, SvgBaseElement parent, XElement FilterEffectElement)
-        : base(document, parent, FilterEffectElement)
-    {
-        // ...
-    }
-
-    //==========================================================================
     public abstract BitmapEffect? ToBitmapEffect();
-
-} // class SvgFilterEffectBaseElement
+}

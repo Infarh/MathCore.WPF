@@ -12,7 +12,7 @@ public static class UI
             "InputBinding",
             typeof(InputBinding),
             typeof(UI),
-            new PropertyMetadata(default(InputBinding), OnInputBindingChanged));
+            new(default(InputBinding), OnInputBindingChanged));
 
     /// <summary>Обработчик события изменения значения свойства <see cref="InputBindingProperty"/></summary>
     /// <param name="D">Элемент, с которым ассоциирована коллекция горячих клавиш</param>
@@ -34,7 +34,7 @@ public static class UI
             "ShadowHotKeys",
             typeof(GlobalHotKeysCollection),
             typeof(UI),
-            new PropertyMetadata(default(GlobalHotKeysCollection)));
+            new(default(GlobalHotKeysCollection)));
 
     /// <summary>Глобальные горячие клавиши</summary>
     [AttachedPropertyBrowsableForType(typeof(Window))]

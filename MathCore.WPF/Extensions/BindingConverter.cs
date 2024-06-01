@@ -12,10 +12,10 @@ namespace MathCore.WPF.Extensions;
 public class BindingConverter : ExpressionConverter
 {
     /// <inheritdoc />
-    public override bool CanConvertTo(ITypeDescriptorContext c, Type dt) => dt == typeof(MarkupExtension);
+    public override bool CanConvertTo(ITypeDescriptorContext? c, Type? dt) => dt == typeof(MarkupExtension);
 
     /// <inheritdoc />
-    public override object? ConvertTo(ITypeDescriptorContext context, CultureInfo c, object v, Type t) =>
+    public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? c, object? v, Type t) =>
         t == typeof(MarkupExtension)
             ? v is not BindingExpression binding
                 ? throw new ApplicationException()
@@ -49,9 +49,9 @@ public class BindingTypeDescriptionProvider() : TypeDescriptionProvider(__Defaul
 public class BindingCustomTypeDescriptor(ICustomTypeDescriptor parent) : CustomTypeDescriptor(parent)
 {
     /// <inheritdoc />
-    public override PropertyDescriptorCollection GetProperties() => GetProperties(Array.Empty<Attribute>());
+    public override PropertyDescriptorCollection GetProperties() => GetProperties([]);
 
-    private static readonly string[] __Properties = { "Source", "ValidationRules" };
+    private static readonly string[] __Properties = ["Source", "ValidationRules"];
 
     /// <inheritdoc />
     public override PropertyDescriptorCollection GetProperties(Attribute[]? attributes)

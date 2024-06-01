@@ -33,7 +33,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-sealed class SvgDocument
+internal sealed class SvgDocument
 {
     //==========================================================================
     public readonly Dictionary<string, SvgBaseElement> Elements = [];
@@ -45,7 +45,7 @@ sealed class SvgDocument
     //==========================================================================
     public SvgDocument(XElement root, SvgReaderOptions options)
     {
-        Root    = new SvgSvgElement(this, null, root);
+        Root    = new(this, null, root);
         Options = options;
     }
 

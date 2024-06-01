@@ -14,7 +14,7 @@ public class SingleValue(int Index, IValueConverter Next) : MultiValueValueConve
 {
     public SingleValue() : this(0, null!) { }
 
-    public SingleValue(int Index) : this(Index, null!) { }
+    public SingleValue(int Index) : this(Index, null) { }
 
     public int Index { get; set; } = Index;
 

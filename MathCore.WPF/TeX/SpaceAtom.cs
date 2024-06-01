@@ -6,19 +6,19 @@ namespace MathCore.WPF.TeX;
 internal class SpaceAtom : Atom
 {
     // Collection of unit conversion functions.
-    private static readonly UnitConversion[] __UnitConversions = new[]
-    {
-        new UnitConversion(e => e.TexFont.GetXHeight(e.Style, e.LastFontId)),
-        new UnitConversion(e => e.TexFont.GetXHeight(e.Style, e.LastFontId)),
-        new UnitConversion(e => 1.0 / e.TexFont.Size),
-        new UnitConversion(e => TexFontUtilities.PixelsPerPoint / e.TexFont.Size),
-        new UnitConversion(e => (12 * TexFontUtilities.PixelsPerPoint) / e.TexFont.Size),
-        new UnitConversion(e =>
+    private static readonly UnitConversion[] __UnitConversions =
+    [
+        e => e.TexFont.GetXHeight(e.Style, e.LastFontId),
+        e => e.TexFont.GetXHeight(e.Style, e.LastFontId),
+        e => 1.0 / e.TexFont.Size,
+        e => TexFontUtilities.PixelsPerPoint / e.TexFont.Size,
+        e => 12 * TexFontUtilities.PixelsPerPoint / e.TexFont.Size,
+        e =>
         {
             var tex_font = e.TexFont;
             return tex_font.GetQuad(tex_font.GetMuFontId(), e.Style) / 18;
-        }),
-    };
+        }
+    ];
 
     private delegate double UnitConversion(TexEnvironment environment);
 
@@ -39,20 +39,19 @@ internal class SpaceAtom : Atom
     private readonly TexUnit _HeightUnit;
     private readonly TexUnit _DepthUnit;
 
-    public SpaceAtom(TexUnit WidthUnit, double width, TexUnit HeightUnit, double height,
-        TexUnit DepthUnit, double depth)
+    public SpaceAtom(TexUnit WidthUnit, double width, TexUnit HeightUnit, double height, TexUnit DepthUnit, double depth)
     {
         CheckUnit(WidthUnit);
         CheckUnit(HeightUnit);
         CheckUnit(DepthUnit);
 
-        _IsHardSpace     = false;
-        this._WidthUnit  = WidthUnit;
-        this._HeightUnit = HeightUnit;
-        this._DepthUnit  = DepthUnit;
-        this._Width      = width;
-        this._Height     = height;
-        this._Depth      = depth;
+        _IsHardSpace = false;
+        _WidthUnit   = WidthUnit;
+        _HeightUnit  = HeightUnit;
+        _DepthUnit   = DepthUnit;
+        _Width       = width;
+        _Height      = height;
+        _Depth       = depth;
     }
 
     public SpaceAtom(TexUnit unit, double width, double height, double depth)
@@ -63,20 +62,18 @@ internal class SpaceAtom : Atom
         _WidthUnit   = unit;
         _HeightUnit  = unit;
         _DepthUnit   = unit;
-        this._Width  = width;
-        this._Height = height;
-        this._Depth  = depth;
+        _Width       = width;
+        _Height      = height;
+        _Depth       = depth;
     }
 
     public SpaceAtom() => _IsHardSpace = true;
 
-    public override Box CreateBox(TexEnvironment environment)
-    {
-        if(_IsHardSpace)
-            return new StrutBox(environment.TexFont.GetSpace(environment.Style), 0, 0, 0);
-        return new StrutBox(_Width * GetConversionFactor(_WidthUnit, environment), _Height * GetConversionFactor(
-            _HeightUnit, environment), _Depth * GetConversionFactor(_DepthUnit, environment), 0);
-    }
+    public override Box CreateBox(TexEnvironment environment) =>
+        _IsHardSpace
+            ? new(environment.TexFont.GetSpace(environment.Style), 0, 0, 0)
+            : new StrutBox(_Width * GetConversionFactor(_WidthUnit, environment), _Height * GetConversionFactor(
+                _HeightUnit, environment), _Depth * GetConversionFactor(_DepthUnit, environment), 0);
 
-    private double GetConversionFactor(TexUnit unit, TexEnvironment environment) => __UnitConversions[(int)unit](environment);
+    private static double GetConversionFactor(TexUnit unit, TexEnvironment environment) => __UnitConversions[(int)unit](environment);
 }

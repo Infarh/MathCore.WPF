@@ -39,7 +39,7 @@ public partial class ViewModel
     public PropertyChangedEventsSuppressor SupressPropertyChanges(TimeSpan RegistrationTimeout = default)
     {
         if (_PropertyChangedEventsSuppressor is not { } suppressor)
-            return _PropertyChangedEventsSuppressor = new PropertyChangedEventsSuppressor(this, RegistrationTimeout);
+            return _PropertyChangedEventsSuppressor = new(this, RegistrationTimeout);
         suppressor.Timeout = RegistrationTimeout;
         return suppressor;
     }

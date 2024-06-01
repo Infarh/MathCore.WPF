@@ -15,7 +15,7 @@ public class SetObjectPropertyValue : Freezable, ICommand
             nameof(Target),
             typeof(object),
             typeof(SetObjectPropertyValue),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Целевой объект</summary>
     //[Category("")]
@@ -32,7 +32,7 @@ public class SetObjectPropertyValue : Freezable, ICommand
             nameof(PropertyName),
             typeof(string),
             typeof(SetObjectPropertyValue),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Имя свойства</summary>
     //[Category("")]
@@ -49,7 +49,7 @@ public class SetObjectPropertyValue : Freezable, ICommand
             nameof(Value),
             typeof(object),
             typeof(SetObjectPropertyValue),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Требуемое значение</summary>
     //[Category("")]

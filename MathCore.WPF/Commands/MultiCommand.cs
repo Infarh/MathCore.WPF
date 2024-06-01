@@ -13,7 +13,7 @@ namespace MathCore.WPF.Commands;
 [ContentProperty("Commands")]
 public class MultiCommand(params ICommand[] commands) : LambdaCommand, IAddChild
 {
-    public MultiCommand() : this(Array.Empty<ICommand>()) { }
+    public MultiCommand() : this([]) { }
 
     private readonly Collection<ICommand> _Commands = new(commands);
 

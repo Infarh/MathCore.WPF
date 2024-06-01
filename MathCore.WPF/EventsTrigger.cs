@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace MathCore.WPF;
 
-public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
+public class EventsTrigger(Func<object, bool> Checker) : INotifyPropertyChanged, IObservable<bool>
 {
     public abstract class TriggersPool : INotifyCollectionChanged
     {
@@ -21,14 +21,14 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
                     {
                         _Triggers.Add(Name, value);
                         CollectionChanged.ThreadSafeInvoke(this,
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, new { value }));
+                            new(NotifyCollectionChangedAction.Add, new { value }));
                     }
                     else
                     {
                         var old_value = _Triggers[Name];
                         _Triggers[Name] = value;
                         CollectionChanged.ThreadSafeInvoke(this,
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, value, old_value));
+                            new(NotifyCollectionChangedAction.Replace, value, old_value));
                     }
             }
         }
@@ -41,10 +41,9 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
         {
             lock (_Triggers)
             {
-                if (!_Triggers.ContainsKey(Name)) return false;
-                var trigger    = _Triggers[Name];
+                if (!_Triggers.TryGetValue(Name, out var trigger)) return false;
                 var is_removed = _Triggers.Remove(Name);
-                CollectionChanged.ThreadSafeInvoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, new { trigger }));
+                CollectionChanged.ThreadSafeInvoke(this, new(NotifyCollectionChangedAction.Remove, new { trigger }));
                 return is_removed;
             }
         }
@@ -57,7 +56,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
         #endregion
     }
 
-    private class EventTriggersPool : TriggersPool { }
+    private class EventTriggersPool : TriggersPool;
 
     static EventsTrigger() => __Pool = new EventTriggersPool();
 
@@ -74,8 +73,6 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
     public event EventHandler? Raise;
     public event EventHandler? Falloff;
 
-    private readonly Func<object, bool> _Checker;
-
     private readonly object _SyncRoot = new();
     private bool _LastState;
 
@@ -84,8 +81,6 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
     public bool LastState => _LastState;
 
     public EventsTrigger(Func<bool> Checker) : this(_ => Checker()) { }
-
-    public EventsTrigger(Func<object, bool> Checker) => _Checker = Checker;
 
     public bool Check() => Check(null);
 
@@ -96,7 +91,7 @@ public class EventsTrigger : INotifyPropertyChanged, IObservable<bool>
         lock (_SyncRoot)
         {
             var last             = _LastState;
-            current = _LastState = _Checker(obj);
+            current = _LastState = Checker(obj);
             Checked?.Invoke(this, EventArgs.Empty);
             if (current == last) return current;
             (current ? Raise : Falloff)?.Invoke(this, EventArgs.Empty);

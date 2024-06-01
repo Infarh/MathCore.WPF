@@ -16,16 +16,16 @@ public class PointLine : Shape
     {
         Line.X1Property.OverrideMetadata(typeof(PointLine),
             new FrameworkPropertyMetadata(0d, __Options,
-                (s, e) => ((PointLine)s).Start = new Point((double)e.NewValue, (double)s.GetValue(Line.Y1Property))));
+                (s, e) => ((PointLine)s).Start = new((double)e.NewValue, (double)s.GetValue(Line.Y1Property))));
         Line.Y1Property.OverrideMetadata(typeof(PointLine),
             new FrameworkPropertyMetadata(0d, __Options,
-                (s, e) => ((PointLine)s).Start = new Point((double)s.GetValue(Line.X1Property), (double)e.NewValue)));
+                (s, e) => ((PointLine)s).Start = new((double)s.GetValue(Line.X1Property), (double)e.NewValue)));
         Line.X2Property.OverrideMetadata(typeof(PointLine),
             new FrameworkPropertyMetadata(0d, __Options,
-                (s, e) => ((PointLine)s).Start = new Point((double)e.NewValue, (double)s.GetValue(Line.Y2Property))));
+                (s, e) => ((PointLine)s).Start = new((double)e.NewValue, (double)s.GetValue(Line.Y2Property))));
         Line.Y2Property.OverrideMetadata(typeof(PointLine),
             new FrameworkPropertyMetadata(0d, __Options,
-                (s, e) => ((PointLine)s).Start = new Point((double)s.GetValue(Line.X2Property), (double)e.NewValue)));
+                (s, e) => ((PointLine)s).Start = new((double)s.GetValue(Line.X2Property), (double)e.NewValue)));
     }
 
     public double X1 { get => (double)GetValue(Line.X1Property); set => SetValue(Line.X1Property, value); }

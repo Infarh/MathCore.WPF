@@ -30,23 +30,11 @@ using System.Windows;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
-class SvgPoint
+internal class SvgPoint(double x, double y)
 {
-
-    //==========================================================================
-    public readonly double X;
+    public readonly double X = x;
     
-    //==========================================================================
-    public readonly double Y;
+    public readonly double Y = y;
     
-    //==========================================================================
-    public SvgPoint(double x, double y)
-    {
-        X = x;
-        Y = y;                                
-    }
-
-    //==========================================================================
     public Point ToPoint() => new(X, Y);
-} // class SvgPoint
+}
