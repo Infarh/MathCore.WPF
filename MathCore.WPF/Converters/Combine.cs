@@ -48,9 +48,9 @@ public class Combine(IValueConverter First, IValueConverter Then, params IValueC
         var other = Other;
         if (other is not { Length: > 0 }) return v;
 
-        for (var i = 0; i < other.Length; i++)
-            if (other[i] is { } conv)
-                v = conv.Convert(v, t, p, c);
+        foreach (var o in other.WhereNotNull())
+            v = o.Convert(v, t, p, c);
+
         return v;
     }
 

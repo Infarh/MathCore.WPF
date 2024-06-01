@@ -11,6 +11,10 @@ namespace MathCore.WPF.Converters.Base;
 [ValueConversion(typeof(double), typeof(double))]
 public abstract class DoubleValueConverter : ValueConverter
 {
+    public double? Min { get; set; }
+
+    public double? Max { get; set; }
+
     /// <summary>Преобразование объекта в вещественный тип данных</summary>
     /// <param name="obj">Преобразуемое значение</param>
     /// <returns>Значение вещественного типа, если преобразование прошло успешно, и NaN в противном случае</returns>
@@ -82,8 +86,21 @@ public abstract class DoubleValueConverter : ValueConverter
     }
 
     /// <inheritdoc />
-    protected override object Convert(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? Convert(V, P) : double.NaN;
+    protected override object Convert(object? v, Type t, object? p, CultureInfo c)
+    {
+        if (!CheckParameters(v, p, out var value, out var parameter))
+            return double.NaN;
+
+        var result = Convert(value, parameter);
+
+        if (Min is { } min && !double.IsNaN(min))
+            result = Math.Max(result, min);
+        if (Max is { } max && !double.IsNaN(max))
+            result = Math.Min(result, max);
+
+        return result;
+    }
 
     /// <inheritdoc />
-    protected override object ConvertBack(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var V, out var P) ? ConvertBack(V, P) : double.NaN;
+    protected override object ConvertBack(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var value, out var parameter) ? ConvertBack(value, parameter) : double.NaN;
 }
