@@ -29,6 +29,7 @@
     <Version>0.0.45</Version>
     <PackageReleaseNotes>
       Добавлены ограничители для математических конвертеров
+      Добавлен конвертер математических выражений
     </PackageReleaseNotes>
   </PropertyGroup>
 
