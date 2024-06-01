@@ -2,7 +2,7 @@
 
 namespace MathCore.WPF;
 
-/// <summary>Колекция свойств модели</summary>
+/// <summary>Коллекция свойств модели</summary>
 public sealed class ModelPropertiesCollection : Collection<ModelProperty>
 {
     /// <summary>Событие возникает, когда одно из свойств коллекции меняет свой значение</summary>
@@ -21,7 +21,7 @@ public sealed class ModelPropertiesCollection : Collection<ModelProperty>
     /// <returns>Свойство с указанным именем</returns>
     public ModelProperty this[string Name] => _Properties[Name];
 
-    /// <summary>Определение - содержится ли свойство с указанным именем в коллеции</summary>
+    /// <summary>Определение - содержится ли свойство с указанным именем в коллекции</summary>
     /// <param name="PropertyName">Имя проверяемого свойства</param>
     /// <returns>Истина, если свойство с указанным именем содержится в коллекции</returns>
     public bool Contains(string PropertyName) => _Properties.ContainsKey(PropertyName);
@@ -42,7 +42,8 @@ public sealed class ModelPropertiesCollection : Collection<ModelProperty>
     /// <inheritdoc />
     protected override void SetItem(int index, ModelProperty property)
     {
-        var old_item                                                    = this[index];
+        var old_item = this[index];
+
         if (_Properties.Remove(old_item.Name)) old_item.PropertyChanged -= OnPropertyChanged;
         _Properties.Add(property.Name, property);
         base.SetItem(index, property);

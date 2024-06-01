@@ -121,14 +121,11 @@ public class RangeObservableCollection<T> : ObservableCollection<T>
     }
 }
 
-public class DeferEventObservableCollection<T> : ObservableCollection<T>
+public class DeferEventObservableCollection<T>(int threshold = 10) : ObservableCollection<T>
 {
     private readonly List<NotifyCollectionChangedEventArgs> _DeferredEvents = [];
     private bool _HasQueuedDispatcherUpdate;
-    private readonly int _Threshold;
     private readonly object _SyncRoot = new();
-
-    public DeferEventObservableCollection(int threshold = 10) => _Threshold = threshold;
 
     protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
@@ -140,7 +137,7 @@ public class DeferEventObservableCollection<T> : ObservableCollection<T>
                 {
                     lock (_SyncRoot)
                     {
-                        if (_DeferredEvents.Count > _Threshold)
+                        if (_DeferredEvents.Count > threshold)
                             base.OnCollectionChanged(
                                 new(NotifyCollectionChangedAction.Reset));
                         else

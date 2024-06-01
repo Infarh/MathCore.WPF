@@ -33,7 +33,7 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-abstract class SvgPaint
+internal abstract class SvgPaint
 {
 
     //==========================================================================

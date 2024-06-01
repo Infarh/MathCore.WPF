@@ -208,11 +208,11 @@ public static class CollectionExtensions
                     typeof(TCollection), t =>
                     {
                         var mi_pc = t.GetMethod("OnPropertyChanged", BindingFlags.Instance | BindingFlags.NonPublic,
-                                null, new[] { typeof(PropertyChangedEventArgs) }, new[] { new ParameterModifier(1) })
+                                null, [typeof(PropertyChangedEventArgs)], [new(1)])
                             ?? throw new InvalidOperationException("Метод OnPropertyChanged не найден");
                         var mi_cc = t.GetMethod("OnCollectionChanged",
                                 BindingFlags.Instance | BindingFlags.NonPublic, null,
-                                new[] { typeof(NotifyCollectionChangedEventArgs) }, new[] { new ParameterModifier(1) })
+                                [typeof(NotifyCollectionChangedEventArgs)], [new(1)])
                             ?? throw new InvalidOperationException("Метод OnCollectionChanged не найден");
                         var p_obj = "obj".ParameterOf(typeof(object));
                         var p_pc = "arg".ParameterOf(typeof(PropertyChangedEventArgs));
@@ -259,9 +259,11 @@ public static class CollectionExtensions
                 p = __ItemsDictionary.GetValueOrAddNew(
                     typeof(TCollection), t =>
                     {
-                        var mi_pc = t.GetMethod("OnPropertyChanged", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(PropertyChangedEventArgs) }, new[] { new ParameterModifier(1) })
+                        var mi_pc = t.GetMethod("OnPropertyChanged", BindingFlags.Instance | BindingFlags.NonPublic, null,
+                                        [typeof(PropertyChangedEventArgs)], [new(1)])
                             ?? throw new InvalidOperationException("Метод OnPropertyChanged не найден");
-                        var mi_cc = t.GetMethod("OnCollectionChanged", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(NotifyCollectionChangedEventArgs) }, new[] { new ParameterModifier(1) })
+                        var mi_cc = t.GetMethod("OnCollectionChanged", BindingFlags.Instance | BindingFlags.NonPublic, null,
+                                        [typeof(NotifyCollectionChangedEventArgs)], [new(1)])
                             ?? throw new InvalidOperationException("Метод OnCollectionChanged не найден");
                         var p_obj = "obj".ParameterOf(typeof(object));
                         var p_pc = "arg".ParameterOf(typeof(PropertyChangedEventArgs));
@@ -276,7 +278,7 @@ public static class CollectionExtensions
             var items_collection = ((Func<TCollection, IList<TItem>>)p.GetItems)(collection);
             object? I = null;
             var count = 0;
-            items_collection.RemoveItemsRange(items.ForeachLazy(i => { if (count++ == 0) I = i; else I = null; }));
+            items_collection.RemoveItemsRange(items.ForeachLazy(i => { I = count++ == 0 ? i : null; }));
             if (count == 0) return;
             p.OnPropertyChanged(collection, new("Count"));
             p.OnPropertyChanged(collection, new("Item[]"));

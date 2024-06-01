@@ -36,7 +36,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;mask&gt; element.</summary>
-class SvgMaskElement
+internal class SvgMaskElement
     : SvgContainerBaseElement
 {
 

@@ -33,7 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;feGaussianBlur&gt; element.</summary>
-class SvgFeGaussianBlurElement
+internal class SvgFeGaussianBlurElement
     : SvgFilterEffectBaseElement
 {
 

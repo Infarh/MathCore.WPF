@@ -30,7 +30,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  A coordinate.</summary>
-class SvgCoordinate
+internal class SvgCoordinate
     : SvgLength
 {
 

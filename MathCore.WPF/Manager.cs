@@ -251,4 +251,4 @@ public class ConditionalEventTrigger : FrameworkContentElement
     }
 }
 
-public class ConditionalEventTriggerCollection : List<ConditionalEventTrigger> { }
+public class ConditionalEventTriggerCollection : List<ConditionalEventTrigger>;

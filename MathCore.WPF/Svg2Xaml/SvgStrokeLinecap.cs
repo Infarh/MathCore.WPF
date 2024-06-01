@@ -29,7 +29,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgStrokeLinecap
+internal enum SvgStrokeLinecap
 {
 
     Butt,

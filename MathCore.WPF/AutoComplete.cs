@@ -31,7 +31,7 @@ public sealed partial class AutoComplete
 {
     #region Classes
 
-    private abstract class ControlUnderAutoComplete
+    private abstract class ControlUnderAutoComplete(Control control)
     {
         internal static ControlUnderAutoComplete? Create(Control control) => control switch
         {
@@ -48,20 +48,16 @@ public sealed partial class AutoComplete
             set => Control.SetValue(TextDependencyProperty, value);
         }
 
-        public Control Control { get; }
+        public Control Control { get; } = control;
         public abstract string StyleKey { get; }
-        protected ControlUnderAutoComplete(Control control) => Control = control;
 
         public abstract void SelectAll();
 
         public abstract CollectionViewSource GetViewSource(Style style);
     }
 
-    private class TextBoxUnderAutoComplete : ControlUnderAutoComplete
+    private class TextBoxUnderAutoComplete(Control control) : ControlUnderAutoComplete(control)
     {
-
-        public TextBoxUnderAutoComplete(Control control) : base(control) { }
-
         public override DependencyProperty TextDependencyProperty => TextBox.TextProperty;
 
         public override string StyleKey => "autoCompleteTextBoxStyle";
@@ -72,11 +68,8 @@ public sealed partial class AutoComplete
         public override CollectionViewSource GetViewSource(Style style) => (CollectionViewSource)style.BasedOn.Resources["viewSource"];
     }
 
-    private class ComboBoxUnderAutoComplete : ControlUnderAutoComplete
+    private class ComboBoxUnderAutoComplete(Control control) : ControlUnderAutoComplete(control)
     {
-
-        public ComboBoxUnderAutoComplete(Control control) : base(control) { }
-
         public override DependencyProperty TextDependencyProperty => ComboBox.TextProperty;
 
         public override string StyleKey => "autoCompleteComboBoxStyle";

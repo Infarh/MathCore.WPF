@@ -6,19 +6,19 @@ namespace MathCore.WPF.TeX;
 internal class SpaceAtom : Atom
 {
     // Collection of unit conversion functions.
-    private static readonly UnitConversion[] __UnitConversions = new[]
-    {
+    private static readonly UnitConversion[] __UnitConversions =
+    [
         e => e.TexFont.GetXHeight(e.Style, e.LastFontId),
         e => e.TexFont.GetXHeight(e.Style, e.LastFontId),
         e => 1.0 / e.TexFont.Size,
         e => TexFontUtilities.PixelsPerPoint / e.TexFont.Size,
         e => 12 * TexFontUtilities.PixelsPerPoint / e.TexFont.Size,
-        new UnitConversion(e =>
+        e =>
         {
             var tex_font = e.TexFont;
             return tex_font.GetQuad(tex_font.GetMuFontId(), e.Style) / 18;
-        }),
-    };
+        }
+    ];
 
     private delegate double UnitConversion(TexEnvironment environment);
 

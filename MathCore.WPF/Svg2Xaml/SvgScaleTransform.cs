@@ -33,24 +33,16 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgScaleTransform
-    : SvgTransform
+internal class SvgScaleTransform(double x, double y) : SvgTransform
 {
-    public readonly double X;
-    public readonly double Y;
+    public readonly double X = x;
+    public readonly double Y = y;
 
     //==========================================================================
-    public SvgScaleTransform(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
 
     //==========================================================================
-    public SvgScaleTransform(double scale)
+    public SvgScaleTransform(double scale) : this(scale, scale)
     {
-        X = scale;
-        Y = scale;
     }
 
     //==========================================================================

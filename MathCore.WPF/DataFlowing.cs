@@ -25,7 +25,7 @@ public static class DataFlowing
     #endregion
 }
 
-public class DataFlowCollection : FreezableCollection<DataFlow> { }
+public class DataFlowCollection : FreezableCollection<DataFlow>;
 
 public class DataFlow : Freezable
 {

@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;circle&gt; element.</summary>
-class SvgCircleElement
+internal class SvgCircleElement
     : SvgDrawableBaseElement
 {
     //==========================================================================

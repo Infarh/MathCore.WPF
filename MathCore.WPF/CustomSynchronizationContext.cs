@@ -89,41 +89,28 @@ public class CustomSynchronizationContext : SynchronizationContext, IDisposable
         _Disposed = true;
     }
 
-    private abstract class WorkItem
+    private abstract class WorkItem(SendOrPostCallback Callback, object? state)
     {
-        protected readonly SendOrPostCallback Callback;
-        protected readonly object? State;
-
-        protected WorkItem(SendOrPostCallback Callback, object? state)
-        {
-            this.Callback = Callback;
-            State         = state;
-        }
+        protected readonly SendOrPostCallback Callback = Callback;
+        protected readonly object? State = state;
 
         public abstract void Execute();
     }
 
-    private sealed class SynchronousWorkItem : WorkItem
+    private sealed class SynchronousWorkItem(SendOrPostCallback Callback, object? state, AutoResetEvent Reset)
+        : WorkItem(Callback, state)
     {
-        private readonly AutoResetEvent _SyncObject;
-
         public Exception? Error { get; private set; }
-
-        public SynchronousWorkItem(SendOrPostCallback Callback, object? state, AutoResetEvent Reset) : base(Callback, state) => _SyncObject = Reset;
 
         public override void Execute()
         {
             try { Callback(State); } catch(Exception error) { Error = error; }
-            _SyncObject.Set();
+            Reset.Set();
         }
     }
 
-    private sealed class AsynchronousWorkItem : WorkItem
+    private sealed class AsynchronousWorkItem(SendOrPostCallback Callback, object? state) : WorkItem(Callback, state)
     {
-        public AsynchronousWorkItem(SendOrPostCallback Callback, object? state)
-            : base(Callback, state)
-        { }
-
         public override void Execute() => Callback(State);
     }
 }

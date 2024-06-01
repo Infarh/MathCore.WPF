@@ -1,7 +1,7 @@
 ﻿namespace MathCore.WPF.DataAnnotations;
 
 [AttributeUsage(AttributeTargets.Property)]
-sealed class ColumnWidthAttribute : Attribute
+internal sealed class ColumnWidthAttribute : Attribute
 {
     public bool Auto { get; set; }
 

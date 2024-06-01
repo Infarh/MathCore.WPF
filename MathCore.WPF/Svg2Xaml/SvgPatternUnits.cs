@@ -30,7 +30,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgPatternUnits
+internal enum SvgPatternUnits
 {   
 
     ObjectBoundingBox,

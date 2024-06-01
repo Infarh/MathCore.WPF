@@ -31,17 +31,6 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
 /// <summary>  Represents a &lt;tspan&gt; element.</summary>
-class SvgTSpanElement
-    : SvgDrawableContainerBaseElement
-{
-
-    //==========================================================================
-    public SvgTSpanElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
-        : base(document, parent, SvgElement)
-    {
-        // ...
-    }
-
-} // class SvgTSpanElement
+internal class SvgTSpanElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
+    : SvgDrawableContainerBaseElement(document, parent, SvgElement);

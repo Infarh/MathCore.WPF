@@ -33,7 +33,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-sealed class SvgDocument
+internal sealed class SvgDocument
 {
     //==========================================================================
     public readonly Dictionary<string, SvgBaseElement> Elements = [];

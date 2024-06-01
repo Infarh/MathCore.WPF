@@ -34,17 +34,9 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;clipPath&gt; element.</summary>
-class SvgClipPathElement
-    : SvgContainerBaseElement
+internal class SvgClipPathElement(SvgDocument document, SvgBaseElement parent, XElement ClipPathElement)
+    : SvgContainerBaseElement(document, parent, ClipPathElement)
 {
-    //==========================================================================
-    public SvgClipPathElement(SvgDocument document, SvgBaseElement parent, XElement ClipPathElement)
-        : base(document, parent, ClipPathElement)
-    {
-        // ...
-    }
-
-    //==========================================================================
     public Geometry GetClipGeometry()
     {
         var geometry_group = new GeometryGroup();
@@ -78,4 +70,4 @@ class SvgClipPathElement
         return geometry_group;
     }
 
-} // class SvgClipPathElement
+}

@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;flowRoot&gt; element.</summary>
-class SvgFlowRootElement
+internal class SvgFlowRootElement
     : SvgDrawableContainerBaseElement
 {
     //==========================================================================

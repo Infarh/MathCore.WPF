@@ -46,10 +46,10 @@ public sealed class SettingsDialogViewModelConverter : MarkupExtension, IValueCo
     }
 
     /// <inheritdoc />
-    public object? Convert(object v, Type t, object p, CultureInfo c) => _DialogWindow is { } window ? new SettingsDialogViewModel(v, window) : null;
+    public object? Convert(object? v, Type t, object? p, CultureInfo c) => _DialogWindow is { } window ? new SettingsDialogViewModel(v, window) : null;
 
     /// <inheritdoc />
-    public object ConvertBack(object v, Type t, object p, CultureInfo c) => throw new NotSupportedException();
+    public object ConvertBack(object? v, Type t, object? p, CultureInfo c) => throw new NotSupportedException();
 }
 
 /// <summary>Модель-представление диалогового окна настроек</summary>
@@ -92,7 +92,7 @@ public class SettingsDialogViewModel : ViewModel
     public bool HasChanges => _PropertiesDictionary.Count > 0;
 
     /// <summary>Перечень известных свойств объекта конфигурации, с которыми можно работать на чтение и на запись значений</summary>
-    public PropertyInfo[] KnownProperties => _KnownProperties ??= _ValueObject?.GetType().GetProperties(PropertiesBindingTypes) ?? Array.Empty<PropertyInfo>();
+    public PropertyInfo[] KnownProperties => _KnownProperties ??= _ValueObject?.GetType().GetProperties(PropertiesBindingTypes) ?? [];
 
     /// <summary>Команда сохранения значений конфигурации и закрытия окна диалога с положительным диалоговым результатом</summary>
     public LambdaCommand<bool?> CommitCommand { get; }
@@ -214,7 +214,8 @@ public class SettingsObjectManager : DynamicViewModel
     private void OnDialogWindowClosed(object? Sender, EventArgs E)
     {
         if (Sender is not Window window) return;
-        var result                                                                                            = window.DialogResult;
+        var result = window.DialogResult;
+
         if (_Value is INotifyPropertyChanged notify_property_changed) notify_property_changed.PropertyChanged -= OnValuePropertyChanged;
         if (result != true) return;
         foreach (var (key, value) in _PropertiesValues.ToArray())

@@ -33,7 +33,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-abstract class SvgGradientBaseElement
+internal abstract class SvgGradientBaseElement
     : SvgBaseElement
 {
     //==========================================================================

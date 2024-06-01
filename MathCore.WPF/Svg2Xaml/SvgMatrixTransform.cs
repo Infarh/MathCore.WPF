@@ -33,27 +33,18 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgMatrixTransform
+internal class SvgMatrixTransform(double m11, double m12, double m21, double m22, double OffsetX, double OffsetY)
     : SvgTransform
 {
     //==========================================================================
-    public readonly double M11;
-    public readonly double M12;
-    public readonly double M21;
-    public readonly double M22;
-    public readonly double OffsetX;
-    public readonly double OffsetY;
+    public readonly double M11 = m11;
+    public readonly double M12 = m12;
+    public readonly double M21 = m21;
+    public readonly double M22 = m22;
+    public readonly double OffsetX = OffsetX;
+    public readonly double OffsetY = OffsetY;
 
     //==========================================================================
-    public SvgMatrixTransform(double m11, double m12, double m21, double m22, double OffsetX, double OffsetY)
-    {
-        M11          = m11;
-        M12          = m12;
-        M21          = m21;
-        M22          = m22;
-        this.OffsetX = OffsetX;
-        this.OffsetY = OffsetY;
-    }
 
     //==========================================================================
     public override Transform ToTransform() => new MatrixTransform(M11, M12, M21, M22, OffsetX, OffsetY);
@@ -63,7 +54,8 @@ class SvgMatrixTransform
     {
         var tokens = transform.Split(new[] { ' ', '\t', ',' }, StringSplitOptions.RemoveEmptyEntries);
         if(tokens.Length == 6)
-            return new(double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
+            return new(
+                double.Parse(tokens[0].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[1].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[2].Trim(), CultureInfo.InvariantCulture.NumberFormat),
                 double.Parse(tokens[3].Trim(), CultureInfo.InvariantCulture.NumberFormat), 

@@ -88,7 +88,7 @@ public readonly ref struct FileDialogEx
 #else
    public FileDialogEx AddFilter(string Name, params string[] Ext) => Filter is { } filter
        ? this with { Filter = filter.AppendLast(new FileFilterItem(Name, Ext)) }
-       : this with { Filter = new FileFilterItem[] { new(Name, Ext) } };
+       : this with { Filter = [new(Name, Ext)] };
 #endif
 
     public FileDialogEx AddFilterAllFiles() => Filter is null || Filter.Last().Title != "Все файлы" 
@@ -106,7 +106,7 @@ public readonly ref struct FileDialogEx
         {
             var filter_str = new StringBuilder();
 
-            foreach (var item in Filter)
+            foreach (var item in filter)
                 item.AppendTo(filter_str);
 
             filter_str.Length--;
@@ -140,7 +140,7 @@ public readonly ref struct FileDialogEx
         {
             var filter_str = new StringBuilder();
 
-            foreach (var item in Filter)
+            foreach (var item in filter)
                 item.AppendTo(filter_str);
 
             filter_str.Length--;

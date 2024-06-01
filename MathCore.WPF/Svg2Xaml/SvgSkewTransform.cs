@@ -33,18 +33,12 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgSkewTransform
-    : SvgTransform
+internal class SvgSkewTransform(double AngleX, double AngleY) : SvgTransform
 {
-    public readonly double AngleX;
-    public readonly double AngleY;
+    public readonly double AngleX = AngleX;
+    public readonly double AngleY = AngleY;
     
     //==========================================================================
-    public SvgSkewTransform(double AngleX, double AngleY)
-    {
-        this.AngleX = AngleX;
-        this.AngleY = AngleY;
-    }
 
     //==========================================================================
     public override Transform ToTransform() => new SkewTransform(AngleX, AngleY);

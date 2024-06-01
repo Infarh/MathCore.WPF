@@ -85,7 +85,7 @@ public class Model : Freezable, IAddChild
     /// <summary>Попытаться получить значение свойства</summary>
     /// <param name="PropertyName">Имя свойства, значение которого требуется получить</param>
     /// <param name="Value">Получаемое значение свойства</param>
-    /// <returns>Истина, если свойство было найдено и значение было получпено</returns>
+    /// <returns>Истина, если свойство было найдено и значение было получено</returns>
     public bool TryGetValue(string PropertyName, out object Value)
     {
         var property = GetProperty(PropertyName);

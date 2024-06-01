@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;linearGradient&gt; element.</summary>
-class SvgLinearGradientElement
+internal class SvgLinearGradientElement
     : SvgGradientBaseElement
 {
     //==========================================================================

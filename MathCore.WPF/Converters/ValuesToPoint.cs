@@ -21,5 +21,5 @@ public class ValuesToPoint : MultiValueValueConverter
     protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) =>
         v is null 
             ? null 
-            : new object[] { ((Point)v).X, ((Point)v).Y };
+            : [((Point)v).X, ((Point)v).Y];
 }

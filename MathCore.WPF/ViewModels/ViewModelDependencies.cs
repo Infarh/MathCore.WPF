@@ -8,10 +8,7 @@ using System.Reflection;
 
 namespace MathCore.WPF.ViewModels;
 
-partial class ViewModel
-{
-
-}
+public partial class ViewModel;
 
 public static class ViewModelExtensions
 {

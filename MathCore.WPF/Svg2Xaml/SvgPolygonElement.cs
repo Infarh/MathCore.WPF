@@ -34,7 +34,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgPolygonElement
+internal class SvgPolygonElement
     : SvgDrawableBaseElement
 {
     //==========================================================================

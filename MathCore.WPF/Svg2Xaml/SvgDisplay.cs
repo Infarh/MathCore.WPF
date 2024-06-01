@@ -30,7 +30,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgDisplay
+internal enum SvgDisplay
 {   
     Inline, 
     Block,

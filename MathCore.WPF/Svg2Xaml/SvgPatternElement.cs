@@ -33,7 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;pattern&gt; element.</summary>
-class SvgPatternElement
+internal class SvgPatternElement
     : SvgDrawableContainerBaseElement
 {
     //==========================================================================

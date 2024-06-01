@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;filter&gt; element.</summary>
-class SvgFilterElement
+internal class SvgFilterElement
     : SvgBaseElement
 {
     //==========================================================================

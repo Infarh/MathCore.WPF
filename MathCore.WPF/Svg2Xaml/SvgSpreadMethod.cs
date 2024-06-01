@@ -30,7 +30,7 @@
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-enum SvgSpreadMethod
+internal enum SvgSpreadMethod
 {
 
     Pad,

@@ -33,18 +33,12 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgTranslateTransform
-    : SvgTransform
+internal class SvgTranslateTransform(double x, double y) : SvgTransform
 {
-    public readonly double X;
-    public readonly double Y;
+    public readonly double X = x;
+    public readonly double Y = y;
     
     //==========================================================================
-    public SvgTranslateTransform(double x, double y)
-    {
-        X = x;
-        Y = y;
-    }
 
     //==========================================================================
     public override Transform ToTransform() => new TranslateTransform(X, Y);

@@ -33,7 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents a &lt;path&gt; element.</summary>
-class SvgPathElement
+internal class SvgPathElement
     : SvgDrawableBaseElement
 {
     //==========================================================================

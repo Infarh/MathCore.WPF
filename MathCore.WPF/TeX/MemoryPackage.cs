@@ -4,7 +4,7 @@ using System.IO.Packaging;
 
 namespace MathCore.WPF.TeX;
 
-sealed class MemoryPackage : IDisposable
+internal sealed class MemoryPackage : IDisposable
 {
     private static int __PackageCounter;
 

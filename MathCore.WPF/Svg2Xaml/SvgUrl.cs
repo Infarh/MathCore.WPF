@@ -29,16 +29,10 @@
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
-class SvgUrl
+internal class SvgUrl(string id)
 {
-    //==========================================================================
-    public readonly string Id;
+    public readonly string Id = id;
 
-    //==========================================================================
-    public SvgUrl(string id) => Id = id;
-
-    //==========================================================================
     public static SvgUrl? Parse(string value) => value switch
     {
         ['u', 'r', 'l', .. { Length: > 0 } ss] when ss.Trim() is ['(', .. { Length: > 0 } qq, ')'] && qq is ['#', .. { Length: > 0 } url] => new(url),
@@ -48,4 +42,4 @@ class SvgUrl
         null   => throw new ArgumentNullException(nameof(value)),
         _      => throw new ArgumentException($"Unsupported URL value: {value}")
     };
-} // class SvgURL
+}

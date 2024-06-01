@@ -33,24 +33,12 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;use&gt; element.</summary>
-class SvgUseElement : SvgBaseElement
+internal class SvgUseElement(SvgDocument document, SvgBaseElement parent, XElement UseElement) : SvgBaseElement(document, parent, UseElement)
 {
-    //==========================================================================
-    public SvgUseElement(SvgDocument document, SvgBaseElement parent, XElement UseElement)
-        : base(document, parent, UseElement)
-    {
-        // ...
-    }
-
-    //==========================================================================
-    public SvgBaseElement? GetElement()
-    {
-        if(Reference is null)
-            throw new NotSupportedException();
-
-        return Document.Elements.ContainsKey(Reference) 
-            ? Document.Elements[Reference] 
-            : null;
-    }
-
-} // class SvgUseElement
+    public SvgBaseElement? GetElement() =>
+        Reference is null
+            ? throw new NotSupportedException()
+            : Document.Elements.TryGetValue(Reference, out var element)
+                ? element
+                : null;
+}

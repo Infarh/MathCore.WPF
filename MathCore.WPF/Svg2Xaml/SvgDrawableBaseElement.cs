@@ -36,7 +36,7 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-abstract class SvgDrawableBaseElement : SvgBaseElement
+internal abstract class SvgDrawableBaseElement : SvgBaseElement
 {
 
     //==========================================================================
@@ -132,7 +132,7 @@ abstract class SvgDrawableBaseElement : SvgBaseElement
             if (stroke_dasharray_attribute.Value == "none")
                 StrokeDasharray = null;
             else if (stroke_dasharray_attribute.Value == "inherit")
-                StrokeDasharray = Array.Empty<SvgLength>();
+                StrokeDasharray = [];
             else
             {
                 var lengths = stroke_dasharray_attribute.Value.Split(',').Select(SvgLength.Parse).ToList();
@@ -147,7 +147,7 @@ abstract class SvgDrawableBaseElement : SvgBaseElement
                     }
                 }
                 else
-                    StrokeDasharray = lengths.ToArray();
+                    StrokeDasharray = [.. lengths];
 
             }
         }
@@ -391,8 +391,8 @@ abstract class SvgDrawableBaseElement : SvgBaseElement
 
         BitmapEffect? bitmap_effect = null;
         if (Filter != null)
-            if (Document.Elements.ContainsKey(Filter))
-                if (Document.Elements[Filter] is SvgFilterElement filter_element)
+            if (Document.Elements.TryGetValue(Filter, out var element))
+                if (element is SvgFilterElement filter_element)
                     bitmap_effect = filter_element.ToBitmapEffect();
 
         Brush? opacity_mask = null;

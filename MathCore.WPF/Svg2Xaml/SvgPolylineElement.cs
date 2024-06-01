@@ -34,7 +34,7 @@ using System.Globalization;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgPolylineElement
+internal class SvgPolylineElement
     : SvgDrawableBaseElement
 {
     //==========================================================================

@@ -34,7 +34,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Represents an &lt;ellipse&gt; element.</summary>
-class SvgEllipseElement
+internal class SvgEllipseElement
     : SvgDrawableBaseElement
 {
     //==========================================================================

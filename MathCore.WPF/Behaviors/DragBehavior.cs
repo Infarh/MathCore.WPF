@@ -124,12 +124,9 @@ public class DragBehavior : Behavior<FrameworkElement>
         }
     }
 
-    private class ThicknessObjectMover : ObjectMover
+    private class ThicknessObjectMover(FrameworkElement element, DragBehavior behavior) : ObjectMover(element, behavior)
     {
-        private readonly Thickness _StartThickness;
-
-        public ThicknessObjectMover(FrameworkElement element, DragBehavior behavior) 
-            : base(element, behavior) => _StartThickness = element.Margin;
+        private readonly Thickness _StartThickness = element.Margin;
 
         protected override bool OnMouseMove(FrameworkElement element, double dx, double dy)
         {
@@ -144,21 +141,12 @@ public class DragBehavior : Behavior<FrameworkElement>
         }
     }
 
-    private class CanvasObjectMover : ObjectMover
+    private class CanvasObjectMover(FrameworkElement element, DragBehavior behavior) : ObjectMover(element, behavior)
     {
-        private readonly double _StartLeft;
-        private readonly double _StartRight;
-        private readonly double _StartTop;
-        private readonly double _StartBottom;
-
-        public CanvasObjectMover(FrameworkElement element, DragBehavior behavior) 
-            : base(element, behavior)
-        {
-            _StartLeft   = Canvas.GetLeft(element);
-            _StartRight  = Canvas.GetRight(element);
-            _StartTop    = Canvas.GetTop(element);
-            _StartBottom = Canvas.GetBottom(element);
-        }
+        private readonly double _StartLeft = Canvas.GetLeft(element);
+        private readonly double _StartRight = Canvas.GetRight(element);
+        private readonly double _StartTop = Canvas.GetTop(element);
+        private readonly double _StartBottom = Canvas.GetBottom(element);
 
         protected override bool OnMouseMove(FrameworkElement element, double dx, double dy)
         {

@@ -33,7 +33,7 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>  Base element for all container elements.</summary>
-class SvgContainerBaseElement
+internal class SvgContainerBaseElement
     : SvgBaseElement
 {
     //==========================================================================

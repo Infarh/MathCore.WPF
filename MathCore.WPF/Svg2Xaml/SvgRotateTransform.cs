@@ -33,14 +33,12 @@ using System.Windows.Media;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-class SvgRotateTransform
-    : SvgTransform
+internal class SvgRotateTransform(double angle) : SvgTransform
 {
     //==========================================================================
-    public readonly double Angle;
+    public readonly double Angle = angle;
 
     //==========================================================================
-    public SvgRotateTransform(double angle) => Angle = angle;
 
     //==========================================================================
     public override Transform ToTransform() => new RotateTransform(Angle);

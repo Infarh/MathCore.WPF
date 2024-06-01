@@ -14,20 +14,11 @@ namespace MathCore.WPF.ViewModels;
 [MarkupExtensionReturnType(typeof(ValidableViewModel))]
 public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDataErrorInfo
 {
-    private class PropertyValidator
+    private class PropertyValidator(Func<object> Getter, Func<object, bool> Validator, string? ErrorMessage)
     {
-        private readonly Func<object> _Getter;
-        private readonly Func<object, bool> _Validator;
-        public string? ErrorMessage { get; }
+        public string? ErrorMessage { get; } = ErrorMessage;
 
-        public PropertyValidator(Func<object> Getter, Func<object, bool> Validator, string? ErrorMessage)
-        {
-            _Getter           = Getter;
-            _Validator        = Validator;
-            this.ErrorMessage = ErrorMessage;
-        }
-
-        public bool IsValid => _Validator(_Getter());
+        public bool IsValid => Validator(Getter());
 
         private bool IsPropertyValid(out string? Message)
         {
@@ -92,9 +83,9 @@ public abstract class ValidableViewModel : ViewModel, IDataErrorInfo, INotifyDat
             ? validators
                .Where(validator => !validator.IsValid)
                .Select(validator => validator.ErrorMessage)
-            : Enumerable.Empty<string>();
+            : [];
 
-    bool INotifyDataErrorInfo.HasErrors => _Validators.Values.Any(propertry_validators => propertry_validators.Any(validator => !validator.IsValid));
+    bool INotifyDataErrorInfo.HasErrors => _Validators.Values.Any(pv => pv.Any(validator => !validator.IsValid));
 
     protected event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 

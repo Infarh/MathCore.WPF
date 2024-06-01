@@ -3,11 +3,9 @@ using System.Windows.Data;
 
 namespace MathCore.WPF;
 
-public class NestedBindingConverter : IMultiValueConverter
+public class NestedBindingConverter(NestedBindingsTree tree) : IMultiValueConverter
 {
-    public NestedBindingConverter(NestedBindingsTree tree) => Tree = tree;
-
-    private NestedBindingsTree Tree { get; }
+    private NestedBindingsTree Tree { get; } = tree;
 
     public object? Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)
     {
@@ -17,12 +15,6 @@ public class NestedBindingConverter : IMultiValueConverter
 
     private static object? GetTreeValue(NestedBindingsTree tree, object[]? values, Type TargetType, CultureInfo culture)
     {
-        //var objects = tree.Nodes
-        //   .Select(x => x is NestedBindingsTree bindings_tree
-        //        ? GetTreeValue(bindings_tree, values, TargetType, culture)
-        //        : values[x.Index])
-        //   .ToArray();
-
         var objects = new object[tree.Nodes.Count];
         for (var i = 0; i < objects.Length; i++)
         {

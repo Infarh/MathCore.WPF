@@ -31,40 +31,21 @@ using System.Globalization;
 
 namespace MathCore.WPF.SVG;
 
-//****************************************************************************
-class SvgLength
+internal class SvgLength(double value, string? unit = null)
 {
 
-    //==========================================================================
-    public readonly double Value;
-    public readonly string Unit;
+    public readonly double Value = value;
 
-    //==========================================================================
-    public SvgLength(double value)
-    {
-        Value = value;
-        Unit  = null;
-    }
+    public readonly string Unit = unit;
 
-
-    //==========================================================================
-    public SvgLength(double value, string unit)
-    {
-        Value = value;
-        Unit  = unit;
-    }
-
-    //==========================================================================
     public static SvgLength Parse(string value)
     {
-        if(value is null)
-            throw new ArgumentNullException(nameof(value));
-        value = value.Trim();
+        value = value.NotNull().Trim();
         if(value == "")
             throw new ArgumentException("value must not be empty", nameof(value));
 
         if(value == "inherit")
-            return new(double.NaN, null);
+            return new(double.NaN);
 
         string unit = null;
 
@@ -79,6 +60,5 @@ class SvgLength
         return new(double.Parse(value, CultureInfo.InvariantCulture.NumberFormat), unit);
     }
 
-    //==========================================================================
     public double ToDouble() => Value;
-} // class SvgLength
+}

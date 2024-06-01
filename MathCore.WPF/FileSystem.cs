@@ -119,13 +119,15 @@ public interface IFileSystemViewModelFinder
     Task<DirectoryViewModel?> GetModelAsync(string path);
 }
 
-public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFinder,
-                                  IEnumerable<DirectoryViewModel?>, IEnumerable<FileInfo>, IEnumerable<DirectoryInfo>,
-                                  IEquatable<DirectoryViewModel>, IEquatable<DirectoryInfo>, IEquatable<string>
+public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposable, IFileSystemViewModelFinder,
+    IEnumerable<DirectoryViewModel?>, IEnumerable<FileInfo>, IEnumerable<DirectoryInfo>,
+    IEquatable<DirectoryViewModel>, IEquatable<DirectoryInfo>, IEquatable<string>
 {
+    public DirectoryViewModel(string path) : this(new DirectoryInfo(path.NotNull())) { }
+
     private FileSystemWatcher? _Watcher;
 
-    public DirectoryInfo Directory { get; }
+    public DirectoryInfo Directory { get; } = directory.NotNull();
 
     private bool? _CanEnumItems;
 
@@ -224,7 +226,7 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
 
     private void OnRefreshFilesCommandExecuted()
     {
-        var files = Files ?? throw new InvalidOperationException($"Невозможно выполнить команду обновления для дирректории {Directory}: отсутствует право на доступ для извлечения содержимого дирректории");
+        var files = Files ?? throw new InvalidOperationException($"Невозможно выполнить команду обновления для директории {Directory}: отсутствует право на доступ для извлечения содержимого дирректории");
         files.Select(f => f.FullName).Xor(Directory.EnumerateFiles().Select(f => f.FullName), out var to_remove, out var to_add, out _, out _, out _, out _);
         foreach (var path in to_remove)
         {
@@ -248,10 +250,6 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
     private bool CanUpdateCommandExecuted() => CanEnumItems;
 
     #endregion
-
-    public DirectoryViewModel(string path) : this(new DirectoryInfo(path ?? throw new ArgumentNullException(nameof(path)))) { }
-
-    public DirectoryViewModel(DirectoryInfo directory) => Directory = directory ?? throw new ArgumentNullException(nameof(directory));
 
     private bool CreateWatcher()
     {
@@ -348,7 +346,7 @@ public class DirectoryViewModel : ViewModel, IDisposable, IFileSystemViewModelFi
     /// <inheritdoc />
     void IDisposable.Dispose() => _Watcher?.Dispose();
 
-    IEnumerator<DirectoryInfo> IEnumerable<DirectoryInfo>.GetEnumerator() => (SubDirectories ?? Enumerable.Empty<DirectoryInfo>()).GetEnumerator();
+    IEnumerator<DirectoryInfo> IEnumerable<DirectoryInfo>.GetEnumerator() => (SubDirectories ?? []).GetEnumerator();
 
     public IEnumerator<DirectoryViewModel?> GetEnumerator() => (Directories ?? Enumerable.Empty<DirectoryViewModel?>()).GetEnumerator();
 

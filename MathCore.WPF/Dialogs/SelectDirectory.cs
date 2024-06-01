@@ -254,9 +254,7 @@ public class SelectDirectory : Dialog
     private const int __DialogResultCancel = unchecked((int)0x800704C7);
 
     [ComImport, Guid("DC1C5A9C-E88A-4dde-A5A1-60F82A20AEF7")] // CLSID_FileOpenDialog
-    private class FileOpenDialog
-    {
-    }
+    private class FileOpenDialog;
 
     [ComImport, Guid("42f85136-db7e-439c-85f1-e4075d135fc8"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     private interface IFileOpenDialog
