@@ -11,9 +11,9 @@ namespace MathCore.WPF.Converters.Base;
 [ValueConversion(typeof(double), typeof(double))]
 public abstract class DoubleValueConverter : ValueConverter
 {
-    public double? Min { get; set; }
+    public virtual double? Min { get; set; }
 
-    public double? Max { get; set; }
+    public virtual double? Max { get; set; }
 
     /// <summary>Преобразование объекта в вещественный тип данных</summary>
     /// <param name="obj">Преобразуемое значение</param>

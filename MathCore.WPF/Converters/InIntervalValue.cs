@@ -18,12 +18,11 @@ public class InIntervalValue(Interval interval) : DoubleValueConverter
 
     public InIntervalValue(double Min, double Max) : this(new(Math.Min(Min, Max), Math.Max(Min, Max))) { }
 
-
     [ConstructorArgument(nameof(Min))]
-    public double Min { get => interval.Min; set => interval = interval.SetMin(value); }
+    public override double? Min { get => interval.Min; set => interval = interval.SetMin(value ?? double.NegativeInfinity); }
 
     [ConstructorArgument(nameof(Max))]
-    public double Max { get => interval.Max; set => interval = interval.SetMax(value); }
+    public override double? Max { get => interval.Max; set => interval = interval.SetMax(value ?? double.PositiveInfinity); }
 
     public bool MinInclude { get => interval.MinInclude; set => interval = interval.IncludeMin(value); }
 
