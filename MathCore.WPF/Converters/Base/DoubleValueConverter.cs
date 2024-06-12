@@ -32,17 +32,42 @@ public abstract class DoubleValueConverter : ValueConverter
         return double.NaN;
     }
 
+    private static readonly NumberFormatInfo __NotInvarianceFormat = NumberFormatInfo.InvariantInfo.CloneObject(f => f.NumberDecimalSeparator = ",");
+
     /// <summary>Попытка преобразования объекта в вещественный тип данных</summary>
     /// <param name="obj">Преобразуемый объект</param>
     /// <param name="value">Выходное значение вещественного типа данных в случае успешного преобразования и NaN в противном случае</param>
     /// <returns>Результат успешности преобразования</returns>
     public static bool TryConvertToDouble(object? obj, out double value)
     {
-        if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue))
+        if (Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue))
         {
             value = double.NaN;
             return false;
         }
+
+        switch (obj)
+        {
+            case string str when double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value) || 
+                                 double.TryParse(str, NumberStyles.Any, __NotInvarianceFormat, out value):
+                return true;
+
+            case sbyte x: value = x; return true;
+            case byte x: value = x; return true;
+            case short x: value = x; return true;
+            case ushort x: value = x; return true;
+            case int x: value = x; return true;
+            case uint x: value = x; return true;
+            case long x: value = x; return true;
+            case ulong x: value = x; return true;
+            case float x: value = x; return true;
+            case double x: value = x; return true;
+
+            case null:
+                value = double.NaN;
+                return false;
+        }
+
         try
         {
             value = System.Convert.ToDouble(obj);
