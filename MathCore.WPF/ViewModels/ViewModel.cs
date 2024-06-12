@@ -803,6 +803,28 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return result;
     }
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="Value">Новое значение свойства</param>
+    /// <param name="OldValue">Старое значение свойства</param>
+    /// <param name="Setter">Метод установки нового значения свойства</param>
+    /// <param name="ValueValidator">Метод проверки возможности установки нового значения свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если значение свойства установлено успешно</returns>
+    protected virtual bool Set<T>(
+        T? Value,
+        T? OldValue,
+        Action<T?> Setter,
+        Func<T?, bool>? ValueValidator,
+        [CallerMemberName] string PropertyName = null!)
+    {
+        if (Equals(Value, OldValue)) return false;
+        if (ValueValidator is not null && !ValueValidator(Value)) return false;
+        Setter(Value);
+        OnPropertyChanged(PropertyName);
+        return true;
+    }
+
     /// <summary>Асинхронный метод изменения значения свойства</summary>
     /// <typeparam name="T">Тип значения свойства</typeparam>
     /// <param name="field">Поле, хранящее значение свойства</param>
