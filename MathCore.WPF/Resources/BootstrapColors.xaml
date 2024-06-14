@@ -1,0 +1,191 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+                    >
+
+    <Color x:Key="BS-Color">#6f2df4</Color>
+
+    <Color x:Key="BS-Color-Body">#212529</Color>
+    <Color x:Key="BS-Color-Body-Dark">#acb5bd</Color>
+    <Color x:Key="BS-Color-Body-BG">White</Color>
+    <Color x:Key="BS-Color-Body-BG-Dark">#212529</Color>
+    <Color x:Key="BS-Color-Secondary">#585c5e</Color>
+    <Color x:Key="BS-Color-Secondary-Dark">#8b9098</Color>
+    <Color x:Key="BS-Color-Secondary-BG">#eaecef</Color>
+    <Color x:Key="BS-Color-Secondary-BG-Dark">#343a40</Color>
+    <Color x:Key="BS-Color-Tertiary">#8f9293</Color>
+    <Color x:Key="BS-Color-Tertiary-Dark">#686d73</Color>
+    <Color x:Key="BS-Color-Tertiary-BG">#f8f9fa</Color>
+    <Color x:Key="BS-Color-Tertiary-BG-Dark">#2b3034</Color>
+    <Color x:Key="BS-Color-Emphasis">Black</Color>
+    <Color x:Key="BS-Color-Emphasis-Dark">White</Color>
+    <Color x:Key="BS-Color-Border">#dee2e6</Color>
+    <Color x:Key="BS-Color-Border-Dark">#495057</Color>
+
+    <Color x:Key="BS-Color-Primary">#0d6efd</Color>
+    <Color x:Key="BS-Color-Primary-BG">#d0e2ff</Color>
+    <Color x:Key="BS-Color-Primary-BG-Dark">#031633</Color>
+    <Color x:Key="BS-Color-Primary-Border">#9ec5fe</Color>
+    <Color x:Key="BS-Color-Primary-Border-Dark">#084298</Color>
+
+    <Color x:Key="BS-Color-Success">#198754</Color>
+    <Color x:Key="BS-Color-Success-BG">#d1e7de</Color>
+    <Color x:Key="BS-Color-Success-BG-Dark">#051b11</Color>
+    <Color x:Key="BS-Color-Success-Border">#a3cfbb</Color>
+    <Color x:Key="BS-Color-Success-Border-Dark">#0f5132</Color>
+
+    <Color x:Key="BS-Color-Danger">#dc3545</Color>
+    <Color x:Key="BS-Color-Danger-BG">#f9d7da</Color>
+    <Color x:Key="BS-Color-Danger-BG-Dark">#2c0b0e</Color>
+    <Color x:Key="BS-Color-Danger-Border">#f1aeb5</Color>
+    <Color x:Key="BS-Color-Danger-Border-Dark">#842029</Color>
+
+    <Color x:Key="BS-Color-Warning">#ffc008</Color>
+    <Color x:Key="BS-Color-Warning-BG">#fff3cd</Color>
+    <Color x:Key="BS-Color-Warning-BG-Dark">#332601</Color>
+    <Color x:Key="BS-Color-Warning-Border">#ffe69c</Color>
+    <Color x:Key="BS-Color-Warning-Border-Dark">#997305</Color>
+
+    <Color x:Key="BS-Color-Info">#11caf0</Color>
+    <Color x:Key="BS-Color-Info-BG">#cff4fc</Color>
+    <Color x:Key="BS-Color-Info-BG-Dark">#032830</Color>
+    <Color x:Key="BS-Color-Info-Border">#9eeaf9</Color>
+    <Color x:Key="BS-Color-Info-Border-Dark">#077990</Color>
+
+    <Color x:Key="BS-Color-Light">#f8f9fa</Color>
+    <Color x:Key="BS-Color-Light-BG">#fcfcfd</Color>
+    <Color x:Key="BS-Color-Light-BG-Dark">#343a40</Color>
+    <Color x:Key="BS-Color-Light-Border">#eaecef</Color>
+    <Color x:Key="BS-Color-Light-Border-Dark">#495057</Color>
+
+    <Color x:Key="BS-Color-Dark">#212529</Color>
+    <Color x:Key="BS-Color-Dark-BG">#ced4da</Color>
+    <Color x:Key="BS-Color-Dark-BG-Dark">#1b1d20</Color>
+    <Color x:Key="BS-Color-Dark-Border">#acb5bd</Color>
+    <Color x:Key="BS-Color-Dark-Border-Dark">#343a40</Color>
+
+    <Color x:Key="BS-Color-Blue">#0d6efd</Color>
+    <Color x:Key="BS-Color-Blue-900">#031633</Color>
+    <Color x:Key="BS-Color-Blue-800">#052c65</Color>
+    <Color x:Key="BS-Color-Blue-700">#084298</Color>
+    <Color x:Key="BS-Color-Blue-600">#0b58ca</Color>
+    <Color x:Key="BS-Color-Blue-500">#0d6efd</Color>
+    <Color x:Key="BS-Color-Blue-400">#3d8bfd</Color>
+    <Color x:Key="BS-Color-Blue-300">#6ea8fe</Color>
+    <Color x:Key="BS-Color-Blue-200">#9ec5fe</Color>
+    <Color x:Key="BS-Color-Blue-100">#d0e2ff</Color>
+
+    <Color x:Key="BS-Color-Indigo">#660ff1</Color>
+    <Color x:Key="BS-Color-Indigo-900">#290661</Color>
+    <Color x:Key="BS-Color-Indigo-800">#290661</Color>
+    <Color x:Key="BS-Color-Indigo-700">#3e0a91</Color>
+    <Color x:Key="BS-Color-Indigo-600">#520cc2</Color>
+    <Color x:Key="BS-Color-Indigo-500">#660ff1</Color>
+    <Color x:Key="BS-Color-Indigo-400">#8540f5</Color>
+    <Color x:Key="BS-Color-Indigo-300">#a270f7</Color>
+    <Color x:Key="BS-Color-Indigo-200">#c29ffa</Color>
+    <Color x:Key="BS-Color-Indigo-100">#e0cffc</Color>
+
+    <Color x:Key="BS-Color-Purple">#6f42c1</Color>
+    <Color x:Key="BS-Color-Purple-900">#160d27</Color>
+    <Color x:Key="BS-Color-Purple-800">#2c1a4d</Color>
+    <Color x:Key="BS-Color-Purple-700">#432874</Color>
+    <Color x:Key="BS-Color-Purple-600">#59359a</Color>
+    <Color x:Key="BS-Color-Purple-500">#6f42c1</Color>
+    <Color x:Key="BS-Color-Purple-400">#8b68cd</Color>
+    <Color x:Key="BS-Color-Purple-300">#a98eda</Color>
+    <Color x:Key="BS-Color-Purple-200">#c5b3e6</Color>
+    <Color x:Key="BS-Color-Purple-100">#e1d9f3</Color>
+
+    <Color x:Key="BS-Color-Pink">#d63384</Color>
+    <Color x:Key="BS-Color-Pink-900">#2b0a1b</Color>
+    <Color x:Key="BS-Color-Pink-800">#561435</Color>
+    <Color x:Key="BS-Color-Pink-700">#801f4f</Color>
+    <Color x:Key="BS-Color-Pink-600">#ab286a</Color>
+    <Color x:Key="BS-Color-Pink-500">#d63384</Color>
+    <Color x:Key="BS-Color-Pink-400">#de5c9d</Color>
+    <Color x:Key="BS-Color-Pink-300">#e685b5</Color>
+    <Color x:Key="BS-Color-Pink-200">#efadcd</Color>
+    <Color x:Key="BS-Color-Pink-100">#f8d6e6</Color>
+
+    <Color x:Key="BS-Color-Red">#dc3545</Color>
+    <Color x:Key="BS-Color-Red-900">#2c0b0e</Color>
+    <Color x:Key="BS-Color-Red-800">#58151c</Color>
+    <Color x:Key="BS-Color-Red-700">#842029</Color>
+    <Color x:Key="BS-Color-Red-600">#b02a37</Color>
+    <Color x:Key="BS-Color-Red-500">#dc3545</Color>
+    <Color x:Key="BS-Color-Red-400">#e35d6a</Color>
+    <Color x:Key="BS-Color-Red-300">#e9868f</Color>
+    <Color x:Key="BS-Color-Red-200">#f1aeb5</Color>
+    <Color x:Key="BS-Color-Red-100">#f9d7da</Color>
+
+    <Color x:Key="BS-Color-Orange">#fd7e14</Color>
+    <Color x:Key="BS-Color-Orange-900">#321904</Color>
+    <Color x:Key="BS-Color-Orange-800">#653207</Color>
+    <Color x:Key="BS-Color-Orange-700">#984c0b</Color>
+    <Color x:Key="BS-Color-Orange-600">#ca6410</Color>
+    <Color x:Key="BS-Color-Orange-500">#fd7e14</Color>
+    <Color x:Key="BS-Color-Orange-400">#fd9843</Color>
+    <Color x:Key="BS-Color-Orange-300">#feb272</Color>
+    <Color x:Key="BS-Color-Orange-200">#fecba1</Color>
+    <Color x:Key="BS-Color-Orange-100">#ffe5d0</Color>
+
+    <Color x:Key="BS-Color-Yellow">#ffc008</Color>
+    <Color x:Key="BS-Color-Yellow-900">#332601</Color>
+    <Color x:Key="BS-Color-Yellow-800">#664d03</Color>
+    <Color x:Key="BS-Color-Yellow-700">#997305</Color>
+    <Color x:Key="BS-Color-Yellow-600">#cc9a07</Color>
+    <Color x:Key="BS-Color-Yellow-500">#ffc008</Color>
+    <Color x:Key="BS-Color-Yellow-400">#ffcd38</Color>
+    <Color x:Key="BS-Color-Yellow-300">#ffda6a</Color>
+    <Color x:Key="BS-Color-Yellow-200">#ffe69c</Color>
+    <Color x:Key="BS-Color-Yellow-100">#fff3cd</Color>
+
+    <Color x:Key="BS-Color-Green">#198754</Color>
+    <Color x:Key="BS-Color-Green-900">#051b11</Color>
+    <Color x:Key="BS-Color-Green-800">#0a3622</Color>
+    <Color x:Key="BS-Color-Green-700">#0f5132</Color>
+    <Color x:Key="BS-Color-Green-600">#136c42</Color>
+    <Color x:Key="BS-Color-Green-500">#198754</Color>
+    <Color x:Key="BS-Color-Green-400">#489f76</Color>
+    <Color x:Key="BS-Color-Green-300">#75b798</Color>
+    <Color x:Key="BS-Color-Green-200">#a3cfbb</Color>
+    <Color x:Key="BS-Color-Green-100">#d1e7de</Color>
+
+    <Color x:Key="BS-Color-Teal">#1ec997</Color>
+    <Color x:Key="BS-Color-Teal-900">#06281f</Color>
+    <Color x:Key="BS-Color-Teal-800">#0d503c</Color>
+    <Color x:Key="BS-Color-Teal-700">#14795b</Color>
+    <Color x:Key="BS-Color-Teal-600">#1aa179</Color>
+    <Color x:Key="BS-Color-Teal-500">#1ec997</Color>
+    <Color x:Key="BS-Color-Teal-400">#4dd4ac</Color>
+    <Color x:Key="BS-Color-Teal-300">#78dfc0</Color>
+    <Color x:Key="BS-Color-Teal-200">#a6e9d5</Color>
+    <Color x:Key="BS-Color-Teal-100">#d2f4ea</Color>
+
+    <Color x:Key="BS-Color-Cyan">#11caf0</Color>
+    <Color x:Key="BS-Color-Cyan-900">#032830</Color>
+    <Color x:Key="BS-Color-Cyan-800">#055160</Color>
+    <Color x:Key="BS-Color-Cyan-700">#077990</Color>
+    <Color x:Key="BS-Color-Cyan-600">#08a2c0</Color>
+    <Color x:Key="BS-Color-Cyan-500">#11caf0</Color>
+    <Color x:Key="BS-Color-Cyan-400">#3cd5f3</Color>
+    <Color x:Key="BS-Color-Cyan-300">#6edff6</Color>
+    <Color x:Key="BS-Color-Cyan-200">#9eeaf9</Color>
+    <Color x:Key="BS-Color-Cyan-100">#cff4fc</Color>
+
+    <Color x:Key="BS-Color-Gray">#acb5bd</Color>
+    <Color x:Key="BS-Color-Gray-900">#212529</Color>
+    <Color x:Key="BS-Color-Gray-800">#343a40</Color>
+    <Color x:Key="BS-Color-Gray-700">#495057</Color>
+    <Color x:Key="BS-Color-Gray-600">#6c757d</Color>
+    <Color x:Key="BS-Color-Gray-500">#acb5bd</Color>
+    <Color x:Key="BS-Color-Gray-400">#ced4da</Color>
+    <Color x:Key="BS-Color-Gray-300">#dee2e6</Color>
+    <Color x:Key="BS-Color-Gray-200">#eaecef</Color>
+    <Color x:Key="BS-Color-Gray-100">#f8f9fa</Color>
+
+    <Color x:Key="BS-Color-Black">Black</Color>
+    <Color x:Key="BS-Color-White">White</Color>
+
+</ResourceDictionary>
