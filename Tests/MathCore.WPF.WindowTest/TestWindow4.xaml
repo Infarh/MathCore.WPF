@@ -12,6 +12,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            
+
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -22,8 +25,8 @@
             <Grid Margin="5">
                 <UniformGrid Rows="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
 
-                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Outline-Secondary}" Content="Ok"/>
-                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Primary}"/>
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Outline-Dark}" Content="Ok"/>
+                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Warning}"/>
                 </UniformGrid>
                 <TextBox VerticalAlignment="Top" SpellCheck.IsEnabled="True" Language="ru-ru" SpellCheck.SpellingReform="PreAndPostreform"/>
             </Grid>
