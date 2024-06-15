@@ -8,16 +8,32 @@
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:b="clr-namespace:MathCore.WPF.Behaviors;assembly=MathCore.WPF"
         DataContext="{vm:TestWindow5ViewModel}"
+        Background="{StaticResource BS-Brush-Body-BG-Dark}"
         Title="TestWindow5" 
         Width="800" Height="450">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:TestValueViewModel}">
-            <TextBlock Text="{Binding Title, StringFormat='Title: {0}'}"/>
-        </DataTemplate>
+
+
+        <ControlTemplate x:Key="BS-Btn-Base-Template" TargetType="ButtonBase">
+            <Border x:Name="border" SnapsToDevicePixels="true" CornerRadius="3"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                <ContentPresenter 
+                    x:Name="contentPresenter"
+                    Focusable="False" 
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                    Margin="{TemplateBinding Padding}"
+                    RecognizesAccessKey="True"
+                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
     <DockPanel Margin="10">
-        <ComboBox VerticalAlignment="Top" IsEditable="True"
-                  Text="{Binding DirPath}"
-                  ItemsSource="{Binding CatalogsPaths}"/>
+        <Button Template="{DynamicResource BS-Btn-Base-Template}" VerticalAlignment="Top" HorizontalAlignment="Left" 
+                Padding="12,6" BorderThickness="0.667" Margin="4">
+            Test button
+        </Button>
     </DockPanel>
 </Window>

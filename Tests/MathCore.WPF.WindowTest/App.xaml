@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
 
                 <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/ModernWindowStyle.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBrushes.xaml"/>
 
 
                 <ResourceDictionary Source="Resources/Themes/Main.xaml"/>

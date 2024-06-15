@@ -59,9 +59,9 @@ public class LinearMatrixAnimation : MatrixAnimationBase
             new(default(IEasingFunction)));
 
     /// <summary>Функция плавности</summary>
-    public IEasingFunction EasingFunction
+    public IEasingFunction? EasingFunction
     {
-        get => (IEasingFunction)GetValue(EasingFunctionProperty);
+        get => (IEasingFunction?)GetValue(EasingFunctionProperty);
         set => SetValue(EasingFunctionProperty, value);
     }
 

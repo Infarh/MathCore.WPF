@@ -5,12 +5,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:wpf="clr-namespace:MathCore.WPF">
-
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Styles/Base/Geometry.xaml"/>
         <ResourceDictionary Source="/Styles/Base/Effects.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
 
     <BitmapCache x:Key="BitmapCache" EnableClearType="True" SnapsToDevicePixels="True" />
 
@@ -154,31 +152,31 @@
                 <ColumnDefinition/>
                 <ColumnDefinition MinWidth="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" Width="0"/>
             </Grid.ColumnDefinitions>
-            <Popup x:Name="PART_Popup" 
-               AllowsTransparency="true" 
-               Grid.ColumnSpan="2" 
-               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+            <Popup x:Name="PART_Popup"
+               AllowsTransparency="true"
+               Grid.ColumnSpan="2"
+               IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                Margin="1" 
-               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}"
                Placement="Bottom">
                 <Border x:Name="DropDownBorder" Effect="{StaticResource ShadowDepth1Radius2Opacity08}"
-                    BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}" 
-                    BorderThickness="1"  
+                    BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
+                    BorderThickness="1"
                     MaxHeight="{TemplateBinding MaxDropDownHeight}" 
                     MinWidth="{Binding ActualWidth, ElementName=ComboBoxBorder}"
                     Background="{StaticResource ComboBoxEx.DropDownBackground}">
                     <ScrollViewer x:Name="DropDownScrollViewer">
                         <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
                             <Canvas 
-                                x:Name="canvas" 
-                                HorizontalAlignment="Left" 
-                                Height="0" 
-                                VerticalAlignment="Top" 
+                                x:Name="canvas"
+                                HorizontalAlignment="Left"
+                                Height="0"
+                                VerticalAlignment="Top"
                                 Width="0">
-                                <Rectangle 
-                                    x:Name="OpaqueRect" 
-                                    Fill="{Binding Background, ElementName=DropDownBorder}" 
-                                    Height="{Binding ActualHeight, ElementName=DropDownBorder}" 
+                                <Rectangle
+                                    x:Name="OpaqueRect"
+                                    Fill="{Binding Background, ElementName=DropDownBorder}"
+                                    Height="{Binding ActualHeight, ElementName=DropDownBorder}"
                                     Width="{Binding ActualWidth, ElementName=DropDownBorder}"/>
                             </Canvas>
                             <ItemsPresenter 
