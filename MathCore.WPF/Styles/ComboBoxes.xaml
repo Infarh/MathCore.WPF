@@ -1,13 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
                     xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:wpf="clr-namespace:MathCore.WPF">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Styles/Base/Geometry.xaml"/>
-        <ResourceDictionary Source="/Styles/Base/Effects.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Geometry.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Effects.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <BitmapCache x:Key="BitmapCache" EnableClearType="True" SnapsToDevicePixels="True" />

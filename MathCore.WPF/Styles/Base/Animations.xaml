@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Colors.xaml"/>
-        <ResourceDictionary Source="EasingFunctions.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Colors.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/EasingFunctions.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <Storyboard x:Key="BackgroundColor_SelectionOn_0.1s">

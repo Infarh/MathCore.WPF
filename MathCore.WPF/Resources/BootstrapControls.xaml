@@ -3,7 +3,9 @@
                     xmlns:shaders="clr-namespace:MathCore.WPF.Shaders">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="BootstrapBrushes.xaml"/>
-        <ResourceDictionary Source="/Styles/Base/Effects.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapColors.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Effects.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <CornerRadius x:Key="@BS-Btn-Border-CornerRadius">3</CornerRadius>
@@ -13,7 +15,7 @@
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}">
-            <ContentPresenter 
+            <ContentPresenter x:Name="PART_Content"
                 Focusable="False" 
                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
@@ -21,6 +23,12 @@
                 RecognizesAccessKey="True"
                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
         </Border>
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter TargetName="PART_Content" Property="Opacity" Value="0.75"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <Style x:Key="BS-Btn-Base" TargetType="ButtonBase">
@@ -28,22 +36,407 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Margin" Value="4"/>
         <Setter Property="Padding" Value="12,6"/>
-        <Setter Property="BorderThickness" Value="0.667"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template" Value="{StaticResource BS-Btn-Base-Template}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Style.Triggers>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Effect" Value="{StaticResource GrayScale-Factor0}"/>
+            <Trigger Property="Button.IsDefault" Value="True">
+                <Setter Property="FontWeight" Value="Bold"/>
             </Trigger>
         </Style.Triggers>
     </Style>
 
+    <SolidColorBrush x:Key=".BS-Btn-Primary-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Btn-Primary-MouseOverBrush" Color="#085ed7"/>
+    <SolidColorBrush x:Key=".BS-Btn-Primary-MousePressedBrush" Color="#0b58ca"/>
+    <SolidColorBrush x:Key=".BS-Btn-Primary-MouseDisabledBrush" Color="#62a0fe"/>
+
     <Style x:Key="BS-Btn-Primary" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
-        <Setter Property="Background" Value="{StaticResource BS-Brush-Primary}"/>
-        <Setter Property="Foreground" Value="WhiteSmoke"/>
+        <Setter Property="Background" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Primary-Foreground}"/>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True"></Trigger>
-            <Trigger Property="IsPressed" Value="True"></Trigger>
-            <Trigger Property="IsEnabled" Value="False"></Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Primary" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Primary-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Primary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Primary-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Primary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Primary-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Primary-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Primary-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Secondary-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Btn-Secondary-MouseOverBrush" Color="#5c636a"/>
+    <SolidColorBrush x:Key=".BS-Btn-Secondary-MousePressedBrush" Color="#575e64"/>
+    <SolidColorBrush x:Key=".BS-Btn-Secondary-MouseDisabledBrush" Color="#a0a5ab"/>
+
+    <Style x:Key="BS-Btn-Secondary" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Secondary}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Secondary-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Secondary" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Secondary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Secondary}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Secondary-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Secondary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Secondary-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Secondary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Secondary-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Secondary-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Secondary-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Success-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Btn-Success-MouseOverBrush" Color="#167347"/>
+    <SolidColorBrush x:Key=".BS-Btn-Success-MousePressedBrush" Color="#136c42"/>
+    <SolidColorBrush x:Key=".BS-Btn-Success-MouseDisabledBrush" Color="#6e9f85"/>
+
+    <Style x:Key="BS-Btn-Success" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Success}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Success-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Success" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Success}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Success}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Success-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Success-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Success-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Success-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Success-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Success-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Success-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Danger-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Btn-Danger-MouseOverBrush" Color="#bb2d3b"/>
+    <SolidColorBrush x:Key=".BS-Btn-Danger-MousePressedBrush" Color="#b02a37"/>
+    <SolidColorBrush x:Key=".BS-Btn-Danger-MouseDisabledBrush" Color="#eb7f87"/>
+
+    <Style x:Key="BS-Btn-Danger" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Danger}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Danger-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Danger" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Danger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Danger}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Danger-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Danger-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Danger-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Danger-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Danger-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Danger-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Danger-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Warning-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Btn-Warning-MouseOverBrush" Color="#ffca2b"/>
+    <SolidColorBrush x:Key=".BS-Btn-Warning-MousePressedBrush" Color="#ffcd38"/>
+    <SolidColorBrush x:Key=".BS-Btn-Warning-MouseDisabledBrush" Color="#ffdf86"/>
+
+    <Style x:Key="BS-Btn-Warning" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Warning}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Warning-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Warning" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Warning}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Warning}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Warning-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Warning-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Warning-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Warning-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Warning-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Warning-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Warning-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Info-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Btn-Info-MouseOverBrush" Color="#30d2f2"/>
+    <SolidColorBrush x:Key=".BS-Btn-Info-MousePressedBrush" Color="#3cd5f3"/>
+    <SolidColorBrush x:Key=".BS-Btn-Info-MouseDisabledBrush" Color="#8de4f8"/>
+
+    <Style x:Key="BS-Btn-Info" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Info}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Info-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Info" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Info}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Info}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Info-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Info-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Info-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Info-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Info-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Info-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Info-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Light-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Btn-Light-MouseOverBrush" Color="#d3d4d5"/>
+    <SolidColorBrush x:Key=".BS-Btn-Light-MousePressedBrush" Color="#c6c7c8"/>
+    <SolidColorBrush x:Key=".BS-Btn-Light-MouseDisabledBrush" Color="#dadadb"/>
+
+    <Style x:Key="BS-Btn-Light" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Light}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Light-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Light" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Light}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Light}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Light-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Light-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Light-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Light-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Light-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Light-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Light-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Dark-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Btn-Dark-MouseOverBrush" Color="#424649"/>
+    <SolidColorBrush x:Key=".BS-Btn-Dark-MousePressedBrush" Color="#4d5154"/>
+    <SolidColorBrush x:Key=".BS-Btn-Dark-MouseDisabledBrush" Color="#8c8e90"/>
+
+    <Style x:Key="BS-Btn-Dark" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Dark}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Dark-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Btn-Outline-Dark" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Dark-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Dark-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Dark-MousePressedBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MousePressedBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Dark-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Btn-Dark-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Btn-Dark-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Dark-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Btn-Link-Foreground" Color="{StaticResource BS-Color-Primary}"/>
+    <SolidColorBrush x:Key=".BS-Btn-Link-MouseOverBrush" Color="{StaticResource BS-Color-Blue-600}"/>
+    <SolidColorBrush x:Key=".BS-Btn-Link-MousePressedBrush" Color="{StaticResource BS-Color-Blue-700}"/>
+    <SolidColorBrush x:Key=".BS-Btn-Link-MouseDisabledBrush" Color="#a0a5ab"/>
+
+    <Style x:Key="BS-Btn-Link" TargetType="ButtonBase" BasedOn="{StaticResource BS-Btn-Base}">
+        <Setter Property="Foreground" Value="{StaticResource .BS-Btn-Link-Foreground}"/>
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ButtonBase">
+                    <Border SnapsToDevicePixels="true" CornerRadius="{DynamicResource @BS-Btn-Border-CornerRadius}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <TextBlock x:Name="PART_Content" Foreground="{TemplateBinding Foreground}"
+                                   Focusable="False" 
+                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                   Margin="{TemplateBinding Padding}"
+                                   Text="{TemplateBinding Content}"
+                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_Content" Property="Opacity" Value="0.75"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="PART_Content" Property="TextDecorations" Value="Underline"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Link-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Link-MousePressedBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Btn-Link-MouseDisabledBrush}"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
 

@@ -5,16 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
         mc:Ignorable="d"
-        Background="#1A1A1A"
+        Background="WhiteSmoke"
         Title="TestWindow4" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
               Width="300" Height="300" ClipToBounds="False">
-            <Border BorderBrush="OrangeRed" BorderThickness="2">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" Color="OrangeRed"></DropShadowEffect>
-                </Border.Effect>
-            </Border>
+            <Rectangle Stroke="OrangeRed" StrokeThickness="2" Effect="{Shadow Color=OrangeRed, Depth=0}"
+                       RadiusX="4" RadiusY="4"/>
+            <Grid Margin="5">
+                <UniformGrid Rows="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Outline-Secondary}" Content="Ok"/>
+                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Primary}"/>
+                </UniformGrid>
+                <TextBox VerticalAlignment="Top" SpellCheck.IsEnabled="True" Language="ru-ru" SpellCheck.SpellingReform="PreAndPostreform"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
