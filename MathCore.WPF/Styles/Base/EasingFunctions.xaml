@@ -1,8 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <CubicEase x:Key="CubicEasingOutFunction" EasingMode="EaseOut" />
     <CubicEase x:Key="CubicEasingInFunction" EasingMode="EaseIn" />
     <CubicEase x:Key="CubicEasingInOutFunction" EasingMode="EaseInOut" />
+
+    <CubicEase x:Key="CubicEase.InOut" EasingMode="EaseInOut" p:Freeze="true"/>
+    <CubicEase x:Key="CubicEase.Out" EasingMode="EaseOut" p:Freeze="true"/>
+    <CubicEase x:Key="CubicEase.In" EasingMode="EaseIn" p:Freeze="true"/>
 
 </ResourceDictionary>

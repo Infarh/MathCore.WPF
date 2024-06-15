@@ -13,4 +13,6 @@
     <Geometry x:Key="MaximizeToMinButtonIconGeometry" p:Freeze="True">M0,3 H5 V8 H0 V3 M0,4 H5 M3,0 H8 V5 H7 M3,1 H8</Geometry>
     <Geometry x:Key="CloseButtonIconGeometry" p:Freeze="True">M0,0 L8,8 M0,8 L8,0</Geometry>
 
+    <Geometry x:Key=".ComboBox.Button.ArrowDown" p:Freeze="True">F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z</Geometry>
+
 </ResourceDictionary>

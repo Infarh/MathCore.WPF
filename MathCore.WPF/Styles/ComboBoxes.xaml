@@ -6,8 +6,12 @@
                     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                     xmlns:wpf="clr-namespace:MathCore.WPF">
 
-    <Geometry x:Key=".ComboBox.Button.ArrowDown" p:Freeze="True">F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z</Geometry>
-    <DropShadowEffect x:Key="ShadowDepth1Radius2Opacity08" ShadowDepth="1" BlurRadius="2" Opacity="0.8" p:Freeze="true"/>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Styles/Base/Geometry.xaml"/>
+        <ResourceDictionary Source="/Styles/Base/Effects.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+
     <BitmapCache x:Key="BitmapCache" EnableClearType="True" SnapsToDevicePixels="True" />
 
     <SolidColorBrush x:Key="ComboBoxEx.DropDownBackground" Color="WhiteSmoke" p:Freeze="true"/>
