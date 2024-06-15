@@ -1,0 +1,443 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBase.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBrushes.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Effects.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <ControlTemplate x:Key="BS-Txb-Base-Template" TargetType="TextBoxBase">
+        <Border x:Name="PART_Border" 
+                Background="{TemplateBinding Background}" 
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                CornerRadius="3"
+                SnapsToDevicePixels="True">
+            <Grid x:Name="PART_Content">
+                <ScrollViewer x:Name="PART_ContentHost" Focusable="false" 
+                              HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Hidden"/>
+                <ContentPresenter x:Name="PART_Watermark" Visibility="Collapsed" Content="{TemplateBinding Tag}"
+                                  VerticalAlignment="Center"
+                                  Margin="{TemplateBinding Padding}"
+                                  Opacity="0.8"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" TargetName="PART_Content" Value="0.75"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="TextBox.Text" Value=""/>
+                    <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="TextBox.Text" Value=""/>
+                    <Condition Property="IsKeyboardFocusWithin" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Watermark" Property="Opacity" Value="0.3"/>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="BS-Txb" TargetType="TextBoxBase">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="FocusVisualStyle" Value="{DynamicResource BS-FocusVisual}"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Border}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Margin" Value="4"/>
+        <Setter Property="Padding" Value="4"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="AllowDrop" Value="true"/>
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
+        <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst"/>
+        <Setter Property="Stylus.IsFlicksEnabled" Value="False"/>
+        <Setter Property="Template" Value="{DynamicResource BS-Txb-Base-Template}"/>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Primary-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Txb-Primary-MouseOverBrush" Color="#085ed7"/>
+    <SolidColorBrush x:Key=".BS-Txb-Primary-MousePressedBrush" Color="#0b58ca"/>
+    <SolidColorBrush x:Key=".BS-Txb-Primary-MouseDisabledBrush" Color="#62a0fe"/>
+
+    <Style x:Key="BS-Txb-Primary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Primary-Foreground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Primary-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Primary-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Primary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Primary-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Primary-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Primary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Primary-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Primary-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Primary-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Secondary-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Txb-Secondary-MouseOverBrush" Color="#5c636a"/>
+    <SolidColorBrush x:Key=".BS-Txb-Secondary-MousePressedBrush" Color="#575e64"/>
+    <SolidColorBrush x:Key=".BS-Txb-Secondary-MouseDisabledBrush" Color="#a0a5ab"/>
+
+    <Style x:Key="BS-Txb-Secondary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Secondary}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Secondary-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Secondary}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Secondary-MouseOverBrush}"/>
+            </Trigger>
+           <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Secondary-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Secondary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Secondary}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Secondary}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Secondary}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Secondary-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Secondary-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Secondary-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Secondary-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Secondary-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Secondary-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Success-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Txb-Success-MouseOverBrush" Color="#167347"/>
+    <SolidColorBrush x:Key=".BS-Txb-Success-MousePressedBrush" Color="#136c42"/>
+    <SolidColorBrush x:Key=".BS-Txb-Success-MouseDisabledBrush" Color="#6e9f85"/>
+
+    <Style x:Key="BS-Txb-Success" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Success}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Success-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Success}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Success-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Success-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Success" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Success}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Success}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Success}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Success-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Success-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Success-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Success-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Success-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Success-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Danger-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Txb-Danger-MouseOverBrush" Color="#bb2d3b"/>
+    <SolidColorBrush x:Key=".BS-Txb-Danger-MousePressedBrush" Color="#b02a37"/>
+    <SolidColorBrush x:Key=".BS-Txb-Danger-MouseDisabledBrush" Color="#eb7f87"/>
+
+    <Style x:Key="BS-Txb-Danger" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Danger}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Danger-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Danger}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Danger-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Danger-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Danger" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Danger}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Danger}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Danger}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Danger-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Danger-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Danger-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Danger-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Danger-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Danger-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Warning-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Txb-Warning-MouseOverBrush" Color="#ffca2b"/>
+    <SolidColorBrush x:Key=".BS-Txb-Warning-MousePressedBrush" Color="#ffcd38"/>
+    <SolidColorBrush x:Key=".BS-Txb-Warning-MouseDisabledBrush" Color="#ffdf86"/>
+
+    <Style x:Key="BS-Txb-Warning" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Warning}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Warning-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Warning}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Warning-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Warning-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Warning" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Warning}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Warning}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Warning}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Warning-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Warning-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Warning-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Warning-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Warning-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Warning-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Info-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Txb-Info-MouseOverBrush" Color="#30d2f2"/>
+    <SolidColorBrush x:Key=".BS-Txb-Info-MousePressedBrush" Color="#3cd5f3"/>
+    <SolidColorBrush x:Key=".BS-Txb-Info-MouseDisabledBrush" Color="#8de4f8"/>
+
+    <Style x:Key="BS-Txb-Info" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Info}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Info-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Info}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Info-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Info-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Info" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Info}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Info}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Info}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Info-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Info-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Info-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Info-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Info-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Info-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Light-Foreground" Color="#010d1f"/>
+    <SolidColorBrush x:Key=".BS-Txb-Light-MouseOverBrush" Color="#d3d4d5"/>
+    <SolidColorBrush x:Key=".BS-Txb-Light-MousePressedBrush" Color="#c6c7c8"/>
+    <SolidColorBrush x:Key=".BS-Txb-Light-MouseDisabledBrush" Color="#dadadb"/>
+
+    <Style x:Key="BS-Txb-Light" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Light}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Light-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Light}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Light-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Light-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Light" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Light}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Light}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Light}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Light-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Light-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Light-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Light-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Light-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Light-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <SolidColorBrush x:Key=".BS-Txb-Dark-Foreground" Color="WhiteSmoke"/>
+    <SolidColorBrush x:Key=".BS-Txb-Dark-MouseOverBrush" Color="#424649"/>
+    <SolidColorBrush x:Key=".BS-Txb-Dark-MousePressedBrush" Color="#4d5154"/>
+    <SolidColorBrush x:Key=".BS-Txb-Dark-MouseDisabledBrush" Color="#8c8e90"/>
+
+    <Style x:Key="BS-Txb-Dark" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="Background" Value="{StaticResource BS-Brush-Dark}"/>
+        <Setter Property="Foreground" Value="{StaticResource .BS-Txb-Dark-Foreground}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Dark}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Dark-MouseOverBrush}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Dark-MouseDisabledBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-Txb-Outline-Dark" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Setter Property="FocusVisualStyle">
+            <Setter.Value>
+                <Style TargetType="Control" BasedOn="{StaticResource BS-FocusVisual}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Dark}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Dark-MouseOverBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Dark-MouseOverBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Dark-Foreground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource .BS-Txb-Dark-MouseDisabledBrush}"/>
+                <Setter Property="Background" Value="{DynamicResource .BS-Txb-Dark-MouseDisabledBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Dark-Foreground}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

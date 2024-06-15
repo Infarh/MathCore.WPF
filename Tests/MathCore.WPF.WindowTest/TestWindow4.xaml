@@ -13,22 +13,24 @@
                 <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            
-
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
               Width="300" Height="300" ClipToBounds="False">
             <Rectangle Stroke="OrangeRed" StrokeThickness="2" Effect="{Shadow Color=OrangeRed, Depth=0}"
-                       RadiusX="4" RadiusY="4"/>
+                       RadiusX="4" RadiusY="4"
+                       />
             <Grid Margin="5">
                 <UniformGrid Rows="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
 
                     <Button IsDefault="True" Style="{StaticResource BS-Btn-Outline-Dark}" Content="Ok"/>
                     <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Warning}"/>
                 </UniformGrid>
-                <TextBox VerticalAlignment="Top" SpellCheck.IsEnabled="True" Language="ru-ru" SpellCheck.SpellingReform="PreAndPostreform"/>
+                <TextBox Style="{StaticResource BS-Txb-Outline-Danger}" VerticalAlignment="Top" SpellCheck.IsEnabled="True" Language="ru-ru" 
+                         SpellCheck.SpellingReform="PreAndPostreform"
+                         Text="" Tag="QWE"
+                         />
             </Grid>
         </Grid>
     </Grid>

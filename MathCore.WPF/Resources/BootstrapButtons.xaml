@@ -3,22 +3,10 @@
                     xmlns:shaders="clr-namespace:MathCore.WPF.Shaders"
                     xmlns:system="clr-namespace:System;assembly=System.Runtime">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapColors.xaml"/>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBase.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapBrushes.xaml"/>
         <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Styles/Base/Effects.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
-    <system:Double x:Key="@BS-Btn-CornerRadius">3</system:Double>
-    <Thickness x:Key="@BS-Btn-Thickness-CornerRadius" 
-           Left="{StaticResource @BS-Btn-CornerRadius}"
-           Top="{StaticResource @BS-Btn-CornerRadius}"
-           Right="{StaticResource @BS-Btn-CornerRadius}"
-           Bottom="{StaticResource @BS-Btn-CornerRadius}"/>
-    <CornerRadius x:Key="@BS-Btn-Border-CornerRadius"
-              BottomLeft="{StaticResource @BS-Btn-CornerRadius}"
-              BottomRight="{StaticResource @BS-Btn-CornerRadius}"
-              TopLeft="{StaticResource @BS-Btn-CornerRadius}"
-              TopRight="{StaticResource @BS-Btn-CornerRadius}"/>
 
     <ControlTemplate x:Key="BS-Btn-Base-Template" TargetType="ButtonBase">
         <Border SnapsToDevicePixels="true" CornerRadius="{DynamicResource @BS-Btn-Border-CornerRadius}"
@@ -41,21 +29,6 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="BS-FocusVisual" TargetType="Control">
-        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Primary}"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Control">
-                    <Rectangle Stroke="{TemplateBinding BorderBrush}" 
-                           Margin="-3"
-                           StrokeThickness="3" 
-                           RadiusX="{StaticResource @BS-Btn-CornerRadius}"
-                           RadiusY="{StaticResource @BS-Btn-CornerRadius}"/>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <Style x:Key="BS-Btn-Base" TargetType="ButtonBase">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{StaticResource BS-FocusVisual}"/>
@@ -63,7 +36,7 @@
         <Setter Property="Margin" Value="4"/>
         <Setter Property="Padding" Value="12,6"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Template" Value="{StaticResource BS-Btn-Base-Template}"/>
+        <Setter Property="Template" Value="{DynamicResource BS-Btn-Base-Template}"/>
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Style.Triggers>
