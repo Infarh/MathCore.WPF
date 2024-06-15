@@ -21,17 +21,16 @@
             <Rectangle Stroke="OrangeRed" StrokeThickness="2" Effect="{Shadow Color=OrangeRed, Depth=0}"
                        RadiusX="4" RadiusY="4"
                        />
-            <Grid Margin="5">
-                <UniformGrid Rows="1" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-
-                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Outline-Dark}" Content="Ok"/>
-                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Warning}"/>
+            <DockPanel Margin="5">
+                <UniformGrid Rows="1" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok"/>
+                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Danger}"/>
                 </UniformGrid>
-                <TextBox Style="{StaticResource BS-Txb-Outline-Danger}" VerticalAlignment="Top" SpellCheck.IsEnabled="True" Language="ru-ru" 
+                <TextBox Style="{StaticResource BS-TxbH-Outline-Primary}" SpellCheck.IsEnabled="True" Language="ru-ru" 
                          SpellCheck.SpellingReform="PreAndPostreform"
-                         Text="" Tag="QWE"
+                         Text="" Tag="User name" AcceptsReturn="True"
                          />
-            </Grid>
+            </DockPanel>
         </Grid>
     </Grid>
 </Window>

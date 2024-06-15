@@ -45,6 +45,37 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <ControlTemplate x:Key="BS-TxbH-Base-Template" TargetType="TextBoxBase">
+        <Border x:Name="PART_Border" 
+                Background="{TemplateBinding Background}" 
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                CornerRadius="3"
+                SnapsToDevicePixels="True">
+            <Grid x:Name="PART_Content">
+                <ScrollViewer x:Name="PART_ContentHost"
+                              Focusable="false"
+                              HorizontalScrollBarVisibility="Hidden"
+                              VerticalScrollBarVisibility="Hidden"/>
+               
+                <ContentPresenter x:Name="PART_Watermark" Content="{TemplateBinding Tag}" Margin="4"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Opacity" TargetName="PART_Content" Value="0.75"/>
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="TextBox.Text" Value=""/>
+                    <Condition Property="IsKeyboardFocusWithin" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Watermark" Property="Opacity" Value="1"/>
+                <Setter TargetName="PART_Watermark" Property="Margin" Value="{Binding Padding, RelativeSource={RelativeSource TemplatedParent}}"/>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
     <Style x:Key="BS-Txb" TargetType="TextBoxBase">
         <Setter Property="OverridesDefaultStyle" Value="True"/>
         <Setter Property="FocusVisualStyle" Value="{DynamicResource BS-FocusVisual}"/>
@@ -80,6 +111,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Primary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Primary}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Primary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Primary}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Primary}"/>
@@ -95,6 +131,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Primary-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Primary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Primary}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Secondary-Foreground" Color="WhiteSmoke"/>
@@ -122,6 +163,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Secondary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Secondary}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Secondary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Secondary}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Secondary}"/>
@@ -144,6 +190,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Secondary-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Secondary" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Secondary}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Success-Foreground" Color="WhiteSmoke"/>
@@ -171,6 +222,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Success" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Success}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Success" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Success}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Success}"/>
@@ -193,6 +249,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Success-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Success" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Success}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Danger-Foreground" Color="WhiteSmoke"/>
@@ -220,6 +281,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Danger" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Danger}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Danger" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Danger}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Danger}"/>
@@ -242,6 +308,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Danger-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Danger" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Danger}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Warning-Foreground" Color="#010d1f"/>
@@ -269,6 +340,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Warning" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Warning}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Warning" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Warning}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Warning}"/>
@@ -291,6 +367,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Warning-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Warning" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Warning}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Info-Foreground" Color="#010d1f"/>
@@ -318,6 +399,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Info" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Info}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Info" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Info}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Info}"/>
@@ -340,6 +426,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Info-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Info" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Info}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Light-Foreground" Color="#010d1f"/>
@@ -367,6 +458,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Light" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Light}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Light" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Light}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Light}"/>
@@ -389,6 +485,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Light-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Light" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Light}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
     <SolidColorBrush x:Key=".BS-Txb-Dark-Foreground" Color="WhiteSmoke"/>
@@ -416,6 +517,11 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="BS-TxbH-Dark" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Dark}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
+    </Style>
+
     <Style x:Key="BS-Txb-Outline-Dark" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb}">
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Dark}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Dark}"/>
@@ -438,6 +544,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource .BS-Txb-Dark-Foreground}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BS-TxbH-Outline-Dark" TargetType="TextBoxBase" BasedOn="{StaticResource BS-Txb-Outline-Dark}">
+        <Setter Property="Padding" Value="4,20,4,4"/>
+        <Setter Property="Template" Value="{DynamicResource BS-TxbH-Base-Template}"/>
     </Style>
 
 </ResourceDictionary>
