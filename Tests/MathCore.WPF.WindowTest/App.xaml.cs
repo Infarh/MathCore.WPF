@@ -10,6 +10,9 @@ public partial class App
 
     public static IHost Host => __Host ??= Microsoft.Extensions.Hosting.Host
        .CreateDefaultBuilder(Environment.GetCommandLineArgs())
+#if DEBUG
+       .InitializeObject(host => host.UseEnvironment("Development"))
+#endif
        .ConfigureServices(ConfigureServices)
        .Build();
 

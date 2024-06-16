@@ -5,13 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
         mc:Ignorable="d"
-        Background="WhiteSmoke"
         Title="TestWindow4" Height="450" Width="800">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource BS-Txb-Outline-Dark}">
+               
+            </Style>
 
         </ResourceDictionary>
     </Window.Resources>
@@ -26,10 +29,12 @@
                     <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok"/>
                     <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Danger}"/>
                 </UniformGrid>
-                <TextBox Style="{StaticResource BS-TxbH-Outline-Primary}" SpellCheck.IsEnabled="True" Language="ru-ru" 
-                         SpellCheck.SpellingReform="PreAndPostreform"
-                         Text="" Tag="User name" AcceptsReturn="True"
-                         />
+                
+                <TextBox SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
+                         SpellCheck.SpellingReform="PreAndPostreform" VerticalAlignment="Top"
+                         Text="qwe" Tag="Имя пользователя" IsReadOnly="True"
+                         ToolTip="Введите имя пользователя">
+                </TextBox>
             </DockPanel>
         </Grid>
     </Grid>
