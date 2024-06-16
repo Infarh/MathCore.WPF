@@ -26,10 +26,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.46</Version>
+    <Version>0.0.47</Version>
     <PackageReleaseNotes>
-      Улучшен метод преобразования к вещественному числу в DoubleValueConverter. 
-      Добавлен новый метод Set в ViewModel.
+      Добавлены стили для кнопок и полей ввода текста в стилистике Bootstrap 5
     </PackageReleaseNotes>
   </PropertyGroup>
 
