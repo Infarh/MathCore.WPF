@@ -5,16 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
         mc:Ignorable="d"
-        Background="#1A1A1A"
+        Background="{StaticResource BS-Brush-Body-BG-Dark}"
+        Foreground="WhiteSmoke"
         Title="TestWindow4" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style TargetType="TextBox" BasedOn="{StaticResource BS-Txb-Outline-Info}">
+               <Setter Property="Foreground" Value="WhiteSmoke"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Center"
               Width="300" Height="300" ClipToBounds="False">
-            <Border BorderBrush="OrangeRed" BorderThickness="2">
-                <Border.Effect>
-                    <DropShadowEffect ShadowDepth="0" Color="OrangeRed"></DropShadowEffect>
-                </Border.Effect>
-            </Border>
+            <Rectangle Stroke="OrangeRed" StrokeThickness="2" Effect="{Shadow OrangeRed}"
+                       RadiusX="4" RadiusY="4"
+                       />
+            <DockPanel Margin="5">
+                <UniformGrid Rows="1" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok"/>
+                    <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Danger}"/>
+                </UniformGrid>
+                
+                <TextBox SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
+                         SpellCheck.SpellingReform="PreAndPostreform" VerticalAlignment="Top"
+                         Text="qwe" Tag="Имя пользователя" IsReadOnly="True"
+                         ToolTip="Введите имя пользователя">
+                </TextBox>
+            </DockPanel>
         </Grid>
     </Grid>
 </Window>

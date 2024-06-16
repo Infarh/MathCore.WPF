@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <system:Double x:Key="@BS-Btn-CornerRadius">3</system:Double>
+    <Thickness x:Key="@BS-Btn-Thickness-CornerRadius" 
+               Left="{StaticResource @BS-Btn-CornerRadius}"
+               Top="{StaticResource @BS-Btn-CornerRadius}"
+               Right="{StaticResource @BS-Btn-CornerRadius}"
+               Bottom="{StaticResource @BS-Btn-CornerRadius}"/>
+    <CornerRadius x:Key="@BS-Btn-Border-CornerRadius"
+                  BottomLeft="{StaticResource @BS-Btn-CornerRadius}"
+                  BottomRight="{StaticResource @BS-Btn-CornerRadius}"
+                  TopLeft="{StaticResource @BS-Btn-CornerRadius}"
+                  TopRight="{StaticResource @BS-Btn-CornerRadius}"/>
+
+    <Style x:Key="BS-FocusVisual" TargetType="Control">
+        <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Primary}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Control">
+                    <Rectangle Stroke="{TemplateBinding BorderBrush}" 
+                               Margin="-3"
+                               StrokeThickness="3" 
+                               RadiusX="{StaticResource @BS-Btn-CornerRadius}"
+                               RadiusY="{StaticResource @BS-Btn-CornerRadius}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

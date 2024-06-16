@@ -1,0 +1,193 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="BS-Brush" Color="{StaticResource BS-Color}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Body" Color="{StaticResource BS-Color-Body}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Body-Dark" Color="{StaticResource BS-Color-Body-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Body-BG" Color="{StaticResource BS-Color-Body-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Body-BG-Dark" Color="{StaticResource BS-Color-Body-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Secondary" Color="{StaticResource BS-Color-Secondary}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Secondary-Dark" Color="{StaticResource BS-Color-Secondary-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Secondary-BG" Color="{StaticResource BS-Color-Secondary-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Secondary-BG-Dark" Color="{StaticResource BS-Color-Secondary-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Tertiary" Color="{StaticResource BS-Color-Tertiary}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Tertiary-Dark" Color="{StaticResource BS-Color-Tertiary-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Tertiary-BG" Color="{StaticResource BS-Color-Tertiary-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Tertiary-BG-Dark" Color="{StaticResource BS-Color-Tertiary-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Emphasis" Color="{StaticResource BS-Color-Emphasis}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Emphasis-Dark" Color="{StaticResource BS-Color-Emphasis-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Border" Color="{StaticResource BS-Color-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Border-Dark" Color="{StaticResource BS-Color-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Primary" Color="{StaticResource BS-Color-Primary}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Primary-BG" Color="{StaticResource BS-Color-Primary-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Primary-BG-Dark" Color="{StaticResource BS-Color-Primary-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Primary-Border" Color="{StaticResource BS-Color-Primary-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Primary-Border-Dark" Color="{StaticResource BS-Color-Primary-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Success" Color="{StaticResource BS-Color-Success}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Success-BG" Color="{StaticResource BS-Color-Success-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Success-BG-Dark" Color="{StaticResource BS-Color-Success-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Success-Border" Color="{StaticResource BS-Color-Success-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Success-Border-Dark" Color="{StaticResource BS-Color-Success-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Danger" Color="{StaticResource BS-Color-Danger}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Danger-BG" Color="{StaticResource BS-Color-Danger-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Danger-BG-Dark" Color="{StaticResource BS-Color-Danger-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Danger-Border" Color="{StaticResource BS-Color-Danger-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Danger-Border-Dark" Color="{StaticResource BS-Color-Danger-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Warning" Color="{StaticResource BS-Color-Warning}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Warning-BG" Color="{StaticResource BS-Color-Warning-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Warning-BG-Dark" Color="{StaticResource BS-Color-Warning-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Warning-Border" Color="{StaticResource BS-Color-Warning-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Warning-Border-Dark" Color="{StaticResource BS-Color-Warning-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Info" Color="{StaticResource BS-Color-Info}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Info-BG" Color="{StaticResource BS-Color-Info-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Info-BG-Dark" Color="{StaticResource BS-Color-Info-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Info-Border" Color="{StaticResource BS-Color-Info-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Info-Border-Dark" Color="{StaticResource BS-Color-Info-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Light" Color="{StaticResource BS-Color-Light}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Light-BG" Color="{StaticResource BS-Color-Light-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Light-BG-Dark" Color="{StaticResource BS-Color-Light-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Light-Border" Color="{StaticResource BS-Color-Light-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Light-Border-Dark" Color="{StaticResource BS-Color-Light-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Dark" Color="{StaticResource BS-Color-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Dark-BG" Color="{StaticResource BS-Color-Dark-BG}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Dark-BG-Dark" Color="{StaticResource BS-Color-Dark-BG-Dark}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Dark-Border" Color="{StaticResource BS-Color-Dark-Border}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Dark-Border-Dark" Color="{StaticResource BS-Color-Dark-Border-Dark}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Blue" Color="{StaticResource BS-Color-Blue}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-900" Color="{StaticResource BS-Color-Blue-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-800" Color="{StaticResource BS-Color-Blue-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-700" Color="{StaticResource BS-Color-Blue-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-600" Color="{StaticResource BS-Color-Blue-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-500" Color="{StaticResource BS-Color-Blue-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-400" Color="{StaticResource BS-Color-Blue-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-300" Color="{StaticResource BS-Color-Blue-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-200" Color="{StaticResource BS-Color-Blue-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Blue-100" Color="{StaticResource BS-Color-Blue-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Indigo" Color="{StaticResource BS-Color-Indigo}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-900" Color="{StaticResource BS-Color-Indigo-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-800" Color="{StaticResource BS-Color-Indigo-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-700" Color="{StaticResource BS-Color-Indigo-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-600" Color="{StaticResource BS-Color-Indigo-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-500" Color="{StaticResource BS-Color-Indigo-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-400" Color="{StaticResource BS-Color-Indigo-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-300" Color="{StaticResource BS-Color-Indigo-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-200" Color="{StaticResource BS-Color-Indigo-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Indigo-100" Color="{StaticResource BS-Color-Indigo-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Purple" Color="{StaticResource BS-Color-Purple}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-900" Color="{StaticResource BS-Color-Purple-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-800" Color="{StaticResource BS-Color-Purple-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-700" Color="{StaticResource BS-Color-Purple-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-600" Color="{StaticResource BS-Color-Purple-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-500" Color="{StaticResource BS-Color-Purple-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-400" Color="{StaticResource BS-Color-Purple-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-300" Color="{StaticResource BS-Color-Purple-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-200" Color="{StaticResource BS-Color-Purple-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Purple-100" Color="{StaticResource BS-Color-Purple-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Pink" Color="{StaticResource BS-Color-Pink}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-900" Color="{StaticResource BS-Color-Pink-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-800" Color="{StaticResource BS-Color-Pink-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-700" Color="{StaticResource BS-Color-Pink-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-600" Color="{StaticResource BS-Color-Pink-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-500" Color="{StaticResource BS-Color-Pink-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-400" Color="{StaticResource BS-Color-Pink-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-300" Color="{StaticResource BS-Color-Pink-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-200" Color="{StaticResource BS-Color-Pink-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Pink-100" Color="{StaticResource BS-Color-Pink-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Red" Color="{StaticResource BS-Color-Red}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-900" Color="{StaticResource BS-Color-Red-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-800" Color="{StaticResource BS-Color-Red-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-700" Color="{StaticResource BS-Color-Red-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-600" Color="{StaticResource BS-Color-Red-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-500" Color="{StaticResource BS-Color-Red-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-400" Color="{StaticResource BS-Color-Red-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-300" Color="{StaticResource BS-Color-Red-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-200" Color="{StaticResource BS-Color-Red-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Red-100" Color="{StaticResource BS-Color-Red-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Orange" Color="{StaticResource BS-Color-Orange}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-900" Color="{StaticResource BS-Color-Orange-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-800" Color="{StaticResource BS-Color-Orange-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-700" Color="{StaticResource BS-Color-Orange-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-600" Color="{StaticResource BS-Color-Orange-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-500" Color="{StaticResource BS-Color-Orange-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-400" Color="{StaticResource BS-Color-Orange-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-300" Color="{StaticResource BS-Color-Orange-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-200" Color="{StaticResource BS-Color-Orange-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Orange-100" Color="{StaticResource BS-Color-Orange-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Yellow" Color="{StaticResource BS-Color-Yellow}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-900" Color="{StaticResource BS-Color-Yellow-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-800" Color="{StaticResource BS-Color-Yellow-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-700" Color="{StaticResource BS-Color-Yellow-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-600" Color="{StaticResource BS-Color-Yellow-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-500" Color="{StaticResource BS-Color-Yellow-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-400" Color="{StaticResource BS-Color-Yellow-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-300" Color="{StaticResource BS-Color-Yellow-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-200" Color="{StaticResource BS-Color-Yellow-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Yellow-100" Color="{StaticResource BS-Color-Yellow-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Green" Color="{StaticResource BS-Color-Green}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-900" Color="{StaticResource BS-Color-Green-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-800" Color="{StaticResource BS-Color-Green-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-700" Color="{StaticResource BS-Color-Green-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-600" Color="{StaticResource BS-Color-Green-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-500" Color="{StaticResource BS-Color-Green-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-400" Color="{StaticResource BS-Color-Green-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-300" Color="{StaticResource BS-Color-Green-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-200" Color="{StaticResource BS-Color-Green-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Green-100" Color="{StaticResource BS-Color-Green-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Teal" Color="{StaticResource BS-Color-Teal}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-900" Color="{StaticResource BS-Color-Teal-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-800" Color="{StaticResource BS-Color-Teal-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-700" Color="{StaticResource BS-Color-Teal-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-600" Color="{StaticResource BS-Color-Teal-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-500" Color="{StaticResource BS-Color-Teal-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-400" Color="{StaticResource BS-Color-Teal-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-300" Color="{StaticResource BS-Color-Teal-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-200" Color="{StaticResource BS-Color-Teal-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Teal-100" Color="{StaticResource BS-Color-Teal-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Cyan" Color="{StaticResource BS-Color-Cyan}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-900" Color="{StaticResource BS-Color-Cyan-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-800" Color="{StaticResource BS-Color-Cyan-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-700" Color="{StaticResource BS-Color-Cyan-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-600" Color="{StaticResource BS-Color-Cyan-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-500" Color="{StaticResource BS-Color-Cyan-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-400" Color="{StaticResource BS-Color-Cyan-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-300" Color="{StaticResource BS-Color-Cyan-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-200" Color="{StaticResource BS-Color-Cyan-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Cyan-100" Color="{StaticResource BS-Color-Cyan-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Gray" Color="{StaticResource BS-Color-Gray}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-900" Color="{StaticResource BS-Color-Gray-900}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-800" Color="{StaticResource BS-Color-Gray-800}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-700" Color="{StaticResource BS-Color-Gray-700}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-600" Color="{StaticResource BS-Color-Gray-600}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-500" Color="{StaticResource BS-Color-Gray-500}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-400" Color="{StaticResource BS-Color-Gray-400}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-300" Color="{StaticResource BS-Color-Gray-300}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-200" Color="{StaticResource BS-Color-Gray-200}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-Gray-100" Color="{StaticResource BS-Color-Gray-100}" p:Freeze="True"/>
+
+    <SolidColorBrush x:Key="BS-Brush-Black" Color="{StaticResource BS-Color-Black}" p:Freeze="True"/>
+    <SolidColorBrush x:Key="BS-Brush-White" Color="{StaticResource BS-Color-White}" p:Freeze="True"/>
+
+</ResourceDictionary>

@@ -50,28 +50,32 @@
                 <MultiTrigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
-                                             Storyboard.TargetProperty="X"
-                                             To="2" Duration="0:0:0.3"
-                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
-                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
-                                             Storyboard.TargetProperty="Y"
-                                             To="15" Duration="0:0:0.3"
-                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="TitleTransform"
+                                Storyboard.TargetProperty="X"
+                                To="2" Duration="0:0:0.3"
+                                EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="TitleTransform"
+                                Storyboard.TargetProperty="Y"
+                                To="15" Duration="0:0:0.3"
+                                EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </MultiTrigger.EnterActions>
                 <MultiTrigger.ExitActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
-                                             Storyboard.TargetProperty="X"
-                                             From="2" Duration="0:0:0.3"
-                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
-                            <DoubleAnimation Storyboard.TargetName="TitleTransform"
-                                             Storyboard.TargetProperty="Y"
-                                             From="15" Duration="0:0:0.3"
-                                             EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="TitleTransform"
+                                Storyboard.TargetProperty="X"
+                                From="2" Duration="0:0:0.3"
+                                EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
+                            <DoubleAnimation 
+                                Storyboard.TargetName="TitleTransform"
+                                Storyboard.TargetProperty="Y"
+                                From="15" Duration="0:0:0.3"
+                                EasingFunction="{StaticResource TaggedTextBox.Template.Easing}"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </MultiTrigger.ExitActions>
@@ -124,7 +128,8 @@
                                     <DataTemplate DataType="ValidationError">
                                         <BulletDecorator>
                                             <BulletDecorator.Bullet>
-                                                <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" Fill="Red" Width="5" Height="5"/>
+                                                <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center" 
+                                                         Fill="Red" Width="5" Height="5"/>
                                             </BulletDecorator.Bullet>
                                             <TextBlock Text="{Binding ErrorContent}" Margin="5,0,0,0"/>
                                         </BulletDecorator>
@@ -151,7 +156,7 @@
     </ControlTemplate>
 
     <Style x:Key="TaggedTextBoxStyle" TargetType="{x:Type TextBox}">
-        <Setter Property="Background" Value="White"/>
+        <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="BorderThickness" Value="1"/>

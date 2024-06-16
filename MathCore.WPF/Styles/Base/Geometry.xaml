@@ -2,15 +2,17 @@
                     xmlns:p="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Geometry x:Key="ArrowUpGeometry" p:Freeze="true">M 0,4 C0,4 0,6 0,6 0,6 3.5,2.5 3.5,2.5 3.5,2.5 7,6 7,6 7,6 7,4 7,4 7,4 3.5,0.5 3.5,0.5 3.5,0.5 0,4 0,4 z</Geometry>
-    <Geometry x:Key="ArrowDownGeometry" p:Freeze="true">M 0,2.5 C0,2.5 0,0.5 0,0.5 0,0.5 3.5,4 3.5,4 3.5,4 7,0.5 7,0.5 7,0.5 7,2.5 7,2.5 7,2.5 3.5,6 3.5,6 3.5,6 0,2.5 0,2.5 z</Geometry>
-    <Geometry x:Key="ArrowLeftGeometry" p:Freeze="true">M 3.18,7 C3.18,7 5,7 5,7 5,7 1.81,3.5 1.81,3.5 1.81,3.5 5,0 5,0 5,0 3.18,0 3.18,0 3.18,0 0,3.5 0,3.5 0,3.5 3.18,7 3.18,7 z</Geometry>
-    <Geometry x:Key="ArrowRightGeometry" p:Freeze="true">M 1.81,7 C1.81,7 0,7 0,7 0,7 3.18,3.5 3.18,3.5 3.18,3.5 0,0 0,0 0,0 1.81,0 1.81,0 1.81,0 5,3.5 5,3.5 5,3.5 1.81,7 1.81,7 z</Geometry>
-    <Geometry x:Key="CheckGeometry" xml:space="preserve" p:Freeze="false">F1 M 9.97498,1.22334L 4.6983,9.09834L 4.52164,9.09834L 0,5.19331L 1.27664,3.52165L 4.255,6.08833L 8.33331,1.52588e-005L 9.97498,1.22334 Z </Geometry>
+    <Geometry x:Key="ArrowUpGeometry" p:Freeze="true">M0,4 C0,4 0,6 0,6 0,6 3.5,2.5 3.5,2.5 3.5,2.5 7,6 7,6 7,6 7,4 7,4 7,4 3.5,0.5 3.5,0.5 3.5,0.5 0,4 0,4 z</Geometry>
+    <Geometry x:Key="ArrowDownGeometry" p:Freeze="true">M0,2.5 C0,2.5 0,0.5 0,0.5 0,0.5 3.5,4 3.5,4 3.5,4 7,0.5 7,0.5 7,0.5 7,2.5 7,2.5 7,2.5 3.5,6 3.5,6 3.5,6 0,2.5 0,2.5 z</Geometry>
+    <Geometry x:Key="ArrowLeftGeometry" p:Freeze="true">M3.18,7 C3.18,7 5,7 5,7 5,7 1.81,3.5 1.81,3.5 1.81,3.5 5,0 5,0 5,0 3.18,0 3.18,0 3.18,0 0,3.5 0,3.5 0,3.5 3.18,7 3.18,7 z</Geometry>
+    <Geometry x:Key="ArrowRightGeometry" p:Freeze="true">M1.81,7 C1.81,7 0,7 0,7 0,7 3.18,3.5 3.18,3.5 3.18,3.5 0,0 0,0 0,0 1.81,0 1.81,0 1.81,0 5,3.5 5,3.5 5,3.5 1.81,7 1.81,7 z</Geometry>
+    <Geometry x:Key="CheckGeometry" xml:space="preserve" p:Freeze="false">F1 M9.97498,1.22334 L4.6983,9.09834 L4.52164,9.09834 L0,5.19331 L1.27664,3.52165 L4.255,6.08833 L8.33331,1.52588e-005 L9.97498,1.22334 Z</Geometry>
+    <Geometry x:Key="Times8Geometry" p:Freeze="True">M0,0 L8,8 M0,8 L8,0</Geometry>
 
     <Geometry x:Key="MinimizeButtonIconGeometry" p:Freeze="True">M0,8 H8 M0,7 H8 M0,6 H8</Geometry>
     <Geometry x:Key="MaximizeToMaxButtonIconGeometry" p:Freeze="True">M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8</Geometry>
     <Geometry x:Key="MaximizeToMinButtonIconGeometry" p:Freeze="True">M0,3 H5 V8 H0 V3 M0,4 H5 M3,0 H8 V5 H7 M3,1 H8</Geometry>
-    <Geometry x:Key="CloseButtonIconGeometry" p:Freeze="True">M0,0 L8,8 M0,8 L8,0</Geometry>
+
+    <Geometry x:Key=".ComboBox.Button.ArrowDown" p:Freeze="True">F1 M0,0 L2.667,2.66665 L5.3334,0 L5.3334,-1.78168 L2.6667,0.88501 L0,-1.78168 L0,0 Z</Geometry>
 
 </ResourceDictionary>

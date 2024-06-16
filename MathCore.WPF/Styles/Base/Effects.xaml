@@ -8,8 +8,11 @@
 
     <DropShadowEffect x:Key="ShadowBorder" ShadowDepth="0" BlurRadius="3" p:Freeze="true"/>
     <DropShadowEffect x:Key="ShadowDepth1Radius2Opacity08" ShadowDepth="1" BlurRadius="2" Opacity="0.8" p:Freeze="true"/>
-   
+    <DropShadowEffect x:Key="ShadowD1R2" ShadowDepth="1" BlurRadius="2"/>
+
     <shaders:GrayScale x:Key="GrayScaleEffect" Factor="0"/>
     <shaders:Invert x:Key="InvertColorsEffect"/>
+
+    <shaders:GrayScale x:Key="GrayScale-Factor0" Factor="0" />
 
 </ResourceDictionary>
