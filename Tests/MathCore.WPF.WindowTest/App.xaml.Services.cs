@@ -1,4 +1,5 @@
 ﻿using MathCore.WPF.WindowTest.Services;
+using MathCore.WPF.WindowTest.Services.Hosted;
 using MathCore.WPF.WindowTest.Services.Interfaces;
 using MathCore.WPF.WindowTest.ViewModels;
 
@@ -13,5 +14,6 @@ public partial class App
         services.AddScoped<TestWindow2ViewModel>();
         services.AddScoped<TestWindow3ViewModel>();
         services.AddTransient<IUserDialog, TestUserDialogService>();
+        services.AddHostedService<MonitoringService>();
     }
 }

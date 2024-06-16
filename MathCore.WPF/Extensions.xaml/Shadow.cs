@@ -12,12 +12,18 @@ namespace MathCore.WPF;
 /// <remarks>Эффект тени</remarks>
 /// <param name="depth">Глубина</param>
 [MarkupExtensionReturnType(typeof(DropShadowEffect))]
-public class Shadow(double depth) : MarkupExtension
+public class Shadow(double depth, Color color) : MarkupExtension
 {
     /// <summary>Эффект тени</summary>
-    public Shadow() : this(5) { }
+    public Shadow() : this(5, Colors.Black) { }
+
+    public Shadow(Color color) : this(0, color) { }
+
+    /// <summary>Эффект тени</summary>
+    public Shadow(Color color, double depth) : this(depth, color) { }
 
     /// <summary>Глубина тени</summary>
+    [ConstructorArgument("depth")]
     public double Depth { get; set; } = depth;
 
     /// <summary>Алгоритм рендринга</summary>
@@ -30,7 +36,8 @@ public class Shadow(double depth) : MarkupExtension
     public double Direction { get; set; } = 315;
 
     /// <summary>Цвет</summary>
-    public Color Color { get; set; } = Colors.Black;
+    [ConstructorArgument("color")]
+    public Color Color { get; set; } = color;
 
     /// <summary>Размытие</summary>
     public double Blur { get; set; } = 5;
