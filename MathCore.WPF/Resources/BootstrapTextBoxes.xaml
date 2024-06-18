@@ -132,6 +132,7 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BS-Brush-Border}"/>
         <Setter Property="Foreground" Value="{DynamicResource BS-Brush-Dark}"/>
+        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Self}}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Margin" Value="4"/>
         <Setter Property="Padding" Value="4"/>
