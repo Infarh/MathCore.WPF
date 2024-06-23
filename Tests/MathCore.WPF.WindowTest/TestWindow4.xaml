@@ -32,21 +32,23 @@
                        />
             <DockPanel Margin="5">
                 <UniformGrid Rows="1" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok"/>
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok" 
+                            Command="Slider.IncreaseSmall" CommandTarget="{Binding ElementName=Value32}"/>
                     <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Danger}"/>
                 </UniformGrid>
 
                 <TextBlock DockPanel.Dock="Top" Margin="4" 
                            Text="{Binding ValueInt32}" />
 
-                <TextBox SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
+                <TextBox x:Name="Value32" SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
                          SpellCheck.SpellingReform="PreAndPostreform" VerticalAlignment="Top"
                          TextBoxEx.UpdateBindingSourceOnEnter="True"
+                         TextBoxEx.ValidateInputScope="True"
                          Text="{Binding ValueInt32, UpdateSourceTrigger=Explicit}" 
                          Tag="Целое число"
                          ToolTip="Введите целое число">
                     <TextBox.InputScope>
-                        <InputScope RegularExpression="\d+"/>
+                        <InputScope RegularExpression="^\d*$"/>
                     </TextBox.InputScope>
                 </TextBox>
             </DockPanel>
