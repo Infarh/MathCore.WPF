@@ -1,20 +1,24 @@
 ﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindow4"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MathCore.WPF.WindowTest"
-        mc:Ignorable="d"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         Background="{StaticResource BS-Brush-Body-BG-Dark}"
         Foreground="WhiteSmoke"
-        Title="TestWindow4" Height="450" Width="800">
+        Title="TestWindow4"
+        Width="800" Height="450">
+    <Window.DataContext>
+        <vm:TestWindow4ViewModel/>
+    </Window.DataContext>
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MathCore.WPF;component/Resources/BootstrapControls.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <Style TargetType="TextBox" BasedOn="{StaticResource BS-Txb-Outline-Info}">
+            <Style TargetType="TextBox" BasedOn="{StaticResource BS-TxbH-Outline-Info}">
                <Setter Property="Foreground" Value="WhiteSmoke"/>
             </Style>
 
@@ -28,14 +32,24 @@
                        />
             <DockPanel Margin="5">
                 <UniformGrid Rows="1" DockPanel.Dock="Bottom" HorizontalAlignment="Right">
-                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok"/>
+                    <Button IsDefault="True" Style="{StaticResource BS-Btn-Primary}" Content="Ok" 
+                            Command="Slider.IncreaseSmall" CommandTarget="{Binding ElementName=Value32}"/>
                     <Button Content="Cancel" Style="{StaticResource BS-Btn-Outline-Danger}"/>
                 </UniformGrid>
-                
-                <TextBox SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
+
+                <TextBlock DockPanel.Dock="Top" Margin="4" 
+                           Text="{Binding ValueInt32}" />
+
+                <TextBox x:Name="Value32" SpellCheck.IsEnabled="False" Language="ru-ru" AutoWordSelection="True" IsInactiveSelectionHighlightEnabled="True"
                          SpellCheck.SpellingReform="PreAndPostreform" VerticalAlignment="Top"
-                         Text="qwe" Tag="Имя пользователя" IsReadOnly="True"
-                         ToolTip="Введите имя пользователя">
+                         TextBoxEx.UpdateBindingSourceOnEnter="True"
+                         TextBoxEx.ValidateInputScope="True"
+                         Text="{Binding ValueInt32, UpdateSourceTrigger=Explicit}" 
+                         Tag="Целое число"
+                         ToolTip="Введите целое число">
+                    <TextBox.InputScope>
+                        <InputScope RegularExpression="^\d*$"/>
+                    </TextBox.InputScope>
                 </TextBox>
             </DockPanel>
         </Grid>

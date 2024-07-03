@@ -21,9 +21,9 @@
                 <ControlTemplate TargetType="Control">
                     <Rectangle Stroke="{TemplateBinding BorderBrush}" 
                                Margin="-3"
-                               StrokeThickness="3" 
-                               RadiusX="{StaticResource @BS-Btn-CornerRadius}"
-                               RadiusY="{StaticResource @BS-Btn-CornerRadius}"/>
+                               StrokeThickness="2" 
+                               RadiusX="5"
+                               RadiusY="5"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
