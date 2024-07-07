@@ -6,16 +6,13 @@ namespace MathCore.WPF.Extensions;
 
 public static class CommandExtensions
 {
-    public static NamedCommand WithName(this ICommand Command, string Name, string Description = null)
+    public static TCommand WithName<TCommand>(this TCommand Command, string Name, string? Description = null)
+        where TCommand : Command
     {
-        if (Command is NamedCommand named_command)
-        {
-            named_command.Name = Name;
-            named_command.Description = Description;
-            return named_command;
-        }
-
-        return new(Command, Name, Description);
+        Command.Name = Name;
+        if (Description is not null)
+            Command.Description = Description;
+        return Command;
     }
 
     public static bool TryExecute(this ICommand? Command, object Parameter)

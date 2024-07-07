@@ -26,11 +26,7 @@ public class ShowMessageCommand(string? Title) : Command
     private MessageBoxResult _Result;
 
     /// <summary>Результат выполнения команды</summary>
-    public MessageBoxResult Result
-    {
-        get => _Result;
-        set => Set(ref _Result, value);
-    }
+    public MessageBoxResult Result { get => _Result; set => Set(ref _Result, value); }
 
     #endregion
 
