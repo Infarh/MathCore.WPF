@@ -9,7 +9,7 @@
         Title="{Binding Title}"
         Width="800" Height="450">
     <Grid>
-        <TextBlock Text="{Binding DoubleValue, Converter={Expr x^p}, ConverterParameter=3}" 
-                   Margin="10"/>
+        <!--<TextBlock Text="{Binding DoubleValue, Converter={Expr x^p}, ConverterParameter=3}" 
+                   Margin="10"/>-->
     </Grid>
 </Window>

@@ -65,7 +65,7 @@ public sealed partial class AutoComplete
 
         public override void SelectAll() => ((TextBox)Control).SelectAll();
 
-        public override CollectionViewSource GetViewSource(Style style) => (CollectionViewSource)style.BasedOn.Resources["viewSource"];
+        public override CollectionViewSource GetViewSource(Style style) => (CollectionViewSource)style.BasedOn.Resources["viewSource"]!;
     }
 
     private class ComboBoxUnderAutoComplete(Control control) : ControlUnderAutoComplete(control)
@@ -77,7 +77,7 @@ public sealed partial class AutoComplete
 
         public override void SelectAll() => ((TextBox)Control.Template.FindName("PART_EditableTextBox", Control)).SelectAll();
 
-        public override CollectionViewSource GetViewSource(Style style) => (CollectionViewSource)style.Resources["viewSource"];
+        public override CollectionViewSource GetViewSource(Style style) => (CollectionViewSource)style.Resources["viewSource"]!;
     }
 
     [TypeConverter(typeof(AutoCompleteFilterPathCollectionTypeConverter))]
@@ -99,7 +99,7 @@ public sealed partial class AutoComplete
         public override object ConvertFrom(ITypeDescriptorContext? context, CultureInfo? culture, object value) =>
             value is not string s
                 ? base.ConvertFrom(context, culture, value)!
-                : new AutoCompleteFilterPathCollection(s.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries));
+                : new AutoCompleteFilterPathCollection(s.Split((char[])[','], StringSplitOptions.RemoveEmptyEntries));
 
         public override object ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type DestinationType)
         {

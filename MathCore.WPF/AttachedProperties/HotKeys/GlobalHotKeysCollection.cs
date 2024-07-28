@@ -104,7 +104,7 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         var key_id      = GetHotKeyId(key_modifer);
         binding.HotKeyId = key_id;
 
-        HotKeyBindings.GetValueOrAddNew(key_id, () => new()).Add(binding);
+        HotKeyBindings.GetValueOrAddNew(key_id, () => []).Add(binding);
 
         var (key, modifer) = key_modifer;
         TryRegisterHotKey(key_id, key, modifer);

@@ -3,16 +3,24 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Markup;
 
+using MathCore.MathParser;
+using MathCore.MathParser.ExpressionTrees.Nodes;
 using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+
+using Microsoft.Extensions.Logging;
 
 namespace MathCore.WPF.WindowTest.ViewModels;
 
 [MarkupExtensionReturnType(typeof(TestWindow5ViewModel))]
 public class TestWindow5ViewModel : ViewModel
 {
-    public TestWindow5ViewModel()
+    private readonly ILogger<TestWindow5ViewModel> _Logger;
+
+    public TestWindow5ViewModel(ILogger<TestWindow5ViewModel> logger)
     {
+        _Logger = logger;
+
         Enumerable.Range(1, 30).Select(i => new TestValueViewModel { Title = $"Value - {i}" }).AddTo(Values);
         Values.SelectedItem = Values.ElementAt(1);
     }
@@ -64,7 +72,7 @@ public class TestWindow5ViewModel : ViewModel
 
         if (!Directory.Exists(path))
         {
-            var index = path.LastIndexOfAny(new[] { '\\', '/' });
+            var index = path.LastIndexOfAny(['\\', '/']);
             if (index < 0) return;
 
             await UpdateCatalogPaths(path[..index]);
@@ -107,6 +115,74 @@ public class TestWindow5ViewModel : ViewModel
 
     #endregion
 
+    #region TestExpr : string - Математическое выражение
+
+    private readonly ExpressionParser _Parser = new();
+
+    /// <summary>Математическое выражение</summary>
+    private string _TestExpr;
+
+    /// <summary>Математическое выражение</summary>
+    public string TestExpr { get => _TestExpr; set => SetValue(ref _TestExpr, value).Then(ParseExpressionAsync); }
+
+    private int _Timeout = 300;
+    private long _LastExprParseTime;
+    private async void ParseExpressionAsync()
+    {
+        if (_TestExpr is not { Length: > 0 } expr_str)
+        {
+            ExpressionParseException = null;
+            Expression = null;
+            OnPropertyChanged(nameof(Expression));
+            return;
+        }
+
+        var now = Environment.TickCount64;
+        _LastExprParseTime = now;
+
+        var timeout = _Timeout;
+
+        if (timeout > 0)
+            await Task.Delay(timeout * 2).ConfigureAwait(false);
+        else
+            await Task.Yield().ConfigureAwait(false);
+                
+        if(_LastExprParseTime != now || expr_str != _TestExpr)
+            return;
+
+        try
+        {
+            var expr = _Parser.Parse(expr_str);
+
+            var end_time = Environment.TickCount64;
+            var time_delta = TimeSpan.FromTicks(end_time - now).TotalMilliseconds;
+
+            _Timeout = Math.Max(0, (int)(_Timeout + (time_delta - _Timeout) / 10));
+
+            _Logger.LogInformation("Expr parsed ({timeout}ms): {expr}", _Timeout, expr);
+
+            ExpressionParseException = null;
+            Expression = expr;
+            OnPropertyChanged(nameof(Expression));
+        }
+        catch (Exception e)
+        {
+            _Logger.LogWarning("Expr parse error: \"{expr}\" - {errtype}:{error}", expr_str, e.GetType().Name, e.Message);
+
+            ExpressionParseException = null;
+            OnPropertyChanged(nameof(ExpressionParseException));
+        }
+    }
+
+    #endregion
+
+    public MathExpression? Expression { get; private set; }
+
+    [DependencyOn(nameof(Expression))]
+    public IEnumerable<ExpressionTreeNode> ExpressionTree => [Expression?.Tree.Root];
+
+    [DependencyOn(nameof(Expression))]
+    public Exception ExpressionParseException { get; private set; }
 
 }
 
