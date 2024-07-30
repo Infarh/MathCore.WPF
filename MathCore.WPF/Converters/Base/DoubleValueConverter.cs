@@ -21,9 +21,30 @@ public abstract class DoubleValueConverter : ValueConverter
     public static double ConvertToDouble(object? obj)
     {
         if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue)) return double.NaN;
+        if (obj is double v) return v;
+        if (obj is string s && double.TryParse(s, out v)) return v;
         try
         {
             return System.Convert.ToDouble(obj);
+        }
+        catch (FormatException e)
+        {
+            Debug.WriteLine(e);
+        }
+        return double.NaN;
+    }
+
+    /// <summary>Преобразование объекта в вещественный тип данных</summary>
+    /// <param name="obj">Преобразуемое значение</param>
+    /// <returns>Значение вещественного типа, если преобразование прошло успешно, и NaN в противном случае</returns>
+    public static double ConvertToDouble(object? obj, IFormatProvider format)
+    {
+        if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue)) return double.NaN;
+        if (obj is double v) return v;
+        if (obj is string s && double.TryParse(s, NumberStyles.Any, format, out v)) return v;
+        try
+        {
+            return System.Convert.ToDouble(obj, format);
         }
         catch (FormatException e)
         {
@@ -38,7 +59,7 @@ public abstract class DoubleValueConverter : ValueConverter
     /// <param name="obj">Преобразуемый объект</param>
     /// <param name="value">Выходное значение вещественного типа данных в случае успешного преобразования и NaN в противном случае</param>
     /// <returns>Результат успешности преобразования</returns>
-    public static bool TryConvertToDouble(object? obj, out double value)
+    public static bool TryConvertToDouble(object? obj, IFormatProvider format, out double value)
     {
         if (Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue))
         {
@@ -48,7 +69,8 @@ public abstract class DoubleValueConverter : ValueConverter
 
         switch (obj)
         {
-            case string str when double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value) || 
+            case string str when double.TryParse(str, NumberStyles.Any, format, out value) || 
+                                 double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value) || 
                                  double.TryParse(str, NumberStyles.Any, __NotInvarianceFormat, out value):
                 return true;
 
@@ -70,7 +92,7 @@ public abstract class DoubleValueConverter : ValueConverter
 
         try
         {
-            value = System.Convert.ToDouble(obj);
+            value = System.Convert.ToDouble(obj, format);
             return true;
         }
         catch (FormatException e)
@@ -99,21 +121,21 @@ public abstract class DoubleValueConverter : ValueConverter
     /// <param name="p">Входной параметр</param>
     /// <param name="value">Входное значение, приведённое к вещественному типу данных</param>
     /// <param name="parameter">Входной параметр, приведённый к вещественному типу данных</param>
-    private static bool CheckParameters(object? v, object? p, out double value, out double? parameter)
+    private static bool CheckParameters(object? v, object? p, IFormatProvider format, out double value, out double? parameter)
     {
-        if (!TryConvertToDouble(v, out value))
+        if (!TryConvertToDouble(v, format, out value))
         {
             parameter = null;
             return false;
         }
-        parameter = p != null && TryConvertToDouble(p, out var pr) ? pr : null;
+        parameter = p != null && TryConvertToDouble(p, format, out var pr) ? pr : null;
         return true;
     }
 
     /// <inheritdoc />
     protected override object Convert(object? v, Type t, object? p, CultureInfo c)
     {
-        if (!CheckParameters(v, p, out var value, out var parameter))
+        if (!CheckParameters(v, p, c, out var value, out var parameter))
             return double.NaN;
 
         var result = Convert(value, parameter);
@@ -127,5 +149,5 @@ public abstract class DoubleValueConverter : ValueConverter
     }
 
     /// <inheritdoc />
-    protected override object ConvertBack(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, out var value, out var parameter) ? ConvertBack(value, parameter) : double.NaN;
+    protected override object ConvertBack(object? v, Type t, object? p, CultureInfo c) => CheckParameters(v, p, c, out var value, out var parameter) ? ConvertBack(value, parameter) : double.NaN;
 }

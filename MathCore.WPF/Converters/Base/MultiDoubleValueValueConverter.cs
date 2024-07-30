@@ -11,7 +11,16 @@ public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
     /// <inheritdoc />
     protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
-        var result = Convert(Array.ConvertAll(vv ?? [], DoubleValueConverter.ConvertToDouble));
+        double[] value = Array.Empty<double>();
+
+        if(vv is { Length: > 0 })
+        {
+            value = new double[vv.Length];
+            for (var i = 0; i < vv.Length; i++)
+                value[i] = DoubleValueConverter.ConvertToDouble(vv[i], c);
+        }
+
+        var result = Convert(value);
 
         if (Min is { } min && !double.IsNaN(min))
             result = Math.Max(result, min);
@@ -22,8 +31,9 @@ public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
     }
 
     /// <inheritdoc />
-    protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) =>
-        ConvertBack(DoubleValueConverter.ConvertToDouble(v))?.Cast<object>().ToArray();
+    protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c) => v is null
+        ? null
+        : ConvertBack(DoubleValueConverter.ConvertToDouble(v, c))?.Cast<object>().ToArray();
 
     protected abstract double Convert(double[]? vv);
 
