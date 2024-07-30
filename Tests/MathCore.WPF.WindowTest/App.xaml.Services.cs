@@ -13,6 +13,8 @@ public partial class App
     {
         services.AddScoped<TestWindow2ViewModel>();
         services.AddScoped<TestWindow3ViewModel>();
+        services.AddScoped<TestWindow4ViewModel>();
+        services.AddScoped<TestWindow5ViewModel>();
         services.AddTransient<IUserDialog, TestUserDialogService>();
         services.AddHostedService<MonitoringService>();
     }

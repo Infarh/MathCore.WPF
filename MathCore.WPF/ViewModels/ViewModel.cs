@@ -79,7 +79,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             else dependencies_dictionary = _PropertiesDependenciesDictionary;
 
             // Извлекаем из словаря зависимостей список зависящих от указанного свойства свойств (если он не существует, то создаём новый
-            var dependencies = dependencies_dictionary.GetValueOrAddNew(PropertyName, () => new());
+            var dependencies = dependencies_dictionary.GetValueOrAddNew(PropertyName, () => []);
 
             // Перебираем все зависимые свойства среди указанных исключая исходное свойство
             foreach (var dependence_property in Dependencies.Where(name => name != PropertyName))

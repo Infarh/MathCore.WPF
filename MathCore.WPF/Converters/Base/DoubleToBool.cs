@@ -24,11 +24,11 @@ public abstract class DoubleToBool : ValueConverter
 
     /// <inheritdoc />
     protected override object? Convert(object? v, Type? t, object? p, CultureInfo? c) =>
-        DoubleValueConverter.TryConvertToDouble(p, out var P)
+        DoubleValueConverter.TryConvertToDouble(p, c, out var P)
             ? _Convert(P)
             : v is null
                 ? null
-                : DoubleValueConverter.TryConvertToDouble(v, out var V) ? _Convert(V) : V;
+                : DoubleValueConverter.TryConvertToDouble(v, c, out var V) ? _Convert(V) : V;
 
     /// <inheritdoc />
     protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c) => 

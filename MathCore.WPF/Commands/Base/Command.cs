@@ -236,6 +236,26 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
         }
     }
 
+    #region Name : string? - Название
+
+    /// <summary>Название</summary>
+    private string? _Name;
+
+    /// <summary>Название</summary>
+    public string? Name { get => _Name; set => Set(ref _Name, value); }
+
+    #endregion
+
+    #region Description : string? - Описание
+
+    /// <summary>Описание</summary>
+    private string? _Description;
+
+    /// <summary>Описание</summary>
+    public string? Description { get => _Description; set => Set(ref _Description, value); }
+
+    #endregion
+
     #endregion
 
     #region MarkupExtension

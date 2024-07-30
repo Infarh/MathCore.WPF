@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Windows;
+using System.Windows.Interop;
+
+using MathCore.WPF.WindowTest.ViewModels;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,8 +28,10 @@ public partial class App
 
     protected override async void OnStartup(StartupEventArgs e)
     {
-        var host = Host;
+        ComponentDispatcher.ThreadPreprocessMessage += OnThreadPreprocessMessage;
+        ComponentDispatcher.ThreadIdle += OnThreadIdle;
 
+        var host = Host;
 
         //var console_logger = Services.GetRequiredService<ILogger<App>>();
         //var old_out = Console.Out;
@@ -39,12 +44,38 @@ public partial class App
 
         base.OnStartup(e);
         await host.StartAsync();
+
+        var main_thread_cancellation = __MainThreadWatcherCancellation.Token;
+        _ = Task.Run(() => MainThreadLoadingWatcher(main_thread_cancellation), main_thread_cancellation);
     }
+
+    private static readonly CancellationTokenSource __MainThreadWatcherCancellation = new();
+    private static async Task MainThreadLoadingWatcher(CancellationToken cancel)
+    {
+        while (true)
+        {
+            Debug.WriteLine("Thread id:0 loading time {0}", TimeSpan.FromMicroseconds(MainThreadLoadingTimeInMilliseconds));
+            await Task.Delay(500, cancel).ConfigureAwait(false);
+        }
+    }
+
+    private static readonly Stopwatch __MainThreadTimer = Stopwatch.StartNew();
+
+    public static long MainThreadLoadingTimeInMilliseconds => __MainThreadTimer.ElapsedMilliseconds;
+
+    private static void OnThreadPreprocessMessage(ref MSG Msg, ref bool Handled) => __MainThreadTimer.Restart();
+
+    private static void OnThreadIdle(object? Sender, EventArgs E) => __MainThreadTimer.Stop();
+
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        await __MainThreadWatcherCancellation.CancelAsync();
+        __MainThreadWatcherCancellation.Dispose();
         base.OnExit(e);
         using var host = Host;
         await host.StopAsync();
+
+        Resources.Values.OfType<IDisposable>().Foreach(v => v.Dispose());
     }
 }

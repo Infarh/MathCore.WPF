@@ -14,16 +14,6 @@ public abstract class TitledViewModel : ViewModel
 
     #endregion
 
-    #region DoubleValue : double - Вещественное значение
-
-    /// <summary>Вещественное значение</summary>
-    private double _DoubleValue = 2;
-
-    /// <summary>Вещественное значение</summary>
-    public double DoubleValue { get => _DoubleValue; set => Set(ref _DoubleValue, value); }
-
-    #endregion
-
     protected TitledViewModel() { }
 
     protected TitledViewModel(string Title) => _Title = Title;
