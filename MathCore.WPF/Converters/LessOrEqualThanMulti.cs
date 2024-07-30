@@ -14,12 +14,12 @@ public class LessOrEqualThanMulti : MultiValueValueConverter
         if (vv is not { Length: > 1 })
             return Binding.DoNothing;
 
-        if (!DoubleValueConverter.TryConvertToDouble(vv[0], out var first_value))
+        if (!DoubleValueConverter.TryConvertToDouble(vv[0], c, out var first_value))
             return Binding.DoNothing;
 
         for (var i = 1; i < vv.Length; i++)
         {
-            if (!DoubleValueConverter.TryConvertToDouble(vv[i], out var value))
+            if (!DoubleValueConverter.TryConvertToDouble(vv[i], c, out var value))
                 return Binding.DoNothing;
             if (value < first_value)
                 return false;
