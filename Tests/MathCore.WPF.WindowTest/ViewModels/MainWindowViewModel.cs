@@ -61,7 +61,7 @@ internal partial class MainWindowViewModel : ViewModel
     private LambdaCommandAsync? _ReadFileCommand;
 
     public ICommand ReadFileCommand => _ReadFileCommand ??=
-        new LambdaCommandAsync(OnReadCommandExecutedAsync, CanReadFileCommandExecute);
+        new(OnReadCommandExecutedAsync, CanReadFileCommandExecute);
 
     private static bool CanReadFileCommandExecute() => true;
 

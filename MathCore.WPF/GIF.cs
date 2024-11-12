@@ -59,8 +59,8 @@ public class GIF : Image
 
     private static void ChangingFrameIndex(DependencyObject obj, DependencyPropertyChangedEventArgs ev)
     {
-        var gifImage = obj as GIF;
-        gifImage.Source = gifImage._GifDecoder.Frames[(int)ev.NewValue];
+        var gif_image = obj as GIF;
+        gif_image.Source = gif_image._GifDecoder.Frames[(int)ev.NewValue];
     }
 
     /// <summary>

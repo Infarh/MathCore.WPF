@@ -2,6 +2,18 @@
 
 namespace MathCore.WPF;
 
+/// <summary>MarkupExtension для создания массива целых чисел из строки.</summary>
+/// <example>
+/// <code>
+/// <![CDATA[
+/// <x:Array xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+///          xmlns:sys="clr-namespace:System;assembly=mscorlib"
+///          xmlns:local="clr-namespace:MathCore.WPF">
+///     <local:IntArray Data="1; 2 3; 4"/>
+/// </x:Array>
+/// ]]>
+/// </code>
+/// </example>
 [MarkupExtensionReturnType(typeof(long[]))]
 public sealed class Int64Array : MarkupExtension
 {

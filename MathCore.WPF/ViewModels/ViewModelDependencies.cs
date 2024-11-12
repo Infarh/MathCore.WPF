@@ -10,6 +10,7 @@ namespace MathCore.WPF.ViewModels;
 
 public partial class ViewModel;
 
+/// <summary>Класс расширения для модели представления, содержащий методы для наблюдения за свойствами модели.</summary>
 public static class ViewModelExtensions
 {
     public class ViewModelPropertyObserver<T, TValue> : IDisposable, IObservableEx<TValue>

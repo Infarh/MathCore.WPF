@@ -17,7 +17,7 @@ public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollect
 
     public ThreadSaveObservableCollectionWrapper(ObservableCollection<T> collection)
     {
-        _BaseCollection                  =  collection;
+        _BaseCollection               =  collection;
         collection.CollectionChanged += OnBaseCollectionChanged;
         ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
     }
