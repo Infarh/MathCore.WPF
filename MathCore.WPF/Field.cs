@@ -14,9 +14,9 @@ public class Field : FreezableCollection<FieldValue>
             nameof(Value),
             typeof(object),
             typeof(Field),
-            new(default, OnValuePropertyChaged));
+            new(default, OnValuePropertyChanged));
 
-    private static void OnValuePropertyChaged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnValuePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not Field field) return;
         foreach (var value in field)

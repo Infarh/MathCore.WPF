@@ -181,5 +181,4 @@ public static class LongPress
     public static string GetPropName(DependencyObject D) => (string)D.GetValue(PropNameProperty);
 
     #endregion
-
 }

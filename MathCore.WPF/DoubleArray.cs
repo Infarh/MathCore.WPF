@@ -3,6 +3,7 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF;
 
+
 [MarkupExtensionReturnType(typeof(double[]))]
 public class DoubleArray(string Data) : MarkupExtension
 {

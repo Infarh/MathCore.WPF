@@ -7,11 +7,12 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для привязки выбранных элементов в ListBox.</summary>
 public class ListBoxItemsSelectionBinder : Behavior<ListBox>
 {
     #region SelectedItems : IList - Выбранные элементы
 
-    /// <summary>Выбранные элементы</summary>
+    /// <summary>DependencyProperty для свойства SelectedItems.</summary>
     public static readonly DependencyProperty SelectedItemsProperty =
         DependencyProperty.Register(
             nameof(SelectedItems),
@@ -22,28 +23,36 @@ public class ListBoxItemsSelectionBinder : Behavior<ListBox>
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnSelectedItemsChanged));
 
+    /// <summary>Обработчик изменения свойства SelectedItems.</summary>
+    /// <param name="D">Объект зависимости.</param>
+    /// <param name="E">Аргументы события.</param>
     private static void OnSelectedItemsChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
-        var behavior            = (ListBoxItemsSelectionBinder)D;
-        var list_selected_items = behavior.AssociatedObject.SelectedItems;
-        var new_selected_items  = (IList)E.NewValue;
-        if (ReferenceEquals(list_selected_items, new_selected_items)) return;
+        // Получаем поведение и список выбранных элементов.
+        var behavior = (ListBoxItemsSelectionBinder)D;
+        var listSelectedItems = behavior.AssociatedObject.SelectedItems;
+        var newSelectedItems = (IList)E.NewValue;
 
-        var to_remove = new List<object>();
-        foreach (var list_item in list_selected_items)
-            if (!new_selected_items.Contains(list_item) && list_item is not null)
-                to_remove.Add(list_item);
+        // Если списки совпадают, то ничего не делаем.
+        if (ReferenceEquals(listSelectedItems, newSelectedItems)) return;
 
-        foreach (var item in to_remove)
-            list_selected_items.Remove(item);
+        // Создаём список элементов, которые нужно удалить.
+        var toRemove = new List<object>();
+        foreach (var listItem in listSelectedItems)
+            if (!newSelectedItems.Contains(listItem) && listItem is not null)
+                toRemove.Add(listItem);
 
-        foreach (var new_selected_item in new_selected_items)
-            if (!list_selected_items.Contains(new_selected_item))
-                list_selected_items.Add(new_selected_item);
+        // Удаляем элементы из списка выбранных элементов.
+        foreach (var item in toRemove)
+            listSelectedItems.Remove(item);
+
+        // Добавляем новые элементы в список выбранных элементов.
+        foreach (var newSelectedItem in newSelectedItems)
+            if (!listSelectedItems.Contains(newSelectedItem))
+                listSelectedItems.Add(newSelectedItem);
     }
 
-    /// <summary>Выбранные элементы</summary>
-    //[Category("")]
+    /// <summary>Выбранные элементы.</summary>
     [Description("Выбранные элементы")]
     public IList SelectedItems
     {
@@ -53,10 +62,24 @@ public class ListBoxItemsSelectionBinder : Behavior<ListBox>
 
     #endregion
 
-    protected override void OnAttached() => AssociatedObject.SelectionChanged += OnSelectionChanged;
+    /// <summary>Вызывается при присоединении поведения к элементу.</summary>
+    protected override void OnAttached()
+    {
+        // Подписываемся на событие изменения выбора.
+        AssociatedObject.SelectionChanged += OnSelectionChanged;
+    }
 
-    protected override void OnDetaching() => AssociatedObject.SelectionChanged -= OnSelectionChanged;
+    /// <summary>Вызывается при отсоединении поведения от элемента.</summary>
+    protected override void OnDetaching()
+    {
+        // Отписываемся от события изменения выбора.
+        AssociatedObject.SelectionChanged -= OnSelectionChanged;
+    }
 
+    /// <summary>Обработчик события изменения выбора.</summary>
+    /// <param name="sender">Источник события.</param>
+    /// <param name="e">Аргументы события.</param>
     private void OnSelectionChanged(object sender, SelectionChangedEventArgs e) =>
+        // Обновляем свойство SelectedItems.
         SelectedItems = AssociatedObject.SelectedItems;
 }

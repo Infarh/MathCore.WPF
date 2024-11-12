@@ -21,7 +21,7 @@ class TestViewModel : ViewModel
         var rnd   = new Random();
         var graph = Graph;
         for (var i = 0; i < 20; i++)
-            graph.Add(new Node { Position = new Point(rnd.Next(10, 491), rnd.Next(10, 491)), Radius = rnd.Next(2, 11) });
+            graph.Add(new() { Position = new(rnd.Next(10, 491), rnd.Next(10, 491)), Radius = rnd.Next(2, 11) });
     }
 
     /// <summary>Тестовая команда</summary>

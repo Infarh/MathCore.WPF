@@ -29,7 +29,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
           
       - name: Cache NuGet  
         uses: actions/cache@v4
@@ -56,7 +56,7 @@ jobs:
         run: dotnet pack MathCore.WPF/MathCore.WPF.csproj --no-build -c Release -v q -o ${{ github.workspace }}/ReleasePack --include-symbols
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.3.1
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: Release
           path: ${{ github.workspace }}/ReleasePack
@@ -69,7 +69,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v4.1.2
+        uses: actions/download-artifact@v4.1.8
         id: download
         with:
             name: Release
@@ -85,7 +85,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v4.1.2
+        uses: actions/download-artifact@v4.1.8
         id: download
         with:
             name: Release
@@ -101,6 +101,6 @@ jobs:
     
     steps:
       - name: Delete artefact
-        uses: geekyeggo/delete-artifact@v4
+        uses: geekyeggo/delete-artifact@v5
         with:
             name: Release

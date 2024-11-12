@@ -15,7 +15,7 @@ public class ConfirmButton
             "PopupPlacemen",
             typeof(PlacementMode),
             typeof(ConfirmButton),
-            new PropertyMetadata(PlacementMode.Right));
+            new(PlacementMode.Right));
 
     /// <summary>Положение выпадающего меню</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -34,7 +34,7 @@ public class ConfirmButton
             "Animation",
             typeof(PopupAnimation),
             typeof(ConfirmButton),
-            new PropertyMetadata(PopupAnimation.Fade));
+            new(PopupAnimation.Fade));
 
     /// <summary>Анимация открытия</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -53,7 +53,7 @@ public class ConfirmButton
             "HorizontalPopupOffset",
             typeof(double),
             typeof(ConfirmButton),
-            new PropertyMetadata(0d));
+            new(0d));
 
     /// <summary>Горизонтальное расстояние выпадающего меню</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -72,7 +72,7 @@ public class ConfirmButton
             "VerticalPopupOffset",
             typeof(double),
             typeof(ConfirmButton),
-            new PropertyMetadata(0d));
+            new(0d));
 
     /// <summary>Вертикальное расстояние выпадающего меню</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -91,7 +91,7 @@ public class ConfirmButton
             "Content",
             typeof(object),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(object)));
+            new(default(object)));
 
     /// <summary>Содержимое кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -110,7 +110,7 @@ public class ConfirmButton
             "ConfirmButtonMargin",
             typeof(Thickness),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Thickness)));
+            new(default(Thickness)));
 
     /// <summary>Отступы кнопки подтвеждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -129,7 +129,7 @@ public class ConfirmButton
             "ConfirmButtonPadding",
             typeof(Thickness),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Thickness)));
+            new(default(Thickness)));
 
     /// <summary>Внутренние отступы кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -148,7 +148,7 @@ public class ConfirmButton
             "ConfirmButtonVerticalAlignment",
             typeof(VerticalAlignment),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(VerticalAlignment)));
+            new(default(VerticalAlignment)));
 
     /// <summary>Вертикальное размещение кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -167,7 +167,7 @@ public class ConfirmButton
             "ConfirmButtonHorizontalAligment",
             typeof(HorizontalAlignment),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(HorizontalAlignment)));
+            new(default(HorizontalAlignment)));
 
     /// <summary>Горизонтальное размещение кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -186,7 +186,7 @@ public class ConfirmButton
             "ConfirmButtonForeground",
             typeof(Brush),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть для рисования контента кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -205,7 +205,7 @@ public class ConfirmButton
             "ConfirmButtonBackground",
             typeof(Brush),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть для рисования фона кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -224,7 +224,7 @@ public class ConfirmButton
             "ConfirmButtonBorderBrush",
             typeof(Brush),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Brush)));
+            new(default(Brush)));
 
     /// <summary>Кисть для рисования рамки кнопки подтвеждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -243,7 +243,7 @@ public class ConfirmButton
             "ConfirmButtonBorderThickness",
             typeof(Thickness),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(Thickness)));
+            new(default(Thickness)));
 
     /// <summary>Толщина рамки кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -262,7 +262,7 @@ public class ConfirmButton
             "ConfirmButtonCornerRadius",
             typeof(CornerRadius),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(CornerRadius)));
+            new(default(CornerRadius)));
 
     /// <summary>Радиус скругления рамки кнопки подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -281,7 +281,7 @@ public class ConfirmButton
             "ConfirmButtonFontWeight",
             typeof(FontWeight),
             typeof(ConfirmButton),
-            new PropertyMetadata(default(FontWeight)));
+            new(default(FontWeight)));
 
     /// <summary>Толщина шрифта на кнопке подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
@@ -300,7 +300,7 @@ public class ConfirmButton
             "ConfirmButtonFontSize",
             typeof(double),
             typeof(ConfirmButton),
-            new PropertyMetadata(12d));
+            new(12d));
 
     /// <summary>Размер шрифта на кнопке подтверждения</summary>
     [AttachedPropertyBrowsableForType(typeof(Button))]
