@@ -101,6 +101,6 @@ jobs:
     
     steps:
       - name: Delete artefact
-        uses: geekyeggo/delete-artifact@v4
+        uses: geekyeggo/delete-artifact@v5
         with:
             name: Release
