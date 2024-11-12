@@ -96,7 +96,7 @@ public class TestWindow5ViewModel : ViewModel
             Debug.Write("    ");
             Debug.WriteLine(CatalogsPaths.JoinStrings("\r\n    "));
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             throw;
         }
