@@ -56,7 +56,7 @@ jobs:
         run: dotnet pack MathCore.WPF/MathCore.WPF.csproj --no-build -c Release -v q -o ${{ github.workspace }}/ReleasePack --include-symbols
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v4.5.0
         with:
           name: Release
           path: ${{ github.workspace }}/ReleasePack
