@@ -24,6 +24,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>preview</LangVersion>
     <!--<RunAnalyzersDuringLiveAnalysis>true</RunAnalyzersDuringLiveAnalysis>-->
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
 
   <PropertyGroup>
