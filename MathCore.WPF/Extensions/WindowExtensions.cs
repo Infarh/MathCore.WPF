@@ -11,23 +11,26 @@ public static class WindowExtensions
 {
     public static IntPtr GetWindowHandle(this Window window) => new WindowInteropHelper(window).Handle;
 
-    public static void ForWindowFromChild(this object ChildDependencyObject, Action<Window> action)
+    public static void ForWindowFromChild<T>(this T ChildDependencyObject, Action<Window> action)
+        where T : DependencyObject
     {
         if (action is null) throw new ArgumentNullException(nameof(action));
-        var element = ChildDependencyObject as DependencyObject;
+        DependencyObject? element = ChildDependencyObject;
         while (element != null)
         {
             element = VisualTreeHelper.GetParent(element);
-            if(element is not Window window) continue;
-            action(window); 
+            if (element is not Window window) continue;
+            action(window);
             break;
         }
     }
 
-    public static void ForWindowFromTemplate(this object TemplateFrameworkElement, Action<Window> action)
+    public static void ForWindowFromTemplate<T>(this T TemplateFrameworkElement, Action<Window> action)
+        where T : DependencyObject
     {
         if (action is null) throw new ArgumentNullException(nameof(action));
-        if (((FrameworkElement)TemplateFrameworkElement)?.TemplatedParent is Window window) action(window);
+        if (TemplateFrameworkElement is FrameworkElement { TemplatedParent: Window window })
+            action(window);
     }
 
     public static void AddHook(this Window window, HwndSourceHook WndProc)
@@ -39,7 +42,7 @@ public static class WindowExtensions
             source.AddHook(WndProc);
         }
         else
-            window.SourceInitialized += (_,_) => window.AddHook(WndProc);
+            window.SourceInitialized += (_, _) => window.AddHook(WndProc);
     }
 
     public static void RemoveHook(this Window window, HwndSourceHook WndProc)

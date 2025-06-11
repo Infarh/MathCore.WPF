@@ -16,5 +16,10 @@ public class TestWindow6ViewModel : TitledViewModel
 
     public ObservableCollection<TestValueViewModel> Values { get; } = [];
 
-    
+    #region Student : StudentInfoViewModel - Студент
+
+    /// <summary>Студент</summary>
+    public StudentInfoViewModel Student { get; set => Set(ref field, value); } = new();
+
+    #endregion
 }
