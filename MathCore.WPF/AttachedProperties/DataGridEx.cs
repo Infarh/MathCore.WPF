@@ -59,26 +59,15 @@ public static class DataGridEx
 
         var column = E.Column;
 
-        //if (property.PropertyType == typeof(DateTime))
-        //{
-        //    E.Column = new DataGridTemplateColumn
-        //    {
-        //        HeaderTemplate = column.HeaderTemplate,
-        //        Header = column.Header,
-        //        CellTemplate = new DataTemplate(item_type) { }
-        //    };
-        //    column = E.Column;
-        //}
-
         var display_attribute = property.GetCustomAttribute<DisplayAttribute>();
 
-        if(display_attribute?.GetAutoGenerateField() == false)
+        if (display_attribute?.GetAutoGenerateField() == false)
         {
             E.Cancel = true;
             return;
         }
 
-        if((display_attribute?.Name ?? property.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName) is { } name)
+        if ((display_attribute?.Name ?? property.GetCustomAttribute<DisplayNameAttribute>()?.DisplayName) is { } name)
             column.Header = name;
 
         if (display_attribute?.Name is { } description)
@@ -94,12 +83,12 @@ public static class DataGridEx
 
         if (property.GetCustomAttribute<DisplayFormatAttribute>() is { } format_attribute)
         {
-            var text_column  = column as DataGridTextColumn;
+            var text_column = column as DataGridTextColumn;
             var value_format = format_attribute.DataFormatString;
             if (value_format != null && text_column != null)
             {
                 var binding = (Binding)text_column.Binding;
-                binding.StringFormat     = value_format;
+                binding.StringFormat = value_format;
                 binding.ConverterCulture = Thread.CurrentThread.CurrentUICulture;
             }
 
@@ -112,17 +101,17 @@ public static class DataGridEx
             column.IsReadOnly = column_readonly;
 
         if (property.GetCustomAttribute<ColumnWidthAttribute>() is
-        {
-            Width   : var col_width, 
-            Auto    : var col_auto, 
-            Adaptive: var col_adaptive
-        })
+            {
+                Width: var col_width,
+                Auto: var col_auto,
+                Adaptive: var col_adaptive
+            })
             column.Width = (col_width, col_auto, col_adaptive) switch
             {
                 (not double.NaN and var width, false, false) => new DataGridLength(width),
-                (var width, false, true)                     => new DataGridLength(width, DataGridLengthUnitType.Star),
-                (var width, true, _)                         => new DataGridLength(width, DataGridLengthUnitType.Auto),
-                _                                            => new DataGridLength()
+                (var width, false, true) => new DataGridLength(width, DataGridLengthUnitType.Star),
+                (var width, true, _) => new DataGridLength(width, DataGridLengthUnitType.Auto),
+                _ => new DataGridLength()
             };
     }
 
