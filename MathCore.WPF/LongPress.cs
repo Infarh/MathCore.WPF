@@ -36,7 +36,7 @@ public static class LongPress
             "Command",
             typeof(ICommand),
             typeof(LongPress),
-            new(default(ICommand), OnCommandPropertyChanged));
+            new(null, OnCommandPropertyChanged));
 
     private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -46,7 +46,7 @@ public static class LongPress
             UnregisterHandlers((Control)attached_d);
         }
 
-        if(e.NewValue is null)
+        if (e.NewValue is null)
         {
             UnregisterHandlers((Control)d);
             d.SetValue(__AttachedControls, null);
@@ -69,7 +69,11 @@ public static class LongPress
         control.MouseLeftButtonUp -= OnMouseUp;
     }
 
-    private static DependencyProperty __LastClickTime = DependencyProperty.RegisterAttached(nameof(__LastClickTime), typeof(DateTime), typeof(LongPress));
+    private static readonly DependencyProperty __LastClickTime = DependencyProperty
+        .RegisterAttached(
+            nameof(__LastClickTime),
+            typeof(DateTime),
+            typeof(LongPress));
 
     private static async void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -82,7 +86,7 @@ public static class LongPress
         await Task.Delay(timeout);
 
         if (control.GetValue(CommandProperty) is not ICommand command) return;
-        if(!Equals(down_time, control.GetValue(__LastClickTime))) return;
+        if (!Equals(down_time, control.GetValue(__LastClickTime))) return;
 
         var parameter = control.GetValue(CommandParameterProperty);
         command.TryExecute(parameter);
@@ -111,7 +115,7 @@ public static class LongPress
     public static void SetCommandParameter(DependencyObject D, object value) => D.SetValue(CommandParameterProperty, value);
 
     /// <Summary>Параметр команды</Summary>
-    public static object GetCommandParameter(DependencyObject D) => (object)D.GetValue(CommandParameterProperty);
+    public static object GetCommandParameter(DependencyObject D) => D.GetValue(CommandParameterProperty);
 
     #endregion
 

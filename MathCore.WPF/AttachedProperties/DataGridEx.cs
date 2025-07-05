@@ -13,7 +13,7 @@ public static class DataGridEx
 {
     #region Attached property DataGrid.UseDataAnnotations : bool - Использовать аннотации данных из пространства имён System.ComponentModel.DataAnnotation
 
-    /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+    /// <summary>Использовать аннотации данных из пространства имён <see cref="System.ComponentModel"/></summary>
     public static readonly DependencyProperty UseDataAnnotationsProperty =
         DependencyProperty.RegisterAttached(
             "UseDataAnnotations",
@@ -21,11 +21,11 @@ public static class DataGridEx
             typeof(DataGridEx),
             new(OnUseDataAnnotationsPropertyChanged));
 
-    /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+    /// <summary>Использовать аннотации данных из пространства имён <see cref="System.ComponentModel.DataAnnotations"/></summary>
     [AttachedPropertyBrowsableForType(typeof(DataGrid))]
     public static void SetUseDataAnnotations(DependencyObject D, bool value) => D.SetValue(UseDataAnnotationsProperty, value);
 
-    /// <summary>Использовать аннотации данных из пространства имён System.DataAnnotation</summary>
+    /// <summary>Использовать аннотации данных из пространства имён <see cref="System.ComponentModel.DataAnnotations"/></summary>
     public static bool GetUseDataAnnotations(DependencyObject D) => (bool)D.GetValue(UseDataAnnotationsProperty);
 
     private static void OnUseDataAnnotationsPropertyChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)

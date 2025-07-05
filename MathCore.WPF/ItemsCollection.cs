@@ -14,7 +14,7 @@ public class ItemsCollection<T>(
     Action<T>? Editor = null)
     : SelectableCollection<T>
 {
-    [field: MaybeNull]
+    [field: MaybeNull, AllowNull]
     public ICommand AddCommand => field ??= Command.New(OnCreateCommandExecuted);
     private async Task OnCreateCommandExecuted()
     {
@@ -34,16 +34,14 @@ public class ItemsCollection<T>(
         if (ItemPropertyChanged is not null)
             switch (e.Action)
             {
-                case NotifyCollectionChangedAction.Add:
-                    if (e.NewItems is not null)
-                        foreach (var item in e.NewItems.OfType<INotifyPropertyChanged>())
-                            item.PropertyChanged += ItemPropertyChanged;
+                case NotifyCollectionChangedAction.Add when e.NewItems?.OfType<INotifyPropertyChanged>() is { } new_items:
+                    foreach (var item in new_items)
+                        item.PropertyChanged += ItemPropertyChanged;
                     break;
 
-                case NotifyCollectionChangedAction.Remove:
-                    if (e.OldItems is not null)
-                        foreach (var item in e.OldItems.OfType<INotifyPropertyChanged>())
-                            item.PropertyChanged -= ItemPropertyChanged;
+                case NotifyCollectionChangedAction.Remove when e.OldItems?.OfType<INotifyPropertyChanged>() is { } old_items:
+                    foreach (var item in old_items)
+                        item.PropertyChanged -= ItemPropertyChanged;
                     break;
             }
 

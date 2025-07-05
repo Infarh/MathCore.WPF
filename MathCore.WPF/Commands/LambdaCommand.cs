@@ -140,7 +140,7 @@ public class LambdaCommand : Command
 }
 
 /// <summary>
-/// Типизированная лямбда-команда
+/// Типизированная лямбда-команда<br/>
 /// Позволяет быстро указывать методы для выполнения основного тела команды и определения возможности выполнения
 /// </summary>
 public class LambdaCommand<T> : Command, IObservableEx<T?>
@@ -214,7 +214,7 @@ public class LambdaCommand<T> : Command, IObservableEx<T?>
     {
         switch (parameter)
         {
-            case null:     return default!;
+            case null: return default!;
             case T result: return result;
         }
 

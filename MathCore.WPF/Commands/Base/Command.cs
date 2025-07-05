@@ -189,7 +189,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
 
     protected virtual void OnExecuted(object? p)
     {
-        if(Executed is not { } handler) return;
+        if (Executed is not { } handler) return;
 
         handler.ThreadSafeInvoke(this, p);
     }
@@ -231,7 +231,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
         {
             if (_IsCanExecute == value) return;
             _IsCanExecute = value;
-            OnPropertyChanged(nameof(IsCanExecute));
+            OnPropertyChanged();
             CommandManager.InvalidateRequerySuggested();
         }
     }
@@ -239,20 +239,14 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     #region Name : string? - Название
 
     /// <summary>Название</summary>
-    private string? _Name;
-
-    /// <summary>Название</summary>
-    public string? Name { get => _Name; set => Set(ref _Name, value); }
+    public string? Name { get; set => Set(ref field, value); }
 
     #endregion
 
     #region Description : string? - Описание
 
     /// <summary>Описание</summary>
-    private string? _Description;
-
-    /// <summary>Описание</summary>
-    public string? Description { get => _Description; set => Set(ref _Description, value); }
+    public string? Description { get; set => Set(ref field, value); }
 
     #endregion
 
@@ -263,9 +257,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     /// <inheritdoc />
     public override object ProvideValue(IServiceProvider sp)
     {
-        //var target_value_provider = (IProvideValueTarget)sp.GetService(typeof(IProvideValueTarget));
-        var target_value_provider = sp.GetValueTargetProvider();
-        if (target_value_provider != null)
+        if (sp.GetValueTargetProvider() is { } target_value_provider)
         {
             var target = target_value_provider.TargetObject;
             _TargetObjectReference = target is null ? null : new WeakReference(target);
@@ -273,13 +265,9 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
             _TargetPropertyReference = target_property is null ? null : new WeakReference(target_property);
         }
 
-        //var root_object_provider = (IRootObjectProvider)sp.GetService(typeof(IRootObjectProvider));
-        var root_object_provider = sp.GetRootObjectProvider();
-        if (root_object_provider != null)
-        {
-            var root = root_object_provider.RootObject;
-            _RootObjectReference = root is null ? null : new WeakReference(root);
-        }
+        if (sp.GetRootObjectProvider() is not { } root_object_provider) return this;
+
+        _RootObjectReference = root_object_provider.RootObject is { } root ? new(root) : null;
 
         return this;
     }
@@ -310,7 +298,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
         {
             _Observable?.OnError(error);
 
-            if(!OnError(error))
+            if (!OnError(error))
                 throw;
         }
     }
@@ -319,21 +307,26 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
 
     #region IDisposable
 
+
     public void Dispose()
     {
+        if (IsDisposed) return;
+
         Dispose(true);
         GC.SuppressFinalize(this);
+
+        IsDisposed = true;
     }
 
-    private bool _Disposed;
+    protected bool IsDisposed { get; private set; }
+
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposing || _Disposed) return;
+        if (!disposing || IsDisposed) return;
 
         _Observable?.OnCompleted();
         _Observable?.Dispose();
         _Observable = null;
-        _Disposed = true;
     }
 
     #endregion
