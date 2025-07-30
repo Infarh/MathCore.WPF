@@ -40,20 +40,20 @@ public static class LongPress
 
     private static void OnCommandPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d.GetValue(__AttachedControls) is { } attached_d)
-        {
-            if (ReferenceEquals(d, attached_d)) return;
-            UnregisterHandlers((Control)attached_d);
-        }
+        // Отписываемся от старых обработчиков если они есть
+        if (d.GetValue(__AttachedControls) is Control old_control)
+            UnregisterHandlers(old_control);
 
+        // Если новое значение null - очищаем всё и выходим
         if (e.NewValue is null)
         {
-            UnregisterHandlers((Control)d);
-            d.SetValue(__AttachedControls, null);
+            d.ClearValue(__AttachedControls);
+            d.ClearValue(__CancellationTokenSource);
+            return;
         }
 
+        // Устанавливаем новую связь и регистрируем обработчики
         d.SetValue(__AttachedControls, d);
-
         RegisterHandlers((Control)d);
     }
 
@@ -61,12 +61,22 @@ public static class LongPress
     {
         control.MouseLeftButtonDown += OnMouseDown;
         control.MouseLeftButtonUp += OnMouseUp;
+        control.MouseLeave += OnMouseLeave; // Добавляем обработку ухода мыши с элемента
     }
 
     private static void UnregisterHandlers(Control control)
     {
         control.MouseLeftButtonDown -= OnMouseDown;
         control.MouseLeftButtonUp -= OnMouseUp;
+        control.MouseLeave -= OnMouseLeave;
+        
+        // Отменяем текущую задачу если она есть
+        if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
+        {
+            cts.Cancel();
+            cts.Dispose();
+            control.ClearValue(__CancellationTokenSource);
+        }
     }
 
     private static readonly DependencyProperty __LastClickTime = DependencyProperty
@@ -75,26 +85,85 @@ public static class LongPress
             typeof(DateTime),
             typeof(LongPress));
 
+    private static readonly DependencyProperty __CancellationTokenSource = DependencyProperty
+        .RegisterAttached(
+            nameof(__CancellationTokenSource),
+            typeof(CancellationTokenSource),
+            typeof(LongPress));
+
     private static async void OnMouseDown(object sender, MouseButtonEventArgs e)
     {
         if (sender is not Control control) return;
 
+        // Отменяем предыдущую задачу если она есть
+        if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource old_cts)
+        {
+            old_cts.Cancel();
+            old_cts.Dispose();
+        }
+
         var down_time = DateTime.Now;
         control.SetValue(__LastClickTime, down_time);
+        
+        var cts = new CancellationTokenSource();
+        control.SetValue(__CancellationTokenSource, cts);
+        
         var timeout = Math.Max(100, GetTimeout(control));
 
-        await Task.Delay(timeout);
+        try
+        {
+            await Task.Delay(timeout, cts.Token);
 
-        if (control.GetValue(CommandProperty) is not ICommand command) return;
-        if (!Equals(down_time, control.GetValue(__LastClickTime))) return;
+            // Проверяем что задача не была отменена и время совпадает
+            if (cts.Token.IsCancellationRequested) return;
+            if (control.GetValue(CommandProperty) is not ICommand command) return;
+            if (!Equals(down_time, control.GetValue(__LastClickTime))) return;
 
-        var parameter = control.GetValue(CommandParameterProperty);
-        command.TryExecute(parameter);
+            var parameter = control.GetValue(CommandParameterProperty);
+            command.TryExecute(parameter);
 
-        control.RaiseEvent(new(ClickEvent, control));
+            control.RaiseEvent(new(ClickEvent, control));
+        }
+        catch (OperationCanceledException)
+        {
+            // Задача была отменена - это нормально
+        }
+        finally
+        {
+            // Очищаем CancellationTokenSource если он всё ещё наш
+            if (ReferenceEquals(control.GetValue(__CancellationTokenSource), cts))
+            {
+                control.ClearValue(__CancellationTokenSource);
+                cts.Dispose();
+            }
+        }
     }
 
-    private static void OnMouseUp(object sender, MouseButtonEventArgs e) => ((DependencyObject)sender).ClearValue(__LastClickTime);
+    private static void OnMouseUp(object sender, MouseButtonEventArgs e) 
+    {
+        var control = (DependencyObject)sender;
+        control.ClearValue(__LastClickTime);
+        
+        // Отменяем текущую задачу
+        if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
+        {
+            cts.Cancel();
+            control.ClearValue(__CancellationTokenSource);
+        }
+    }
+
+    private static void OnMouseLeave(object sender, MouseEventArgs e)
+    {
+        var control = (DependencyObject)sender;
+        control.ClearValue(__LastClickTime);
+        
+        // Отменяем текущую задачу при уходе мыши с элемента
+        if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
+        {
+            cts.Cancel();
+            control.ClearValue(__CancellationTokenSource);
+        }
+    }
 
     /// <Summary>Команда долгого нажатия</Summary>
     [AttachedPropertyBrowsableForType(typeof(Control))]
@@ -159,30 +228,4 @@ public static class LongPress
 
     #endregion
 
-
-    #region Attached property LongPress.PropName : string - Свойство
-
-    /// <Summary>Свойство</Summary>
-    private static readonly DependencyPropertyKey __PropNameProperty =
-        DependencyProperty.RegisterAttachedReadOnly(
-            "PropName",
-            typeof(string),
-            typeof(LongPress),
-            new(default(string), OnPropNamePropertyChanged));
-
-    public static readonly DependencyProperty PropNameProperty = __PropNameProperty.DependencyProperty;
-
-    private static void OnPropNamePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-
-    }
-
-    /// <Summary>Свойство</Summary>
-    [AttachedPropertyBrowsableForType(typeof(Control))]
-    public static void SetPropName(DependencyObject D, string value) => D.SetValue(__PropNameProperty, value);
-
-    /// <Summary>Свойство</Summary>
-    public static string GetPropName(DependencyObject D) => (string)D.GetValue(PropNameProperty);
-
-    #endregion
 }
