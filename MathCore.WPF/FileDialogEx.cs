@@ -52,6 +52,20 @@ public readonly ref struct FileDialogEx
         }
 
         public bool Equals(FileFilterItem other) => Title == other.Title && Values.SequenceEqual(other.Values, StringComparer.OrdinalIgnoreCase);
+
+        public override bool Equals(object? obj) => obj is FileFilterItem item && Equals(item);
+
+        public static bool operator ==(FileFilterItem left, FileFilterItem right) => left.Equals(right);
+
+        public static bool operator !=(FileFilterItem left, FileFilterItem right) => !(left == right);
+
+        public override int GetHashCode()
+        {
+            var hash = new HashBuilder("FileDialog".GetHashCode()).Append("FileFileter");
+            foreach (var item in Values)
+                hash = hash.Append(item.GetHashCode());
+            return hash;
+        }
     }
 
     public static FileDialogEx OpenFile() => new() { IsSaveFileDialog = false };
@@ -91,8 +105,8 @@ public readonly ref struct FileDialogEx
        : this with { Filter = [new(Name, Ext)] };
 #endif
 
-    public FileDialogEx AddFilterAllFiles() => Filter is null || Filter.Last().Title != "Все файлы" 
-        ? AddFilter("Все файлы", "*.*") 
+    public FileDialogEx AddFilterAllFiles() => Filter is null || Filter.Last().Title != "Все файлы"
+        ? AddFilter("Все файлы", "*.*")
         : this;
 
     public OpenFileDialog CreateOpenFileDialog()

@@ -47,11 +47,11 @@ public class RadialProgressIndicator : FrameworkElement
     /// <summary>Initializes a new instance of <see cref="RadialProgressIndicator" /></summary>
     public RadialProgressIndicator()
     {
-        _IsListening   =  false;
-        _Radius        =  0;
-        _Center        =  new();
-        _RotationAngle =  0;
-        Unloaded       += OnUnloaded;
+        _IsListening = false;
+        _Radius = 0;
+        _Center = new();
+        _RotationAngle = 0;
+        Unloaded += OnUnloaded;
     }
 
     #endregion
@@ -191,7 +191,7 @@ public class RadialProgressIndicator : FrameworkElement
 
         var tick = Environment.TickCount;
         _TickCount = tick - _LastTick;
-        _LastTick  = tick;
+        _LastTick = tick;
 
         CreateProgressPath(_TickCount);
     }
@@ -205,7 +205,7 @@ public class RadialProgressIndicator : FrameworkElement
         {
             var path_geometry = (PathGeometry)_CurrentGeometry.Clone();
             path_geometry.Transform = new RotateTransform(_RotationAngle, _Center.X, _Center.Y);
-            _ProgressGeometry       = path_geometry.GetFlattenedPathGeometry();
+            _ProgressGeometry = path_geometry.GetFlattenedPathGeometry();
         }
 
         if (_BorderGeometry != null)
@@ -239,7 +239,7 @@ public class RadialProgressIndicator : FrameworkElement
         if (_IsListening)
             return;
 
-        _IsListening                =  true;
+        _IsListening = true;
         CompositionTarget.Rendering += OnRendering;
     }
 
@@ -250,7 +250,7 @@ public class RadialProgressIndicator : FrameworkElement
         if (!_IsListening)
             return;
 
-        _IsListening                =  false;
+        _IsListening = false;
         CompositionTarget.Rendering -= OnRendering;
     }
 
@@ -277,8 +277,8 @@ public class RadialProgressIndicator : FrameworkElement
         {
             if (_IsListening)
                 StopListening();
-            _RotationAngle    = 0;
-            _CurrentGeometry  = null;
+            _RotationAngle = 0;
+            _CurrentGeometry = null;
             _ProgressGeometry = null;
         }
 
@@ -307,7 +307,7 @@ public class RadialProgressIndicator : FrameworkElement
     #endregion Property Changes
 }
 
-internal static class GeometryExtensions
+file static class GeometryExtensions
 {
     #region Static
 
@@ -327,7 +327,7 @@ internal static class GeometryExtensions
         var sign = Sign(angle);
 
         var normalized_angle = Abs(angle).Normalize();
-        var percentage       = normalized_angle / 360;
+        var percentage = normalized_angle / 360;
 
         normalized_angle = percentage.EaseInOut(normalized_angle, 5, 2);
         normalized_angle = Max(normalized_angle, 1);
@@ -387,7 +387,7 @@ internal static class GeometryExtensions
 
         var is_large_arc = angle > __FullCircleInDegrees / 2;
 
-        var arc_point       = ConvertRadianToCartesian(angle, radius);
+        var arc_point = ConvertRadianToCartesian(angle, radius);
         var inner_arc_point = ConvertRadianToCartesian(angle, InnerRadius);
 
         var segments = new PathSegmentCollection
@@ -469,8 +469,8 @@ internal static class GeometryExtensions
             throw new ArgumentOutOfRangeException($"{nameof(radius)} '{radius}' must be greater than zero.");
 
         var angle_radius = PI / (__FullCircleInDegrees / 2) * (angle - __FullCircleInDegrees / 4);
-        var x            = radius * Cos(angle_radius);
-        var y            = radius * Sin(angle_radius);
+        var x = radius * Cos(angle_radius);
+        var y = radius * Sin(angle_radius);
         return new(x, y);
     }
 
@@ -551,7 +551,7 @@ internal static class GeometryExtensions
     #endregion
 }
 
-internal static class DoubleUtil
+file static class DoubleUtil
 {
     #region Types
 
@@ -597,7 +597,7 @@ internal static class DoubleUtil
         // ReSharper restore CompareOfFloatsByEqualityOperator 
 
         // This computes (|value1-value2| / (|value1| + |value2| + 10.0)) < DoubleEpsilon  
-        var eps   = (Abs(value1) + Abs(value2) + 10.0) * __DoubleEpsilon;
+        var eps = (Abs(value1) + Abs(value2) + 10.0) * __DoubleEpsilon;
         var delta = value1 - value2;
         return (-eps < delta) && (eps > delta);
     }

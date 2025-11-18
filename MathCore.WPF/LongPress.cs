@@ -69,7 +69,7 @@ public static class LongPress
         control.MouseLeftButtonDown -= OnMouseDown;
         control.MouseLeftButtonUp -= OnMouseUp;
         control.MouseLeave -= OnMouseLeave;
-        
+
         // Отменяем текущую задачу если она есть
         if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
         {
@@ -104,10 +104,10 @@ public static class LongPress
 
         var down_time = DateTime.Now;
         control.SetValue(__LastClickTime, down_time);
-        
+
         var cts = new CancellationTokenSource();
         control.SetValue(__CancellationTokenSource, cts);
-        
+
         var timeout = Math.Max(100, GetTimeout(control));
 
         try
@@ -139,11 +139,11 @@ public static class LongPress
         }
     }
 
-    private static void OnMouseUp(object sender, MouseButtonEventArgs e) 
+    private static void OnMouseUp(object sender, MouseButtonEventArgs e)
     {
         var control = (DependencyObject)sender;
         control.ClearValue(__LastClickTime);
-        
+
         // Отменяем текущую задачу
         if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
         {
@@ -156,7 +156,7 @@ public static class LongPress
     {
         var control = (DependencyObject)sender;
         control.ClearValue(__LastClickTime);
-        
+
         // Отменяем текущую задачу при уходе мыши с элемента
         if (control.GetValue(__CancellationTokenSource) is CancellationTokenSource cts)
         {
@@ -188,7 +188,6 @@ public static class LongPress
 
     #endregion
 
-
     #region Attached property LongPress.Timeout : int - Задержка (не меньше 100) мс
 
     /// <Summary>Задержка (не меньше 100) мс</Summary>
@@ -207,7 +206,6 @@ public static class LongPress
     public static int GetTimeout(DependencyObject D) => (int)D.GetValue(TimeoutProperty);
 
     #endregion
-
 
     #region Attached property LongPress.AnimationTimeout : int - Шаг анимации
 
