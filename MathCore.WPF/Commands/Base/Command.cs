@@ -191,7 +191,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     {
         if (Executed is not { } handler) return;
 
-        handler.ThreadSafeInvoke(this, p);
+        handler.ThreadSafeInvoke(this, new EventArgs<object?>(p));
     }
 
     public event EventHandler<EventArgs<object?>>? BeforeExecuted;
@@ -200,7 +200,7 @@ public abstract partial class Command : MarkupExtension, ICommand, INotifyProper
     {
         if (BeforeExecuted is not { } handler) return;
 
-        handler.ThreadSafeInvoke(this, p);
+        handler.ThreadSafeInvoke(this, new EventArgs<object?>(p));
     }
 
     #endregion

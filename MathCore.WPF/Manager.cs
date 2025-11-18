@@ -19,7 +19,7 @@ public static class ElementManager
     public static ElementControllersCollection GetBehaviors(DependencyObject obj)
     {
         var collection = (ElementControllersCollection?)obj.GetValue(ControllersProperty);
-        if(collection != null) return collection;
+        if (collection != null) return collection;
         collection = [];
         obj.SetValue(ControllersProperty, collection);
         return collection;
@@ -29,10 +29,10 @@ public static class ElementManager
     {
         var old_value = (ElementControllersCollection?)args.OldValue;
         var new_value = (ElementControllersCollection?)args.NewValue;
-        if(old_value == new_value) return;
-        if(old_value?.Element != null) old_value.ResetElement();
-        if(new_value is null || obj is null) return;
-        if(new_value.Element != null) throw new InvalidOperationException();
+        if (old_value == new_value) return;
+        if (old_value?.Element != null) old_value.ResetElement();
+        if (new_value is null || obj is null) return;
+        if (new_value.Element != null) throw new InvalidOperationException();
         new_value.SetElement(obj);
     }
 
@@ -57,28 +57,28 @@ public abstract class ElementController<TElement> : ElementController
     /// <inheritdoc />
     public override void SetElement(DependencyObject? element)
     {
-        if(element is null)
+        if (element is null)
         {
             ResetElement();
             return;
         }
 
-        if(element is not TElement e)
+        if (element is not TElement e)
             throw new ArgumentException($"Целевой объект не является объектом типа {typeof(TElement)}");
         SetElement(e);
     }
 
     protected virtual void SetElement(TElement element)
     {
-        if(ReferenceEquals(_Element, element)) return;
-        if(element is null) throw new ArgumentNullException(nameof(element));
+        if (ReferenceEquals(_Element, element)) return;
+        if (element is null) throw new ArgumentNullException(nameof(element));
         ResetElement();
         ElementSet?.Invoke(this, _Element = element);
     }
 
     public override void ResetElement()
     {
-        if(_Element != null)
+        if (_Element != null)
             ElementReset?.Invoke(this, _Element);
         _Element = null;
     }
@@ -94,9 +94,9 @@ public class ElementControllersCollection : IList<ElementController>
         get => _Element;
         set
         {
-            if(ReferenceEquals(_Element, value)) return;
+            if (ReferenceEquals(_Element, value)) return;
             _Element = value ?? throw new ArgumentNullException(nameof(value));
-            for(var i = 0; i < _Items.Count; i++)
+            for (var i = 0; i < _Items.Count; i++)
                 _Items[i].SetElement(value);
         }
     }
@@ -115,7 +115,7 @@ public class ElementControllersCollection : IList<ElementController>
     public bool Remove(ElementController? controller)
     {
         var remove = _Items.Remove(controller);
-        if(remove) controller.ResetElement();
+        if (remove) controller.ResetElement();
         return remove;
     }
 
@@ -176,17 +176,17 @@ public class ConditionalEventTrigger : FrameworkContentElement
 {
     private static readonly RoutedEvent TriggerActionsEvent = EventManager
        .RegisterRoutedEvent(
-            "TriggerActions", 
-            RoutingStrategy.Direct, 
-            typeof(EventHandler), 
+            "TriggerActions",
+            RoutingStrategy.Direct,
+            typeof(EventHandler),
             typeof(ConditionalEventTrigger));
     public RoutedEvent RoutedEvent { get; set; }
 
     public static readonly DependencyProperty ExcludedSourceNamesProperty = DependencyProperty
        .Register(
-            nameof(ExcludedSourceNames), 
-            typeof(List<string>), 
-            typeof(ConditionalEventTrigger), 
+            nameof(ExcludedSourceNames),
+            typeof(List<string>),
+            typeof(ConditionalEventTrigger),
             new(new List<string>()));
 
     public List<string> ExcludedSourceNames
@@ -223,7 +223,7 @@ public class ConditionalEventTrigger : FrameworkContentElement
                 {
                     // When "Triggers" is set, register handlers for each trigger in the list 
                     var element = (FrameworkElement)s;
-                    foreach(var trigger in (List<ConditionalEventTrigger>)e.NewValue)
+                    foreach (var trigger in (List<ConditionalEventTrigger>)e.NewValue)
                         element.AddHandler(trigger.RoutedEvent, new RoutedEventHandler((_, e2) => trigger.OnRoutedEvent(element, e2)));
                 }
             });
@@ -231,12 +231,12 @@ public class ConditionalEventTrigger : FrameworkContentElement
     // When an event fires, check the condition and if it is true fire the actions 
     private void OnRoutedEvent(FrameworkElement element, RoutedEventArgs args)
     {
-        if(args.OriginalSource is not FrameworkElement sender) return;
+        if (args.OriginalSource is not FrameworkElement sender) return;
         DataContext = element.DataContext; // Allow data binding to access element properties
-        if(ExcludedSourceNames.Any(x => x.Equals(sender.Name))) return;
+        if (ExcludedSourceNames.Any(x => x.Equals(sender.Name))) return;
         // Construct an EventTrigger containing the actions, then trigger it 
         var trigger = new EventTrigger { RoutedEvent = TriggerActionsEvent };
-        foreach(var action in Actions)
+        foreach (var action in Actions)
             trigger.Actions.Add(action);
 
         element.Triggers.Add(trigger);
