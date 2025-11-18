@@ -22,6 +22,18 @@ public static class CommandEx
         return Command;
     }
 
+    /// <summary>Устанавливает описание для команды</summary>
+    /// <typeparam name="TCommand">Тип команды</typeparam>
+    /// <param name="Command">Команда</param>
+    /// <param name="Description">Описание команды</param>
+    /// <returns>Команда с установленными описанием</returns>
+    public static TCommand WithDescription<TCommand>(this TCommand Command, string? Description)
+        where TCommand : Command
+    {
+        Command.Description = Description;
+        return Command;
+    }
+
     /// <summary>Пытается выполнить команду с указанным параметром</summary>
     /// <param name="Command">Команда</param>
     /// <param name="Parameter">Параметр команды</param>

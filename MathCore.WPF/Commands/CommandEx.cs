@@ -2,7 +2,7 @@
 
 public static class CommandEx
 {
-    public static TCommand CatchException<TCommand>(this TCommand Command, Action<Exception> Handler) 
+    public static TCommand CatchException<TCommand>(this TCommand Command, Action<Exception> Handler)
         where TCommand : Command
     {
         void Catch(object sender, ExceptionEventHandlerArgs<Exception> e) => Handler(e.Argument);
@@ -11,7 +11,7 @@ public static class CommandEx
         return Command;
     }
 
-    public static TCommand CatchException<TCommand, TException>(this TCommand Command, Action<TException> Handler) 
+    public static TCommand CatchException<TCommand, TException>(this TCommand Command, Action<TException> Handler)
         where TCommand : Command
         where TException : Exception
     {
@@ -25,7 +25,7 @@ public static class CommandEx
         return Command;
     }
 
-    public static TCommand CatchException<TCommand>(this TCommand Command, Func<Exception, bool> Handler) 
+    public static TCommand CatchException<TCommand>(this TCommand Command, Func<Exception, bool> Handler)
         where TCommand : Command
     {
         void Catch(object sender, ExceptionEventHandlerArgs<Exception> e)
@@ -38,7 +38,7 @@ public static class CommandEx
         return Command;
     }
 
-    public static TCommand CatchException<TCommand, TException>(this TCommand Command, Func<TException, bool> Handler) 
+    public static TCommand CatchException<TCommand, TException>(this TCommand Command, Func<TException, bool> Handler)
         where TCommand : Command
         where TException : Exception
     {
