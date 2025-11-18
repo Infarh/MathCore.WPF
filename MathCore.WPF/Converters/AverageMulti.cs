@@ -3,10 +3,13 @@ using System.Windows.Markup;
 
 using MathCore.WPF.Converters.Base;
 
+// ReSharper disable UnusedType.Global
+// ReSharper disable UnusedMember.Global
+
 namespace MathCore.WPF.Converters;
 
-[MarkupExtensionReturnType(typeof(DivideMulti))]
-public class DivideMulti : MultiValueValueConverter
+[MarkupExtensionReturnType(typeof(AverageMulti))]
+public class AverageMulti() : MultiValueValueConverter
 {
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
@@ -22,18 +25,14 @@ public class DivideMulti : MultiValueValueConverter
 
         for (var i = 1; i < vv.Length; i++)
         {
-            if (vv[i] is null or double.NaN) return double.NaN;
-            if (!DoubleValueConverter.TryConvertToDouble(vv[i], c, out var div))
+            if (vv[i] is null) return double.NaN;
+
+            if (!DoubleValueConverter.TryConvertToDouble(vv[i], c, out var value))
                 return double.NaN;
-            if (div == 0)
-                return v == 0
-                    ? double.NaN
-                    : v > 0
-                        ? double.PositiveInfinity
-                        : double.NegativeInfinity;
-            v /= div;
+
+            v += value;
         }
 
-        return v;
+        return v / vv.Length;
     }
 }

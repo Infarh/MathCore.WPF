@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Последовательное скользящее усреднение значений с фиксированным окном</summary>
+/// <param name="Length">Размер окна</param>
 [MarkupExtensionReturnType(typeof(Average))]
 public class Average(int Length) : SimpleDoubleValueConverter
 {
@@ -15,6 +17,7 @@ public class Average(int Length) : SimpleDoubleValueConverter
 
     private readonly AverageValue _Value = new(Length);
 
+    /// <summary>Размер окна</summary>
     public int Length
     {
         get => _Value.Length;

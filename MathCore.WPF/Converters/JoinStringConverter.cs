@@ -17,6 +17,6 @@ public class JoinStringConverter : IMultiValueConverter
 
         var separator = parameter as string ?? " ";
 
-        return str.Split([separator], StringSplitOptions.None).Cast<object>().ToArray();
+        return [.. str.Split([separator], StringSplitOptions.None).Cast<object>()];
     }
 }

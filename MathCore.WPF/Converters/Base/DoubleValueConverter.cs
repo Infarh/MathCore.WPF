@@ -61,7 +61,22 @@ public abstract class DoubleValueConverter : ValueConverter
     /// <returns>Результат успешности преобразования</returns>
     public static bool TryConvertToDouble(object? obj, IFormatProvider format, out double value)
     {
-        if (Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue))
+        // Проверка специальных/невалидных значений
+        if (obj is null || Equals(obj, Binding.DoNothing) || Equals(obj, DependencyProperty.UnsetValue) || obj == DBNull.Value)
+        {
+            value = double.NaN;
+            return false;
+        }
+
+        // SQL-тип с IsNull
+        if (obj is System.Data.SqlTypes.INullable sql_null && sql_null.IsNull)
+        {
+            value = double.NaN;
+            return false;
+        }
+
+        // Пустая или состоящая из пробелов строка — считать невалидной
+        if (obj is string s && string.IsNullOrWhiteSpace(s))
         {
             value = double.NaN;
             return false;
@@ -69,8 +84,8 @@ public abstract class DoubleValueConverter : ValueConverter
 
         switch (obj)
         {
-            case string str when double.TryParse(str, NumberStyles.Any, format, out value) || 
-                                 double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value) || 
+            case string str when double.TryParse(str, NumberStyles.Any, format, out value) ||
+                                 double.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value) ||
                                  double.TryParse(str, NumberStyles.Any, __NotInvarianceFormat, out value):
                 return true;
 
