@@ -62,7 +62,7 @@ public class EventsTrigger(Func<object, bool> Checker) : INotifyPropertyChanged,
 
     private static readonly TriggersPool __Pool;
 
-    private static TriggersPool Pool => __Pool;
+    //private static TriggersPool Pool => __Pool;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -90,7 +90,7 @@ public class EventsTrigger(Func<object, bool> Checker) : INotifyPropertyChanged,
         bool current;
         lock (_SyncRoot)
         {
-            var last             = _LastState;
+            var last = _LastState;
             current = _LastState = Checker(obj);
             Checked?.Invoke(this, EventArgs.Empty);
             if (current == last) return current;

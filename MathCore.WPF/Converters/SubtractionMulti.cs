@@ -20,12 +20,16 @@ public class SubtractionMulti : MultiValueValueConverter
                 return double.NaN;
         }
 
-        var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
+        if (!DoubleValueConverter.TryConvertToDouble(vv[0], c, out var value))
+            return double.NaN;
+        var v = value;
 
         for (var i = 1; i < vv.Length; i++)
         {
             if (vv[i] is null) return double.NaN;
-            v -= vv[i] is double dv ? dv : System.Convert.ToDouble(vv[i]);
+            if (!DoubleValueConverter.TryConvertToDouble(vv[i], c, out value))
+                return double.NaN;
+            v -= value;
         }
 
         return v;

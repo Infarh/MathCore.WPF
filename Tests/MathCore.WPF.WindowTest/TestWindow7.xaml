@@ -25,9 +25,6 @@
                             <TextBlock Text="{Binding Time, StringFormat=yyyy г., UpdateSourceTrigger=Explicit}" HorizontalAlignment="Right"/>
                         </StackPanel>
 
-                        <Ellipse Grid.Column="0" HorizontalAlignment="Right" StrokeThickness="1"
-                                 Visibility="Collapsed"
-                                 Stroke="Red"/>
                         <Border Grid.Column="1" BorderThickness="3,0,0,0" Margin="5,-2" BorderBrush="DarkBlue"/>
                         <HeaderedContentControl Grid.Column="2">
                             <HeaderedContentControl.Header>
@@ -35,6 +32,10 @@
                             </HeaderedContentControl.Header>
                             <TextBlock Text="{Binding Description}" Margin="5,0,0,0"/>
                         </HeaderedContentControl>
+                        <Ellipse Panel.ZIndex="10" Grid.Column="0" HorizontalAlignment="Left" StrokeThickness="2"
+                                 Visibility="Collapsed"
+                                 Width="15" Height="15" Fill="OrangeRed"
+                                 Stroke="Red"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

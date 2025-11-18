@@ -1,0 +1,17 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindows8"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
+        DataContext="{StaticResource TestWindow8Model}"
+        Title="{Binding Title}"
+        Width="800" Height="450">
+    <Window.Resources>
+        <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
+    </Window.Resources>
+    <Grid>
+        
+    </Grid>
+</Window>

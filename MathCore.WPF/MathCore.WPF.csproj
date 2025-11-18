@@ -9,12 +9,12 @@
     <!--<TargetFramework>net6.0-windows</TargetFramework>-->
     <!--<TargetFramework>net7.0-windows</TargetFramework>-->
     <TargetFrameworks>
+      net10.0-windows;
       net9.0-windows;
       net8.0-windows;
       net7.0-windows;
       net6.0-windows;
       net5.0-windows;
-      netcoreapp3.1-windows;
       net4.8-windows;
       net4.7-windows;
       net4.6.1-windows;
@@ -29,9 +29,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.48.2</Version>
+    <Version>0.0.48.3</Version>
     <PackageReleaseNotes>
-      Добавлены стили для кнопок и полей ввода текста в стилистике Bootstrap 5
+      Добавлена поддержка .NET10.0
     </PackageReleaseNotes>
   </PropertyGroup>
 
@@ -51,7 +51,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.93.2" />
+    <PackageReference Include="MathCore" Version="0.0.94.1" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net4.6.1-windows'">
@@ -72,10 +72,6 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1-windows'">
-    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="[1.1.39]" />
-  </ItemGroup>
-
   <ItemGroup Condition="'$(TargetFramework)'=='net5.0-windows'">
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.6.3" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="[1.1.39]" />
@@ -94,6 +90,10 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net9.0-windows'">
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net10.0-windows'">
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
   </ItemGroup>
 

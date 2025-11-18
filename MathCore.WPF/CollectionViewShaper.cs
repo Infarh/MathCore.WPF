@@ -6,7 +6,7 @@ using System.Windows.Data;
 
 namespace MathCore.WPF;
 
-/// <summary> </summary>
+/// <summary>Формирует fluent-api для задания представления коллекции WPF с помощью LINQ-подобного синтаксиса</summary>
 /// <remarks>
 /// <code>
 /// // Collection to which the view is bound
@@ -128,7 +128,7 @@ public class CollectionViewShaper<T>(ICollectionView view)
     private static string GetPropertyPath(Expression expression)
     {
         var names = new Stack<string>();
-        var expr  = expression;
+        var expr = expression;
         while (expr is not null and not ParameterExpression and not ConstantExpression)
         {
             if (expr is not MemberExpression member)

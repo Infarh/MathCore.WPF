@@ -25,7 +25,10 @@ public class AdditionMulti : MultiValueValueConverter
         for (var i = 1; i < vv.Length; i++)
         {
             if (vv[i] is null) return double.NaN;
-            v += vv[i] is double dv ? dv : System.Convert.ToDouble(vv[i]);
+            if (!DoubleValueConverter.TryConvertToDouble(vv[i], c, out var value))
+                return double.NaN;
+
+            v += value;
         }
 
         return v;

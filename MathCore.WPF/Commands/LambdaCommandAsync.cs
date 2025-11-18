@@ -2,6 +2,9 @@
 
 namespace MathCore.WPF.Commands;
 
+/// <summary>Асинхронная команда</summary>
+/// <param name="ExecuteAsync">Асинхронный метод, выполняемый командой</param>
+/// <param name="CanExecuteAsync">Метод, определяющий возможность выполнения команды</param>
 public class LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<object?, bool>? CanExecuteAsync = null)
     : Command
 {
@@ -30,7 +33,7 @@ public class LambdaCommandAsync(Func<object?, Task> ExecuteAsync, Func<object?, 
     {
         var background = Background;
 
-        var can_execute = background 
+        var can_execute = background
             ? await Task.Run(() => CanExecute(parameter))
             : CanExecute(parameter);
         if (!can_execute) return;
@@ -64,7 +67,7 @@ public class LambdaCommandAsync<T>(Func<T?, Task> ExecuteAsync, Func<T?, bool>? 
     public bool Background { get; set; }
 
     public LambdaCommandAsync(Func<Task> ExecuteAsync, Func<bool>? CanExecuteAsync = null)
-        :this(
+        : this(
             ExecuteAsync is null ? throw new ArgumentNullException(nameof(ExecuteAsync)) : new Func<T?, Task>(_ => ExecuteAsync()),
             CanExecuteAsync is null ? null : new Func<T?, bool>(_ => CanExecuteAsync()))
     { }
@@ -83,8 +86,8 @@ public class LambdaCommandAsync<T>(Func<T?, Task> ExecuteAsync, Func<T?, bool>? 
         if (parameter is not T value)
             value = parameter is null
                 ? default!
-                : background 
-                    ? await Task.Run(() => LambdaCommand<T>.ConvertParameter(parameter)) 
+                : background
+                    ? await Task.Run(() => LambdaCommand<T>.ConvertParameter(parameter))
                     : LambdaCommand<T>.ConvertParameter(parameter);
 
         var can_execute = background
@@ -94,7 +97,7 @@ public class LambdaCommandAsync<T>(Func<T?, Task> ExecuteAsync, Func<T?, bool>? 
         if (!can_execute) return;
 
         var execute_async = background
-            ? Task.Run(() => _ExecuteAsync(value!)) 
+            ? Task.Run(() => _ExecuteAsync(value!))
             : _ExecuteAsync(value!);
 
         _ = Interlocked.Exchange(ref _ExecutingTask, execute_async);

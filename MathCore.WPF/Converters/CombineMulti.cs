@@ -16,23 +16,23 @@ public class CombineMulti(IMultiValueConverter First, IValueConverter Then) : Mu
 
     public CombineMulti(IMultiValueConverter First) : this(First, null) { }
 
-    [ConstructorArgument("First")]
+    [ConstructorArgument(nameof(First))]
     public IMultiValueConverter? First { get; set; } = First;
 
-    [ConstructorArgument("Then")]
+    [ConstructorArgument(nameof(Then))]
     public IValueConverter? Then { get; set; } = Then;
 
     protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
         var result = (First ?? throw new InvalidOperationException("Не задан первичный конвертер значений")).Convert(vv, t, p, c);
-        return Then is { } then 
-            ? then.Convert(result, t, p, c) 
+        return Then is { } then
+            ? then.Convert(result, t, p, c)
             : result;
     }
 
     protected override object[]? ConvertBack(object? v, Type[]? tt, object? p, CultureInfo? c)
     {
-        if (Then  is { } then)
+        if (Then is { } then)
             v = then.ConvertBack(v, v != null ? v.GetType() : typeof(object), p, c);
         return (First ?? throw new InvalidOperationException("Не задан первичный конвертер значений")).ConvertBack(v, tt, p, c);
     }

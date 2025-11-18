@@ -11,9 +11,9 @@ public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
     /// <inheritdoc />
     protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
-        double[] value = Array.Empty<double>();
+        var value = Array.Empty<double>();
 
-        if(vv is { Length: > 0 })
+        if (vv is { Length: > 0 })
         {
             value = new double[vv.Length];
             for (var i = 0; i < vv.Length; i++)
