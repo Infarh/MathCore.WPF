@@ -13,7 +13,10 @@
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
     </Window.Resources>
     <Grid>
-        <sh:Arrow X1="10" X2="300" Y1="30" Y2="300" ArrowHeadLength="39" ArrowHeadWidth="26" StrokeThickness="4"
+        <sh:Arrow X1="10" X2="300" Y1="30" Y2="300" 
+                  ArrowHeadLength="53" 
+                  ArrowHeadWidth="31" StrokeThickness="4" 
+                  IsArrowHeadClosed="False" ArrowHeadOffset="-36"
                   />
     </Grid>
 </Window>

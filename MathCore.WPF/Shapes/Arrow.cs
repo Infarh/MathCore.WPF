@@ -13,7 +13,7 @@ namespace MathCore.WPF.Shapes;
 /// <summary>Визуальный элемент стрелки с настраиваемыми параметрами линии и головы</summary>
 /// <remarks>
 /// Стрелка состоит из линии и головы в виде треугольника
-/// Поддерживает настройку координат начала и конца, размеров головы, стиля линии и заливки
+/// Поддерживает настройку координат начала и конца, размеров головы, отступа между линией и головой, стиля линии и заливки
 /// </remarks>
 /// <example>
 /// <code language="xaml">
@@ -22,6 +22,7 @@ namespace MathCore.WPF.Shapes;
 ///     X2="100" Y2="100"
 ///     ArrowHeadWidth="10"
 ///     ArrowHeadLength="15"
+///     ArrowHeadOffset="0"
 ///     IsArrowHeadClosed="True"
 ///     Stroke="Blue"
 ///     StrokeThickness="2"
@@ -130,6 +131,20 @@ public class Arrow : Shape
     /// <summary>Получает или устанавливает длину головы стрелки</summary>
     public double ArrowHeadLength { get => (double)GetValue(ArrowHeadLengthProperty); set => SetValue(ArrowHeadLengthProperty, value); }
 
+    /// <summary>Определяет зависимое свойство для отступа между концом линии и основанием головы стрелки</summary>
+    public static readonly DependencyProperty ArrowHeadOffsetProperty =
+        DependencyProperty.Register(nameof(ArrowHeadOffset),
+            typeof(double),
+            typeof(Arrow),
+            new FrameworkPropertyMetadata(0d, __DependencyPropertyMetadataOptions,
+                propertyChangedCallback: null,
+                coerceValueCallback: (o, value) => Math.Max(0d, (double)value),
+                isAnimationProhibited: false,
+                defaultUpdateSourceTrigger: UpdateSourceTrigger.PropertyChanged));
+
+    /// <summary>Получает или устанавливает отступ между концом линии и основанием головы стрелки</summary>
+    public double ArrowHeadOffset { get => (double)GetValue(ArrowHeadOffsetProperty); set => SetValue(ArrowHeadOffsetProperty, value); }
+
     /// <summary>Определяет зависимое свойство для замкнутости контура головы стрелки</summary>
     public static readonly DependencyProperty IsArrowHeadClosedProperty =
         DependencyProperty.Register(nameof(IsArrowHeadClosed),
@@ -147,7 +162,7 @@ public class Arrow : Shape
     #endregion
 
     /// <summary>Получает геометрию, определяющую форму стрелки</summary>
-    protected override Geometry DefiningGeometry => GetGeometry(X1, Y1, X2, Y2, ArrowHeadWidth, ArrowHeadLength, IsArrowHeadClosed);
+    protected override Geometry DefiningGeometry => GetGeometry(X1, Y1, X2, Y2, ArrowHeadWidth, ArrowHeadLength, ArrowHeadOffset, IsArrowHeadClosed);
 
     /// <summary>Вычисляет геометрию стрелки на основе заданных параметров</summary>
     /// <param name="x1">X-координата начальной точки</param>
@@ -156,9 +171,10 @@ public class Arrow : Shape
     /// <param name="y2">Y-координата конечной точки</param>
     /// <param name="head_width">Ширина головы стрелки</param>
     /// <param name="head_length">Длина головы стрелки</param>
+    /// <param name="head_offset">Отступ между концом линии и основанием головы стрелки</param>
     /// <param name="head_closed">Замкнут ли контур головы стрелки</param>
     /// <returns>Геометрия стрелки</returns>
-    private static Geometry GetGeometry(double x1, double y1, double x2, double y2, double head_width, double head_length, bool head_closed)
+    private static Geometry GetGeometry(double x1, double y1, double x2, double y2, double head_width, double head_length, double head_offset, bool head_closed)
     {
         // Вычисляем вектор направления стрелки
         var dx = x2 - x1;
@@ -175,18 +191,22 @@ public class Arrow : Shape
 
         // Вычисляем перпендикулярный вектор для построения головы стрелки
         var perp_x = -dir_y;
-        var perp_y = dir_x;
+        var perp_y = +dir_x;
 
         // Создаём группу геометрий для линии и головы стрелки
         var geometry_group = new GeometryGroup();
 
-        // Вычисляем точку основания головы стрелки (где заканчивается линия)
-        var line_end_x = x2 - dir_x * head_length;
-        var line_end_y = y2 - dir_y * head_length;
+        // Вычисляем точку основания головы стрелки
+        var head_base_distance = /*head_length + */head_offset;
+        var head_base_x = x2 - dir_x * head_base_distance;
+        var head_base_y = y2 - dir_y * head_base_distance;
 
-        // Создаём линию стрелки от начальной точки до основания головы
-        var line = new LineGeometry(new Point(x1, y1), new Point(line_end_x, line_end_y));
-        geometry_group.Children.Add(line);
+        // Создаём линию стрелки только если её длина больше расстояния до основания головы с учётом отступа
+        if (length > head_base_distance)
+        {
+            var line = new LineGeometry(new(x1, y1), new(head_base_x, head_base_y));
+            geometry_group.Children.Add(line);
+        }
 
         // Создаём голову стрелки в виде треугольника
         if (head_width > 0 && head_length > 0)
@@ -198,19 +218,23 @@ public class Arrow : Shape
                 // 1. Острие стрелки (конечная точка)
                 var tip = new Point(x2, y2);
 
-                // 2. Левая точка основания головы
-                var left_base_x = line_end_x + perp_x * head_width / 2;
-                var left_base_y = line_end_y + perp_y * head_width / 2;
+                // 2. Точка основания головы стрелки (без учёта отступа)
+                var head_start_x = x2 - dir_x * head_length;
+                var head_start_y = y2 - dir_y * head_length;
+
+                // 3. Левая точка основания головы
+                var left_base_x = head_start_x + perp_x * head_width / 2;
+                var left_base_y = head_start_y + perp_y * head_width / 2;
                 var left_base = new Point(left_base_x, left_base_y);
 
-                // 3. Правая точка основания головы
-                var right_base_x = line_end_x - perp_x * head_width / 2;
-                var right_base_y = line_end_y - perp_y * head_width / 2;
+                // 4. Правая точка основания головы
+                var right_base_x = head_start_x - perp_x * head_width / 2;
+                var right_base_y = head_start_y - perp_y * head_width / 2;
                 var right_base = new Point(right_base_x, right_base_y);
 
-                // Рисуем треугольник головы стрелки
-                context.BeginFigure(tip, head_closed, head_closed);
-                context.LineTo(left_base, true, true);
+                // Рисуем треугольник головы стрелки: левый угол → вершина → правый угол
+                context.BeginFigure(left_base, head_closed, head_closed);
+                context.LineTo(tip, true, true);
                 context.LineTo(right_base, true, true);
             }
             arrow_head.Freeze();

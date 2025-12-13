@@ -351,4 +351,80 @@ public sealed class ArrowTests
 
         Debug.WriteLine($"Стрелка влево: Bounds = {geometry.Bounds}");
     }
+
+    /// <summary>Проверка что отступ головы стрелки по умолчанию равен 0</summary>
+    [STATestMethod]
+    public void ArrowHeadOffsetDefaultValue_IsZero()
+    {
+        var arrow = new Arrow();
+
+        Assert.AreEqual(0d, arrow.ArrowHeadOffset, "Отступ головы стрелки по умолчанию должен быть 0");
+    }
+
+    /// <summary>Проверка что отступ головы стрелки устанавливается корректно</summary>
+    [STATestMethod]
+    public void ArrowHeadOffsetCanBeSet()
+    {
+        var arrow = new Arrow { ArrowHeadOffset = 5 };
+
+        Assert.AreEqual(5d, arrow.ArrowHeadOffset, "Отступ головы стрелки должен быть 5");
+    }
+
+    /// <summary>Проверка что отрицательный отступ головы стрелки приводится к нулю</summary>
+    [STATestMethod]
+    public void NegativeArrowHeadOffset_IsCoercedToZero()
+    {
+        var arrow = new Arrow { ArrowHeadOffset = -10 };
+
+        Assert.AreEqual(0d, arrow.ArrowHeadOffset, "Отрицательный отступ головы стрелки должен быть приведён к нулю");
+    }
+
+    /// <summary>Проверка что стрелка с отступом формирует корректную геометрию</summary>
+    [STATestMethod]
+    public void ArrowWithOffset_ReturnsValidGeometry()
+    {
+        var arrow = new Arrow
+        {
+            X1 = 10,
+            Y1 = 50,
+            X2 = 100,
+            Y2 = 50,
+            ArrowHeadWidth = 10,
+            ArrowHeadLength = 15,
+            ArrowHeadOffset = 5
+        };
+
+        var canvas = new Canvas();
+        canvas.Children.Add(arrow);
+        arrow.Measure(new Size(200, 200));
+        arrow.Arrange(new Rect(0, 0, 200, 200));
+
+        Assert.IsFalse(arrow.RenderedGeometry.IsEmpty(), "Стрелка с отступом должна иметь непустую геометрию");
+    }
+
+    /// <summary>Проверка что при отступе превышающем длину стрелки линия не рисуется но голова остаётся</summary>
+    [STATestMethod]
+    public void ArrowWithOffsetExceedingLength_HasNoLineButHasHead()
+    {
+        var arrow = new Arrow
+        {
+            X1 = 10,
+            Y1 = 50,
+            X2 = 50,
+            Y2 = 50,
+            ArrowHeadWidth = 10,
+            ArrowHeadLength = 15,
+            ArrowHeadOffset = 50 // Отступ превышает длину стрелки (40)
+        };
+
+        var canvas = new Canvas();
+        canvas.Children.Add(arrow);
+        arrow.Measure(new Size(200, 200));
+        arrow.Arrange(new Rect(0, 0, 200, 200));
+
+        var geometry = arrow.RenderedGeometry;
+        Assert.IsFalse(geometry.IsEmpty(), "Стрелка с большим отступом должна иметь непустую геометрию (голову стрелки)");
+
+        Debug.WriteLine($"Стрелка с большим отступом: Bounds = {geometry.Bounds}");
+    }
 }
