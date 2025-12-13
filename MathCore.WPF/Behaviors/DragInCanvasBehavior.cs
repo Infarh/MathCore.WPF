@@ -9,6 +9,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для перетаскивания элемента внутри Canvas с ограничениями по координатам</summary>
 public class DragInCanvasBehavior : Behavior<FrameworkElement>
 {
     /// <summary>Ссылка на канву</summary>
@@ -285,7 +286,9 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
         canvas.MouseLeftButtonUp -= OnMouseLeftButtonUp;
     }
 
-    /// <summary>При нажатии левой кнопки мыши</summary><param name="sender">Источник события</param><param name="e">Аргумент события</param>
+    /// <summary>При нажатии левой кнопки мыши</summary>
+    /// <param name="sender">Источник события</param>
+    /// <param name="e">Аргумент события</param>
     private void OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         var obj = AssociatedObject;
@@ -349,6 +352,8 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
         return (min, max);
     }
 
+    /// <summary>Перемещает элемент в указанную точку</summary>
+    /// <param name="point">Целевая точка</param>
     private void MoveTo(Point point)
     {
         _InMove = true;

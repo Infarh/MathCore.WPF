@@ -9,6 +9,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для обработки перетаскивания данных на элемент</summary>
 public class DropData : Behavior<UIElement>
 {
     #region DropDataCommand : ICommand - Команда, вызываемая в момент получения данных
@@ -87,7 +88,10 @@ public class DropData : Behavior<UIElement>
 
     #endregion
 
+    /// <summary>Поле для хранения предыдущего значения свойства AllowDrop</summary>
     private bool _LastAllowDropValue;
+    
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         var element = AssociatedObject;
@@ -99,6 +103,7 @@ public class DropData : Behavior<UIElement>
         element.Drop        += OnDropData;
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         var element = AssociatedObject;
@@ -106,6 +111,9 @@ public class DropData : Behavior<UIElement>
         element.Drop      -= OnDropData;
     }
 
+    /// <summary>Обработчик события перетаскивания данных</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnDropData(object Sender, DragEventArgs E)
     {
         var command = DropDataCommand;

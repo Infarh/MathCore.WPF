@@ -10,6 +10,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для перетаскивания элементов внутри контейнеров</summary>
 public class DragBehavior : Behavior<FrameworkElement>
 {
     private static (double min, double max) CheckMinMax(double min, double max)
@@ -203,7 +204,7 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #region Enabled
 
-    /// <summary></summary>
+    /// <summary>DependencyProperty для свойства Enabled</summary>
     public static readonly DependencyProperty EnabledProperty =
         DependencyProperty.Register(
             nameof(Enabled),
@@ -211,7 +212,7 @@ public class DragBehavior : Behavior<FrameworkElement>
             typeof(DragBehavior),
             new(default(bool), (s, e) => { if (!(bool)e.NewValue) ((DragBehavior)s)?._ObjectMover?.Dispose(); }));
 
-    /// <summary></summary>
+    /// <summary>Признак активности поведения перетаскивания</summary>
     public bool Enabled
     {
         get => (bool)GetValue(EnabledProperty);
@@ -266,6 +267,7 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #region Radius
 
+    /// <summary>DependencyProperty для свойства Radius</summary>
     private static readonly DependencyPropertyKey RadiusPropertyKey =
         DependencyProperty.RegisterReadOnly(
             nameof(Radius),
@@ -273,8 +275,10 @@ public class DragBehavior : Behavior<FrameworkElement>
             typeof(DragBehavior),
             new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>DependencyProperty для свойства Radius</summary>
     public static readonly DependencyProperty RadiusProperty = RadiusPropertyKey.DependencyProperty;
 
+    /// <summary>Радиус смещения от начальной точки</summary>
     public double Radius
     {
         get => (double)GetValue(RadiusProperty);
@@ -285,6 +289,7 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #region Angle
 
+    /// <summary>DependencyProperty для свойства Angle</summary>
     private static readonly DependencyPropertyKey AnglePropertyKey =
         DependencyProperty.RegisterReadOnly(
             nameof(Angle),
@@ -292,8 +297,10 @@ public class DragBehavior : Behavior<FrameworkElement>
             typeof(DragBehavior),
             new FrameworkPropertyMetadata(double.NaN, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+    /// <summary>DependencyProperty для свойства Angle</summary>
     public static readonly DependencyProperty AngleProperty = AnglePropertyKey.DependencyProperty;
 
+    /// <summary>Угол смещения от начальной точки в радианах</summary>
     public double Angle
     {
         get => (double)GetValue(AngleProperty);
@@ -466,12 +473,14 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #endregion
 
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         base.OnAttached();
         AssociatedObject.MouseLeftButtonDown += OnMouseLeftButtonDown;
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         base.OnDetaching();

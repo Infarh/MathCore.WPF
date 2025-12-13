@@ -9,10 +9,12 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для изменения размера элемента управления</summary>
 public class Resize : Behavior<Control>
 {
     #region AreaSize : double - Размер области
 
+    /// <summary>DependencyProperty для свойства AreaSize</summary>
     public static readonly DependencyProperty AreaSizeProperty =
         DependencyProperty.Register(
             nameof(AreaSize),
@@ -20,6 +22,7 @@ public class Resize : Behavior<Control>
             typeof(Resize),
             new(3d));
 
+    /// <summary>Размер области захвата для изменения размера в пикселях</summary>
     public double AreaSize
     {
         get => (double)GetValue(AreaSizeProperty);
@@ -105,18 +108,28 @@ public class Resize : Behavior<Control>
 
     #endregion
 
+    /// <summary>Флаг, указывающий нахождение мыши в области верхней границы</summary>
     private bool _InTop;
+    /// <summary>Флаг, указывающий нахождение мыши в области нижней границы</summary>
     private bool _InBottom;
+    /// <summary>Флаг, указывающий нахождение мыши в области левой границы</summary>
     private bool _InLeft;
+    /// <summary>Флаг, указывающий нахождение мыши в области правой границы</summary>
     private bool _InRight;
 
+    /// <summary>Флаг, указывающий нахождение мыши в любой из областей изменения размера</summary>
     private bool MouseInArea => _InLeft || _InRight || _InTop || _InBottom;
 
+    /// <summary>Флаг, указывающий нахождение мыши в левом верхнем углу</summary>
     private bool MouseInLeftTopCorner => _InLeft && _InTop;
+    /// <summary>Флаг, указывающий нахождение мыши в правом верхнем углу</summary>
     private bool MouseInRightTopCorner => _InRight && _InTop;
+    /// <summary>Флаг, указывающий нахождение мыши в левом нижнем углу</summary>
     private bool MouseInLeftBottomCorner => _InLeft && _InBottom;
+    /// <summary>Флаг, указывающий нахождение мыши в правом нижнем углу</summary>
     private bool MouseInRightBottomCorner => _InRight && _InBottom;
 
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -125,6 +138,7 @@ public class Resize : Behavior<Control>
         AssociatedObject.MouseUp   += OnMouseUp;
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         base.OnDetaching();
@@ -132,16 +146,25 @@ public class Resize : Behavior<Control>
 
     }
 
+    /// <summary>Обработчик отпускания кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseUp(object Sender, MouseButtonEventArgs E)
     {
 
     }
 
+    /// <summary>Обработчик нажатия кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseDown(object Sender, MouseButtonEventArgs E)
     {
 
     }
 
+    /// <summary>Обработчик перемещения мыши для определения области изменения размера</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseMove(object Sender, MouseEventArgs E)
     {
         if (Sender is not Control control) return;
