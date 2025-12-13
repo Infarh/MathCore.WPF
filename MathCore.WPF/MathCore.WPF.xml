@@ -2156,6 +2156,10 @@
         <member name="M:MathCore.WPF.ControlEx.GetBrushBorderSelectedMousePressed(System.Windows.DependencyObject)">
             <summary>Кисть, применяемая к рамке при нажатии мыши на выбранный элемент</summary>
         </member>
+        <member name="T:MathCore.WPF.Converters.Abs">
+            <summary>Преобразователь вычисления модуля (абсолютного значения) числа</summary>
+            <remarks>Обратное преобразование не поддерживается, так как |x| = a имеет два решения: x = ±a</remarks>
+        </member>
         <member name="M:MathCore.WPF.Converters.Abs.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
@@ -2388,6 +2392,19 @@
         <member name="M:MathCore.WPF.Converters.Composite.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Cos">
+            <summary>Преобразователь вычисления косинуса по формуле: result = K * cos(W * value) + B</summary>
+            <remarks>Обратное преобразование не поддерживается, так как cos(x) = a имеет бесконечное множество решений</remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Cos.K">
+            <summary>Коэффициент масштабирования амплитуды</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Cos.B">
+            <summary>Смещение результата</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Cos.W">
+            <summary>Угловая частота (по умолчанию 2π)</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Cos.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
@@ -2399,6 +2416,19 @@
         </member>
         <member name="M:MathCore.WPF.Converters.CSplineInterp.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Ctg">
+            <summary>Преобразователь вычисления котангенса по формуле: result = K / tan(W * value) + B</summary>
+            <remarks>Обратное преобразование не поддерживается, так как ctg(x) = a имеет бесконечное множество решений</remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Ctg.K">
+            <summary>Коэффициент масштабирования</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Ctg.B">
+            <summary>Смещение результата</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Ctg.W">
+            <summary>Угловая частота (по умолчанию 2π)</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Ctg.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
@@ -2523,6 +2553,23 @@
         <member name="M:MathCore.WPF.Converters.Reflection.GetTypeAssembly.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Round">
+            <summary>Преобразователь округления числа до заданного количества десятичных разрядов</summary>
+            <remarks>Обратное преобразование не поддерживается, так как информация о отброшенных разрядах теряется</remarks>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Round.#ctor(System.Int32,System.MidpointRounding)">
+            <summary>Преобразователь округления числа до заданного количества десятичных разрядов</summary>
+            <remarks>Обратное преобразование не поддерживается, так как информация о отброшенных разрядах теряется</remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Round.K">
+            <summary>Коэффициент масштабирования</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Round.Digits">
+            <summary>Количество десятичных разрядов для округления</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Round.Rounding">
+            <summary>Режим округления промежуточных значений</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Round.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
@@ -2535,11 +2582,40 @@
         <member name="M:MathCore.WPF.Converters.RoundAdaptive.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Sign">
+            <summary>Преобразователь определения знака числа по формуле: result = sign(W * value) * K + B</summary>
+            <remarks>
+            Возвращает -1 для отрицательных чисел, 0 для нуля и 1 для положительных чисел.
+            Обратное преобразование не поддерживается, так как sign(x) = a теряет информацию о величине
+            </remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sign.K">
+            <summary>Коэффициент масштабирования</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sign.B">
+            <summary>Смещение результата</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sign.W">
+            <summary>Множитель входного значения</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Sign.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.Sign.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Sin">
+            <summary>Преобразователь вычисления синуса по формуле: result = K * sin(W * value) + B</summary>
+            <remarks>Обратное преобразование не поддерживается, так как sin(x) = a имеет бесконечное множество решений</remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sin.K">
+            <summary>Коэффициент масштабирования амплитуды</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sin.B">
+            <summary>Смещение результата</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Sin.W">
+            <summary>Угловая частота (по умолчанию 2π)</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Sin.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
@@ -2555,6 +2631,19 @@
         </member>
         <member name="M:MathCore.WPF.Converters.Subtraction.#ctor(System.Double)">
             <summary>Преобразователь вычитания вещественного числа из значения</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Tan">
+            <summary>Преобразователь вычисления тангенса по формуле: result = K * tan(W * value) + B</summary>
+            <remarks>Обратное преобразование не поддерживается, так как tan(x) = a имеет бесконечное множество решений</remarks>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Tan.K">
+            <summary>Коэффициент масштабирования</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Tan.B">
+            <summary>Смещение результата</summary>
+        </member>
+        <member name="P:MathCore.WPF.Converters.Tan.W">
+            <summary>Угловая частота (по умолчанию 2π)</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Tan.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
@@ -2573,6 +2662,20 @@
         </member>
         <member name="M:MathCore.WPF.Converters.ToString.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Trunc">
+            <summary>Преобразователь усечения дробной части числа (отбрасывание дробной части)</summary>
+            <remarks>Обратное преобразование не поддерживается, так как информация о дробной части теряется</remarks>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Trunc.Convert(System.Double,System.Nullable{System.Double})">
+            <inheritdoc />
+        </member>
+        <member name="M:MathCore.WPF.Converters.Trunc.ConvertBack(System.Double,System.Nullable{System.Double})">
+            <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Truncate">
+            <summary>Преобразователь усечения дробной части числа (отбрасывание дробной части)</summary>
+            <remarks>Обратное преобразование не поддерживается, так как информация о дробной части теряется</remarks>
         </member>
         <member name="M:MathCore.WPF.Converters.Truncate.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />

@@ -339,3 +339,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /.vscode
+
+# WPF temporary XML files
+*_wpftmp.xml

@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразователь вычисления модуля (абсолютного значения) числа</summary>
+/// <remarks>Обратное преобразование не поддерживается, так как |x| = a имеет два решения: x = ±a</remarks>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Abs))]
 public class Abs : DoubleValueConverter
@@ -15,5 +17,5 @@ public class Abs : DoubleValueConverter
     protected override double Convert(double v, double? p = null) => Math.Abs(v);
 
     /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
+    protected override double ConvertBack(double v, double? p = null) => throw new NotSupportedException("Обратное преобразование модуля не поддерживается, так как |x| = a имеет два решения: x = ±a");
 }

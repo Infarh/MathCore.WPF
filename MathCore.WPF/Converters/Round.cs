@@ -10,19 +10,24 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразователь округления числа до заданного количества десятичных разрядов</summary>
+/// <remarks>Обратное преобразование не поддерживается, так как информация о отброшенных разрядах теряется</remarks>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Round))]
 public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
 {
+    /// <summary>Коэффициент масштабирования</summary>
     public double K { get; set; } = 1;
 
     public Round() : this(0) { }
 
     public Round(int Digits) : this(Digits, default) { }
 
+    /// <summary>Количество десятичных разрядов для округления</summary>
     [ConstructorArgument(nameof(Digits))]
     public int Digits { get; set; } = Digits;
 
+    /// <summary>Режим округления промежуточных значений</summary>
     [ConstructorArgument(nameof(Rounding))]
     public MidpointRounding Rounding { get; set; } = Rounding;
 
@@ -32,5 +37,5 @@ public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
         : Math.Round(v * K) / K;
 
     /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
+    protected override double ConvertBack(double v, double? p = null) => throw new NotSupportedException("Обратное преобразование округления не поддерживается");
 }

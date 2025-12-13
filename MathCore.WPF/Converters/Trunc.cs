@@ -5,10 +5,14 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразователь усечения дробной части числа (отбрасывание дробной части)</summary>
+/// <remarks>Обратное преобразование не поддерживается, так как информация о дробной части теряется</remarks>
 [ValueConversion(typeof(double), typeof(double)), MarkupExtensionReturnType(typeof(Trunc))]
 public class Trunc : DoubleValueConverter
 {
+    /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => Math.Truncate(v);
 
-    protected override double ConvertBack(double v, double? p = null) => v;
+    /// <inheritdoc />
+    protected override double ConvertBack(double v, double? p = null) => throw new NotSupportedException("Обратное преобразование усечения не поддерживается");
 }
