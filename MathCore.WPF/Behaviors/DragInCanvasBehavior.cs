@@ -150,7 +150,7 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
 
     #region AllowY : bool - Разрешено перетаскивание по оси Y
 
-    /// <summary>summary</summary>
+    /// <summary>Разрешено перетаскивание по оси Y</summary>
     public static readonly DependencyProperty AllowYProperty =
         DependencyProperty.Register(
             nameof(AllowY),
@@ -197,16 +197,16 @@ public class DragInCanvasBehavior : Behavior<FrameworkElement>
 
     #region CurrentY : double - Текущее вертикальное положение
 
-    /// <summary>Текущее горизонтальное положение</summary>
+    /// <summary>Текущее вертикальное положение</summary>
     //[Category("")]
-    [Description("Текущее горизонтальное положение")]
+    [Description("Текущее вертикальное положение")]
     public double CurrentY
     {
         get => (double)GetValue(CurrentYProperty);
         set => SetValue(CurrentYProperty, value);
     }
 
-    /// <summary>Текущее горизонтальное положение</summary>
+    /// <summary>Текущее вертикальное положение</summary>
     public static readonly DependencyProperty CurrentYProperty =
         DependencyProperty.Register(
             nameof(CurrentY),

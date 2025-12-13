@@ -90,13 +90,13 @@ public class UserInputBehavior : Behavior<FrameworkElement>
     /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
     //[Category("")]
     [Description("Команда, вызываемая при нажатии кнопки на клавиатуре")]
-    public ICommand KeyDownCommand { get => (ICommand)GetValue(MouseWheelCommandProperty); set => SetValue(MouseWheelCommandProperty, value); }
+    public ICommand KeyDownCommand { get => (ICommand)GetValue(KeyDownCommandProperty); set => SetValue(KeyDownCommandProperty, value); }
 
     #endregion
 
-    #region KeyUpCommand : ICommand - Команда, вызываемая при нажатии кнопки на клавиатуре
+    #region KeyUpCommand : ICommand - Команда, вызываемая при отпускании кнопки на клавиатуре
 
-    /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
+    /// <summary>Команда, вызываемая при отпускании кнопки на клавиатуре</summary>
     public static readonly DependencyProperty KeyUpCommandProperty =
         DependencyProperty.Register(
             nameof(KeyUpCommand),
@@ -104,10 +104,10 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             typeof(UserInputBehavior),
             new(default(ICommand)));
 
-    /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
+    /// <summary>Команда, вызываемая при отпускании кнопки на клавиатуре</summary>
     //[Category("")]
-    [Description("Команда, вызываемая при нажатии кнопки на клавиатуре")]
-    public ICommand KeyUpCommand { get => (ICommand)GetValue(MouseWheelCommandProperty); set => SetValue(MouseWheelCommandProperty, value); }
+    [Description("Команда, вызываемая при отпускании кнопки на клавиатуре")]
+    public ICommand KeyUpCommand { get => (ICommand)GetValue(KeyUpCommandProperty); set => SetValue(KeyUpCommandProperty, value); }
 
     #endregion
 

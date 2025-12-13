@@ -325,7 +325,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         DependencyProperty.Register(
             nameof(Xmin),
             typeof(double),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(double.NaN));
 
     #endregion
@@ -346,7 +346,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         DependencyProperty.Register(
             nameof(Xmax),
             typeof(double),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(double.NaN));
 
     #endregion
@@ -367,7 +367,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         DependencyProperty.Register(
             nameof(Ymin),
             typeof(double),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(double.NaN));
 
     #endregion
@@ -388,7 +388,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         DependencyProperty.Register(
             nameof(Ymax),
             typeof(double),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(double.NaN));
 
     #endregion
@@ -400,7 +400,7 @@ public class DragBehavior : Behavior<FrameworkElement>
         DependencyProperty.Register(
             nameof(AllowX),
             typeof(bool),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(true));
 
     /// <summary>Разрешено перемещение по оси X</summary>
@@ -414,12 +414,12 @@ public class DragBehavior : Behavior<FrameworkElement>
 
     #region AllowY : bool - Разрешено перетаскивание по оси Y
 
-    /// <summary>summary</summary>
+    /// <summary>Разрешено перетаскивание по оси Y</summary>
     public static readonly DependencyProperty AllowYProperty =
         DependencyProperty.Register(
             nameof(AllowY),
             typeof(bool),
-            typeof(DragInCanvasBehavior),
+            typeof(DragBehavior),
             new(true));
 
     /// <summary>Разрешено перетаскивание по оси Y</summary>

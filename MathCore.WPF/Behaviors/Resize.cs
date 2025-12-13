@@ -134,8 +134,6 @@ public class Resize : Behavior<Control>
     {
         base.OnAttached();
         AssociatedObject.MouseMove += OnMouseMove;
-        AssociatedObject.MouseDown += OnMouseDown;
-        AssociatedObject.MouseUp   += OnMouseUp;
     }
 
     /// <summary>Вызывается при отсоединении поведения от элемента</summary>
@@ -143,23 +141,7 @@ public class Resize : Behavior<Control>
     {
         base.OnDetaching();
         AssociatedObject.MouseMove -= OnMouseMove;
-
-    }
-
-    /// <summary>Обработчик отпускания кнопки мыши</summary>
-    /// <param name="Sender">Источник события</param>
-    /// <param name="E">Аргументы события</param>
-    private void OnMouseUp(object Sender, MouseButtonEventArgs E)
-    {
-
-    }
-
-    /// <summary>Обработчик нажатия кнопки мыши</summary>
-    /// <param name="Sender">Источник события</param>
-    /// <param name="E">Аргументы события</param>
-    private void OnMouseDown(object Sender, MouseButtonEventArgs E)
-    {
-
+        Mouse.OverrideCursor = null;
     }
 
     /// <summary>Обработчик перемещения мыши для определения области изменения размера</summary>
@@ -179,19 +161,15 @@ public class Resize : Behavior<Control>
 
         Mouse.OverrideCursor = (Left: _InLeft, Top: _InTop, Right: _InRight, Bottom: _InBottom) switch
         {
-            (Left: true, Top: true, Right: _, Bottom   : _)    => Mouse.OverrideCursor = Cursors.ScrollWE,
-            (Left: _, Top   : _, Right   : true, Bottom: true) => Mouse.OverrideCursor = Cursors.ScrollWE,
-            (Left: _, Top   : true, Right: _, Bottom   : _)    => Mouse.OverrideCursor = Cursors.ScrollNS,
-            (Left: _, Top   : _, Right   : _, Bottom   : true) => Mouse.OverrideCursor = Cursors.ScrollNS,
-            (Left: true, Top: _, Right   : _, Bottom   : _)    => Mouse.OverrideCursor = Cursors.ScrollWE,
-            (Left: _, Top   : _, Right   : true, Bottom: _)    => Mouse.OverrideCursor = Cursors.ScrollWE,
+            (Left: true, Top: true, Right: _, Bottom: _)       => Cursors.SizeNWSE,
+            (Left: _, Top: _, Right: true, Bottom: true)       => Cursors.SizeNWSE,
+            (Left: true, Top: _, Right: _, Bottom: true)       => Cursors.SizeNESW,
+            (Left: _, Top: true, Right: true, Bottom: _)       => Cursors.SizeNESW,
+            (Left: _, Top: true, Right: _, Bottom: _)          => Cursors.SizeNS,
+            (Left: _, Top: _, Right: _, Bottom: true)          => Cursors.SizeNS,
+            (Left: true, Top: _, Right: _, Bottom: _)          => Cursors.SizeWE,
+            (Left: _, Top: _, Right: true, Bottom: _)          => Cursors.SizeWE,
             _                                                  => Cursors.Arrow
         };
-
-        //if ((_InLeft && _InTop) || (_InRight && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollWE;
-        //else if ((_InRight && _InTop) || (_InLeft && _InBottom)) Mouse.OverrideCursor = Cursors.ScrollNE;
-        //else if (_InTop || _InBottom) Mouse.OverrideCursor = Cursors.ScrollNS;
-        //else if (_InLeft || _InRight) Mouse.OverrideCursor = Cursors.ScrollWE;
-        //else Mouse.OverrideCursor = Cursors.Arrow;
     }
 }
