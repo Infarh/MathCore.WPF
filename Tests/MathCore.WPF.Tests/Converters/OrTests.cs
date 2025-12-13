@@ -121,7 +121,7 @@ public class OrTests
         var converter = new Or();
 
         Assert.ThrowsException<NotSupportedException>(() =>
-            ((IMultiValueConverter)converter).ConvertBack(true, [typeof(bool)], null, CultureInfo.InvariantCulture),
+            ((IMultiValueConverter)converter).ConvertBack(true, new Type[] { typeof(bool) }, null, CultureInfo.InvariantCulture),
             "ConvertBack для MultiValueConverter не должен поддерживаться");
     }
 }
