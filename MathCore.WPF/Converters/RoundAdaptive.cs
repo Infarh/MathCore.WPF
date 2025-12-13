@@ -28,7 +28,4 @@ public class RoundAdaptive(int Digits, MidpointRounding Rounding) : DoubleValueC
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => v.RoundAdaptive(Digits);
-
-    /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
 }

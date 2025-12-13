@@ -30,7 +30,4 @@ public class Round(int Digits, MidpointRounding Rounding) : DoubleValueConverter
     protected override double Convert(double v, double? p = null) => Digits > 0 
         ? Math.Round(v * K, Digits) / K
         : Math.Round(v * K) / K;
-
-    /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
 }

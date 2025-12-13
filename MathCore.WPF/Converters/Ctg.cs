@@ -17,7 +17,4 @@ public class Ctg : DoubleValueConverter
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => double.IsNaN(v) ? v : K / Math.Tan(W * v) + B;
-
-    /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
 }

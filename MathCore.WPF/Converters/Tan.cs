@@ -17,7 +17,4 @@ public class Tan : DoubleValueConverter
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) => double.IsNaN(v) ? v : Math.Tan(W * v) * K + B;
-
-    /// <inheritdoc />
-    protected override double ConvertBack(double v, double? p = null) => v;
 }

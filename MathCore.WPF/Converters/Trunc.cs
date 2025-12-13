@@ -9,6 +9,4 @@ namespace MathCore.WPF.Converters;
 public class Trunc : DoubleValueConverter
 {
     protected override double Convert(double v, double? p = null) => Math.Truncate(v);
-
-    protected override double ConvertBack(double v, double? p = null) => v;
 }
