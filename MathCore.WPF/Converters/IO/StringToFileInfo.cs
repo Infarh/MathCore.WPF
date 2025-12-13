@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.IO;
 
+
+/// <summary>Конвертер преобразования строки пути в объект FileInfo</summary>
 [MarkupExtensionReturnType(typeof(StringToFileInfo))]
 [ValueConversion(typeof(string), typeof(FileInfo))]
 public class StringToFileInfo : ValueConverter

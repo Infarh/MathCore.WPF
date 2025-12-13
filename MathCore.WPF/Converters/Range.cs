@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер ограничения значения заданным диапазоном</summary>
 [MarkupExtensionReturnType(typeof(Range))]
 public class Range(Interval interval) : DoubleValueConverter
 {

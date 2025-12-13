@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования размера данных в строковое представление (байты, КБ, МБ и т.д.)</summary>
 [ValueConversion(typeof(double), typeof(DataLength))]
 [MarkupExtensionReturnType(typeof(DataLengthString))]
 // ReSharper disable once UnusedMember.Global

@@ -6,6 +6,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки равенства значения перечисления</summary>
 [ValueConversion(typeof(object), typeof(bool))]
 [MarkupExtensionReturnType(typeof(EnumEqual))]
 public class EnumEqual : ValueConverter

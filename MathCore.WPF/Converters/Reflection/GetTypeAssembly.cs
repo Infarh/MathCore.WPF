@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.Reflection;
 
+
+/// <summary>Конвертер получения сборки (Assembly) из типа объекта</summary>
 [MarkupExtensionReturnType(typeof(GetTypeAssembly))]
 [ValueConversion(typeof(Type), typeof(Assembly))]
 public class GetTypeAssembly : ValueConverter

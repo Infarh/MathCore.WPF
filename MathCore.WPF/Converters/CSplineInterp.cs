@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 // ReSharper disable once IdentifierTypo
+
+/// <summary>Конвертер кубической сплайн-интерполяции</summary>
 [MarkupExtensionReturnType(typeof(CSplineInterp))]
 public class CSplineInterp(PointCollection points) : DoubleValueConverter
 {

@@ -6,6 +6,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.Reflection;
 
+
+/// <summary>Базовый конвертер для работы с атрибутами сборки</summary>
 [ValueConversion(typeof(Assembly), typeof(object))]
 public abstract class AssemblyConverter(Func<Assembly, object?> Converter) : ValueConverter
 {

@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Конвертер объединения строк с разделителем</summary>
 public class JoinStringConverter : IMultiValueConverter
 {
     public object Convert(object[]? values, Type TargetType, object? parameter, CultureInfo culture)

@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования значения в строку</summary>
 [MarkupExtensionReturnType(typeof(ToString))]
 [ValueConversion(typeof(object), typeof(string))]
 public class ToString : ValueConverter

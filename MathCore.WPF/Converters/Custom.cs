@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Пользовательский конвертер с настраиваемой логикой преобразования</summary>
 [MarkupExtensionReturnType(typeof(Custom))]
 public class Custom : ValueConverter
 {

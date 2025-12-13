@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер получения типа объекта</summary>
 [ValueConversion(typeof(object), typeof(Type))]
 [MarkupExtensionReturnType(typeof(GetType))]
 public class GetType : ValueConverter

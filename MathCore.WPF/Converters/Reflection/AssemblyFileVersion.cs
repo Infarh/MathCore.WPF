@@ -4,5 +4,7 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters.Reflection;
 
+
+/// <summary>Конвертер получения версии файла из атрибутов сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyFileVersion))]
 public class AssemblyFileVersion() : AssemblyConverter(Attribute<AssemblyFileVersionAttribute>(a => a.Version));

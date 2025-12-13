@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер преобразования нескольких значений в перечисляемую коллекцию</summary>
 [MarkupExtensionReturnType(typeof(MultiValuesToEnumerable))]
 public class MultiValuesToEnumerable : MultiValueValueConverter
 {

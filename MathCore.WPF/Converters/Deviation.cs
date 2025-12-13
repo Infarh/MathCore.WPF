@@ -6,6 +6,8 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 /// <inheritdoc />
+
+/// <summary>Конвертер вычисления отклонения от заданного значения</summary>
 [ValueConversion(typeof(double), typeof(double))]
 // ReSharper disable once UnusedType.Global
 [MarkupExtensionReturnType(typeof(Deviation))]

@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер логического И (AND)</summary>
 [MarkupExtensionReturnType(typeof(And))]
 public class And : MultiValueValueConverter
 {

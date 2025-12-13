@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования массива в строку</summary>
 [MarkupExtensionReturnType(typeof(ArrayToStringConverter))]
 public class ArrayToStringConverter : ValueConverter
 {

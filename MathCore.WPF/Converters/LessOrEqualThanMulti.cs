@@ -6,6 +6,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер проверки, что первое значение меньше или равно остальным</summary>
 [MarkupExtensionReturnType(typeof(LessOrEqualThanMulti))]
 public class LessOrEqualThanMulti : MultiValueValueConverter
 {

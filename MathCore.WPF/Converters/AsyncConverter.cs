@@ -5,6 +5,8 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Асинхронный конвертер для выполнения преобразований в фоновом потоке</summary>
 [ValueConversion(typeof(Task), typeof(AsyncConverterTaskCompletionNotifier))]
 [MarkupExtensionReturnType(typeof(AsyncConverter))]
 public class AsyncConverter : MarkupExtension, IValueConverter

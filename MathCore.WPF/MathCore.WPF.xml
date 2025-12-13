@@ -2172,14 +2172,42 @@
         <member name="M:MathCore.WPF.Converters.Addition.#ctor(System.Double)">
             <summary>Преобразователь сложения значения с вещественным числом</summary>
         </member>
+        <member name="T:MathCore.WPF.Converters.AdditionMulti">
+            <summary>Мультиконвертер сложения нескольких значений</summary>
+            <remarks>Суммирует все входные значения, преобразованные к типу double</remarks>
+        </member>
+        <member name="T:MathCore.WPF.Converters.AggregateArray">
+            <summary>Конвертер агрегирования массива с применением заданной операции</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.AggregateArray.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.And">
+            <summary>Конвертер логического И (AND)</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.And.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Arithmetic">
+            <summary>Универсальный арифметический конвертер с поддержкой основных математических операций</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.ArrayElement">
+            <summary>Конвертер получения элемента массива по индексу</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.ArrayElement.#ctor(System.Int32)">
+            <summary>Конвертер получения элемента массива по индексу</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.ArrayElement.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.ArraysToPoints">
+            <summary>Конвертер преобразования массивов в коллекцию точек</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.ArrayToStringConverter">
+            <summary>Конвертер преобразования массива в строку</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.AsyncConverter">
+            <summary>Асинхронный конвертер для выполнения преобразований в фоновом потоке</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Average">
             <summary>Последовательное скользящее усреднение значений с фиксированным окном</summary>
@@ -2194,6 +2222,12 @@
         </member>
         <member name="M:MathCore.WPF.Converters.Average.To(System.Double,System.Double)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.AverageMulti">
+            <summary>Мультиконвертер вычисления среднего арифметического нескольких значений</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.AverageMulti.#ctor">
+            <summary>Мультиконвертер вычисления среднего арифметического нескольких значений</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Base.DoubleToBool.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -2346,6 +2380,15 @@
         <member name="M:MathCore.WPF.Converters.Base.ValueConverter.System#Windows#Data#IValueConverter#ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Bool2Visibility">
+            <summary>Конвертер преобразования булевого значения в Visibility</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.BoolToBrushConverter">
+            <summary>Конвертер преобразования булевого значения в кисть (Brush)</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.ColorBrushConverter">
+            <summary>Конвертер преобразования цвета (Color) в кисть (Brush)</summary>
+        </member>
         <member name="T:MathCore.WPF.Converters.Combine">
             <summary>Преобразователь значений, комбинирующий действие нескольких вложенных преобразователей</summary>
             <remarks>Инициализация нового комбинированного преобразователя значений</remarks>
@@ -2383,6 +2426,12 @@
         <member name="M:MathCore.WPF.Converters.Combine.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.CombineMulti">
+            <summary>Мультиконвертер объединения нескольких значений</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.CombineMulti.#ctor(System.Windows.Data.IMultiValueConverter,System.Windows.Data.IValueConverter)">
+            <summary>Мультиконвертер объединения нескольких значений</summary>
+        </member>
         <member name="P:MathCore.WPF.Converters.Composite.Converters">
             <summary>Коллекция конвертеров</summary>
         </member>
@@ -2411,6 +2460,12 @@
         <member name="M:MathCore.WPF.Converters.Cos.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.CSplineInterp">
+            <summary>Конвертер кубической сплайн-интерполяции</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.CSplineInterp.#ctor(System.Windows.Media.PointCollection)">
+            <summary>Конвертер кубической сплайн-интерполяции</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.CSplineInterp.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
@@ -2436,8 +2491,20 @@
         <member name="M:MathCore.WPF.Converters.Ctg.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Custom">
+            <summary>Пользовательский конвертер с настраиваемой логикой преобразования</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.CustomMulti">
+            <summary>Пользовательский мультиконвертер с настраиваемой логикой преобразования</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.DataLengthString">
+            <summary>Конвертер преобразования размера данных в строковое представление (байты, КБ, МБ и т.д.)</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.DataLengthString.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.dB">
+            <summary>Конвертер преобразования амплитуды в децибелы</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.dB.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
@@ -2445,8 +2512,15 @@
         <member name="M:MathCore.WPF.Converters.dB.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.DefaultIfNaN">
+            <summary>Конвертер замены NaN на значение по умолчанию</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.DefaultIfNaN.#ctor(System.Double)">
+            <summary>Конвертер замены NaN на значение по умолчанию</summary>
+        </member>
         <member name="T:MathCore.WPF.Converters.Deviation">
             <inheritdoc />
+            <summary>Конвертер вычисления отклонения от заданного значения</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Divide">
             <summary>Преобразователь деления значения на вещественное число</summary>
@@ -2454,23 +2528,84 @@
         <member name="M:MathCore.WPF.Converters.Divide.#ctor(System.Double)">
             <summary>Преобразователь деления значения на вещественное число</summary>
         </member>
+        <member name="T:MathCore.WPF.Converters.DivideMulti">
+            <summary>Мультиконвертер последовательного деления значений</summary>
+            <remarks>Первое значение последовательно делится на все остальные значения с обработкой деления на ноль</remarks>
+        </member>
+        <member name="T:MathCore.WPF.Converters.EnumEqual">
+            <summary>Конвертер проверки равенства значения перечисления</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.ExConverter">
+            <summary>Конвертер вычисления экспоненты: result = e^value</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.ExConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.ExConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Expr">
+            <summary>Конвертер ExpConverter</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Expr.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.FirstItemConverter">
+            <summary>Конвертер получения первого или последнего элемента из коллекции</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.GetType">
+            <summary>Конвертер получения типа объекта</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.GreaterOrEqualThanMulti">
+            <summary>Мультиконвертер проверки, что первое значение больше или равно остальным</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.GreaterThan">
+            <summary>Конвертер проверки, что значение больше заданного порога</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.GreaterThan.#ctor(System.Double)">
+            <summary>Конвертер проверки, что значение больше заданного порога</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.GreaterThanMulti">
+            <summary>Мультиконвертер проверки, что первое значение больше всех остальных</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.GreaterThanOrEqual">
+            <summary>Конвертер проверки, что значение больше или равно заданному порогу</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.GreaterThanOrEqual.#ctor(System.Double)">
+            <summary>Конвертер проверки, что значение больше или равно заданному порогу</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.InIntervalValue">
+            <summary>Конвертер проверки нахождения значения в заданном интервале</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.InIntervalValue.#ctor(MathCore.Interval)">
+            <summary>Конвертер проверки нахождения значения в заданном интервале</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.InIntervalValue.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.InRange">
+            <summary>Конвертер проверки нахождения значения в заданном диапазоне</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.InRange.#ctor(MathCore.Interval)">
+            <summary>Конвертер проверки нахождения значения в заданном диапазоне</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.InRange.Convert(System.Double)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Interpolation">
+            <summary>Конвертер линейной интерполяции значений</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Inverse">
+            <summary>Конвертер инверсии значения: result = 1/value</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.IO.FilePathToName">
+            <summary>Конвертер извлечения имени файла из полного пути</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.IO.FilePathToName.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.IO.StringToFileInfo">
+            <summary>Конвертер преобразования строки пути в объект FileInfo</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.IO.StringToFileInfo.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -2478,20 +2613,80 @@
         <member name="M:MathCore.WPF.Converters.IO.StringToFileInfo.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.IsNaN">
+            <summary>Конвертер проверки значения на NaN (Not-a-Number)</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.IsNaN.#ctor(System.Boolean)">
+            <summary>Конвертер проверки значения на NaN (Not-a-Number)</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.IsNaN.Convert(System.Double)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.IsNegative">
+            <summary>Конвертер проверки, что значение отрицательное</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.IsNegative.Convert(System.Double)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.IsNull">
+            <summary>Конвертер проверки значения на null</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.IsNull.#ctor(System.Boolean)">
+            <summary>Конвертер проверки значения на null</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.IsPositive">
+            <summary>Конвертер проверки, что значение положительное</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.IsPositive.Convert(System.Double)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.JoinStringConverter">
+            <summary>Конвертер объединения строк с разделителем</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Lambda`2">
+            <summary>Конвертер с пользовательской lambda-функцией преобразования</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Lambda`2.#ctor(MathCore.WPF.Converters.Lambda{`0,`1}.Converter,MathCore.WPF.Converters.Lambda{`0,`1}.ConverterBack)">
+            <summary>Конвертер с пользовательской lambda-функцией преобразования</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Lambda`2.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.Lambda`2.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.LambdaConverter">
+            <summary>Конвертер с настраиваемой lambda-функцией преобразования</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.LambdaConverter.#ctor(MathCore.WPF.Converters.LambdaConverter.Converter,MathCore.WPF.Converters.LambdaConverter.ConverterBack)">
+            <summary>Конвертер с настраиваемой lambda-функцией преобразования</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LambdaMultiConverter">
+            <summary>Мультиконвертер с настраиваемой lambda-функцией преобразования</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.LambdaMultiConverter.#ctor(MathCore.WPF.Converters.LambdaMultiConverter.Converter,MathCore.WPF.Converters.LambdaMultiConverter.ConverterBack)">
+            <summary>Мультиконвертер с настраиваемой lambda-функцией преобразования</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LastItemConverter">
+            <summary>Конвертер получения последнего элемента из коллекции</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LessOrEqualThanMulti">
+            <summary>Мультиконвертер проверки, что первое значение меньше или равно остальным</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LessThan">
+            <summary>Конвертер проверки, что значение меньше заданного порога</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.LessThan.#ctor(System.Double)">
+            <summary>Конвертер проверки, что значение меньше заданного порога</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LessThanMulti">
+            <summary>Мультиконвертер проверки, что первое значение меньше всех остальных</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.LessThanOrEqual">
+            <summary>Конвертер проверки, что значение меньше или равно заданному порогу</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.LessThanOrEqual.#ctor(System.Double)">
+            <summary>Конвертер проверки, что значение меньше или равно заданному порогу</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Linear">
             <summary>Линейный конвертер вещественных величин по формуле result = K*value + B</summary>
@@ -2514,11 +2709,29 @@
         <member name="M:MathCore.WPF.Converters.Linear.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Mapper">
+            <summary>Конвертер отображения (маппинга) значений по заданному правилу</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Mapper.#ctor">
+            <summary>Конвертер отображения (маппинга) значений по заданному правилу</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Mapper.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.Mapper.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.MaxValue">
+            <summary>Конвертер получения максимального значения</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.MinValue">
+            <summary>Конвертер получения минимального значения</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Mod">
+            <summary>Конвертер вычисления остатка от деления (модуль): result = value % M</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Mod.#ctor(System.Double)">
+            <summary>Конвертер вычисления остатка от деления (модуль): result = value % M</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Mod.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
@@ -2529,8 +2742,24 @@
         <member name="M:MathCore.WPF.Converters.Multiply.#ctor(System.Double)">
             <summary>Преобразователь умножения значения на вещественное число</summary>
         </member>
+        <member name="T:MathCore.WPF.Converters.MultiplyMany">
+            <summary>Мультиконвертер перемножения нескольких значений</summary>
+            <remarks>Перемножает все входные значения, преобразованные к типу double</remarks>
+        </member>
+        <member name="T:MathCore.WPF.Converters.MultiValuesToCompositeCollection">
+            <summary>Мультиконвертер преобразования нескольких значений в CompositeCollection</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.MultiValuesToEnumerable">
+            <summary>Мультиконвертер преобразования нескольких значений в перечисляемую коллекцию</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.NaNtoVisibility">
+            <summary>Конвертер преобразования NaN в Visibility</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.NaNtoVisibility.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Not">
+            <summary>Конвертер логического отрицания (NOT)</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Not.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -2538,17 +2767,107 @@
         <member name="M:MathCore.WPF.Converters.Not.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Null2Visibility">
+            <summary>Конвертер преобразования null в Visibility</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Null2Visibility.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Or">
+            <summary>Конвертер логического ИЛИ (OR)</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.OutRange">
+            <summary>Конвертер проверки, что значение находится вне заданного диапазона</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.OutRange.#ctor(MathCore.Interval)">
+            <summary>Конвертер проверки, что значение находится вне заданного диапазона</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.OutRange.Convert(System.Double)">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Points2PathGeometry">
+            <summary>Конвертер преобразования коллекции точек в PathGeometry</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Range">
+            <summary>Конвертер ограничения значения заданным диапазоном</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Range.#ctor(MathCore.Interval)">
+            <summary>Конвертер ограничения значения заданным диапазоном</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Range.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyCompany">
+            <summary>Конвертер получения названия компании из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyCompany.#ctor">
+            <summary>Конвертер получения названия компании из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyConfiguration">
+            <summary>Конвертер получения конфигурации из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyConfiguration.#ctor">
+            <summary>Конвертер получения конфигурации из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyConverter">
+            <summary>Базовый конвертер для работы с атрибутами сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyConverter.#ctor(System.Func{System.Reflection.Assembly,System.Object})">
+            <summary>Базовый конвертер для работы с атрибутами сборки</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.Reflection.AssemblyConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyCopyright">
+            <summary>Конвертер получения информации об авторских правах из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyCopyright.#ctor">
+            <summary>Конвертер получения информации об авторских правах из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyDescription">
+            <summary>Конвертер получения описания из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyDescription.#ctor">
+            <summary>Конвертер получения описания из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyFileVersion">
+            <summary>Конвертер получения версии файла из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyFileVersion.#ctor">
+            <summary>Конвертер получения версии файла из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyProduct">
+            <summary>Конвертер получения названия продукта из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyProduct.#ctor">
+            <summary>Конвертер получения названия продукта из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyTime">
+            <summary>Конвертер получения времени сборки из атрибутов</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyTime.#ctor">
+            <summary>Конвертер получения времени сборки из атрибутов</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyTitle">
+            <summary>Конвертер получения заголовка из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyTitle.#ctor">
+            <summary>Конвертер получения заголовка из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyTrademark">
+            <summary>Конвертер получения торговой марки из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyTrademark.#ctor">
+            <summary>Конвертер получения торговой марки из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.AssemblyVersion">
+            <summary>Конвертер получения версии из атрибутов сборки</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.Reflection.AssemblyVersion.#ctor">
+            <summary>Конвертер получения версии из атрибутов сборки</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.Reflection.GetTypeAssembly">
+            <summary>Конвертер получения сборки (Assembly) из типа объекта</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Reflection.GetTypeAssembly.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -2576,11 +2895,20 @@
         <member name="M:MathCore.WPF.Converters.Round.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.RoundAdaptive">
+            <summary>Конвертер адаптивного округления с автоматическим выбором разрядности</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.RoundAdaptive.#ctor(System.Int32,System.MidpointRounding)">
+            <summary>Конвертер адаптивного округления с автоматическим выбором разрядности</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.RoundAdaptive.Convert(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
         <member name="M:MathCore.WPF.Converters.RoundAdaptive.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.SecondsToTimeSpan">
+            <summary>Конвертер преобразования секунд в TimeSpan</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Sign">
             <summary>Преобразователь определения знака числа по формуле: result = sign(W * value) * K + B</summary>
@@ -2604,6 +2932,9 @@
         <member name="M:MathCore.WPF.Converters.Sign.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.SignValue">
+            <summary>Конвертер выбора значения в зависимости от знака числа</summary>
+        </member>
         <member name="T:MathCore.WPF.Converters.Sin">
             <summary>Преобразователь вычисления синуса по формуле: result = K * sin(W * value) + B</summary>
             <remarks>Обратное преобразование не поддерживается, так как sin(x) = a имеет бесконечное множество решений</remarks>
@@ -2623,14 +2954,33 @@
         <member name="M:MathCore.WPF.Converters.Sin.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.SingleValue">
+            <summary>Конвертер возврата единственного фиксированного значения</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.SingleValue.#ctor(System.Int32,System.Windows.Data.IValueConverter)">
+            <summary>Конвертер возврата единственного фиксированного значения</summary>
+        </member>
         <member name="M:MathCore.WPF.Converters.SingleValue.Convert(System.Object[],System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.StringConverters.ToLower">
+            <summary>Конвертер преобразования строки к нижнему регистру</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.StringConverters.ToUpper">
+            <summary>Конвертер преобразования строки к верхнему регистру</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Subtraction">
             <summary>Преобразователь вычитания вещественного числа из значения</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.Subtraction.#ctor(System.Double)">
             <summary>Преобразователь вычитания вещественного числа из значения</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.SubtractionMulti">
+            <summary>Мультиконвертер последовательного вычитания значений</summary>
+            <remarks>Из первого значения последовательно вычитаются все остальные значения</remarks>
+        </member>
+        <member name="T:MathCore.WPF.Converters.SwitchConverter">
+            <summary>Конвертер выбора значения по ключу (switch-case логика)</summary>
         </member>
         <member name="T:MathCore.WPF.Converters.Tan">
             <summary>Преобразователь вычисления тангенса по формуле: result = K * tan(W * value) + B</summary>
@@ -2651,6 +3001,18 @@
         <member name="M:MathCore.WPF.Converters.Tan.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
         </member>
+        <member name="T:MathCore.WPF.Converters.TemperatureC2F">
+            <summary>Конвертер преобразования температуры из Цельсия в Фаренгейт</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.TemperatureC2F.#ctor">
+            <summary>Конвертер преобразования температуры из Цельсия в Фаренгейт</summary>
+        </member>
+        <member name="T:MathCore.WPF.Converters.TemperatureF2C">
+            <summary>Конвертер преобразования температуры из Фаренгейта в Цельсий</summary>
+        </member>
+        <member name="M:MathCore.WPF.Converters.TemperatureF2C.#ctor">
+            <summary>Конвертер преобразования температуры из Фаренгейта в Цельсий</summary>
+        </member>
         <member name="T:MathCore.WPF.Converters.TimeDifferential">
             <summary>Конвертер дифференцирования значения по времени</summary>
         </member>
@@ -2659,6 +3021,9 @@
         </member>
         <member name="M:MathCore.WPF.Converters.TimeDifferential.To(System.Double,System.Double)">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.ToString">
+            <summary>Конвертер преобразования значения в строку</summary>
         </member>
         <member name="M:MathCore.WPF.Converters.ToString.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
             <inheritdoc />
@@ -2682,6 +3047,9 @@
         </member>
         <member name="M:MathCore.WPF.Converters.Truncate.ConvertBack(System.Double,System.Nullable{System.Double})">
             <inheritdoc />
+        </member>
+        <member name="T:MathCore.WPF.Converters.ValuesToPoint">
+            <summary>Мультиконвертер создания точки (Point) из двух значений</summary>
         </member>
         <member name="T:MathCore.WPF.CustomSynchronizationContext">
             <summary></summary>
@@ -9100,6 +9468,36 @@
         </member>
         <member name="M:System.Runtime.CompilerServices.RuntimeHelpers.GetSubArray``1(``0[],System.Range)">
             <summary>Slices the specified array using the specified range.</summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
         </member>
     </members>
 </doc>

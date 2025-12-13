@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер получения последнего элемента из коллекции</summary>
 [MarkupExtensionReturnType(typeof(LastItemConverter))]
 public class LastItemConverter : ValueConverter
 {

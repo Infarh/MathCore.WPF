@@ -5,6 +5,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер ExpConverter</summary>
 public class Expr : SimpleDoubleValueConverter
 {
     private static readonly ConcurrentDictionary<(string Expr, string ArgName, string ParameterName), Func<double, double, double>> __Converters = new();

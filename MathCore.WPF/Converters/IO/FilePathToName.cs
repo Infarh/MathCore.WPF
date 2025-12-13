@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.IO;
 
+
+/// <summary>Конвертер извлечения имени файла из полного пути</summary>
 [MarkupExtensionReturnType(typeof(FilePathToName))]
 [ValueConversion(typeof(string), typeof(string))]
 public class FilePathToName : ValueConverter

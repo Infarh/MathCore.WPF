@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Мультиконвертер последовательного вычитания значений</summary>
+/// <remarks>Из первого значения последовательно вычитаются все остальные значения</remarks>
 [MarkupExtensionReturnType(typeof(SubtractionMulti))]
 public class SubtractionMulti : MultiValueValueConverter
 {

@@ -10,6 +10,8 @@ namespace MathCore.WPF.Converters;
 // Трансформатор, который преобразует входные значения в выходные значения на основе списка дочерних элементов переключателя.
 // Это не является строго выражением 'switch' в стиле C, поскольку случаи не гарантированно уникальны.
 // </summary>
+
+/// <summary>Конвертер выбора значения по ключу (switch-case логика)</summary>
 [ContentProperty("Cases")]
 public class SwitchConverter : DependencyObject, IValueConverter
 {

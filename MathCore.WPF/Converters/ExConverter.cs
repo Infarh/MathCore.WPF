@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер вычисления экспоненты: result = e^value</summary>
 [MarkupExtensionReturnType(typeof(ExConverter))]
 public class ExConverter : ValueConverter
 {

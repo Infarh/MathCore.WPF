@@ -7,6 +7,8 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер получения минимального значения</summary>
 [ValueConversion(typeof(IEnumerable), typeof(object))]
 [MarkupExtensionReturnType(typeof(MinValue))]
 public class MinValue : MarkupExtension, IMultiValueConverter, IValueConverter

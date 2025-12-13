@@ -12,6 +12,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер выбора значения в зависимости от знака числа</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(SignValue))]
 public class SignValue : DoubleValueConverter

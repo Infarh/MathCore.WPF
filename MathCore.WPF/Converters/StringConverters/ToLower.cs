@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.StringConverters;
 
+
+/// <summary>Конвертер преобразования строки к нижнему регистру</summary>
 [MarkupExtensionReturnType(typeof(ToLower)), ValueConversion(typeof(string), typeof(string))]
 public class ToLower : ValueConverter
 {

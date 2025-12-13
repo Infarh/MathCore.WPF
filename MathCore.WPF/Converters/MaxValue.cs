@@ -7,6 +7,8 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер получения максимального значения</summary>
 [ValueConversion(typeof(IEnumerable), typeof(object))]
 [MarkupExtensionReturnType(typeof(MaxValue))]
 public class MaxValue : MarkupExtension, IMultiValueConverter, IValueConverter

@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Универсальный арифметический конвертер с поддержкой основных математических операций</summary>
 [MarkupExtensionReturnType(typeof(Arithmetic))]
 #if NET7_0_OR_GREATER
 public partial class Arithmetic : ValueConverter

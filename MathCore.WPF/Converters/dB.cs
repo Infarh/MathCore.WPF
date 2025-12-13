@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования амплитуды в децибелы</summary>
 [MarkupExtensionReturnType(typeof(dB))]
 [System.Diagnostics.CodeAnalysis.SuppressMessage("Стиль", "IDE1006:Стили именования", Justification = "<Ожидание>")]
 // ReSharper disable once InconsistentNaming

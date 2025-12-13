@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки нахождения значения в заданном интервале</summary>
 [MarkupExtensionReturnType(typeof(InIntervalValue))]
 [ValueConversion(typeof(double), typeof(double))]
 public class InIntervalValue(Interval interval) : DoubleValueConverter

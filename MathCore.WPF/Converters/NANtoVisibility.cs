@@ -12,6 +12,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования NaN в Visibility</summary>
 [MarkupExtensionReturnType(typeof(NaNtoVisibility))]
 [ValueConversion(typeof(double), typeof(Visibility))]
 public class NaNtoVisibility : ValueConverter

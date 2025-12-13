@@ -5,6 +5,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки значения на null</summary>
 [MarkupExtensionReturnType(typeof(IsNull))]
 public class IsNull(bool Inverted) : ValueConverter
 {

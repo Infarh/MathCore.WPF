@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования цвета (Color) в кисть (Brush)</summary>
 [MarkupExtensionReturnType(typeof(ColorBrushConverter))]
 public class ColorBrushConverter : ValueConverter
 {

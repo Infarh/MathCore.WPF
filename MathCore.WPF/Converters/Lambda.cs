@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер с пользовательской lambda-функцией преобразования</summary>
 [MarkupExtensionReturnType(typeof(Lambda<,>))]
 public class Lambda<TValue, TResult>(Lambda<TValue, TResult>.Converter Converter, Lambda<TValue, TResult>.ConverterBack? BackConverter = null) : ValueConverter
 {

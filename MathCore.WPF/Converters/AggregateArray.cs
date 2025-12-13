@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер агрегирования массива с применением заданной операции</summary>
 [MarkupExtensionReturnType(typeof(AggregateArray))]
 public class AggregateArray : MultiValueValueConverter
 {

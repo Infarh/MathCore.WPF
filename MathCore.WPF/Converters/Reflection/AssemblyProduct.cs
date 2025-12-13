@@ -4,5 +4,7 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters.Reflection;
 
+
+/// <summary>Конвертер получения названия продукта из атрибутов сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyProduct))]
 public class AssemblyProduct() : AssemblyConverter(Attribute<AssemblyProductAttribute>(a => a.Product));

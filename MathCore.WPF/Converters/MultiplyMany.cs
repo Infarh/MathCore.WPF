@@ -5,6 +5,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Мультиконвертер перемножения нескольких значений</summary>
+/// <remarks>Перемножает все входные значения, преобразованные к типу double</remarks>
 [MarkupExtensionReturnType(typeof(MultiplyMany))]
 public class MultiplyMany : MultiValueValueConverter
 {

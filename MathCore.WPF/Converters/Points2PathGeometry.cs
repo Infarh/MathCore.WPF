@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования коллекции точек в PathGeometry</summary>
 [ValueConversion(typeof(Point[]), typeof(PathGeometry))]
 [MarkupExtensionReturnType(typeof(Points2PathGeometry))]
 public class Points2PathGeometry : ValueConverter

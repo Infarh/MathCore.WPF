@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер логического отрицания (NOT)</summary>
 [MarkupExtensionReturnType(typeof(Not))]
 [ValueConversion(typeof(bool), typeof(bool))]
 public class Not : ValueConverter

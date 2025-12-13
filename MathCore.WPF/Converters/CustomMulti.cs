@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Пользовательский мультиконвертер с настраиваемой логикой преобразования</summary>
 [MarkupExtensionReturnType(typeof(CustomMulti))]
 public class CustomMulti : MultiValueValueConverter
 {

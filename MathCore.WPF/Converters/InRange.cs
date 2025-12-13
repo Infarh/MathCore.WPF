@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки нахождения значения в заданном диапазоне</summary>
 [MarkupExtensionReturnType(typeof(InRange))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class InRange(Interval interval) : DoubleToBool

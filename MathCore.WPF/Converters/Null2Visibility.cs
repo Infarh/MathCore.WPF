@@ -11,6 +11,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования null в Visibility</summary>
 [ValueConversion(typeof(object), typeof(Visibility))]
 [MarkupExtensionReturnType(typeof(Null2Visibility))]
 public class Null2Visibility : ValueConverter

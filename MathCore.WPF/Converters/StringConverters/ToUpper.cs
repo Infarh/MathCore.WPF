@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters.StringConverters;
 
+
+/// <summary>Конвертер преобразования строки к верхнему регистру</summary>
 [MarkupExtensionReturnType(typeof(ToUpper)), ValueConversion(typeof(string), typeof(string))]
 public class ToUpper : ValueConverter
 {

@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки, что значение меньше заданного порога</summary>
 [MarkupExtensionReturnType(typeof(LessThan))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class LessThan(double value) : DoubleToBool

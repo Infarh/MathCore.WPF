@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер возврата единственного фиксированного значения</summary>
 [MarkupExtensionReturnType(typeof(SingleValue))]
 public class SingleValue(int Index, IValueConverter Next) : MultiValueValueConverter
 {

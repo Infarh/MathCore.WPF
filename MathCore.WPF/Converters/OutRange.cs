@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки, что значение находится вне заданного диапазона</summary>
 [MarkupExtensionReturnType(typeof(OutRange))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class OutRange(Interval interval) : DoubleToBool

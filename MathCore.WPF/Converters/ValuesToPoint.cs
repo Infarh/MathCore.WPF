@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер создания точки (Point) из двух значений</summary>
 [ValueConversion(typeof(double[]), typeof(Point))]
 [MarkupExtensionReturnType(typeof(ValuesToPoint))]
 public class ValuesToPoint : MultiValueValueConverter

@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер преобразования нескольких значений в CompositeCollection</summary>
 [MarkupExtensionReturnType(typeof(MultiValuesToCompositeCollection))]
 public class MultiValuesToCompositeCollection : MultiValueValueConverter
 {

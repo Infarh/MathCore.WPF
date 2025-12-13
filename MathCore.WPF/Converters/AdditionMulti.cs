@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Мультиконвертер сложения нескольких значений</summary>
+/// <remarks>Суммирует все входные значения, преобразованные к типу double</remarks>
 [MarkupExtensionReturnType(typeof(AdditionMulti))]
 public class AdditionMulti : MultiValueValueConverter
 {

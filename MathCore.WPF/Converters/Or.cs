@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер логического ИЛИ (OR)</summary>
 [MarkupExtensionReturnType(typeof(Or))]
 public class Or : MultiValueValueConverter
 {

@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер вычисления среднего арифметического нескольких значений</summary>
 [MarkupExtensionReturnType(typeof(AverageMulti))]
 public class AverageMulti() : MultiValueValueConverter
 {

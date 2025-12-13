@@ -5,6 +5,7 @@ using System.Windows.Data;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Мультиконвертер с настраиваемой lambda-функцией преобразования</summary>
 public class LambdaMultiConverter(
     LambdaMultiConverter.Converter Conversation,
     LambdaMultiConverter.ConverterBack? BackConversation = null) 

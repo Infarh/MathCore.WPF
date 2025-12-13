@@ -5,6 +5,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер замены NaN на значение по умолчанию</summary>
 [MarkupExtensionReturnType(typeof(DefaultIfNaN))]
 public class DefaultIfNaN(double DefaultValue) : ValueConverter
 {

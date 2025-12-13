@@ -11,6 +11,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования булевого значения в Visibility</summary>
 [ValueConversion(typeof(bool?), typeof(Visibility))]
 [MarkupExtensionReturnType(typeof(Bool2Visibility))]
 public class Bool2Visibility : ValueConverter

@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер вычисления остатка от деления (модуль): result = value % M</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Mod))]
 public class Mod(double M) : DoubleValueConverter

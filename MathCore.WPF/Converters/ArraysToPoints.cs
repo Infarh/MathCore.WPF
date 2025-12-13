@@ -10,6 +10,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования массивов в коллекцию точек</summary>
 [MarkupExtensionReturnType(typeof(ArraysToPoints))]
 public class ArraysToPoints : MultiValueValueConverter
 {

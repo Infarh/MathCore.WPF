@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки значения на NaN (Not-a-Number)</summary>
 [MarkupExtensionReturnType(typeof(IsNaN))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class IsNaN(bool Inverted) : DoubleToBool

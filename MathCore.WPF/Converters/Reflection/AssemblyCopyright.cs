@@ -4,5 +4,7 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.Converters.Reflection;
 
+
+/// <summary>Конвертер получения информации об авторских правах из атрибутов сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyCompany))]
 public class AssemblyCopyright() : AssemblyConverter(Attribute<AssemblyCopyrightAttribute>(a => a.Copyright));

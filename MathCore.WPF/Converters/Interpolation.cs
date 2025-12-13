@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер линейной интерполяции значений</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Interpolation))]
 public class Interpolation : DoubleValueConverter

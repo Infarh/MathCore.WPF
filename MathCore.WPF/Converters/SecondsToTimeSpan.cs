@@ -6,6 +6,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования секунд в TimeSpan</summary>
 [MarkupExtensionReturnType(typeof(SecondsToTimeSpan))]
 [ValueConversion(typeof(double), typeof(TimeSpan))]
 [ValueConversion(typeof(float), typeof(TimeSpan))]

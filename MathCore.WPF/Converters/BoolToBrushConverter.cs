@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер преобразования булевого значения в кисть (Brush)</summary>
 [MarkupExtensionReturnType(typeof(BoolToBrushConverter))]
 [ValueConversion(typeof(bool?), typeof(Brush))]
 public class BoolToBrushConverter : ValueConverter

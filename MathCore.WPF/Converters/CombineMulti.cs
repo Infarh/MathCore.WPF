@@ -9,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Мультиконвертер объединения нескольких значений</summary>
 [MarkupExtensionReturnType(typeof(CombineMulti))]
 public class CombineMulti(IMultiValueConverter First, IValueConverter Then) : MultiValueValueConverter
 {

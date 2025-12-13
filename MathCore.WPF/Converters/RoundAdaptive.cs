@@ -11,6 +11,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер адаптивного округления с автоматическим выбором разрядности</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(RoundAdaptive))]
 public class RoundAdaptive(int Digits, MidpointRounding Rounding) : DoubleValueConverter

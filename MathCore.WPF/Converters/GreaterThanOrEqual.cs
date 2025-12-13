@@ -8,6 +8,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки, что значение больше или равно заданному порогу</summary>
 [MarkupExtensionReturnType(typeof(GreaterThanOrEqual))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class GreaterThanOrEqual(double value) : DoubleToBool

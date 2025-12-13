@@ -7,6 +7,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер проверки, что значение положительное</summary>
 [MarkupExtensionReturnType(typeof(IsPositive))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class IsPositive : DoubleToBool

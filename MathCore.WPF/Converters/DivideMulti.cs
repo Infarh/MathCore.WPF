@@ -5,6 +5,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Мультиконвертер последовательного деления значений</summary>
+/// <remarks>Первое значение последовательно делится на все остальные значения с обработкой деления на ноль</remarks>
 [MarkupExtensionReturnType(typeof(DivideMulti))]
 public class DivideMulti : MultiValueValueConverter
 {

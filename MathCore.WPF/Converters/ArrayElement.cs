@@ -10,6 +10,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+
+/// <summary>Конвертер получения элемента массива по индексу</summary>
 [MarkupExtensionReturnType(typeof(ArrayElement))]
 [ValueConversion(typeof(IEnumerable), typeof(object))]
 public class ArrayElement(int Index) : ValueConverter
