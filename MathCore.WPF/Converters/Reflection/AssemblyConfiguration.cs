@@ -6,5 +6,5 @@ namespace MathCore.WPF.Converters.Reflection;
 
 
 /// <summary>Конвертер получения конфигурации из атрибутов сборки</summary>
-[MarkupExtensionReturnType(typeof(AssemblyCompany))]
+[MarkupExtensionReturnType(typeof(AssemblyConfiguration))]
 public class AssemblyConfiguration() : AssemblyConverter(Attribute<AssemblyConfigurationAttribute>(a => a.Configuration));

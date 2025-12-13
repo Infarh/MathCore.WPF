@@ -3003,15 +3003,19 @@
         </member>
         <member name="T:MathCore.WPF.Converters.TemperatureC2F">
             <summary>Конвертер преобразования температуры из Цельсия в Фаренгейт</summary>
+            <remarks>Формула: F = C * 9/5 + 32 = C * 1.8 + 32</remarks>
         </member>
         <member name="M:MathCore.WPF.Converters.TemperatureC2F.#ctor">
             <summary>Конвертер преобразования температуры из Цельсия в Фаренгейт</summary>
+            <remarks>Формула: F = C * 9/5 + 32 = C * 1.8 + 32</remarks>
         </member>
         <member name="T:MathCore.WPF.Converters.TemperatureF2C">
             <summary>Конвертер преобразования температуры из Фаренгейта в Цельсий</summary>
+            <remarks>Формула: C = (F - 32) * 5/9 = (F - 32) / 1.8</remarks>
         </member>
         <member name="M:MathCore.WPF.Converters.TemperatureF2C.#ctor">
             <summary>Конвертер преобразования температуры из Фаренгейта в Цельсий</summary>
+            <remarks>Формула: C = (F - 32) * 5/9 = (F - 32) / 1.8</remarks>
         </member>
         <member name="T:MathCore.WPF.Converters.TimeDifferential">
             <summary>Конвертер дифференцирования значения по времени</summary>
