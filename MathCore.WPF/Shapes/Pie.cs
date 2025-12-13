@@ -261,44 +261,62 @@ public class Pie : Shape
     /// <param name="aligned">Флаг выравнивания</param>
     private static void DrawGeometry(StreamGeometryContext g, Rect rect, double R, double r, double start, double stop, bool aligned)
     {
+        // Получаем ширину и высоту прямоугольника
         var w = rect.Width;
         var h = rect.Height;
         if (w <= 0 || h <= 0) return;
+
+        // Вычисляем центральную точку прямоугольника
         var p0 = new Point(0.5 * rect.Width + rect.Left, 0.5 * rect.Height + rect.Top);
 
-        Func<double, double, double> min = Math.Min;
-        var a = min(start, stop);
+        // Нормализуем углы: a - меньший угол, b - больший угол
+        var a = Math.Min(start, stop);
         var b = Math.Max(start, stop);
-        var d = b - a;
+        var d = b - a; // Разница углов (угол раствора сектора)
         if (d is 0d) return;
 
+        // Если включено выравнивание, приводим к квадрату по меньшей стороне
         if (aligned)
         {
-            w = min(w, h);
-            h = min(w, h);
+            w = Math.Min(w, h);
+            h = Math.Min(w, h);
         }
 
-        var in_arc_stop = GetPoint(rect, a, r);
-        var out_arc_start = GetPoint(rect, a, R);
-        var out_arc_stop = GetPoint(rect, b, R);
-        var in_arc_start = GetPoint(rect, b, r);
+        // Вычисляем ключевые точки для построения сектора:
+        var in_arc_stop = GetPoint(rect, a, r);     // конечная точка внутренней дуги (начальный угол)
+        var out_arc_start = GetPoint(rect, a, R);   // начальная точка внешней дуги (начальный угол)
+        var out_arc_stop = GetPoint(rect, b, R);    // конечная точка внешней дуги (конечный угол)
+        var in_arc_start = GetPoint(rect, b, r);    // начальная точка внутренней дуги (конечный угол)
 
-
+        // Определяем тип дуги (большая дуга если угол > 180°)
         var arc_isout = d > 180.0;
+
+        // Вычисляем размеры эллипсов для внутренней и внешней дуг
         var in_arc_size = new Size(r * w / 2, r * h / 2);
         var out_arc_size = new Size(R * w / 2, R * h / 2);
 
+        // Проверяем, является ли сектор просто линией (внутренний и внешний радиусы почти равны)
         var line_only = Math.Abs(R - r) < 0.001;
+
+        // Начинаем построение фигуры
         if (line_only)
-            g.BeginFigure(out_arc_start, false, true);
+            g.BeginFigure(out_arc_start, false, true); // Только дуга, без заливки
         else
         {
+            // Начинаем с центра (если r = 0) или с точки на внутренней дуге
             g.BeginFigure(r is 0d ? p0 : in_arc_stop, true, true);
-            g.LineTo(out_arc_start, true, true);
+            g.LineTo(out_arc_start, true, true); // Линия к началу внешней дуги
         }
+
+        // Рисуем внешнюю дугу от начального до конечного угла по часовой стрелке
         g.ArcTo(out_arc_stop, out_arc_size, 0, arc_isout, SweepDirection.Clockwise, true, true);
-        if (r is 0d || line_only) return;
+
+        if (r is 0d || line_only) return; // Если внутренний радиус 0 или это линия, завершаем
+
+        // Рисуем линию к началу внутренней дуги
         g.LineTo(in_arc_start, true, true);
+
+        // Рисуем внутреннюю дугу от конечного до начального угла против часовой стрелки
         g.ArcTo(in_arc_stop, in_arc_size, 0, arc_isout, SweepDirection.Counterclockwise, true, true);
     }
 }
