@@ -2,9 +2,9 @@ name: Publish NuGet.org
 
 on:
   push:
-    branches: 
+    branches:
     - master
-    paths-ignore: 
+    paths-ignore:
     - '.github/workflows/**'
     - '**.md'
     - '**.docx'
@@ -18,7 +18,7 @@ env:
 jobs:
   build:
     name: Build 
-    runs-on: windows-latest    
+    runs-on: windows-latest
 
     steps:
       - name: Checkout
@@ -29,7 +29,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: 10.0.x
           
       - name: Cache NuGet  
         uses: actions/cache@v4
@@ -46,7 +46,7 @@ jobs:
         
       - name: Building
         run: |
-          dotnet build MathCore.WPF -c Release --no-restore --nowarn:CS1998,CS8625,CS8600,CS8603,CS8620,CS8618,CS8604,CS8602,CS8622,CS8619,CS8632,CS0108,NU1701,NU1702,MSB3277,NU1701
+          dotnet build MathCore.WPF -c Release --no-restore --nowarn:CS1998,CS8625,CS8600,CS8603,CS8620,CS8618,CS8604,CS8602,CS8622,CS8619,CS8632,CS0108,NU1701,NU1702,MSB3277,NU1701,CS1591
           dotnet build Tests/MathCore.WPF.Tests -c Release --no-restore
           
       - name: Test
@@ -69,7 +69,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v4.1.9
+        uses: actions/download-artifact@v5
         id: download
         with:
             name: Release
@@ -85,7 +85,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v4.1.9
+        uses: actions/download-artifact@v5
         id: download
         with:
             name: Release

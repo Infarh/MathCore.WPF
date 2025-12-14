@@ -12,6 +12,6 @@ public class MouseWheelGesture : InputGesture
     public override bool Matches(object element, InputEventArgs e)
     {
         // Проверяем, является ли событие ввода событием колесом мыши и не равен ли delta нулю.
-        return e is MouseWheelEventArgs wheel && wheel.Delta != 0;
+        return e is MouseWheelEventArgs { Delta: not 0 };
     }
 }

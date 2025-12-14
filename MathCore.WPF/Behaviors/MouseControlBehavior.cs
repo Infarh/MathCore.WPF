@@ -8,6 +8,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для отслеживания состояния мыши и её положения относительно элемента</summary>
 public class MouseControlBehavior : Behavior<FrameworkElement>
 {
     #region MousePosition : Point - Положение указателя мыши
@@ -123,6 +124,7 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
 
     #region Behavior<FrameworkElement>
 
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         var element = AssociatedObject;
@@ -132,6 +134,7 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
         element.MouseUp     += OnMouseUp;
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         var element = AssociatedObject;
@@ -139,12 +142,18 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
         element.SizeChanged -= OnSizeChanged;
     }
 
+    /// <summary>Обработчик нажатия кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseDown(object Sender, MouseButtonEventArgs E)
     {
         IsLeftMouseDown = true;
         Mouse.Capture((IInputElement)Sender, CaptureMode.SubTree);
     }
 
+    /// <summary>Обработчик отпускания кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseUp(object Sender, MouseButtonEventArgs E)
     {
         (Sender as UIElement)?.ReleaseMouseCapture();
@@ -158,8 +167,14 @@ public class MouseControlBehavior : Behavior<FrameworkElement>
 
     #region EventHandlers
 
+    /// <summary>Обработчик перемещения мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseMove(object Sender, MouseEventArgs E) => MousePosition = E.GetPosition((FrameworkElement)Sender);
 
+    /// <summary>Обработчик изменения размера элемента</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnSizeChanged(object Sender, SizeChangedEventArgs E) => ElementSize = E.NewSize;
 
     #endregion

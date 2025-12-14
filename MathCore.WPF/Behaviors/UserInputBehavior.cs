@@ -6,6 +6,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для обработки пользовательского ввода с клавиатуры и мыши</summary>
 public class UserInputBehavior : Behavior<FrameworkElement>
 {
     #region Position : Point - Положение мыши в координатах элемента
@@ -89,13 +90,13 @@ public class UserInputBehavior : Behavior<FrameworkElement>
     /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
     //[Category("")]
     [Description("Команда, вызываемая при нажатии кнопки на клавиатуре")]
-    public ICommand KeyDownCommand { get => (ICommand)GetValue(MouseWheelCommandProperty); set => SetValue(MouseWheelCommandProperty, value); }
+    public ICommand KeyDownCommand { get => (ICommand)GetValue(KeyDownCommandProperty); set => SetValue(KeyDownCommandProperty, value); }
 
     #endregion
 
-    #region KeyUpCommand : ICommand - Команда, вызываемая при нажатии кнопки на клавиатуре
+    #region KeyUpCommand : ICommand - Команда, вызываемая при отпускании кнопки на клавиатуре
 
-    /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
+    /// <summary>Команда, вызываемая при отпускании кнопки на клавиатуре</summary>
     public static readonly DependencyProperty KeyUpCommandProperty =
         DependencyProperty.Register(
             nameof(KeyUpCommand),
@@ -103,13 +104,14 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             typeof(UserInputBehavior),
             new(default(ICommand)));
 
-    /// <summary>Команда, вызываемая при нажатии кнопки на клавиатуре</summary>
+    /// <summary>Команда, вызываемая при отпускании кнопки на клавиатуре</summary>
     //[Category("")]
-    [Description("Команда, вызываемая при нажатии кнопки на клавиатуре")]
-    public ICommand KeyUpCommand { get => (ICommand)GetValue(MouseWheelCommandProperty); set => SetValue(MouseWheelCommandProperty, value); }
+    [Description("Команда, вызываемая при отпускании кнопки на клавиатуре")]
+    public ICommand KeyUpCommand { get => (ICommand)GetValue(KeyUpCommandProperty); set => SetValue(KeyUpCommandProperty, value); }
 
     #endregion
 
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -124,6 +126,7 @@ public class UserInputBehavior : Behavior<FrameworkElement>
         element.KeyUp += OnKeyUp;
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         base.OnDetaching();
@@ -140,6 +143,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
         element.KeyUp -= OnKeyUp;
     }
 
+    /// <summary>Обработчик перемещения мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseMove(object Sender, MouseEventArgs E)
     {
         if (Sender is not FrameworkElement element) return;
@@ -157,6 +163,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
     //    //Position = new(double.NaN, double.NaN);
     //}
 
+    /// <summary>Обработчик нажатия левой кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnLeftMouseDown(object Sender, MouseButtonEventArgs E)
     {
         if (Sender is not IInputElement element) return;
@@ -167,6 +176,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
         command.Execute(point);
     }
 
+    /// <summary>Обработчик отпускания левой кнопки мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnLeftMouseUp(object Sender, MouseButtonEventArgs E)
     {
         if (Sender is not IInputElement element) return;
@@ -177,6 +189,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
         element.ReleaseMouseCapture();
     }
 
+    /// <summary>Обработчик прокрутки колесика мыши</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnMouseWheel(object Sender, MouseWheelEventArgs E)
     {
         if (MouseWheelCommand is not { } command) return;
@@ -185,6 +200,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             command.Execute(delta);
     }
 
+    /// <summary>Обработчик нажатия клавиши на клавиатуре</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnKeyDown(object Sender, KeyEventArgs E)
     {
         if (KeyDownCommand is not { } command) return;
@@ -193,6 +211,9 @@ public class UserInputBehavior : Behavior<FrameworkElement>
             command.Execute(key);
     }
 
+    /// <summary>Обработчик отпускания клавиши на клавиатуре</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnKeyUp(object Sender, KeyEventArgs E)
     {
         if (KeyUpCommand is not { } command) return;

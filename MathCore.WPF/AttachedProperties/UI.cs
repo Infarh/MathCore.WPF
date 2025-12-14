@@ -12,7 +12,7 @@ public static class UI
             "InputBinding",
             typeof(InputBinding),
             typeof(UI),
-            new(default(InputBinding), OnInputBindingChanged));
+            new(null, OnInputBindingChanged));
 
     /// <summary>Обработчик события изменения значения свойства <see cref="InputBindingProperty"/></summary>
     /// <param name="D">Элемент, с которым ассоциирована коллекция горячих клавиш</param>
@@ -43,14 +43,14 @@ public static class UI
     /// <summary>Глобальные горячие клавиши</summary>
     public static GlobalHotKeysCollection GetHotKeys(DependencyObject element)
     {
-        if (element.GetValue(HotKeysProperty) is GlobalHotKeysCollection collection) 
+        if (element.GetValue(HotKeysProperty) is GlobalHotKeysCollection collection)
             return collection;
 
         collection = [];
         if (element is FrameworkElement framework_element)
             framework_element.Unloaded += (e, _) =>
             {
-                if(((DependencyObject)e).GetValue(HotKeysProperty) is GlobalHotKeysCollection keys)
+                if (((DependencyObject)e).GetValue(HotKeysProperty) is GlobalHotKeysCollection keys)
                     keys.Dispose();
             };
         SetHotKeys(element, collection);

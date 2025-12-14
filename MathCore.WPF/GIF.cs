@@ -1,7 +1,7 @@
-﻿using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 
 namespace MathCore.WPF;
 
@@ -24,7 +24,7 @@ public class GIF : Image
         _GifDecoder = new(new Uri(GifSource), BitmapCreateOptions.PreservePixelFormat, BitmapCacheOption.Default);
 
         _Animation = new(
-            fromValue: 0, 
+            fromValue: 0,
             toValue: _GifDecoder.Frames.Count - 1,
             // ReSharper disable once PossibleLossOfFraction
             duration: new(new(0, 0, 0, _GifDecoder.Frames.Count / 10, (int)(1000 * (_GifDecoder.Frames.Count / 10d - _GifDecoder.Frames.Count / 10)))))
@@ -53,7 +53,7 @@ public class GIF : Image
     public static readonly DependencyProperty FrameIndexProperty =
         DependencyProperty.Register(
             nameof(FrameIndex),
-            typeof(int), 
+            typeof(int),
             typeof(GIF),
             new UIPropertyMetadata(0, ChangingFrameIndex));
 
@@ -76,7 +76,7 @@ public class GIF : Image
         DependencyProperty.Register(
             nameof(AutoStart),
             typeof(bool),
-            typeof(GIF), 
+            typeof(GIF),
             new UIPropertyMetadata(false, AutoStartPropertyChanged));
 
     private static void AutoStartPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
@@ -93,9 +93,9 @@ public class GIF : Image
 
     public static readonly DependencyProperty GifSourceProperty =
         DependencyProperty.Register(
-            nameof(GifSource), 
-            typeof(string), 
-            typeof(GIF), 
+            nameof(GifSource),
+            typeof(string),
+            typeof(GIF),
             new UIPropertyMetadata(string.Empty, GifSourcePropertyChanged));
 
     private static void GifSourcePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e) => (sender as GIF).Initialize();

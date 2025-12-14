@@ -45,8 +45,8 @@ public partial class App
         base.OnStartup(e);
         await host.StartAsync();
 
-        var main_thread_cancellation = __MainThreadWatcherCancellation.Token;
-        _ = Task.Run(() => MainThreadLoadingWatcher(main_thread_cancellation), main_thread_cancellation);
+        //var main_thread_cancellation = __MainThreadWatcherCancellation.Token;
+        //_ = Task.Run(() => MainThreadLoadingWatcher(main_thread_cancellation), main_thread_cancellation);
     }
 
     private static readonly CancellationTokenSource __MainThreadWatcherCancellation = new();

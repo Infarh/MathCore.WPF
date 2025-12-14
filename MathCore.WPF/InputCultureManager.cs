@@ -16,14 +16,14 @@ public class InputCultureManager
     public CultureInfo Culture
     {
         get => _Culture;
-        set => InputLanguageManager.Current.CurrentInputLanguage = value;
+        set => InputLanguageManager.Current.CurrentInputLanguage = _Culture = value;
     }
 
     /// <summary>Событие, возникающее при изменении текущей культуры ввода.</summary>
     public event EventHandler? CultureChanged;
 
     /// <summary>Конструктор менеджера культуры ввода.</summary>
-    private InputCultureManager() 
+    private InputCultureManager()
         => InputLanguageManager.Current.InputLanguageChanged += OnInputLanguageChanged;
 
     /// <summary>Обработчик события изменения текущей культуры ввода.</summary>
