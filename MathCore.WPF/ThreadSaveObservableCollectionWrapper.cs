@@ -5,16 +5,22 @@ using System.ComponentModel;
 
 namespace MathCore.WPF;
 
+/// <summary>Потокобезопасная обертка над ObservableCollection для безопасной подписки на события коллекции</summary>
 public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollectionChanged, INotifyPropertyChanged
 {
+    /// <summary>Событие изменения коллекции</summary>
     public event NotifyCollectionChangedEventHandler? CollectionChanged;
 
+    /// <summary>Событие изменения свойств</summary>
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private ObservableCollection<T> _BaseCollection;
 
+    /// <summary>Базовая коллекция, обернутая данным классом</summary>
     public ObservableCollection<T> BaseCollection => _BaseCollection;
 
+    /// <summary>Инициализирует новый экземпляр обертки над указанной коллекцией</summary>
+    /// <param name="collection">Коллекция, для которой создается обертка</param>
     public ThreadSaveObservableCollectionWrapper(ObservableCollection<T> collection)
     {
         _BaseCollection               =  collection;
@@ -22,9 +28,15 @@ public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollect
         ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
     }
 
+    /// <summary>Обработчик события изменения базовой коллекции</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события изменения коллекции</param>
     protected virtual void OnBaseCollectionChanged(object? Sender, NotifyCollectionChangedEventArgs E) => 
         CollectionChanged?.ThreadSafeInvoke(this, E);
 
+    /// <summary>Обработчик события изменения свойств базовой коллекции</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события изменения свойства</param>
     protected virtual void OnBaseCollectionPropertyChanged(object? Sender, PropertyChangedEventArgs E) => 
         PropertyChanged?.ThreadSafeInvoke(this, E.PropertyName);
 
@@ -67,30 +79,43 @@ public class ThreadSaveObservableCollectionWrapper<T> : IList<T>, INotifyCollect
     /// <inheritdoc />
     public T this[int index] { get => _BaseCollection[index]; set => _BaseCollection[index] = value; }
 
+    /// <summary>Полностью переинициализирует содержимое коллекции новыми элементами без смены базовой коллекции</summary>
+    /// <param name="items">Новый набор элементов для коллекции</param>
     public void Reset(IEnumerable<T> items)
     {
-        if (_BaseCollection is { } old_collection)
-        {
-            old_collection.CollectionChanged                         -= OnBaseCollectionChanged;
-            ((INotifyPropertyChanged)old_collection).PropertyChanged -= OnBaseCollectionPropertyChanged;
-        }
+        if (items is null) throw new ArgumentNullException(nameof(items));
 
-        var collection = new ObservableCollection<T>(items);
+        _BaseCollection.CollectionChanged                         -= OnBaseCollectionChanged;
+        ((INotifyPropertyChanged)_BaseCollection).PropertyChanged -= OnBaseCollectionPropertyChanged;
 
-        collection.CollectionChanged                         += OnBaseCollectionChanged;
-        ((INotifyPropertyChanged)collection).PropertyChanged += OnBaseCollectionPropertyChanged;
+        _BaseCollection.Clear();
+        foreach (var item in items)
+            _BaseCollection.Add(item);
 
-        _BaseCollection = collection;
+        _BaseCollection.CollectionChanged                         += OnBaseCollectionChanged;
+        ((INotifyPropertyChanged)_BaseCollection).PropertyChanged += OnBaseCollectionPropertyChanged;
+
         OnBaseCollectionChanged(this, new(NotifyCollectionChangedAction.Reset));
     }
 
+    /// <summary>Неявное преобразование ObservableCollection в потокобезопасную обертку</summary>
+    /// <param name="collection">Исходная коллекция</param>
+    /// <returns>Созданная обертка над коллекцией</returns>
     public static implicit operator ThreadSaveObservableCollectionWrapper<T>(ObservableCollection<T> collection) => new(collection);
 
+    /// <summary>Неявное преобразование обертки к базовой ObservableCollection</summary>
+    /// <param name="collection">Обертка над коллекцией</param>
+    /// <returns>Базовая коллекция</returns>
     public static implicit operator ObservableCollection<T>(ThreadSaveObservableCollectionWrapper<T> collection) => collection._BaseCollection;
 }
 
+/// <summary>Набор методов расширения для создания потокобезопасных оберток над ObservableCollection</summary>
 public static class ThreadSaveObservableCollectionExtensions
 {
+    /// <summary>Создает потокобезопасную обертку над указанной коллекцией</summary>
+    /// <param name="collection">Коллекция, для которой создается обертка</param>
+    /// <typeparam name="T">Тип элементов коллекции</typeparam>
+    /// <returns>Потокобезопасная обертка над переданной коллекцией</returns>
     public static ThreadSaveObservableCollectionWrapper<T?> AsThreadSave<T>(this ObservableCollection<T?> collection)
         => new(collection);
 }
