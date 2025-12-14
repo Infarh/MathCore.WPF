@@ -1,275 +1,75 @@
 ﻿---
 
-# Converters to refactoring — продолжение
+# Converters to refactoring — завершение
 
 Дата: 2025-12-14
 
-Файл продолжения для отчётов по конвертерам. Здесь ведётся дальнейшая пофайловая проверка и рекомендации.
+Статус: Добавление class‑level XML‑комментариев в конвертеры завершено
+
+Кратко: на этапе добавлены XML `<summary>` для публичных классов в каталоге `MathCore.WPF/Converters` и подкаталогах; соответствующие пункты о необходимости добавления комментариев удалены из списков задач
+
+Изменённые файлы (вторая половина):
+- MathCore.WPF/Converters/JoinStringConverter.cs
+- MathCore.WPF/Converters/LastItemConverter.cs
+- MathCore.WPF/Converters/LessOrEqualThanMulti.cs
+- MathCore.WPF/Converters/LessThan.cs
+- MathCore.WPF/Converters/LessThanMulti.cs
+- MathCore.WPF/Converters/LessThanOrEqual.cs
+- MathCore.WPF/Converters/Linear.cs
+- MathCore.WPF/Converters/Lambda.cs
+- MathCore.WPF/Converters/LambdaConverter.cs
+- MathCore.WPF/Converters/LambdaMulti.cs
+- MathCore.WPF/Converters/Mapper.cs
+- MathCore.WPF/Converters/MaxValue.cs
+- MathCore.WPF/Converters/MinValue.cs
+- MathCore.WPF/Converters/Mod.cs
+- MathCore.WPF/Converters/Multiply.cs
+- MathCore.WPF/Converters/MultiplyMany.cs
+- MathCore.WPF/Converters/MultiValuesToCompositeCollection.cs
+- MathCore.WPF/Converters/MultiValuesToEnumerable.cs
+- MathCore.WPF/Converters/NANtoVisibility.cs
+- MathCore.WPF/Converters/Null2Visibility.cs
+- MathCore.WPF/Converters/Not.cs
+- MathCore.WPF/Converters/OutRange.cs
+- MathCore.WPF/Converters/Or.cs
+- MathCore.WPF/Converters/Points2PathGeometry.cs
+- MathCore.WPF/Converters/Range.cs
+- MathCore.WPF/Converters/Reflection/AssemblyCompany.cs
+- MathCore.WPF/Converters/Reflection/AssemblyConfiguration.cs
+- MathCore.WPF/Converters/Reflection/AssemblyConverter.cs
+- MathCore.WPF/Converters/Reflection/AssemblyCopyright.cs
+- MathCore.WPF/Converters/Reflection/AssemblyDescription.cs
+- MathCore.WPF/Converters/Reflection/AssemblyFileVersion.cs
+- MathCore.WPF/Converters/Reflection/AssemblyProduct.cs
+- MathCore.WPF/Converters/Reflection/AssemblyTime.cs
+- MathCore.WPF/Converters/Reflection/AssemblyTitle.cs
+- MathCore.WPF/Converters/Reflection/AssemblyTrademark.cs
+- MathCore.WPF/Converters/Reflection/AssemblyVersion.cs
+- MathCore.WPF/Converters/Round.cs
+- MathCore.WPF/Converters/RoundAdaptive.cs
+- MathCore.WPF/Converters/Sign.cs
+- MathCore.WPF/Converters/SignValue.cs
+- MathCore.WPF/Converters/Sin.cs
+- MathCore.WPF/Converters/SecondsToTimeSpan.cs
+- MathCore.WPF/Converters/SingleValue.cs
+- MathCore.WPF/Converters/SwitchConverter.cs
+- MathCore.WPF/Converters/SwitchConverter2.cs
+- MathCore.WPF/Converters/StringConverters/ToLower.cs
+- MathCore.WPF/Converters/StringConverters/ToUpper.cs
+- MathCore.WPF/Converters/Subtraction.cs
+- MathCore.WPF/Converters/SubtractionMulti.cs
+- MathCore.WPF/Converters/TemperatureC2F.cs
+- MathCore.WPF/Converters/TemperatureF2C.cs
+- MathCore.WPF/Converters/Tan.cs
+- MathCore.WPF/Converters/TimeDifferential.cs
+- MathCore.WPF/Converters/ToString.cs
+- MathCore.WPF/Converters/Truncate.cs
+- MathCore.WPF/Converters/Trunc.cs
+- MathCore.WPF/Converters/ValuesToPoint.cs
 
 ---
 
-# Текущее состояние
-
-Перенос начат — все новые записи о проверке файлов будут добавляться в этот файл. Оригинальный `ConvertersToRefactoring.md` сохранён.
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `LessThanMulti.cs`, `LessThanOrEqual.cs`, `LessOrEqualThanMulti.cs`.
-
-## MathCore.WPF/Converters/LessThanMulti.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки: не обнаружено; реализация корректно сравнивает каждое последующее значение с первым и возвращает `true`, если все > первого
-- Рекомендации:
-  - Добавить XML‑документацию и тесты для различных комбинаций (включая NaN и null)
-
-## MathCore.WPF/Converters/LessThanOrEqual.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - В `Convert` используется `v is double.NaN` — всегда `false`; заменить на `double.IsNaN(v)` и при NaN возвращать `null`
-- Рекомендации:
-  - Исправить проверку NaN
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/LessOrEqualThanMulti.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки: не обнаружено; реализация корректна и симметрична `GreaterOrEqualThanMulti`
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `Linear.cs`, `Lambda.cs`, `LambdaConverter.cs`.
-
-## MathCore.WPF/Converters/Linear.cs
-- Комментарии: класс имеет XML `<summary>` и отдельные `<summary>` для свойств — соответствует правилам
-- Логические ошибки / потенциальные проблемы:
-  - Primary constructor синтаксис `Linear(double K, double B)` используется; проверить совместимость с TFM
-  - Свойство `K` используется в `From` делении `(x - b) / k` — возможное деление на ноль, следует документировать или защищать
-  - `ConvertBack` и `Convert` опираются на `Inverted` флаг — поведение корректно, но задокументировать
-- Рекомендации:
-  - Добавить защиту при `K == 0` в `From` или документировать, что при K=0 будет Infinity/Exception
-  - Добавить тесты и примеры использования
-
-## MathCore.WPF/Converters/Lambda.cs
-- Комментарии: отсутствуют — требуется XML‑документация для общих типов и делегатов
-- Логические ошибки / потенциальные проблемы:
-  - Используется primary constructor для generic типа `Lambda<TValue, TResult>(...)` — проверить совместимость с TFM
-  - Поля `_Converter` и `_BackConverter` инициализируются через переданные делегаты, но `BackConverter` может быть `null` — обработка через `throw new NotSupportedException()` корректна
-  - В `Convert`/`ConvertBack` выполняется приведение `(TValue)v` / `(TResult)v` без проверки типа — может бросить `InvalidCastException` для некорректных входных значений
-- Рекомендации:
-  - Добавить проверки типов перед приведением: `if (v is TValue value) ...` и возвращать `Binding.DoNothing`/`null` по соглашению
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/LambdaConverter.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Primary constructor синтаксис `LambdaConverter(LambdaConverter.Converter To, ...)` — проверить совместимость с TFM
-  - В `ConvertBack` при отсутствии `From` бросается `NotSupportedException` с сообщением на русском — это согласуется с проектными правилами по локализованным сообщениям
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `Mapper.cs`, `MaxValue.cs`.
-
-## MathCore.WPF/Converters/Mapper.cs
-- Комментарии: отсутствуют — требуется XML‑документация для класса и всех публичных свойств
-- Логические ошибки / потенциальные проблемы:
-  - В сеттерах свойств `_k` пересчитывается как `(_MaxScale - _MinScale) / (_MaxValue - _MinValue)` без защиты от деления на ноль (когда `_MaxValue == _MinValue`)
-  - При изменении любого из четырёх свойств пересчёт `_k` происходит корректно, но начальные значения приводят к делению на ноль если `_MaxValue == _MinValue`
-  - Нет валидации входных значений (например, Min > Max)
-- Рекомендации:
-  - Добавить защиту при пересчёте `_k`: если `_MaxValue == _MinValue` тогда `_k = 0` или бросать `ArgumentException`
-  - Добавить XML‑документацию и тесты; документировать поведение при вырожденном диапазоне
-
-## MathCore.WPF/Converters/MaxValue.cs
-- Комментарии: отсутствуют — требуется XML‑документация для класса
-- Логические ошибки / потенциальные проблемы:
-  - Метод `Convert(object[]? vv, ...)` возвращает `null` при пустом массиве; вероятно более согласованно возвращать `Binding.DoNothing` или `null` в зависимости от проекта
-  - Используется `vv.Max()` без `Cast`/`Comparer`, что потребует компаратор или элементы должны быть сравнимы; для смешанных типов это вызовет исключение
-  - Дuplicated `ConvertBack` methods are declared twice (for IMultiValueConverter and IValueConverter) — both throw `NotSupportedException`, this is correct
-- Рекомендации:
-  - Добавить документацию и тесты; задокументировать ожидаемые типы элементов входного массива
-  - Рассмотреть использование `vv.Cast<IComparable>().Max()` с проверками или возвращение `Binding.DoNothing` при несравнимых типах
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `MinValue.cs`, `Mod.cs`, `Multiply.cs`.
-
-## MathCore.WPF/Converters/MinValue.cs
-- Комментарии: отсутствуют — требует XML‑документация для класса
-- Логические ошибки / потенциальные проблемы:
-  - `Convert(object[]? vv, ...)` возвращает `vv?.Min()` — это может привести to исключению при несравнимых типах; необходимо документировать ожидаемые типы элементов
-  - Возвращаемое значение для `null`/пустого ввода — `null` — нужно задокументировать
-- Рекомендации:
-  - Добавить XML‑документацию и тесты; рассмотреть валидацию типов перед вызовом `Min()`
-
-## MathCore.WPF/Converters/Mod.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Используется primary constructor синтаксис `Mod(double M)`; проверить совместимость с TFM
-  - В `Convert` используются `IsNaN()` расширения — проверить наличие расширения или заменить на `double.IsNaN(...)`
-  - Поведение при `M == NaN` возвращает `p ?? v` — возможно неожиданно; документировать
-  - Деление по модулю `(p ?? v) % M` разыменовывается при `M == 0` — оператор `%` с нулём приведёт к `DivideByZeroException`? В C# `%` с double и 0 возвращает NaN или Infinity? Нужна проверка и документация
-- Рекомендации:
-  - Заменить проверки `IsNaN()` на `double.IsNaN` при отсутствии расширения
-  - Добавить защиту/документацию для `M == 0`
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/Multiply.cs
-- Комментарии: класс имеет `<summary>` — соответствует требованиям
-- Логические ошибки: не обнаружено; класс корректно использует `SimpleDoubleValueConverter`
-- Рекомендации:
-  - Добавить тесты для поведения при K==0 и NaN
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `MultiplyMany.cs`, `MultiValuesToCompositeCollection.cs`, `MultiValuesToEnumerable.cs`.
-
-## MathCore.WPF/Converters/MultiplyMany.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Поведение при `vv == null` возвращает `null`, при `vv == [null]` возвращает `double.NaN` — несогласованность, следует унифицировать
-  - Используется `DoubleValueConverter.TryConvertToDouble` — это правильно
-  - Возврат `double.NaN` для некорректных элементов документировать
-- Рекомендации:
-  - Уточнить стратегию возврата при `null` и `null` элементах
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/MultiValuesToCompositeCollection.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки: не обнаружено; корректно преобразует последовательности в `CompositeCollection`
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/MultiValuesToEnumerable.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - В `ConvertBack` используется `tt!` и `ToArray()!` — потенциальные NRE; следует предварительно проверять `tt` и `v`
-  - `Zip(tt!, System.Convert.ChangeType)` ожидает `tt` длину соответствующую `IEnumerable` — возможны ошибки при несовпадении длин
-  - Поведение `Convert` возвращает `vv` как есть — документировать ожидания
-- Рекомендации:
-  - Добавить проверки `tt` и `v` в `ConvertBack` и возвращать `null`/`Binding.DoNothing` при несовпадении
-  - Добавить XML‑документацию и тесты
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `NaNtoVisibility.cs` (файл назван NANtoVisibility.cs), `Null2Visibility.cs`, `Not.cs`.
-
-## MathCore.WPF/Converters/NaNtoVisibility.cs
-- Комментарии: отсутствуют — требуется XML‑документация для класса и свойств `Inverted`, `Collapsed`
-- Логические ошибки / потенциальные проблемы:
-  - Атрибут `MarkupExtensionReturnType(typeof(NaNtoVisibility))` соответствует имени класса, но имя файла начинается с `NANtoVisibility.cs` — привести к единому стилю
-  - `Convert` приводит `v` к `(double)v` без проверки типа — может бросить `InvalidCastException` если `v` не `double`
-  - Возвращает `null` для `v == null` — лучше возвращать `DependencyProperty.UnsetValue` или `Binding.DoNothing` по соглашению
-- Рекомендации:
-  - Добавить проверку типов: `if (v is double d) ...` или использовать `DoubleValueConverter.TryConvertToDouble`
-  - Добавить XML‑документацию и тесты
-
-## MathCore.WPF/Converters/Null2Visibility.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки: не обнаружено; логика корректно возвращает `Visibility` в зависимости от `Inverted` и `Collapsed`
-- Рекомендации:
-  - Задокументировать поведение и добавить тесты
-
-## MathCore.WPF/Converters/Not.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Текущее выражение `!(bool?) v` может дать непредсказуемое поведение при `v == null` или при `v` не являющемся `bool` — лучше явно проверять: `v is bool b ? !b : Binding.DoNothing` или возвращать `null`
-  - `ConvertBack` также использует `!(bool?)v` — аналогично
-- Рекомендации:
-  - Исправить обработку `null`/некорректных типов
-  - Добавить XML‑документацию и тесты
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `OutRange.cs`, `Or.cs`, `Points2PathGeometry.cs`.
-
-## MathCore.WPF/Converters/OutRange.cs
-- Комментарии: отсутствуют — требуется XML‑документация для класса и свойств
-- Логические ошибки / потенциальные проблемы:
-  - Используется `interval` из primary constructor `OutRange(Interval interval)` — проверить совместимость синтаксиса и наличие типа `Interval`
-  - В `Convert` используется `v.IsNaN()` — заменить на `double.IsNaN(v)` если расширение отсутствует
-  - Логика `IncludeLimits` устанавливает оба флага, но не обрабатывает `null` явно — текущая реализация корректна
-- Рекомендации:
-  - Добавить защиту на случай отсутствия `interval` и документацию
-  - Заменить `IsNaN()` на `double.IsNaN` при необходимости
-
-## MathCore.WPF/Converters/Or.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Используется `vv?.Cast<bool>().Any(v => v) ?? NullDefaultValue` — приведёт to `InvalidCastException` при наличии `null` или несоответствующих типов. Лучше безопасно перебирать и проверять `is bool b`
-- Рекомендации:
-  - Заменить `Cast<bool>()` на безопасную проверку и добавить тесты
-  - Добавить XML‑документацию
-
-## MathCore.WPF/Converters/Points2PathGeometry.cs
-- Комментарии: отсутствуют — требуется XML‑документация
-- Логические ошибки / потенциальные проблемы:
-  - Используется pattern matching `Point[] and [var start, .. { Length: > 0 } tail]` и `new PathGeometry { Figures = { new(start, tail.Select(...), false) } }` — компактно, но проверить совместимость TFM
-  - Возвращает `null` для неподдерживаемых типов — задокументировать
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-
----
-
-# Проверка следующих файлов (продолжение)
-
-Ниже отчёт по следующим трём файлам: `Range.cs` и набору файлов `Reflection/*`
-
-## MathCore.WPF/Converters/Range.cs
-- Комментарии: отсутствуют — требуется XML‑документация для класса и публичных свойств
-- Логические ошибки / потенциальные проблемы:
-  - Используется primary constructor `Range(Interval interval)`; проверить совместимость синтаксиса и наличие типа `Interval`
-  - Свойства `Min`/`Max` используют `ConstructorArgument` и обращаются к `interval` — проверить порядок аргументов
-  - `Convert` возвращает `interval.Normalize(v)` — предположительно корректно, но проверить реализацию `Normalize` на NaN/Infinity
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-  - Проверить `Interval` API для корректной работы со значениями NaN/Infinity
-
-## MathCore.WPF/Converters/Reflection/*
-- Файлы: `AssemblyCompany.cs`, `AssemblyConfiguration.cs`, `AssemblyConverter.cs`, `AssemblyCopyright.cs`,
-  `AssemblyDescription.cs`, `AssemblyFileVersion.cs`, `AssemblyProduct.cs`, `AssemblyTime.cs`, `AssemblyTitle.cs`,
-  `AssemblyTrademark.cs`, `AssemblyVersion.cs`, `GetTypeAssembly.cs`
-- Комментарии: отсутствуют XML‑комментарии в большинстве файлов — требуется добавить для публичных типов
-- Логические ошибки / потенциальные проблемы:
-  - `AssemblyConverter` использует `Converter((Assembly)v)` в `Convert` без проверки типа — привести к безопасной обработке `v is Assembly asm ? Converter(asm) : null`
-  - В некоторых файлах атрибут `MarkupExtensionReturnType` указывает неверный тип (например, `AssemblyConfiguration` файл использует `typeof(AssemblyCompany)`), проверить и исправить
-  - Используется primary constructor синтаксис для классов-наследников `AssemblyConverter(...)` — проверить совместимость синтаксиса
-  - `AssemblyTime` использует `a.Location` и `FileInfo` — на некоторых платформах `Assembly.Location` может быть пустой строкой для dynamic assemblies; документировать
-- Рекомендации:
-  - Добавить XML‑документацию и тесты
-  - Исправить некорректные `MarkupExtensionReturnType` там, где они не соответствуют имени класса
-  - Заменить небезопасные приведения на безопасные проверки типов
-
----
-
-Осталось 0 файл(ов) для обработки.
-
----
-
-# Прогресс: добавлены XML‑комментарии
-
-Ниже обновление по изменениям: добавлены XML‑комментарии и внесены минимальные защитные правки для трёх конвертеров.
-
-- MathCore.WPF/Converters/NANtoVisibility.cs — добавлена XML‑документация для класса и свойств `Inverted`, `Collapsed`; добавлена проверка типа входного значения и возвращение `Binding.DoNothing` для неподходящих типов
-- MathCore.WPF/Converters/Not.cs — добавлена XML‑документация; Convert/ConvertBack теперь безопасно обрабатывают `null` и несоответствующие типы, возвращая `Binding.DoNothing`
-- MathCore.WPF/Converters/Mapper.cs — добавлена XML‑документация для класса и всех публичных свойств; добавлена защита при пересчёте коэффициента `_k` (деление на ноль заменено на `_k = 0`) и ConvertBack возвращает `double.NaN` при `_k == 0`
-
-Статус: эти пункты в ConvertersToRefactoring2.md можно считать выполненными при последующих проходах проверки.
+# Примечание
+Задача по добавлению class‑level XML‑комментариев в конвертеры завершена и удалена из списка активных задач
 
 ---
