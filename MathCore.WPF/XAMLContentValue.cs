@@ -5,18 +5,21 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF;
 
-/// <summary>Представляет значение, загружающее содержимое XAML из URI.</summary>
+/// <summary>Представляет значение, загружающее содержимое XAML из URI</summary>
 public class XAMLContentValue : DependencyObject
 {
-    private Task<object> _LoadContentTask;
+    private Task<object?> _LoadContentTask; // задача последней загрузки содержимого
     private readonly FileSystemWatcher? _FileWatcher;
 
-    /// <summary>Возвращает URI содержимого XAML.</summary>
+    /// <summary>Возвращает URI содержимого XAML</summary>
     public Uri URI { get; }
+
+    /// <summary>Словарь пространств имён XAML для настройки контекста парсера</summary>
+    public IDictionary<string, string>? XmlNamespaces { get; set; }
 
     #region Content : object - Содержимое
 
-    /// <summary>Возвращает или задает загруженное содержимое XAML.</summary>
+    /// <summary>Возвращает или задает загруженное содержимое XAML</summary>
     public static readonly DependencyProperty ContentProperty =
         DependencyProperty.Register(
             nameof(Content),
@@ -24,71 +27,103 @@ public class XAMLContentValue : DependencyObject
             typeof(XAMLContentValue),
             new(default(object)));
 
-    /// <summary>Возвращает или задает загруженное содержимое XAML.</summary>
+    /// <summary>Возвращает или задает загруженное содержимое XAML</summary>
     [Description("Содержимое")]
     public object Content { get => GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
     #endregion
 
-    /// <summary>Инициализирует новый экземпляр класса <see cref="XAMLContentValue"/>.</summary>
-    /// <param name="uri">URI содержимого XAML.</param>
-    /// <exception cref="ArgumentException">Выбрасывается, если <paramref name="uri"/> равен null или пуст.</exception>
+    /// <summary>Инициализирует новый экземпляр класса <see cref="XAMLContentValue"/></summary>
+    /// <param name="uri">URI содержимого XAML</param>
+    /// <exception cref="ArgumentException">Выбрасывается, если <paramref name="uri"/> равен null или пуст</exception>
     public XAMLContentValue(string? uri)
     {
         if (uri is not { Length: > 0 })
-            throw new ArgumentException("URI не может быть null или пуст.", nameof(uri));
+            throw new ArgumentException("URI не может быть null или пуст", nameof(uri));
 
         URI = new(uri);
-        _LoadContentTask = LoadContentAsync();
+        _LoadContentTask = ReloadSafeAsync();
 
-        // Если URI является файлом и он существует, настраиваем наблюдатель файла для перезагрузки содержимого при изменении файла.
-        if (this.URI.IsFile && File.Exists(uri))
+        // Если URI является файлом и он существует, настраиваем наблюдатель файла для перезагрузки содержимого при изменении файла
+        if (URI.IsFile && File.Exists(URI.LocalPath))
         {
-            _FileWatcher = new(Path.GetDirectoryName(Path.GetFullPath(uri))!, Path.GetFileName(uri))
+            var file_path = Path.GetFullPath(URI.LocalPath);
+            var directory_path = Path.GetDirectoryName(file_path);
+            var file_name = Path.GetFileName(file_path);
+
+            if (directory_path is not null && file_name.Length > 0)
             {
-                EnableRaisingEvents = true
-            };
-            _FileWatcher.Changed += OnFileChanged;
+                _FileWatcher = new(directory_path, file_name)
+                {
+                    EnableRaisingEvents = true
+                };
+                _FileWatcher.Changed += OnFileChanged;
+            }
         }
     }
 
-    /// <summary>Обрабатывает событие изменения файла, перезагружая содержимое XAML.</summary>
-    /// <param name="sender">Источник события.</param>
-    /// <param name="e">Аргументы события.</param>
-    private void OnFileChanged(object sender, FileSystemEventArgs e) => _LoadContentTask = LoadContentAsync();
+    /// <summary>Обрабатывает событие изменения файла, перезагружая содержимое XAML</summary>
+    private void OnFileChanged(object sender, FileSystemEventArgs e) => _LoadContentTask = ReloadSafeAsync();
 
-    /// <summary>Загружает содержимое XAML из URI асинхронно.</summary>
-    /// <returns>Задача, представляющая загруженное содержимое XAML.</returns>
+    /// <summary>Безопасная перезагрузка содержимого с обработкой ошибок</summary>
+    private async Task<object?> ReloadSafeAsync()
+    {
+        try
+        {
+            return await LoadContentAsync().ConfigureAwait(false);
+        }
+        catch
+        {
+            // здесь можно добавить логирование при необходимости
+            return null;
+        }
+    }
+
+    /// <summary>Загружает содержимое XAML из URI асинхронно</summary>
     private async Task<object> LoadContentAsync()
     {
-        await Task.Yield().ConfigureAwait(false);
+        await Task.Yield().ConfigureAwait(false); // переключаемся на поток из пула
 
-        // Создаем контекст парсера для загрузки содержимого XAML.
-        var parser_context = new ParserContext
-        {
-            // TODO: Настройте контекст парсера по необходимости.
-        };
+        var parser_context = CreateParserContext();
+        var path = URI.IsFile ? URI.LocalPath : URI.ToString();
 
-        // Загружаем содержимое XAML из файла.
-        var result = XamlReader.Load(File.OpenRead(URI.ToString()), parser_context);
+        using var stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite); // даём внешним процессам возможность записывать файл
+        var result = XamlReader.Load(stream, parser_context);
 
-        // Устанавливаем загруженное содержимое в качестве значения свойства Content.
-        Content = result;
+        if (Application.Current?.Dispatcher is { } dispatcher)
+            await dispatcher.InvokeAsync(() => Content = result); // установка значения свойства Content в UI-потоке
+        else
+            Content = result;
+
         return result;
     }
 
-    ///// <summary>Возвращает поток для указанного URI асинхронно.</summary>
-    ///// <param name="uri">URI, для которого необходимо получить поток.</param>
-    ///// <returns>Задача, представляющая поток для указанного URI.</returns>
-    //private static Task<Stream> GetDataStreamAsync(Uri uri)
-    //{
-    //    // Если URI является файлом и он существует, возвращаем поток файла.
-    //    if (uri.IsFile && uri.ToString() is var filePath)
-    //        return File.Exists(filePath)
-    //            ? Task.FromResult<Stream>(File.OpenRead(filePath))
-    //            : throw new FileNotFoundException("Файл не найден", filePath);
+    /// <summary>Создать и настроить контекст парсера XAML</summary>
+    private ParserContext CreateParserContext()
+    {
+        var parser_context = new ParserContext();
 
-    //    // TODO: Реализуйте поддержку URI, не являющихся файлами.
-    //    throw new NotSupportedException("Чтение не из файлового потока не поддерживается");
-    //}
+        var uri = URI;
+        if (uri.IsFile)
+        {
+            var file_path = Path.GetFullPath(uri.LocalPath);
+            parser_context.BaseUri = new(file_path);
+        }
+
+        var xmlns = parser_context.XmlnsDictionary;
+
+        // Базовые пространства имён WPF, если явные не заданы
+        if (XmlNamespaces is null || XmlNamespaces.Count == 0)
+        {
+            if (xmlns[string.Empty] is null)
+                xmlns.Add(string.Empty, "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            if (xmlns["x"] is null)
+                xmlns.Add("x", "http://schemas.microsoft.com/winfx/2006/xaml");
+        }
+        else
+            foreach (var pair in XmlNamespaces)
+                xmlns[pair.Key ?? string.Empty] = pair.Value; // настраиваем пространства имён согласно словарю
+
+        return parser_context;
+    }
 }
