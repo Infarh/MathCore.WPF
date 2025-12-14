@@ -1,0 +1,24 @@
+﻿<Window x:Class="MathCore.WPF.Notifications.ToastNotificationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MathCore.WPF.Notifications"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Opacity="0"
+        FocusManager.FocusedElement="{Binding RelativeSource={RelativeSource Self}}">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ToastNotificationStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Window.Style>
+        <StaticResource ResourceKey="DefaultToastNotificationWindowStyle"/>
+    </Window.Style>
+</Window>

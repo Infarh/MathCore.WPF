@@ -1,0 +1,207 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestToastNotifyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest" 
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        DataContext="{vm:TestToastNotifyViewModel}"
+        Title="{Binding Title}" 
+        Height="600" Width="900">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Основная панель настроек -->
+        <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Настройки сообщения -->
+                <GroupBox Header="Настройки сообщения" Margin="0,0,0,10">
+                    <StackPanel>
+                        <Label Content="Заголовок:"/>
+                        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" 
+                                 Margin="0,0,0,10"/>
+
+                        <Label Content="Сообщение:"/>
+                        <TextBox Text="{Binding Message, UpdateSourceTrigger=PropertyChanged}" 
+                                 Height="80"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Настройки отображения -->
+                <GroupBox Header="Настройки отображения" Margin="0,0,0,10">
+                    <StackPanel>
+                        <Label Content="Тип иконки:"/>
+                        <ComboBox ItemsSource="{Binding AvailableIcons}"
+                                  SelectedItem="{Binding SelectedIcon}"
+                                  Margin="0,0,0,10"/>
+
+                        <Label Content="Позиция на экране:"/>
+                        <ComboBox ItemsSource="{Binding AvailablePositions}"
+                                  SelectedItem="{Binding SelectedPosition}"
+                                  Margin="0,0,0,10"/>
+
+                        <Label Content="Длительность отображения (мс):"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Slider Value="{Binding DisplayDuration}" 
+                                    Minimum="1000" 
+                                    Maximum="15000" 
+                                    Width="250"
+                                    TickFrequency="1000"
+                                    IsSnapToTickEnabled="True"
+                                    VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding DisplayDuration, StringFormat={}{0} мс}" 
+                                       Margin="10,0,0,0"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Основная кнопка -->
+                <Button Command="{Binding ShowNotificationCommand}"
+                        Content="Показать настраиваемое уведомление"
+                        Height="40"
+                        FontSize="14"
+                        FontWeight="SemiBold"
+                        Margin="0,0,0,15"/>
+
+                <!-- Панель быстрых действий -->
+                <GroupBox Header="Быстрые действия" Margin="0,0,0,10">
+                    <UniformGrid Columns="2" Rows="3">
+                        <Button Command="{Binding ShowInformationCommand}"
+                                Content="Информация"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding ShowSuccessCommand}"
+                                Content="Успех"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding ShowWarningCommand}"
+                                Content="Предупреждение"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding ShowErrorCommand}"
+                                Content="Ошибка"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding ShowCriticalCommand}"
+                                Content="Критическая"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding ShowMultipleCommand}"
+                                Content="Несколько"
+                                Margin="3"
+                                Height="35"/>
+                    </UniformGrid>
+                </GroupBox>
+
+                <!-- Дополнительные действия -->
+                <GroupBox Header="Дополнительно">
+                    <StackPanel>
+                        <Button Command="{Binding ShowWithCustomContentCommand}"
+                                Content="Уведомление с пользовательским содержимым"
+                                Margin="3"
+                                Height="35"/>
+                        
+                        <Button Command="{Binding CloseAllCommand}"
+                                Content="Закрыть все уведомления"
+                                Margin="3"
+                                Height="35"
+                                Background="#FFFFE0E0"
+                                BorderBrush="#FFFF6060"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <GridSplitter Grid.Column="1" 
+                      HorizontalAlignment="Stretch"
+                      Background="LightGray"/>
+
+        <!-- Справочная информация -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="5">
+                <TextBlock Text="Справка" 
+                           FontSize="16" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,10"/>
+
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10">
+                    <Run Text="Типы иконок:" FontWeight="SemiBold"/>
+                    <LineBreak/>
+                    <Run Text="• None - без иконки"/>
+                    <LineBreak/>
+                    <Run Text="• Information - информация"/>
+                    <LineBreak/>
+                    <Run Text="• Success - успех"/>
+                    <LineBreak/>
+                    <Run Text="• Warning - предупреждение"/>
+                    <LineBreak/>
+                    <Run Text="• Error - ошибка"/>
+                    <LineBreak/>
+                    <Run Text="• Critical - критическая ошибка"/>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10">
+                    <Run Text="Позиции:" FontWeight="SemiBold"/>
+                    <LineBreak/>
+                    <Run Text="• BottomRight - правый нижний угол"/>
+                    <LineBreak/>
+                    <Run Text="• TopRight - правый верхний угол"/>
+                    <LineBreak/>
+                    <Run Text="• BottomLeft - левый нижний угол"/>
+                    <LineBreak/>
+                    <Run Text="• TopLeft - левый верхний угол"/>
+                    <LineBreak/>
+                    <Run Text="• Center - по центру"/>
+                    <LineBreak/>
+                    <Run Text="• TopCenter - сверху по центру"/>
+                    <LineBreak/>
+                    <Run Text="• BottomCenter - снизу по центру"/>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10">
+                    <Run Text="Управление:" FontWeight="SemiBold"/>
+                    <LineBreak/>
+                    <Run Text="• Клик ЛКМ - генерирует событие"/>
+                    <LineBreak/>
+                    <Run Text="• Клик ПКМ - генерирует событие"/>
+                    <LineBreak/>
+                    <Run Text="• Esc / Space / Enter - закрыть"/>
+                    <LineBreak/>
+                    <Run Text="• Кнопка [×] - закрыть"/>
+                </TextBlock>
+
+                <TextBlock TextWrapping="Wrap" Margin="0,0,0,10">
+                    <Run Text="Примеры кода:" FontWeight="SemiBold"/>
+                    <LineBreak/>
+                    <LineBreak/>
+                    <Run Text="// Простой вызов" FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="ToastNotificationManager" FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="  .Default.Show(" FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="    &quot;Заголовок&quot;," FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="    &quot;Сообщение&quot;," FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="    ToastNotificationIcon" FontFamily="Consolas" FontSize="11"/>
+                    <LineBreak/>
+                    <Run Text="      .Information);" FontFamily="Consolas" FontSize="11"/>
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
