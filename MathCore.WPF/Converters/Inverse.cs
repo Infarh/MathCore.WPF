@@ -4,8 +4,14 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
-[MarkupExtensionReturnType(typeof(double))]
+/// <summary>Преобразует число в обратное значение (1/x) или параметр/x</summary>
+[MarkupExtensionReturnType(typeof(Inverse))]
 public class Inverse : SimpleDoubleValueConverter
 {
-    protected override double Convert(double v, double? p = null) => p is { } k ? k / v : 1 / v;
+    /// <summary>Возвращает обратное значение: параметр / v или 1 / v</summary>
+    protected override double Convert(double v, double? p = null)
+    {
+        if (v == 0) return double.NaN;
+        return p is double k ? k / v : 1 / v;
+    }
 }

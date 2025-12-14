@@ -8,13 +8,16 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет что значение больше или равно заданному порогу</summary>
 [MarkupExtensionReturnType(typeof(GreaterThanOrEqual))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class GreaterThanOrEqual(double value) : DoubleToBool
 {
     public GreaterThanOrEqual() : this(double.NegativeInfinity) { }
 
+    /// <summary>Пороговое значение</summary>
     public double Value { get; set; } = value;
 
-    protected override bool? Convert(double v) => v.IsNaN() ? null : v >= Value;
+    /// <summary>Возвращает null для NaN, иначе true если v >= Value</summary>
+    protected override bool? Convert(double v) => double.IsNaN(v) ? null : v >= Value;
 }

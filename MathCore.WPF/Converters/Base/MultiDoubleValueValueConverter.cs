@@ -2,10 +2,13 @@
 
 namespace MathCore.WPF.Converters.Base;
 
+/// <summary>Базовый конвертер для операций над массивом double с ограничением Min/Max</summary>
 public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
 {
+    /// <summary>Минимальное ограничение результата</summary>
     public double? Min { get; set; }
 
+    /// <summary>Максимальное ограничение результата</summary>
     public double? Max { get; set; }
 
     /// <inheritdoc />
@@ -35,11 +38,14 @@ public abstract class MultiDoubleValueValueConverter : MultiValueValueConverter
         ? null
         : ConvertBack(DoubleValueConverter.ConvertToDouble(v, c))?.Cast<object>().ToArray();
 
+    /// <summary>Выполняет вычисление результата по массиву double</summary>
+    /// <param name="vv">Массив входных значений или null</param>
+    /// <returns>Числовой результат вычисления</returns>
     protected abstract double Convert(double[]? vv);
 
+    /// <summary>Обратное преобразование значения в массив double, по умолчанию не реализовано</summary>
     protected virtual double[]? ConvertBack(double v)
     {
-        base.ConvertBack(null, null, null, null);
         return null;
     }
 }

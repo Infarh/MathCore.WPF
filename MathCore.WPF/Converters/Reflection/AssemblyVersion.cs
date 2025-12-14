@@ -1,7 +1,11 @@
 ﻿using System.Windows.Markup;
-// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.Reflection;
 
+/// <summary>Возвращает версию сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyVersion))]
-public class AssemblyVersion() : AssemblyConverter(a => a.GetName().Version);
+public class AssemblyVersion : AssemblyConverter
+{
+    /// <summary>Возвращает версию сборки</summary>
+    public AssemblyVersion() : base(a => a.GetName().Version) { }
+}

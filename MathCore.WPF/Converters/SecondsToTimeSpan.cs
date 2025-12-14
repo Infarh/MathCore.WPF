@@ -6,6 +6,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразует значение в секунды в TimeSpan и обратно</summary>
 [MarkupExtensionReturnType(typeof(SecondsToTimeSpan))]
 [ValueConversion(typeof(double), typeof(TimeSpan))]
 [ValueConversion(typeof(float), typeof(TimeSpan))]
@@ -16,8 +17,10 @@ namespace MathCore.WPF.Converters;
 [ValueConversion(typeof(TimeSpan), typeof(double))]
 public class SecondsToTimeSpan : ValueConverter
 {
+    /// <summary>Преобразует числовое значение в TimeSpan или TimeSpan в число секунд</summary>
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c) => v switch
     {
+        null => Binding.DoNothing,
         float x => TimeSpan.FromSeconds(x),
         double x => TimeSpan.FromSeconds(x),
         long x => TimeSpan.FromSeconds(x),
@@ -25,11 +28,13 @@ public class SecondsToTimeSpan : ValueConverter
         short x => TimeSpan.FromSeconds(x),
         byte x => TimeSpan.FromSeconds(x),
         TimeSpan time => time.TotalSeconds,
-        _ => throw new InvalidOperationException()
+        _ => Binding.DoNothing
     };
 
+    /// <summary>Обратное преобразование, идентично Convert</summary>
     protected override object? ConvertBack(object? v, Type t, object? p, CultureInfo c) => v switch
     {
+        null => Binding.DoNothing,
         float x => TimeSpan.FromSeconds(x),
         double x => TimeSpan.FromSeconds(x),
         long x => TimeSpan.FromSeconds(x),
@@ -37,6 +42,6 @@ public class SecondsToTimeSpan : ValueConverter
         short x => TimeSpan.FromSeconds(x),
         byte x => TimeSpan.FromSeconds(x),
         TimeSpan time => time.TotalSeconds,
-        _ => throw new InvalidOperationException()
+        _ => Binding.DoNothing
     };
 }

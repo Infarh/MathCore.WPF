@@ -8,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет, что значение входит в указанный интервал</summary>
 [MarkupExtensionReturnType(typeof(InRange))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class InRange(Interval interval) : DoubleToBool
@@ -28,6 +29,6 @@ public class InRange(Interval interval) : DoubleToBool
 
     public bool MaxInclude { get => interval.MaxInclude; set => interval = interval.IncludeMax(value); }
 
-    /// <inheritdoc />
-    protected override bool? Convert(double v) => v.IsNaN() ? null : interval.Check(v);
+    /// <summary>Возвращает null для NaN входа, иначе true если значение в интервале</summary>
+    protected override bool? Convert(double v) => double.IsNaN(v) ? null : interval.Check(v);
 }

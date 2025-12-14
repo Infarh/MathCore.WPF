@@ -9,6 +9,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет, что значение находится вне указанного интервала</summary>
 [MarkupExtensionReturnType(typeof(OutRange))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class OutRange(Interval interval) : DoubleToBool
@@ -48,6 +49,6 @@ public class OutRange(Interval interval) : DoubleToBool
         }
     }
 
-    /// <inheritdoc />
-    protected override bool? Convert(double v) => v.IsNaN() ? null : !interval.Check(v);
+    /// <summary>Возвращает null при NaN, иначе true если значение вне интервала</summary>
+    protected override bool? Convert(double v) => double.IsNaN(v) ? null : !interval.Check(v);
 }

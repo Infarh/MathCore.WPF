@@ -7,9 +7,11 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразователь, возвращающий первый элемент коллекции</summary>
 [MarkupExtensionReturnType(typeof(FirstItemConverter))]
 public class FirstItemConverter : ValueConverter
 {
+    /// <summary>Возвращает первый элемент перечисления или null</summary>
     private static object? GetFirstValue(IEnumerable items)
     {
         var enumerator = items.GetEnumerator();
@@ -23,6 +25,7 @@ public class FirstItemConverter : ValueConverter
         }
     }
 
+    /// <summary>Преобразует входную коллекцию, возвращая первый элемент</summary>
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c) =>
         v switch
         {

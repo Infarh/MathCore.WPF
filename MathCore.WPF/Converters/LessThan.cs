@@ -7,13 +7,16 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет что число меньше заданного порога</summary>
 [MarkupExtensionReturnType(typeof(LessThan))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class LessThan(double value) : DoubleToBool
 {
     public LessThan() : this(double.PositiveInfinity) { }
 
+    /// <summary>Пороговое значение</summary>
     public double Value { get; set; } = value;
 
-    protected override bool? Convert(double v) => v is double.NaN ? null : v < Value;
+    /// <summary>Возвращает null при NaN, иначе true если v &lt; Value</summary>
+    protected override bool? Convert(double v) => double.IsNaN(v) ? null : v < Value;
 }

@@ -8,9 +8,12 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Вычисляет среднее значение последовательности чисел</summary>
 [MarkupExtensionReturnType(typeof(AverageMulti))]
 public class AverageMulti() : MultiValueValueConverter
 {
+    /// <summary>Вычисляет среднее значение последовательности чисел</summary>
+    /// <returns>Среднее арифметическое элементов массива; Binding.DoNothing для некорректных входных данных</returns>
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
         switch (vv)
@@ -21,7 +24,8 @@ public class AverageMulti() : MultiValueValueConverter
                 return double.NaN;
         }
 
-        var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
+        if (!DoubleValueConverter.TryConvertToDouble(vv[0], c, out var v))
+            return double.NaN;
 
         for (var i = 1; i < vv.Length; i++)
         {

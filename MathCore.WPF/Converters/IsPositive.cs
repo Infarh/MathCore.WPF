@@ -7,10 +7,11 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет, является ли число положительным</summary>
 [MarkupExtensionReturnType(typeof(IsPositive))]
 [ValueConversion(typeof(double), typeof(bool?))]
 public class IsPositive : DoubleToBool
 {
-    /// <inheritdoc />
-    protected override bool? Convert(double v) => v is double.NaN ? null : v > 0;
+    /// <summary>Возвращает null для NaN, иначе true если значение положительно</summary>
+    protected override bool? Convert(double v) => double.IsNaN(v) ? null : v > 0;
 }

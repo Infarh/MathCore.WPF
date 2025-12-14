@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Linq;
 
 using MathCore.WPF.Converters.Base;
 
@@ -10,9 +11,11 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразует две последовательности координат X и Y в коллекцию точек</summary>
 [MarkupExtensionReturnType(typeof(ArraysToPoints))]
 public class ArraysToPoints : MultiValueValueConverter
 {
+    /// <summary>Ожидает два перечисления одинаковой длины; выбрасывает ArgumentException при несоответствующих входах</summary>
     protected override object Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
         if (vv is not [IEnumerable e1, IEnumerable e2])

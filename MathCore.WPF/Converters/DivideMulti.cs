@@ -5,9 +5,12 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Выполняет последовательное деление элементов массива</summary>
 [MarkupExtensionReturnType(typeof(DivideMulti))]
 public class DivideMulti : MultiValueValueConverter
 {
+    /// <summary>Выполняет последовательное деление элементов массива</summary>
+    /// <remarks>Возвращает NaN при некорректных входах; при делении на ноль возвращает Infinity в зависимости от знака</remarks>
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
         switch (vv)

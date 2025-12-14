@@ -1,8 +1,12 @@
 ﻿using System.Reflection;
 using System.Windows.Markup;
-// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.Reflection;
 
+/// <summary>Возвращает торговую марку сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyTrademark))]
-public class AssemblyTrademark() : AssemblyConverter(Attribute<AssemblyTrademarkAttribute>(a => a.Trademark));
+public class AssemblyTrademark : AssemblyConverter
+{
+    /// <summary>Возвращает торговую марку сборки</summary>
+    public AssemblyTrademark() : base(Attribute<AssemblyTrademarkAttribute>(a => a.Trademark)) { }
+}

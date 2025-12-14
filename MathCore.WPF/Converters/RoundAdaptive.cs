@@ -11,6 +11,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Адаптивное округление числа, выбирающее количество знаков по значению</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(RoundAdaptive))]
 public class RoundAdaptive(int Digits, MidpointRounding Rounding) : DoubleValueConverter
@@ -26,9 +27,20 @@ public class RoundAdaptive(int Digits, MidpointRounding Rounding) : DoubleValueC
     [ConstructorArgument(nameof(Rounding))]
     public MidpointRounding Rounding { get; set; } = Rounding;
 
-    /// <inheritdoc />
-    protected override double Convert(double v, double? p = null) => v.RoundAdaptive(Digits);
+    /// <summary>Преобразует значение с адаптивным округлением</summary>
+    protected override double Convert(double v, double? p = null)
+    {
+        if (double.IsNaN(v)) return v;
+        try
+        {
+            return v.RoundAdaptive(Digits);
+        }
+        catch
+        {
+            return Math.Round(v, Digits, Rounding);
+        }
+    }
 
-    /// <inheritdoc />
+    /// <summary>Обратное преобразование не изменяет значение</summary>
     protected override double ConvertBack(double v, double? p = null) => v;
 }

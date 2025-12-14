@@ -1,12 +1,11 @@
-﻿
-// ReSharper disable MemberCanBePrivate.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 // ReSharper disable MemberCanBeProtected.Global
 // ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace MathCore.WPF.Converters.Base;
 
-/// <summary>Простой математический конвертер для бинарных операций с константой (либо с параметром)</summary>
+/// <summary>Простой математический конвертер для бинарных операций с константой или параметром</summary>
 public abstract class SimpleDoubleValueConverter : DoubleValueConverter
 {
     /// <summary>Метод преобразования значения</summary>
@@ -21,7 +20,7 @@ public abstract class SimpleDoubleValueConverter : DoubleValueConverter
     /// <summary>Метод обратного преобразования</summary>
     private readonly Conversion _From;
 
-    /// <summary>Параметр преобразования</summary>
+    /// <summary>Параметр преобразования, используемый если параметр вызова отсутствует</summary>
     public double Parameter { get; set; }
 
     protected SimpleDoubleValueConverter(double Parameter, Conversion? to = null, Conversion? from = null)

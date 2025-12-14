@@ -7,11 +7,13 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Преобразует Color в SolidColorBrush с сохранением кеша и заморозкой кистей</summary>
 [MarkupExtensionReturnType(typeof(ColorBrushConverter))]
 public class ColorBrushConverter : ValueConverter
 {
     private static readonly ConcurrentDictionary<Color, SolidColorBrush> __Brushes = new();
 
+    /// <summary>Преобразует Color в SolidColorBrush</summary>
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c) =>
         v is Color color
             ? __Brushes.GetOrAdd(color, brush_color =>
@@ -22,6 +24,7 @@ public class ColorBrushConverter : ValueConverter
             })
             : null;
 
+    /// <summary>Преобразует SolidColorBrush обратно в Color</summary>
     protected override object? ConvertBack(object? v, Type t, object? p, CultureInfo c) =>
         v is SolidColorBrush { Color: var color }
             ? color

@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Markup;
+using System.Windows.Data;
 
 using MathCore.WPF.Converters.Base;
 
@@ -8,6 +9,8 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Выполняет простое арифметическое преобразование значения по строковому шаблону</summary>
+/// <remarks>Шаблон параметра должен быть в формате "{op}{value}", например "+2.5"</remarks>
 [MarkupExtensionReturnType(typeof(Arithmetic))]
 #if NET7_0_OR_GREATER
 public partial class Arithmetic : ValueConverter
@@ -24,16 +27,22 @@ public class Arithmetic : ValueConverter
     private readonly Regex _Pattern = new(__ArithmeticParseExpression, RegexOptions.Compiled); 
 #endif
 
+    /// <summary>Преобразует входное значение с использованием операции, заданной в параметре</summary>
+    /// <param name="v">Входное значение</param>
+    /// <param name="t">Тип целевого значения</param>
+    /// <param name="p">Параметр операции, например "+2.5"</param>
+    /// <param name="c">Культура для парсинга чисел</param>
+    /// <returns>Результат арифметической операции или Binding.DoNothing при некорректных входных данных</returns>
     protected override object? Convert(object? v, Type t, object? p, CultureInfo c)
     {
-        if (v is not double value || p is not string { Length: > 0 } p_str) return null;
+        if (v is not double value || p is not string { Length: > 0 } p_str) return Binding.DoNothing;
 
         var pattern = _Pattern.Match(p_str);
-        if (pattern.Groups.Count != 3) return null;
+        if (pattern.Groups.Count != 3) return Binding.DoNothing;
         var op = pattern.Groups[1].Value.Trim();
         p_str = pattern.Groups[2].Value;
 
-        if (!double.TryParse(p_str, out var p_value)) return null;
+        if (!double.TryParse(p_str, NumberStyles.Float | NumberStyles.AllowThousands, c, out var p_value)) return Binding.DoNothing;
 
         return op switch
         {
@@ -45,17 +54,24 @@ public class Arithmetic : ValueConverter
         };
     }
 
+    /// <summary>Обратное преобразование для арифметической операции</summary>
+    /// <param name="v">Входное значение</param>
+    /// <param name="t">Тип целевого значения</param>
+    /// <param name="p">Параметр операции</param>
+    /// <param name="c">Культура для парсинга чисел</param>
+    /// <returns>Обратный результат или Binding.DoNothing при некорректных входных данных</returns>
     protected override object? ConvertBack(object? v, Type? t, object? p, CultureInfo? c)
     {
-        if (v is not double d || p is not string { Length: > 0 } p_str) return null;
+        if (v is not double d || p is not string { Length: > 0 } p_str) return Binding.DoNothing;
 
         var pattern = _Pattern.Match(p_str);
-        if (pattern.Groups.Count != 3) return null;
+        if (pattern.Groups.Count != 3) return Binding.DoNothing;
         var op = pattern.Groups[1].Value.Trim();
         p_str = pattern.Groups[2].Value;
 
-        return !double.TryParse(p_str, out var p_value)
-            ? null
+        var culture = c ?? CultureInfo.InvariantCulture;
+        return !double.TryParse(p_str, NumberStyles.Float | NumberStyles.AllowThousands, culture, out var p_value)
+            ? Binding.DoNothing
             : op switch
             {
                 "+" => (d - p_value),

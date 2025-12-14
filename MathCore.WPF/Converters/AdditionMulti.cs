@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using System.Windows.Markup;
+using System.Windows.Data;
 
 using MathCore.WPF.Converters.Base;
 
@@ -7,9 +8,12 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Суммирует последовательность числовых значений</summary>
 [MarkupExtensionReturnType(typeof(AdditionMulti))]
 public class AdditionMulti : MultiValueValueConverter
 {
+    /// <summary>Преобразует массив значений, суммируя их последовательно</summary>
+    /// <returns>Сумма значений; null если вход null; double.NaN если один из элементов не может быть преобразован</returns>
     protected override object? Convert(object?[]? vv, Type? t, object? p, CultureInfo? c)
     {
         switch (vv)
@@ -20,7 +24,8 @@ public class AdditionMulti : MultiValueValueConverter
                 return double.NaN;
         }
 
-        var v = vv[0] is double d ? d : System.Convert.ToDouble(vv[0]);
+        if (!DoubleValueConverter.TryConvertToDouble(vv[0], c, out var v))
+            return double.NaN;
 
         for (var i = 1; i < vv.Length; i++)
         {

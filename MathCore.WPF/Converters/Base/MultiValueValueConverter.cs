@@ -17,6 +17,12 @@ public abstract class MultiValueValueConverter : MarkupExtension, IMultiValueCon
     /// <param name="p">Параметр преобразования</param>
     /// <param name="c">Сведения о культуре</param>
     /// <returns>Преобразованное значение</returns>
+    /// <example>
+    /// <code>
+    /// var converter = new MyMultiConverter();
+    /// var result = converter.Convert(new object[] { 1, 2 }, typeof(object), null, CultureInfo.InvariantCulture);
+    /// </code>
+    /// </example>
     protected abstract object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c);
 
     /// <summary>Обратное преобразование значения</summary>
