@@ -2,6 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:MathCore.WPF.Notifications">
 
+    <local:ToastNotificationIconConverter x:Key="ToastIconConverter"/>
+
     <!-- Стиль по умолчанию для окна уведомления -->
     <Style x:Key="DefaultToastNotificationWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="Template">
@@ -31,16 +33,42 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <!-- Иконка - простая заглушка пока без конвертера -->
-                            <Border Grid.Column="0" 
-                                   Grid.Row="0" 
-                                   Grid.RowSpan="2"
-                                   Width="32" 
-                                   Height="32"
-                                   Margin="0,0,10,0"
-                                   VerticalAlignment="Top"
-                                   Background="#FF0078D7"
-                                   CornerRadius="16"/>
+                            <!-- Иконка как векторный Path с кругом-фоном -->
+                            <Viewbox Grid.Column="0" 
+                                     Grid.Row="0" 
+                                     Grid.RowSpan="2"
+                                     Width="32" 
+                                     Height="32"
+                                     Margin="0,0,10,0"
+                                     VerticalAlignment="Top">
+                                <Viewbox.Style>
+                                    <Style TargetType="Viewbox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Icon}" Value="{x:Static local:ToastNotificationIcon.None}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Viewbox.Style>
+
+                                <Canvas Width="100" Height="100">
+                                    <!-- Фон круга -->
+                                    <Ellipse x:Name="IconBackground"
+                                             Width="100" Height="100"
+                                             Fill="{Binding Icon, Converter={StaticResource ToastIconConverter}, ConverterParameter=Color}"
+                                             Visibility="Visible"/>
+
+                                    <!-- Glyph поверх фона -->
+                                    <Path x:Name="IconPath"
+                                          Data="{Binding Icon, Converter={StaticResource ToastIconConverter}, ConverterParameter=Path}"
+                                          Fill="White"
+                                          Stretch="Uniform"
+                                          Width="100"
+                                          Height="100"
+                                          RenderOptions.BitmapScalingMode="HighQuality"
+                                          SnapsToDevicePixels="True"/>
+                                </Canvas>
+                            </Viewbox>
 
                             <!-- Заголовок -->
                             <TextBlock Grid.Column="1" 
