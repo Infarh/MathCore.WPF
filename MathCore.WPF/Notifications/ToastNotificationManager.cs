@@ -16,6 +16,9 @@ public class ToastNotificationManager
     private readonly Queue<ToastNotificationViewModel> _NotificationsQueue = new();
     private readonly ObservableCollection<ToastNotificationWindow> _ActiveWindows = [];
 
+    private bool _IsShuttingDown;
+    private bool _IsInitialized;
+
     /// <summary>Настройки отображения уведомлений</summary>
     public ToastNotificationSettings Settings { get; }
 
@@ -31,6 +34,24 @@ public class ToastNotificationManager
     {
         this.Settings = Settings ?? throw new ArgumentNullException(nameof(Settings));
         ActiveWindows = new ReadOnlyObservableCollection<ToastNotificationWindow>(_ActiveWindows);
+    }
+
+    /// <summary>Инициализация менеджера при первом использовании</summary>
+    private void EnsureInitialized()
+    {
+        if (_IsInitialized || Application.Current is null)
+            return;
+
+        _IsInitialized = true;
+
+        Application.Current.Exit += OnApplicationExit;
+
+        // КРИТИЧЕСКИ ВАЖНО: устанавливаем ShutdownMode, чтобы приложение завершалось при закрытии главного окна,
+        // а не при закрытии последнего окна (включая окна уведомлений)
+        if (!Settings.KeepApplicationAlive && Application.Current.ShutdownMode == ShutdownMode.OnLastWindowClose)
+        {
+            Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+        }
     }
 
     /// <summary>Показать уведомление</summary>
@@ -71,6 +92,11 @@ public class ToastNotificationManager
     {
         if (ViewModel is null)
             throw new ArgumentNullException(nameof(ViewModel));
+
+        EnsureInitialized();
+
+        if (_IsShuttingDown)
+            return;
 
         lock (_SyncRoot)
         {
@@ -165,7 +191,7 @@ public class ToastNotificationManager
 
             RepositionWindows();
 
-            if (_NotificationsQueue.Count > 0)
+            if (_NotificationsQueue.Count > 0 && !_IsShuttingDown)
             {
                 var next_notification = _NotificationsQueue.Dequeue();
                 ShowNotificationWindow(next_notification);
@@ -251,9 +277,38 @@ public class ToastNotificationManager
         {
             _NotificationsQueue.Clear();
 
+            // Создаём копию массива для избежания модификации коллекции во время итерации
             var windows = _ActiveWindows.ToArray();
+            
             foreach (var window in windows)
-                window.Close();
+            {
+                try
+                {
+                    // Принудительное синхронное закрытие без анимации
+                    Application.Current?.Dispatcher.Invoke(() =>
+                    {
+                        window.Closed -= OnWindowClosed; // Отписываемся от события
+                        window.Close();
+                    });
+                }
+                catch
+                {
+                    // Игнорируем ошибки закрытия окон
+                }
+            }
+
+            _ActiveWindows.Clear();
         }
+    }
+
+    private void OnApplicationExit(object? Sender, ExitEventArgs E)
+    {
+        _IsShuttingDown = true;
+
+        if (Settings.CloseOnApplicationShutdown)
+            CloseAll();
+
+        if (Application.Current != null)
+            Application.Current.Exit -= OnApplicationExit;
     }
 }

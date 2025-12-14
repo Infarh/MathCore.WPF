@@ -26,6 +26,13 @@ public partial class ToastNotificationWindow : Window
         MinHeight = _Settings.MinHeight;
         MaxHeight = _Settings.MaxHeight;
 
+        // Окно не должно блокировать завершение приложения, если это не требуется явно
+        if (!_Settings.KeepApplicationAlive)
+        {
+            ShowInTaskbar = false;
+            Owner = null; // Убираем владельца, чтобы окно не блокировало закрытие главного окна
+        }
+
         if (_Settings.WindowStyle != null)
             Style = _Settings.WindowStyle;
 

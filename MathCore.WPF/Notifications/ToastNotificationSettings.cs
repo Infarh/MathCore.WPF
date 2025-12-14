@@ -40,4 +40,19 @@ public class ToastNotificationSettings
 
     /// <summary>Воспроизводить системный звук при появлении уведомления</summary>
     public bool PlaySound { get; set; } = true;
+
+    /// <summary>
+    /// Удерживать приложение активным пока есть открытые уведомления (по умолчанию false)
+    /// </summary>
+    /// <remarks>
+    /// ВАЖНО: По умолчанию false - это гарантирует, что окна уведомлений НЕ блокируют завершение приложения.
+    /// При false менеджер автоматически устанавливает Application.ShutdownMode = ShutdownMode.OnMainWindowClose,
+    /// что позволяет приложению завершиться при закрытии главного окна, независимо от наличия активных уведомлений.
+    /// 
+    /// Установите в true ТОЛЬКО если уведомления критически важны и должны удерживать приложение активным.
+    /// </remarks>
+    public bool KeepApplicationAlive { get; set; } = false;
+
+    /// <summary>Автоматически закрывать все уведомления при завершении работы приложения</summary>
+    public bool CloseOnApplicationShutdown { get; set; } = true;
 }
