@@ -18,9 +18,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.0.48.3</Version>
+    <Version>0.0.49</Version>
     <PackageReleaseNotes>
-      Добавлена поддержка .NET10.0
+      Оптимизация кода, комментариев; добавлена функциональность всплывающих уведомлений; обновление пакетов
     </PackageReleaseNotes>
   </PropertyGroup>
 
