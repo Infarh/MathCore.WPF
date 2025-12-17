@@ -10,11 +10,7 @@
     <!--<TargetFramework>net7.0-windows</TargetFramework>-->
     <TargetFrameworks>
       net10.0-windows;
-      net9.0-windows;
       net8.0-windows;
-      net7.0-windows;
-      net6.0-windows;
-      net5.0-windows;
       net4.8-windows;
       net4.7-windows;
       net4.6.1-windows;
