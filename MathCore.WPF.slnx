@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/.Service/">
+    <File Path=".editorconfig" />
+    <File Path=".tools/version.cs" />
+  </Folder>
+  <Folder Name="/.Service/.github/">
+    <File Path=".github/copilot-instructions.md" />
+  </Folder>
+  <Folder Name="/.Service/.github/workflows/">
+    <File Path=".github/workflows/publish.yml" />
+    <File Path=".github/workflows/testing.yml" />
+  </Folder>
+  <Folder Name="/.Service/tools/">
+    <File Path=".tools/nuget-get-last-version.cs" />
+    <File Path=".tools/version.cs" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="Tests/MathCore.WPF.ConsoleTest/MathCore.WPF.ConsoleTest.csproj" />
+    <Project Path="Tests/MathCore.WPF.Tests/MathCore.WPF.Tests.csproj" />
+    <Project Path="Tests/MathCore.WPF.WindowTest/MathCore.WPF.WindowTest.csproj" />
+  </Folder>
+  <Project Path="MathCore.WPF/MathCore.WPF.csproj" />
+</Solution>
