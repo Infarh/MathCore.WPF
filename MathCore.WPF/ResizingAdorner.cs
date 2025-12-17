@@ -7,17 +7,29 @@ using System.Windows.Media;
 
 namespace MathCore.WPF;
 
+/// <summary>Прибор-адорнер для изменения размера элемента с угловыми маркерами</summary>
 public class ResizingAdorner : Adorner
 {
+    /// <summary>Верхний левый маркер</summary>
     private readonly Thumb _TopLeft;
+
+    /// <summary>Верхний правый маркер</summary>
     private readonly Thumb _TopRight;
+
+    /// <summary>Нижний левый маркер</summary>
     private readonly Thumb _BottomLeft;
+
+    /// <summary>Нижний правый маркер</summary>
     private readonly Thumb _BottomRight;
+
+    /// <summary>Коллекция визуальных дочерних элементов адорнера</summary>
     private readonly VisualCollection _VisualChildren;
 
+    /// <summary>Количество визуальных дочерних элементов</summary>
     protected override int VisualChildrenCount => _VisualChildren.Count;
 
-    /// <inheritdoc />
+    /// <summary>Инициализирует новый экземпляр <see cref="ResizingAdorner"/> для заданного элемента</summary>
+    /// <param name="AdornedElement">Элемент, к которому применяется адорнер</param>
     public ResizingAdorner(UIElement AdornedElement) : base(AdornedElement)
     {
         _VisualChildren = new(this);
@@ -32,35 +44,28 @@ public class ResizingAdorner : Adorner
         _TopRight.DragDelta    += HandleTopRight;
     }
 
-    // Handler for resizing from the bottom-right.
+    /// <summary>Обработчик изменения размера с нижнего правого угла</summary>
     private void HandleBottomRight(object sender, DragDeltaEventArgs args)
     {
         if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
-        //var parentElement = adorned_element.Parent as FrameworkElement;
-
-        // Ensure that the Width and Height are properly initialized after the resize.
+        // Убедиться, что Width и Height инициализированы после изменения размера // кратко по делу
         EnforceSize(element);
 
-        // Change the size by the amount the user drags the mouse, as long as it's larger 
-        // than the width or height of an adorner, respectively.
+        // Изменить размер на значение, на которое пользователь перетянул мышь, с учётом минимального размера маркера // кратко по делу
         element.Width  = Math.Max(element.Width + args.HorizontalChange, thumb.DesiredSize.Width);
         element.Height = Math.Max(args.VerticalChange + element.Height, thumb.DesiredSize.Height);
     }
 
-    // Handler for resizing from the top-right.
-
+    /// <summary>Обработчик изменения размера с верхнего правого угла</summary>
     private void HandleTopRight(object sender, DragDeltaEventArgs args)
     {
         if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
-        //var parentElement = adornedElement.Parent as FrameworkElement;
-
-        // Ensure that the Width and Height are properly initialized after the resize.
+        // Убедиться, что Width и Height инициализированы после изменения размера // кратко по делу
         EnforceSize(element);
 
-        // Change the size by the amount the user drags the mouse, as long as it's larger 
-        // than the width or height of an adorner, respectively.
+        // Изменить ширину в соответствии с горизонтальным смещением // кратко по делу
         element.Width = Math.Max(element.Width + args.HorizontalChange, thumb.DesiredSize.Width);
-        //adornedElement.Height = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
+        // Вычислить новое положение и высоту для верхнего маркера // кратко по делу
 
         var height_old = element.Height;
         var height_new = Math.Max(element.Height - args.VerticalChange, thumb.DesiredSize.Height);
@@ -69,26 +74,22 @@ public class ResizingAdorner : Adorner
         Canvas.SetTop(element, top_old - (height_new - height_old));
     }
 
-    // Handler for resizing from the top-left.
-
+    /// <summary>Обработчик изменения размера с верхнего левого угла</summary>
     private void HandleTopLeft(object sender, DragDeltaEventArgs args)
     {
         if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
 
-        // Ensure that the Width and Height are properly initialized after the resize.
+        // Убедиться, что Width и Height инициализированы после изменения размера // кратко по делу
         EnforceSize(element);
 
-        // Change the size by the amount the user drags the mouse, as long as it's larger 
-        // than the width or height of an adorner, respectively.
-        //adornedElement.Width = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
-        //adornedElement.Height = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-
+        // Изменить ширину и сдвинуть элемент по X при уменьшении слева // кратко по делу
         var width_old = element.Width;
         var width_new = Math.Max(element.Width - args.HorizontalChange, thumb.DesiredSize.Width);
         var left_old  = Canvas.GetLeft(element);
         element.Width = width_new;
         Canvas.SetLeft(element, left_old - (width_new - width_old));
 
+        // Изменить высоту и сдвинуть элемент по Y при уменьшении сверху // кратко по делу
         var height_old = element.Height;
         var height_new = Math.Max(element.Height - args.VerticalChange, thumb.DesiredSize.Height);
         var top_old    = Canvas.GetTop(element);
@@ -96,20 +97,18 @@ public class ResizingAdorner : Adorner
         Canvas.SetTop(element, top_old - (height_new - height_old));
     }
 
-    // Handler for resizing from the bottom-left.
-
+    /// <summary>Обработчик изменения размера с нижнего левого угла</summary>
     private void HandleBottomLeft(object sender, DragDeltaEventArgs args)
     {
         if (AdornedElement is not FrameworkElement element || sender is not Thumb thumb) return;
 
-        // Ensure that the Width and Height are properly initialized after the resize.
+        // Убедиться, что Width и Height инициализированы после изменения размера // кратко по делу
         EnforceSize(element);
 
-        // Change the size by the amount the user drags the mouse, as long as it's larger 
-        // than the width or height of an adorner, respectively.
-        //adornedElement.Width = Math.Max(adornedElement.Width - args.HorizontalChange, hitThumb.DesiredSize.Width);
+        // Изменить высоту в соответствии с вертикальным смещением // кратко по делу
         element.Height = Math.Max(args.VerticalChange + element.Height, thumb.DesiredSize.Height);
 
+        // Изменить ширину и сдвинуть элемент по X при уменьшении слева // кратко по делу
         var width_old = element.Width;
         var width_new = Math.Max(element.Width - args.HorizontalChange, thumb.DesiredSize.Width);
         var left_old  = Canvas.GetLeft(element);
@@ -117,15 +116,15 @@ public class ResizingAdorner : Adorner
         Canvas.SetLeft(element, left_old - (width_new - width_old));
     }
 
-    // Arrange the Adorners.
-
+    /// <summary>Разместить маркеры-адорнеры по углам выделенного элемента</summary>
+    /// <param name="FinalSize">Окончательный размер, выделенный системой для адорнера</param>
+    /// <returns>Возвращает фактический используемый размер</returns>
     protected override Size ArrangeOverride(Size FinalSize)
     {
-        // desiredWidth and desiredHeight are the width and height of the element that's being adorned.  
-        // These will be used to place the ResizingAdorner at the corners of the adorned element.  
+        // desiredWidth и desiredHeight это размеры элемента, к которому применяется адорнер // кратко по делу
         var size_width     = AdornedElement.DesiredSize.Width;
         var desired_height = AdornedElement.DesiredSize.Height;
-        // adornerWidth & adornerHeight are used for placement as well.
+        // adornerWidth и adornerHeight используются для размещения маркеров // кратко по делу
         var adorner_width  = DesiredSize.Width;
         var adorner_height = DesiredSize.Height;
 
@@ -134,16 +133,17 @@ public class ResizingAdorner : Adorner
         _BottomLeft.Arrange(new(-adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
         _BottomRight.Arrange(new(size_width - adorner_width / 2, desired_height - adorner_height / 2, adorner_width, adorner_height));
 
-        // Return the final size.
+        // Возвращаем итоговый размер // кратко по делу
         return FinalSize;
     }
 
-    // Helper method to instantiate the corner Thumbs, set the Cursor property, 
-    // set some appearance properties, and add the elements to the visual tree.
+    /// <summary>Создаёт маркер-угол и добавляет его в визуальную коллекцию</summary>
+    /// <param name="thumb">Переменная, куда будет присвоен созданный маркер</param>
+    /// <param name="cursor">Курсор, используемый для маркера</param>
     private void BuildAdornerCorner(ref Thumb thumb, Cursor cursor)
     {
         if (thumb != null) return;
-        // Set some arbitrary visual characteristics.
+        // Задаём некоторые визуальные характеристики маркера // кратко по делу
         _VisualChildren.Add(thumb = new()
         {
             Cursor     = cursor,
@@ -154,9 +154,8 @@ public class ResizingAdorner : Adorner
         });
     }
 
-    // This method ensures that the Widths and Heights are initialized.  Sizing to content produces
-    // Width and Height values of Double.NaN.  Because this Adorner explicitly resizes, the Width and Height
-    // need to be set first.  It also sets the maximum size of the adorned element.
+    /// <summary>Гарантирует инициализацию Width и Height и ограничивает максимальные размеры</summary>
+    /// <param name="element">Элемент, для которого нужно установить размеры</param>
     private static void EnforceSize(FrameworkElement element)
     {
         if (element.Width.Equals(double.NaN))
@@ -169,8 +168,9 @@ public class ResizingAdorner : Adorner
         element.MaxWidth  = parent.ActualWidth;
     }
 
-    // Override the VisualChildrenCount and GetVisualChild properties to interface with 
-    // the adorner's visual collection.
+    /// <summary>Возвращает визуального дочернего по индексу</summary>
+    /// <param name="index">Индекс визуального дочернего элемента</param>
+    /// <returns>Визуальный дочерний элемент</returns>
     protected override Visual GetVisualChild(int index) => _VisualChildren[index];
 
     ///// <inheritdoc />

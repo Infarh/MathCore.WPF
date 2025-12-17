@@ -22,17 +22,17 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 10.0.x
           
       - name: Cache NuGet  
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -46,7 +46,7 @@ jobs:
         
       - name: Building
         run: |
-          dotnet build MathCore.WPF -c Release --no-restore --nowarn:CS1998,CS8625,CS8600,CS8603,CS8620,CS8618,CS8604,CS8602,CS8622,CS8619,CS8632,CS0108,NU1701,NU1702,MSB3277,NU1701
+          dotnet build MathCore.WPF -c Release --no-restore --nowarn:CS1998,CS8625,CS8600,CS8603,CS8620,CS8618,CS8604,CS8602,CS8622,CS8619,CS8632,CS0108,NU1701,NU1702,MSB3277,NU1701,CS1591
           dotnet build Tests/MathCore.WPF.Tests -c Release --no-restore
           
       - name: Test
@@ -56,7 +56,7 @@ jobs:
         run: dotnet pack MathCore.WPF/MathCore.WPF.csproj --no-build -c Release -v q -o ${{ github.workspace }}/ReleasePack --include-symbols
       
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4.4.3
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: Release
           path: ${{ github.workspace }}/ReleasePack
@@ -69,7 +69,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         id: download
         with:
             name: Release
@@ -85,7 +85,7 @@ jobs:
     
     steps:    
       - name: Get artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v7
         id: download
         with:
             name: Release

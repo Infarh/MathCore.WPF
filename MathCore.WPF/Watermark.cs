@@ -13,7 +13,7 @@ public static class Watermark
 {
     #region AttachedProperties 
 
-    /// <summary>Прозпачность возяного знака</summary>
+    /// <summary>Прозрачность водяного знака</summary>
     public static readonly DependencyProperty OpacityProperty =
         DependencyProperty.RegisterAttached(
             "Opacity",
@@ -24,7 +24,7 @@ public static class Watermark
                 OnWatermarkOpacityChanged),
             v => (double)v >= 0 && (double)v <= 1);
 
-    /// <summary>Задать прозрачность возяного знака</summary>
+    /// <summary>Задать透明ность водяного знака</summary>
     /// <param name="element">Объект, которому устанавливается прозрачность водяного знака</param>
     /// <param name="value">Значение прозрачности водяного знака</param>
     public static void SetOpacity(DependencyObject element, double value) => element.SetValue(OpacityProperty, value);
@@ -152,36 +152,42 @@ public static class Watermark
     /// <param name="e"><see cref="DependencyPropertyChangedEventArgs"/> - аргумент события изменения водяного знака</param>
     private static void OnWatermarkOpacityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        OnWatermarkPropertyAttached(d, e);
-        var control = (Control)d;
-        var layer   = AdornerLayer.GetAdornerLayer(control);
+        if (d is not Control control) return; // защита от некорректного использования
+
+        OnWatermarkPropertyAttached(control, e);
+
+        var layer = AdornerLayer.GetAdornerLayer(control);
 
         // Графический слой может отсутствовать, если элемент больше не в визуальном дереве
         var adorners = layer?.GetAdorners(control);
         var a        = adorners?.OfType<WatermarkAdorner>().FirstOrDefault();
         if (a is null) return;
         a.Opacity = (double)e.NewValue;
-        //layer.Add(new WatermarkAdorner(control, GetValue(control)));
     }
 
     /// <summary>Обработчик события изменения водяного знака</summary>
     /// <param name="d"><see cref="DependencyObject"/> - источник события</param>
     /// <param name="e"><see cref="DependencyPropertyChangedEventArgs"/> - аргумент события изменения водяного знака</param>
-    private static void OnWatermarkPropertyAttached(DependencyObject d, DependencyPropertyChangedEventArgs e) => SetEvents((Control)d);//OnContentChanged(d, null);
+    private static void OnWatermarkPropertyAttached(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not Control control) return; // защищаемся от присвоения свойств не контролам
+        SetEvents(control);
+    }
 
     private static void SetEvents(Control control)
     {
         if (__AttachedControlsList.Contains(control)) return;
         __AttachedControlsList.Add(control);
+
         control.Loaded += OnLoaded;
         //control.Unloaded += OnUnloaded;
 
         switch (control)
         {
-            case TextBox test_box:
+            case TextBox text_box:
                 control.GotKeyboardFocus  += OnGotKeyboardFocus;
                 control.LostKeyboardFocus += OnLoaded;
-                test_box.TextChanged      += OnContentChanged;
+                text_box.TextChanged      += OnContentChanged;
                 break;
             case PasswordBox password_box:
                 control.GotKeyboardFocus     += OnGotKeyboardFocus;
@@ -206,49 +212,22 @@ public static class Watermark
         }
     }
 
-    //private static void OnUnloaded(object sender, EventArgs e)
-    //{
-    //    var control = (Control)sender;
-    //    if(!__AttachedControlsList.Contains(control)) return;
-    //    __AttachedControlsList.Remove(control);
-    //    control.Loaded -= OnLoaded;
-
-    //    if(control is TextBox || control is PasswordBox)
-    //    {
-    //        control.GotKeyboardFocus -= OnGotKeyboardFocus;
-    //        control.LostKeyboardFocus -= OnLoaded;
-    //    }
-    //    else if(control is ComboBox)
-    //    {
-    //        control.GotKeyboardFocus -= OnGotKeyboardFocus;
-    //        control.LostKeyboardFocus -= OnLoaded;
-    //        ((ComboBox)control).SelectionChanged -= OnContentChanged;
-    //    }
-    //    else
-    //    {
-    //        var items_control = control as ItemsControl;
-    //        if(items_control is null) return;
-    //        // for Items property  
-    //        items_control.ItemContainerGenerator.ItemsChanged -= OnItemsChanged;
-    //        __ItemsControlsDictionary.Remove(items_control.ItemContainerGenerator);
-
-    //        // for ItemsSource property  
-    //        var prop = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, items_control.GetType());
-    //        prop.RemoveValueChanged(items_control, OnItemsSourceChanged);
-    //    }
-    //}
-
-    /// <summary>Обработчик события изменения фокуса ввода элемента</summary>
+    /// <summary>Обработчик события изменения содержимого, влияющего на видимость водяного знака</summary>
     /// <param name="sender">Объект - источник событий</param>
-    /// <param name="e"><see cref="ItemsChangedEventArgs"/> - аргумент события</param>
-    private static void OnContentChanged(object sender, RoutedEventArgs? e) => (ShouldShowWatermark((Control)sender) ? (Action<Control>)ShowWatermark : RemoveWatermark)((Control)sender);
+    /// <param name="e"><see cref="RoutedEventArgs"/> - аргумент события</param>
+    private static void OnContentChanged(object sender, RoutedEventArgs? e)
+    {
+        var control = (Control)sender;
+        (ShouldShowWatermark(control) ? (Action<Control>)ShowWatermark : RemoveWatermark)(control);
+    }
 
     /// <summary>Обработчик события изменения фокуса ввода клавиатуры</summary>
     /// <param name="sender">Объект - источник событий</param>
     /// <param name="e"><see cref="RoutedEventArgs"/> - аргумент события</param>
     private static void OnGotKeyboardFocus(object sender, RoutedEventArgs? e)
     {
-        if (ShouldShowWatermark((Control)sender)) RemoveWatermark((Control)sender);
+        var control = (Control)sender;
+        if (ShouldShowWatermark(control)) RemoveWatermark(control);
     }
 
     /// <summary>Обработчик события загрузки компонента</summary>
@@ -256,7 +235,8 @@ public static class Watermark
     /// <param name="e"><see cref="RoutedEventArgs"/> - аргумент события</param>
     private static void OnLoaded(object sender, RoutedEventArgs? e)
     {
-        if (ShouldShowWatermark((Control)sender)) ShowWatermark((Control)sender);
+        var control = (Control)sender;
+        if (ShouldShowWatermark(control)) ShowWatermark(control);
     }
 
     /// <summary>Обработчик события изменения значения свойства Источника элементов</summary>
@@ -277,7 +257,7 @@ public static class Watermark
             (ShouldShowWatermark(control) ? (Action<Control>)ShowWatermark : RemoveWatermark)(control);
     }
 
-    /// <summary>Уделить водяной знак элемента</summary>
+    /// <summary>Удалить водяной знак элемента</summary>
     /// <param name="control">Элемент, водяной знак у которого надо удалить</param>
     private static void RemoveWatermark(UIElement control)
     {
@@ -285,54 +265,56 @@ public static class Watermark
 
         // Графический слой может отсутствовать, если элемент больше не в визуальном дереве
         if (layer is null) return;
-        (layer.GetAdorners(control) ?? Enumerable.Empty<Adorner>())
-           .ToArray()
-           .Foreach(a =>
-            {
-                a.Visibility = Visibility.Hidden;
-                layer.Remove(a);
-            });
+
+        var adorners = layer.GetAdorners(control);
+        if (adorners is null || adorners.Length == 0) return;
+
+        foreach (var adorner in adorners)
+        {
+            adorner.Visibility = Visibility.Hidden; // скрываем на случай, если кто-то ещё держит ссылку
+            layer.Remove(adorner);
+        }
     }
 
     /// <summary>Показать водяной знак для компонента</summary>
     /// <param name="control">Компонент, для которого надо показать водяной знак</param>
     private static void ShowWatermark(Control control)
     {
-        if (control is null) throw new NullReferenceException(nameof(control));
+        if (control is null) throw new ArgumentNullException(nameof(control));
 
         var layer = AdornerLayer.GetAdornerLayer(control);
 
         // Графический слой может отсутствовать, если элемент больше не в визуальном дереве
         if (layer is null) return;
+
         var watermark_adorners = (layer.GetAdorners(control) ?? Enumerable.Empty<Adorner>())
            .OfType<WatermarkAdorner>()
            .ToArray();
-        if (watermark_adorners.Length == 0)
-            layer.Add(new WatermarkAdorner(control, GetValue(control)));
-        else
-            watermark_adorners.Foreach(a => a.UpdateLayout());
 
+        if (watermark_adorners.Length == 0)
+        {
+            var value = GetValue(control);
+            if (value is null) return; // если нет значения водяного знака, нет смысла его показывать
+            layer.Add(new WatermarkAdorner(control, value));
+        }
+        else
+        {
+            foreach (var adorner in watermark_adorners)
+                adorner.UpdateLayout();
+        }
     }
 
     /// <summary>Проверка необходимости показать водяной знак компонента</summary>
     /// <param name="control"><see cref="Control"/> - компонент, для которого надо проверить видимость</param>
     /// <returns>Истина, если компонент удовлетворяет условию отображения водяного знака</returns>
-    private static bool ShouldShowWatermark(Control? control)
+    private static bool ShouldShowWatermark(Control? control) => control switch
     {
-        switch (control)
-        {
-            case ComboBox combo_box:
-                return combo_box.SelectedItem is null;
-            case TextBox text_box:
-                return text_box.Text == string.Empty;
-            case PasswordBox password_box:
-                return password_box.Password == string.Empty;
-            case ItemsControl items_control:
-                return items_control.Items.Count == 0;
-            default:
-                return false;
-        }
-    }
+        ComboBox combo_box => combo_box.SelectedItem is null && string.IsNullOrEmpty(combo_box.Text), // для редактируемого ComboBox учитываем текст
+        TextBox text_box => string.IsNullOrEmpty(text_box.Text),
+        PasswordBox password_box => string.IsNullOrEmpty(password_box.Password),
+        ItemsControl items_control => items_control.Items.Count == 0,
+        _ => false
+    };
 
     /// <summary>Слой водяного знака</summary>
     private class WatermarkAdorner : Adorner
@@ -353,22 +335,25 @@ public static class Watermark
             : base(control)
         {
             if (control is null) throw new ArgumentNullException(nameof(control));
-            if (watermark is null) throw new ArgumentNullException(nameof(watermark));
-            //ЗАпретить показ подсказок
+
+            // Запрещаем взаимодействие с подсказкой, чтобы не мешать вводу
             IsHitTestVisible = false;
 
-            // Новый компонент, содержащий водяной знак
             _ContentPresenter = new();
-            // Если значение водяного знака - строка
-            if (watermark is UIElement)
-                _ContentPresenter.Content = watermark;
-            else
+
+            if (watermark is UIElement watermark_element)
+            {
+                _ContentPresenter.Content = watermark_element;
+            }
+            else if (watermark is not null)
+            {
                 _ContentPresenter.Content = new TextBlock
                 {
                     Text              = watermark.ToString(),
                     Margin            = new(4, 0, 4, 0),
                     VerticalAlignment = VerticalAlignment.Center
                 };
+            }
 
             _ContentPresenter.SetBinding(ContentPresenter.ContentProperty, new Binding
             {
@@ -379,25 +364,25 @@ public static class Watermark
 
             _ContentPresenter.SetBinding(VerticalAlignmentProperty, new Binding
             {
-                Path                = new("(0)", Watermark.VerticalAlignmentProperty),
+                Path                = new("(0)", VerticalAlignmentProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(HorizontalAlignmentProperty, new Binding
             {
-                Path                = new("(0)", Watermark.HorizontalAlignmentProperty),
+                Path                = new("(0)", HorizontalAlignmentProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(TextElement.ForegroundProperty, new Binding
             {
-                Path                = new("(0)", Watermark.ForegroundProperty),
+                Path                = new("(0)", ForegroundProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
             _ContentPresenter.SetBinding(TextElement.FontSizeProperty, new Binding
             {
-                Path                = new("(0)", Watermark.FontSizeProperty),
+                Path                = new("(0)", FontSizeProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
@@ -405,7 +390,7 @@ public static class Watermark
             _ContentPresenter.Opacity = GetOpacity(Control);
             _ContentPresenter.SetBinding(OpacityProperty, new Binding
             {
-                Path                = new("(0)", Watermark.OpacityProperty),
+                Path                = new("(0)", OpacityProperty),
                 Source              = control,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             });
@@ -416,9 +401,9 @@ public static class Watermark
                 Control.Margin.Right + Control.Padding.Right,
                 Control.Margin.Bottom + Control.Padding.Bottom);
 
-            //Исли компонент контролирует другие компоненты и компонент - не ComboBox
+            // Если компонент управляет коллекцией элементов и это не ComboBox, размещаем водяной знак по центру
             if (Control is ItemsControl && Control is not ComboBox)
-            { // размещаем водяной знак по центру
+            {
                 _ContentPresenter.VerticalAlignment   = VerticalAlignment.Center;
                 _ContentPresenter.HorizontalAlignment = HorizontalAlignment.Center;
             }
@@ -430,15 +415,15 @@ public static class Watermark
                 Converter = new BooleanToVisibilityConverter()
             });
 
-            var binding_item = watermark as FrameworkElement ?? this;
-
-
-            binding_item.SetBinding(TextElement.ForegroundProperty, new Binding
+            if (watermark is FrameworkElement binding_item)
             {
-                Path                = new("(0)", ForegroundProperty),
-                Source              = control,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            });
+                binding_item.SetBinding(TextElement.ForegroundProperty, new Binding
+                {
+                    Path                = new("(0)", ForegroundProperty),
+                    Source              = control,
+                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+                });
+            }
         }
 
         #endregion
@@ -452,31 +437,30 @@ public static class Watermark
 
         #region Private Properties
 
-        /// <summary>Космонент, который надо отобразить</summary>
+        /// <summary>Компонент, который надо отобразить</summary>
         private Control Control => (Control)AdornedElement;
 
         #endregion
 
         #region Protected Overrides
 
-        /// <summary>Возвращает специальный тип дочернего <see cref="Visual"/> для родительского <see cref="ContainerVisual"/>.</summary>
-        /// <param name="index">Индекс дочернего <see cref="Visual"/>. Значение индекса должно быть между 0 и <see cref="VisualChildrenCount"/> - 1</param>
+        /// <summary>Возвращает дочерний <see cref="Visual"/> по индексу</summary>
+        /// <param name="index">Индекс дочернего <see cref="Visual"/></param>
         /// <returns>Дочерний <see cref="Visual"/></returns>
         protected override Visual GetVisualChild(int index) => _ContentPresenter;
 
-        /// <summary> Реализует любое ручное поведение процесса измерения слоя</summary>
+        /// <summary>Реализует измерение слоя водяного знака</summary>
         /// <param name="constraint">Необходимый размер</param>
         /// <returns><see cref="Size"/> - размер нужного для отображения слоя</returns>
         protected override Size MeasureOverride(Size constraint)
         {
-            // Здесь секрет получения размера слоя, накрывающего весь компонент
             _ContentPresenter.Measure(Control.RenderSize);
             return Control.RenderSize;
         }
 
-        /// <summary>При переопределении в производном классе размещает дочерние элементы и определяет размер для класса, производного от <see cref="T:System.Windows.FrameworkElement"/>. </summary>
+        /// <summary>Размещение дочерних элементов</summary>
+        /// <param name="FinalSize">Итоговая область</param>
         /// <returns>Реальный используемый размер</returns>
-        /// <param name="FinalSize">Итоговая область в родительском элементе, которую этот элемент должен использовать для собственного размещения и размещения своих дочерних элементов.</param>
         protected override Size ArrangeOverride(Size FinalSize)
         {
             _ContentPresenter.Arrange(new(FinalSize));

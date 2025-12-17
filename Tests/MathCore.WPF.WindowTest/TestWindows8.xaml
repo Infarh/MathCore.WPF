@@ -5,13 +5,24 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
-        DataContext="{StaticResource TestWindow8Model}"
-        Title="{Binding Title}"
+        xmlns:sh="clr-namespace:MathCore.WPF.Shapes;assembly=MathCore.WPF"
         Width="800" Height="450">
     <Window.Resources>
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
     </Window.Resources>
     <Grid>
+        <sh:Arrow X1="10" X2="300" Y1="30" Y2="300" 
+                  ArrowHeadLength="53" 
+                  ArrowHeadWidth="31" StrokeThickness="4" ArrowHeadOffset="64" Fill="Red"
+                  />
+
+        <!-- Первая линия с явным указанием P1 и P2 для инициализации -->
+        <Line sh:LineEx.P1="10,30" sh:LineEx.P2="300,150" Stroke="Red" StrokeThickness="4" Name="Line1"/>
         
+        <!-- Вторая линия: начинается в конце первой линии (P2), заканчивается в (300,200) -->
+        <Line Stroke="Blue" StrokeThickness="4" 
+              sh:LineEx.P1="{Binding Path=(sh:LineEx.P2), ElementName=Line1}" 
+              sh:LineEx.P2="300,200"/>
+
     </Grid>
 </Window>

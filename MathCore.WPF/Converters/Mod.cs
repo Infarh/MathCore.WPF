@@ -8,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Вычисляет остаток от деления значения на заданный модуль</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Mod))]
 public class Mod(double M) : DoubleValueConverter
@@ -16,11 +17,13 @@ public class Mod(double M) : DoubleValueConverter
 
     public double M { get; set; } = M;
 
-    /// <inheritdoc />
-    protected override double Convert(double v, double? p = null) => 
-        (p ?? v).IsNaN() 
-            ? double.NaN 
-            : M.IsNaN() 
-                ? p ?? v 
-                : (p ?? v) % M;
+    /// <summary>Вычисляет остаток от деления значения на M или возвращает NaN при некорректных входных данных</summary>
+    protected override double Convert(double v, double? p = null)
+    {
+        var value = p ?? v;
+        if (double.IsNaN(value)) return double.NaN;
+        if (double.IsNaN(M)) return value;
+        if (M == 0) return double.NaN;
+        return value % M;
+    }
 }

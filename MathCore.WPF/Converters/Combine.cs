@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Markup;
+using System.Linq;
 
 using MathCore.WPF.Converters.Base;
 
@@ -62,11 +63,6 @@ public class Combine(IValueConverter First, IValueConverter Then, params IValueC
             for (var i = other.Length - 1; i >= 0; i--)
                 if (other[i]  is { } converter)
                     v = converter.ConvertBack(v, t, p, c);
-
-        if (other is { Length: > 0 })
-            for (var i = other.Length - 1; i >= 0; i--)
-                if (other[i] is { } conv)
-                    v = conv.ConvertBack(v, t, p, c);
 
         if (Then != null) v = Then.ConvertBack(v, t, p, c);
         if (First != null) v = First.ConvertBack(v, t, p, c);

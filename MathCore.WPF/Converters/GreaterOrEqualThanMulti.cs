@@ -6,9 +6,23 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет, что все последующие значения не больше первого</summary>
 [MarkupExtensionReturnType(typeof(GreaterThanMulti))]
 public class GreaterOrEqualThanMulti : MultiValueValueConverter
 {
+    /// <summary>
+    /// Преобразует массив объектов в булево значение, указывающее
+    /// на то, что все последующие значения не больше первого.
+    /// </summary>
+    /// <param name="vv">Массив значений для проверки.</param>
+    /// <param name="t">Тип, в который требуется преобразовать значения.</param>
+    /// <param name="p">Дополнительный параметр, который может быть использован при преобразовании.</param>
+    /// <param name="c">Культура, которая может быть использована при преобразовании.</param>
+    /// <returns>
+    /// Возвращает <see cref="true"/>, если все последующие значения не больше первого;
+    /// иначе - <see cref="false"/>. Если входные данные недопустимы,
+    /// возвращает <see cref="Binding.DoNothing"/>.
+    /// </returns>
     protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
         if (vv is not { Length: > 1 })

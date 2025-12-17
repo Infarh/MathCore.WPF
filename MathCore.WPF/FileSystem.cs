@@ -33,21 +33,25 @@ public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFin
 
     private DirectoryViewModel[]? _SystemRoots;
 
+    /// <summary>Корневые директории системы</summary>
     public DirectoryViewModel[]? SystemRoots { get => _SystemRoots; set => Set(ref _SystemRoots, value); }
+
+    /// <summary>Устанавливает корневые директории на основе доступных дисков</summary>
+    /// <param name="drives">Массив дисков системы</param>
     private void SetSystemRoots(DriveInfo[]? drives) => SystemRoots = drives?.Where(d => d.IsReady).Select(d => new DirectoryViewModel(d.RootDirectory)).ToArray();
 
-    /// <summary>Проверка списков дисков на идентичность</summary>
-    /// <param name="Old">Старый список дисков</param>
-    /// <param name="New">Новый список дисков</param>
-    /// <returns>Истина, если списки идентичны</returns>
-    private static bool IsDriveListEquals(DriveInfo[]? Old, DriveInfo[]? New)
-    {
-        if (ReferenceEquals(Old, New)) return true;
-        if (Old?.Length != New?.Length) return false;
-        for (var i = 0; i < Old!.Length; i++)
-            if (Old[i].Name != New![i].Name) return false;
-        return true;
-    }
+    ///// <summary>Проверка списков дисков на идентичность</summary>
+    ///// <param name="Old">Старый список дисков</param>
+    ///// <param name="New">Новый список дисков</param>
+    ///// <returns>Истина, если списки идентичны</returns>
+    //private static bool IsDriveListEquals(DriveInfo[]? Old, DriveInfo[]? New)
+    //{
+    //    if (ReferenceEquals(Old, New)) return true;
+    //    if (Old?.Length != New?.Length) return false;
+    //    for (var i = 0; i < Old!.Length; i++)
+    //        if (Old[i].Name != New![i].Name) return false;
+    //    return true;
+    //}
 
     /// <summary>Инициализация нового наблюдателя за дисками системы</summary>
     private FileSystem()
@@ -64,8 +68,9 @@ public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFin
             main_window.Loaded += OnWindowLoaded;
     }
 
-    /// <summary>обработчик события, возникающего в момент завершения загрузки окна, в котором подключается обработчик системных сообщений</summary>
+    /// <summary>Обработчик события, возникающего в момент завершения загрузки окна, в котором подключается обработчик системных сообщений</summary>
     /// <param name="Sender">Окно-источник события</param>
+    /// <param name="_">Аргументы события</param>
     private void OnWindowLoaded(object Sender, EventArgs _)
     {
         var window = (Window)Sender;
@@ -89,7 +94,7 @@ public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFin
         Drives = msg switch
         {
             WM_DEVICECHANGE => DriveInfo.GetDrives().Where(d => d.IsReady).ToArray(),
-            _               => Drives
+            _ => Drives
         };
 
         return IntPtr.Zero;
@@ -102,6 +107,7 @@ public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFin
         _WindowHandle = null;
     }
 
+    /// <inheritdoc />
     async Task<DirectoryViewModel?> IFileSystemViewModelFinder.GetModelAsync(string path)
     {
         await TaskEx.YieldAsync();
@@ -114,30 +120,42 @@ public sealed class FileSystem : ViewModel, IDisposable, IFileSystemViewModelFin
     }
 }
 
+/// <summary>Интерфейс для поиска модели представления файловой системы по пути</summary>
 public interface IFileSystemViewModelFinder
 {
+    /// <summary>Получает модель представления директории по указанному пути</summary>
+    /// <param name="path">Путь к директории</param>
+    /// <returns>Модель представления директории или null, если директория не найдена</returns>
     Task<DirectoryViewModel?> GetModelAsync(string path);
 }
 
+/// <summary>Модель представления директории файловой системы</summary>
+/// <param name="directory">Информация о директории</param>
 public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposable, IFileSystemViewModelFinder,
     IEnumerable<DirectoryViewModel?>, IEnumerable<FileInfo>, IEnumerable<DirectoryInfo>,
     IEquatable<DirectoryViewModel>, IEquatable<DirectoryInfo>, IEquatable<string>
 {
+    /// <summary>Инициализирует новую модель представления директории по указанному пути</summary>
+    /// <param name="path">Путь к директории</param>
     public DirectoryViewModel(string path) : this(new DirectoryInfo(path.NotNull())) { }
 
     private FileSystemWatcher? _Watcher;
 
+    /// <summary>Информация о директории</summary>
     public DirectoryInfo Directory { get; } = directory.NotNull();
 
     private bool? _CanEnumItems;
 
-    public bool CanEnumItems => _CanEnumItems ??= (Directory.Exists/* && Directory.CanAccessToDirectoryListItems()*/);
+    /// <summary>Признак возможности перечисления элементов директории</summary>
+    public bool CanEnumItems => _CanEnumItems ??= Directory.Exists/* && Directory.CanAccessToDirectoryListItems()*/;
 
+    /// <summary>Поддиректории текущей директории</summary>
     public IEnumerable<DirectoryInfo>? SubDirectories => CanEnumItems ? Directory.EnumerateDirectories() : null;
 
 
     private ObservableCollection<DirectoryViewModel>? _Directories;
 
+    /// <summary>Коллекция моделей представления поддиректорий</summary>
     public ThreadSaveObservableCollectionWrapper<DirectoryViewModel>? Directories
     {
         get
@@ -148,7 +166,7 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
             if (!CreateWatcher())
             {
                 _CanEnumItems = false;
-                _Directories  = null;
+                _Directories = null;
                 return null;
             }
             OnRefreshDirectoriesCommandExecutedAsync();
@@ -158,10 +176,12 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
 
     private ThreadSaveObservableCollectionWrapper<FileInfo>? _Files;
 
+    /// <summary>Коллекция файлов в директории</summary>
     public ThreadSaveObservableCollectionWrapper<FileInfo>? Files => _Files != null || !CanEnumItems
         ? _Files
         : _Files = new ObservableCollection<FileInfo>(Directory.EnumerateFiles()).AsThreadSave();
 
+    /// <summary>Правила доступа к директории</summary>
     public IEnumerable<FileSystemAccessRule> AccessRules
     {
         get
@@ -182,6 +202,7 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
         }
     }
 
+    /// <summary>Признак активности наблюдателя за изменениями в директории</summary>
     public bool EnableWatcher
     {
         get => _Watcher?.EnableRaisingEvents ?? false;
@@ -197,8 +218,10 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
 
     private ICommand? _RefreshDirectoriesCommand;
 
+    /// <summary>Команда обновления списка поддиректорий</summary>
     public ICommand? RefreshDirectoriesCommand => _RefreshDirectoriesCommand ??= new LambdaCommand(OnRefreshDirectoriesCommandExecutedAsync, CanUpdateCommandExecuted);
 
+    /// <summary>Обработчик выполнения команды обновления поддиректорий</summary>
     private async void OnRefreshDirectoriesCommandExecutedAsync()
     {
         if (_Directories is null) return;
@@ -222,8 +245,10 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
 
     private ICommand? _RefreshFilesCommand;
 
+    /// <summary>Команда обновления списка файлов</summary>
     public ICommand RefreshFilesCommand => _RefreshFilesCommand ??= new LambdaCommand(OnRefreshFilesCommandExecuted, CanUpdateCommandExecuted);
 
+    /// <summary>Обработчик выполнения команды обновления файлов</summary>
     private void OnRefreshFilesCommandExecuted()
     {
         var files = Files ?? throw new InvalidOperationException($"Невозможно выполнить команду обновления для директории {Directory}: отсутствует право на доступ для извлечения содержимого дирректории");
@@ -239,18 +264,24 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
 
     private ICommand? _RefreshCommand;
 
+    /// <summary>Команда обновления списка поддиректорий и файлов</summary>
     public ICommand RefreshCommand => _RefreshCommand ??= new LambdaCommand(OnRefreshCommandExecuted, CanUpdateCommandExecuted);
 
+    /// <summary>Обработчик выполнения команды полного обновления</summary>
     private void OnRefreshCommandExecuted()
     {
         OnRefreshDirectoriesCommandExecutedAsync();
         OnRefreshFilesCommandExecuted();
     }
 
+    /// <summary>Проверяет возможность выполнения команд обновления</summary>
+    /// <returns>Истина, если возможно перечисление элементов директории</returns>
     private bool CanUpdateCommandExecuted() => CanEnumItems;
 
     #endregion
 
+    /// <summary>Создаёт наблюдатель за изменениями в директории</summary>
+    /// <returns>Истина, если наблюдатель успешно создан</returns>
     private bool CreateWatcher()
     {
         if (!Directory.Exists) return false;
@@ -260,7 +291,7 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
             watcher.Created += OnDirectoryChanged;
             watcher.Renamed += OnDirectoryChanged;
             watcher.Deleted += OnDirectoryChanged;
-            _Watcher        =  watcher;
+            _Watcher = watcher;
             return true;
         }
         catch (IOException)
@@ -269,6 +300,9 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
         }
     }
 
+    /// <summary>Обработчик изменений в директории</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события изменения файловой системы</param>
     private void OnDirectoryChanged(object? Sender, FileSystemEventArgs E)
     {
         var path = E.FullPath;
@@ -322,38 +356,49 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
 
     #region IEquatable
 
+    /// <inheritdoc />
     public bool Equals(DirectoryViewModel? model) => ReferenceEquals(this, model) || string.Equals(Directory.FullName, model?.Directory.FullName, StringComparison.InvariantCultureIgnoreCase);
 
+    /// <inheritdoc />
     public bool Equals(DirectoryInfo? dir) => ReferenceEquals(Directory, dir) || string.Equals(Directory.FullName, dir?.FullName, StringComparison.InvariantCultureIgnoreCase);
 
+    /// <inheritdoc />
     public bool Equals(string? path) => string.Equals(Directory.FullName.TrimEnd('\\', '/'), path?.TrimEnd('\\', '/'), StringComparison.InvariantCultureIgnoreCase);
 
     #endregion
 
+    /// <inheritdoc />
     public override string ToString() => $"View model:{Directory.FullName}";
 
+    /// <inheritdoc />
     public override int GetHashCode() => Directory.GetHashCode();
 
+    /// <inheritdoc />
     public override bool Equals(object? obj) =>
         obj switch
         {
             DirectoryViewModel model => Equals(model),
-            DirectoryInfo dir        => Equals(dir),
-            string path              => Equals(path),
-            _                        => false
+            DirectoryInfo dir => Equals(dir),
+            string path => Equals(path),
+            _ => false
         };
 
     /// <inheritdoc />
     void IDisposable.Dispose() => _Watcher?.Dispose();
 
+    /// <inheritdoc />
     IEnumerator<DirectoryInfo> IEnumerable<DirectoryInfo>.GetEnumerator() => (SubDirectories ?? []).GetEnumerator();
 
+    /// <inheritdoc />
     public IEnumerator<DirectoryViewModel?> GetEnumerator() => (Directories ?? Enumerable.Empty<DirectoryViewModel?>()).GetEnumerator();
 
+    /// <inheritdoc />
     IEnumerator<FileInfo> IEnumerable<FileInfo>.GetEnumerator() => (Files ?? Enumerable.Empty<FileInfo>()).GetEnumerator();
 
+    /// <inheritdoc />
     IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable<DirectoryViewModel?>)this).GetEnumerator();
 
+    /// <inheritdoc />
     async Task<DirectoryViewModel?> IFileSystemViewModelFinder.GetModelAsync(string DirectoryName)
     {
         await TaskEx.YieldAsync();
@@ -364,7 +409,7 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
         if (!CreateWatcher())
         {
             _CanEnumItems = false;
-            _Directories  = null;
+            _Directories = null;
             return null;
         }
         var sub_dirs = SubDirectories ?? throw new InvalidOperationException($"Невозможно выполнить команду обновления для дирректории {Directory}: отсутствует право на доступ для извлечения содержимого дирректории");
@@ -380,6 +425,7 @@ public class DirectoryViewModel(DirectoryInfo directory) : ViewModel, IDisposabl
         if (model is null) return null;
         if (model.Directory.FullName.Equals(DirectoryName, StringComparison.InvariantCultureIgnoreCase))
             return model;
+
         return await ((IFileSystemViewModelFinder)model).GetModelAsync(DirectoryName).ConfigureAwait(false);
     }
 }

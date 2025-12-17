@@ -6,9 +6,20 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Проверяет что все последующие значения больше либо равны первому значению</summary>
 [MarkupExtensionReturnType(typeof(LessOrEqualThanMulti))]
 public class LessOrEqualThanMulti : MultiValueValueConverter
 {
+    /// <summary>Преобразует массив значений в логическое значение</summary>
+    /// <param name="vv">Входные значения, первый элемент используется как эталон</param>
+    /// <param name="t">Тип целевого значения</param>
+    /// <param name="p">Параметр преобразования</param>
+    /// <param name="c">Культура</param>
+    /// <returns>
+    /// true если все последующие значения больше или равны первому;
+    /// false если найдено значение строго меньше первого;
+    /// Binding.DoNothing при некорректных входных данных
+    /// </returns>
     protected override object? Convert(object[]? vv, Type? t, object? p, CultureInfo? c)
     {
         if (vv is not { Length: > 1 })

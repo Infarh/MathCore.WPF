@@ -8,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Нормализует значение в заданном интервале</summary>
 [MarkupExtensionReturnType(typeof(InIntervalValue))]
 [ValueConversion(typeof(double), typeof(double))]
 public class InIntervalValue(Interval interval) : DoubleValueConverter
@@ -28,6 +29,10 @@ public class InIntervalValue(Interval interval) : DoubleValueConverter
 
     public bool MaxInclude { get => interval.MaxInclude; set => interval = interval.IncludeMax(value); }
 
-    /// <inheritdoc />
-    protected override double Convert(double v, double? p = null) => (p ?? v) is not double.NaN and var value ? interval.Normalize(value) : double.NaN;
+    /// <summary>Нормализует значение в заданном интервале, возвращая NaN для NaN входа</summary>
+    protected override double Convert(double v, double? p = null)
+    {
+        var value = p ?? v;
+        return double.IsNaN(value) ? double.NaN : interval.Normalize(value);
+    }
 }

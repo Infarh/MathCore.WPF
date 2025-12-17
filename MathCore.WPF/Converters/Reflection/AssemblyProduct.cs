@@ -1,8 +1,12 @@
 ﻿using System.Reflection;
 using System.Windows.Markup;
-// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.Reflection;
 
+/// <summary>Возвращает продукт сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyProduct))]
-public class AssemblyProduct() : AssemblyConverter(Attribute<AssemblyProductAttribute>(a => a.Product));
+public class AssemblyProduct : AssemblyConverter
+{
+    /// <summary>Возвращает продукт сборки</summary>
+    public AssemblyProduct() : base(Attribute<AssemblyProductAttribute>(a => a.Product)) { }
+}

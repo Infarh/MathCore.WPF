@@ -8,11 +8,15 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для панели изменения размеров окна через системные команды</summary>
 public class ResizeWindowPanel : Behavior<Panel>
 {
+    /// <summary>Обработчик событий нажатия кнопки мыши</summary>
     private MouseButtonEventHandler? _MouseButtonsEventHandler;
+    /// <summary>Ссылка на окно</summary>
     private Window? _Window;
 
+    /// <summary>Вызывается при присоединении поведения к панели</summary>
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -22,6 +26,7 @@ public class ResizeWindowPanel : Behavior<Panel>
         AssociatedObject.AddHandler(UIElement.MouseDownEvent, _MouseButtonsEventHandler);
     }
 
+    /// <summary>Вызывается при отсоединении поведения от панели</summary>
     protected override void OnDetaching()
     {
         base.OnDetaching();
@@ -29,6 +34,9 @@ public class ResizeWindowPanel : Behavior<Panel>
             AssociatedObject.RemoveHandler(UIElement.MouseDownEvent, _MouseButtonsEventHandler);
     }
 
+    /// <summary>Обработчик нажатия кнопки мыши на элементе панели изменения размера</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события</param>
     private void OnResizeWindowShape_MouseDown(object Sender, MouseButtonEventArgs E)
     {
         var window = _Window;

@@ -1,4 +1,5 @@
-﻿using System.Windows.Data;
+﻿using System.Collections.Generic;
+using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace MathCore.WPF;
@@ -13,9 +14,17 @@ public class XAML(string? URI) : MarkupExtension
     /// <summary>Указатель на источник разметки</summary>
     public string? URI { get; set; } = URI;
 
+    /// <summary>Дополнительные пространства имён XAML для контекста парсера</summary>
+    public IDictionary<string, string> XmlNamespaces { get; } = new Dictionary<string, string>();
+
     /// <summary>Инициализация нового генератора разметки</summary>
     public XAML() : this(null) { }
 
     /// <inheritdoc />
-    public override object? ProvideValue(IServiceProvider ServiceProvider) => new Binding(nameof(XAMLContentValue.Content)) { Source = new XAMLContentValue(URI) };
+    public override object? ProvideValue(IServiceProvider ServiceProvider)
+    {
+        var content_value = new XAMLContentValue(URI) { XmlNamespaces = XmlNamespaces }; // передаём словарь пространств имён в источник
+
+        return new Binding(nameof(XAMLContentValue.Content)) { Source = content_value };
+    }
 }

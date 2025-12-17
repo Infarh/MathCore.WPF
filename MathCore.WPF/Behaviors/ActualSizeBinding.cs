@@ -5,6 +5,7 @@ using Microsoft.Xaml.Behaviors;
 
 namespace MathCore.WPF.Behaviors;
 
+/// <summary>Поведение для двухсторонней привязки фактических размеров элемента</summary>
 public class ActualSizeBinding : Behavior<FrameworkElement>
 {
     #region ActualWidth : double - Ширина элемента
@@ -16,9 +17,12 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
             typeof(double),
             typeof(ActualSizeBinding),
             new FrameworkPropertyMetadata(
-                default(double), 
+                default(double),
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnWidthChanged));
 
+    /// <summary>Обработчик изменения ширины элемента</summary>
+    /// <param name="D">Объект зависимости</param>
+    /// <param name="E">Аргументы изменения свойства</param>
     private static void OnWidthChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
         if(D is not ActualSizeBinding { AssociatedObject: var element } || E.NewValue is not double width || element.ActualWidth == width) return;
@@ -30,7 +34,7 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
     [Description("Ширина элемента")]
     public double ActualWidth
     {
-        get => (double)GetValue(ActualWidthProperty); 
+        get => (double)GetValue(ActualWidthProperty);
         set => SetValue(ActualWidthProperty, value);
     }
 
@@ -45,9 +49,12 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
             typeof(double),
             typeof(ActualSizeBinding),
             new FrameworkPropertyMetadata(
-                default(double), 
+                default(double),
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnHeightChanged));
 
+    /// <summary>Обработчик изменения высоты элемента</summary>
+    /// <param name="D">Объект зависимости</param>
+    /// <param name="E">Аргументы изменения свойства</param>
     private static void OnHeightChanged(DependencyObject D, DependencyPropertyChangedEventArgs E)
     {
         if(D is not ActualSizeBinding { AssociatedObject: var element } || E.NewValue is not double height || element.ActualHeight == height) return;
@@ -61,6 +68,7 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
 
     #endregion
 
+    /// <summary>Вызывается при присоединении поведения к элементу</summary>
     protected override void OnAttached()
     {
         base.OnAttached();
@@ -80,12 +88,16 @@ public class ActualSizeBinding : Behavior<FrameworkElement>
         //});
     }
 
+    /// <summary>Вызывается при отсоединении поведения от элемента</summary>
     protected override void OnDetaching()
     {
         base.OnDetaching();
         AssociatedObject.SizeChanged -= OnElementSizeChanged;
     }
 
+    /// <summary>Обработчик изменения размера элемента</summary>
+    /// <param name="Sender">Источник события</param>
+    /// <param name="E">Аргументы события изменения размера</param>
     private void OnElementSizeChanged(object Sender, SizeChangedEventArgs E)
     {
         var (width, height) = E.NewSize;

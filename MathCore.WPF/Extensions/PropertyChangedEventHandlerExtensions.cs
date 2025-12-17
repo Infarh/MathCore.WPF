@@ -1,5 +1,5 @@
-﻿using System.Windows.Threading;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Windows.Threading;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Global
@@ -8,6 +8,12 @@ namespace System.ComponentModel
 {
     public static class PropertyChangedEventHandlerExtensions
     {
+        /// <summary>
+        /// Потоко-безопасный вызов обработчиков события PropertyChanged.
+        /// </summary>
+        /// <param name="Event">Обработчик события PropertyChanged.</param>
+        /// <param name="sender">Объект-отправитель события.</param>
+        /// <param name="PropertyName">Имена свойств, которые изменились.</param>
         public static void ThreadSafeInvoke(
             this PropertyChangedEventHandler? Event,
             object? sender,
@@ -33,6 +39,13 @@ namespace System.ComponentModel
                 }
         }
 
+        /// <summary>
+        /// Перегруженный метод потоко-безопасного вызова обработчиков события PropertyChanged,
+        /// позволяющий передать одно имя свойства.
+        /// </summary>
+        /// <param name="Handler">Обработчик события PropertyChanged.</param>
+        /// <param name="Sender">Объект-отправитель события.</param>
+        /// <param name="PropertyName">Имя свойства, которое изменилось.</param>
         public static void ThreadSafeInvoke(
             this PropertyChangedEventHandler? Handler,
             object? Sender,
@@ -58,6 +71,12 @@ namespace System.ComponentModel
                 }
         }
 
+        /// <summary>
+        /// Метод для асинхронного (начального) потоко-безопасного вызова обработчиков события PropertyChanged.
+        /// </summary>
+        /// <param name="Handler">Обработчик события PropertyChanged.</param>
+        /// <param name="Sender">Объект-отправитель события.</param>
+        /// <param name="PropertyName">Имя свойства, которое изменилось.</param>
         public static void ThreadSafeBeginInvoke(
             this PropertyChangedEventHandler? Handler,
             object? Sender,
@@ -91,6 +110,12 @@ namespace System.Collections.Specialized
 {
     public static class NotifyCollectionChangedEventHandlerExtensions
     {
+        /// <summary>
+        /// Потоко-безопасный вызов обработчиков события NotifyCollectionChanged.
+        /// </summary>
+        /// <param name="Handler">Обработчик события NotifyCollectionChanged.</param>
+        /// <param name="Sender">Объект-отправитель события.</param>
+        /// <param name="E">Аргументы события NotifyCollectionChanged.</param>
         public static void ThreadSafeInvoke(
             this NotifyCollectionChangedEventHandler? Handler,
             object? Sender,
@@ -118,6 +143,12 @@ namespace System.Collections.Specialized
             }
         }
 
+        /// <summary>
+        /// Метод для асинхронного (начального) потоко-безопасного вызова обработчиков события NotifyCollectionChanged.
+        /// </summary>
+        /// <param name="Handler">Обработчик события NotifyCollectionChanged.</param>
+        /// <param name="Sender">Объект-отправитель события.</param>
+        /// <param name="E">Аргументы события NotifyCollectionChanged.</param>
         public static void ThreadSafeBeginInvoke(
             this NotifyCollectionChangedEventHandler? Handler,
             object? Sender,

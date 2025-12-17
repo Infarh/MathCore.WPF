@@ -11,6 +11,8 @@
 
     <Style TargetType="ButtonBase">
         <Setter Property="Background" Value="White"/>
+        <Setter Property="Content" Value="{Binding Command.Name, RelativeSource={RelativeSource Self}}"/>
+        <Setter Property="ToolTip" Value="{Binding Command.Description, RelativeSource={RelativeSource Self}}"/>
     </Style>
 
     <Style TargetType="Button" BasedOn="{StaticResource {x:Type ButtonBase}}"/>

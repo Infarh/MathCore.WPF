@@ -1,0 +1,167 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:MathCore.WPF.Notifications">
+
+    <local:ToastNotificationIconConverter x:Key="ToastIconConverter"/>
+
+    <!-- Стиль по умолчанию для окна уведомления -->
+    <Style x:Key="DefaultToastNotificationWindowStyle" TargetType="{x:Type Window}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border Background="#F0FFFFFF"
+                            BorderBrush="#FFD0D0D0"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Padding="15,10">
+                        <Border.Effect>
+                            <DropShadowEffect Color="Black" 
+                                            Opacity="0.3" 
+                                            BlurRadius="15" 
+                                            ShadowDepth="3" 
+                                            Direction="270"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Иконка как векторный Path с кругом-фоном -->
+                            <Viewbox Grid.Column="0" 
+                                     Grid.Row="0" 
+                                     Grid.RowSpan="2"
+                                     Width="32" 
+                                     Height="32"
+                                     Margin="0,0,10,0"
+                                     VerticalAlignment="Top">
+                                <Viewbox.Style>
+                                    <Style TargetType="Viewbox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Icon}" Value="{x:Static local:ToastNotificationIcon.None}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Viewbox.Style>
+
+                                <Canvas Width="100" Height="100">
+                                    <!-- Фон круга -->
+                                    <Ellipse x:Name="IconBackground"
+                                             Width="100" Height="100"
+                                             Fill="{Binding Icon, Converter={StaticResource ToastIconConverter}, ConverterParameter=Color}"
+                                             Visibility="Visible"/>
+
+                                    <!-- Glyph поверх фона -->
+                                    <Path x:Name="IconPath"
+                                          Data="{Binding Icon, Converter={StaticResource ToastIconConverter}, ConverterParameter=Path}"
+                                          Fill="White"
+                                          Stretch="Uniform"
+                                          Width="100"
+                                          Height="100"
+                                          RenderOptions.BitmapScalingMode="HighQuality"
+                                          SnapsToDevicePixels="True"/>
+                                </Canvas>
+                            </Viewbox>
+
+                            <!-- Заголовок -->
+                            <TextBlock Grid.Column="1" 
+                                     Grid.Row="0"
+                                     Text="{Binding Title}"
+                                     FontSize="14"
+                                     FontWeight="SemiBold"
+                                     Foreground="#FF2B2B2B"
+                                     TextWrapping="Wrap"
+                                     Margin="0,0,0,5">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Title}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Title}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!-- Сообщение -->
+                            <TextBlock Grid.Column="1" 
+                                     Grid.Row="1"
+                                     Text="{Binding Message}"
+                                     FontSize="12"
+                                     Foreground="#FF4A4A4A"
+                                     TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Message}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Message}" Value="">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+
+                            <!-- Пользовательское содержимое -->
+                            <ContentPresenter Grid.Column="1"
+                                            Grid.Row="1"
+                                            Content="{Binding CustomContent}">
+                                <ContentPresenter.Style>
+                                    <Style TargetType="ContentPresenter">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CustomContent}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentPresenter.Style>
+                            </ContentPresenter>
+
+                            <!-- Кнопка закрытия -->
+                            <Button Grid.Column="2" 
+                                  Grid.Row="0"
+                                  Width="20" 
+                                  Height="20"
+                                  Margin="10,0,0,0"
+                                  VerticalAlignment="Top"
+                                  Command="{Binding CloseCommand}"
+                                  Background="Transparent"
+                                  BorderThickness="0"
+                                  Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Grid Background="{TemplateBinding Background}">
+                                            <Path Data="M 0,0 L 10,10 M 10,0 L 0,10" 
+                                                Stroke="#FF888888" 
+                                                StrokeThickness="2"
+                                                Stretch="Uniform"
+                                                Margin="3"/>
+                                        </Grid>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#20000000"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

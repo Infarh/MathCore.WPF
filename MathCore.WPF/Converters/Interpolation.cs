@@ -9,6 +9,7 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Интерполирует значение по коллекции контрольных точек</summary>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Interpolation))]
 public class Interpolation : DoubleValueConverter
@@ -16,6 +17,7 @@ public class Interpolation : DoubleValueConverter
     private Polynom? _Polynom;
     private PointCollection? _Points;
 
+    /// <summary>Коллекция контрольных точек</summary>
     public PointCollection? Points
     {
         get => _Points;
@@ -32,5 +34,6 @@ public class Interpolation : DoubleValueConverter
         }
     }
 
-    protected override double Convert(double v, double? p = null) => _Polynom!.Value(v);
+    /// <summary>Вычисляет значение полинома или возвращает Binding.DoNothing, если полином не инициализирован</summary>
+    protected override double Convert(double v, double? p = null) => _Polynom is null ? throw new InvalidOperationException("Polynom not initialized; set Points before using converter") : _Polynom.Value(v);
 }

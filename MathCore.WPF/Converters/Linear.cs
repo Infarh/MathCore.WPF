@@ -8,6 +8,7 @@ using MathCore.WPF.Converters.Base;
 namespace MathCore.WPF.Converters;
 
 /// <summary>Линейный конвертер вещественных величин по формуле result = K*value + B</summary>
+/// <remarks>При K == 0 обратное преобразование вернёт NaN</remarks>
 [ValueConversion(typeof(double), typeof(double))]
 [MarkupExtensionReturnType(typeof(Linear))]
 public class Linear(double K, double B) : DoubleValueConverter
@@ -28,7 +29,7 @@ public class Linear(double K, double B) : DoubleValueConverter
     public bool Inverted { get; set; }
 
     private static double To(double x, double k, double b) => k * x + b;
-    private static double From(double x, double k, double b) => (x - b) / k;
+    private static double From(double x, double k, double b) => k == 0 ? double.NaN : (x - b) / k;
 
     /// <inheritdoc />
     protected override double Convert(double v, double? p = null) =>

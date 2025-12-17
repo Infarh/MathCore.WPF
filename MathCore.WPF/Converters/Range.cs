@@ -7,9 +7,11 @@ using MathCore.WPF.Converters.Base;
 
 namespace MathCore.WPF.Converters;
 
+/// <summary>Создаёт нормализатор значений в пределах заданного интервала</summary>
 [MarkupExtensionReturnType(typeof(Range))]
 public class Range(Interval interval) : DoubleValueConverter
 {
+    /// <summary>Создаёт нормализатор значений в пределах заданного интервала</summary>
     public Range() : this(double.NegativeInfinity, double.PositiveInfinity) { }
 
     public Range(double MinMax) : this(new(-MinMax, MinMax)) { }
@@ -26,6 +28,6 @@ public class Range(Interval interval) : DoubleValueConverter
 
     public bool MaxInclude { get => interval.MaxInclude; set => interval = interval.IncludeMax(value); }
 
-    /// <inheritdoc />
+    /// <summary>Нормализует значение в пределах интервала</summary>
     protected override double Convert(double v, double? p = null) => interval.Normalize(v);
 }

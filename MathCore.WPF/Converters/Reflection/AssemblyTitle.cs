@@ -1,8 +1,12 @@
 ﻿using System.Reflection;
 using System.Windows.Markup;
-// ReSharper disable UnusedType.Global
 
 namespace MathCore.WPF.Converters.Reflection;
 
+/// <summary>Возвращает заголовок сборки</summary>
 [MarkupExtensionReturnType(typeof(AssemblyTitle))]
-public class AssemblyTitle() : AssemblyConverter(Attribute<AssemblyTitleAttribute>(a => a.Title));
+public class AssemblyTitle : AssemblyConverter
+{
+    /// <summary>Возвращает заголовок сборки</summary>
+    public AssemblyTitle() : base(Attribute<AssemblyTitleAttribute>(a => a.Title)) { }
+}

@@ -7,12 +7,19 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF;
 
+/// <summary>Вспомогательные методы для работы с RichTextBox и его документом</summary>
 public static class RichTextBoxHelper
 {
     private static readonly HashSet<Thread> __RecursionProtection = [];
 
+    /// <summary>Получить XAML-представление документа из присоединённого свойства</summary>
+    /// <param name="obj">Объект, у которого читается свойство</param>
+    /// <returns>XAML документа как строка</returns>
     public static string GetDocumentXaml(DependencyObject obj) => (string)obj.GetValue(DocumentXamlProperty);
 
+    /// <summary>Установить XAML-представление документа в присоединённое свойство</summary>
+    /// <param name="obj">Объект, у которого устанавливается свойство</param>
+    /// <param name="value">XAML документа или null</param>
     public static void SetDocumentXaml(DependencyObject obj, string? value)
     {
         __RecursionProtection.Add(Thread.CurrentThread);
@@ -20,6 +27,7 @@ public static class RichTextBoxHelper
         __RecursionProtection.Remove(Thread.CurrentThread);
     }
 
+    /// <summary>Присоединённое свойство, хранящее XAML-представление документа</summary>
     public static readonly DependencyProperty DocumentXamlProperty =
         DependencyProperty.RegisterAttached(
             "DocumentXaml",
@@ -34,13 +42,13 @@ public static class RichTextBoxHelper
 
                     var rich_text_box = (RichTextBox)obj;
 
-                    // Parse the XAML to a document (or use XamlReader.Parse())
+                    // Разбор XAML в документ (или использовать XamlReader.Parse())
                     try
                     {
                         var stream = new MemoryStream(Encoding.UTF8.GetBytes(GetDocumentXaml(rich_text_box)));
                         var doc    = (FlowDocument)XamlReader.Load(stream);
 
-                        // Set the document
+                        // Установить документ
                         rich_text_box.Document = doc;
                     }
                     catch (Exception)
@@ -48,7 +56,7 @@ public static class RichTextBoxHelper
                         rich_text_box.Document = new();
                     }
 
-                    // When the document changes update the source
+                    // При изменении документа обновлять источник
                     rich_text_box.TextChanged += (sender, _) =>
                     {
                         if (sender is not RichTextBox another_rich_text_box) return;
@@ -58,22 +66,22 @@ public static class RichTextBoxHelper
             )
         );
 
-    /// <summary>Returns a TextRange covering a word containing or following this TextPointer.</summary>
+    /// <summary>Возвращает TextRange, покрывающий слово, содержащее или следующее за данным TextPointer</summary>
     /// <remarks>
-    /// If this TextPointer is within a word or at start of word, the containing word range is returned.
-    /// If this TextPointer is between two words, the following word range is returned.
-    /// If this TextPointer is at trailing word boundary, the following word range is returned.
+    /// Если данный TextPointer находится внутри слова или в его начале, возвращается диапазон содержащего слова
+    /// Если данный TextPointer стоит между двумя словами, возвращается диапазон следующего слова
+    /// Если данный TextPointer находится на границе конца слова, возвращается диапазон следующего слова
     /// </remarks>
     public static TextRange? GetWordRange(this TextPointer position)
     {
         TextRange?  word_range          = null;
         TextPointer word_start_position = null;
 
-        // Go forward first, to find word end position.
-        var word_end_position = position.GetPositionAtWordBoundary(/*WordBreakDirection*/LogicalDirection.Forward);
+        // Сначала идём вперёд, чтобы найти конец слова
+        var word_end_position = position.GetPositionAtWordBoundary(/*НаправлениеРазрываСлова*/LogicalDirection.Forward);
 
-        if (word_end_position != null) // Then travel backwards, to find word start position.
-            word_start_position = word_end_position.GetPositionAtWordBoundary(/*WordBreakDirection*/ LogicalDirection.Backward);
+        if (word_end_position != null) // Затем идём назад, чтобы найти начало слова
+            word_start_position = word_end_position.GetPositionAtWordBoundary(/*НаправлениеРазрываСлова*/ LogicalDirection.Backward);
 
         if (word_start_position != null && word_end_position != null)
             word_range = new(word_start_position, word_end_position);
@@ -82,11 +90,9 @@ public static class RichTextBoxHelper
     }
 
     /// <summary>
-    /// 1.  When WordBreakDirection = Forward, returns a position at the end of the word,
-    ///     i.e. a position with a wordBreak character (space) following it.
-    /// 2.  When WordBreakDirection = Backward, returns a position at the start of the word,
-    ///     i.e. a position with a wordBreak character (space) preceeding it.
-    /// 3.  Returns null when there is no workbreak in the requested direction.
+    /// 1. При WordBreakDirection = Forward возвращает позицию в конце слова
+    /// 2. При WordBreakDirection = Backward возвращает позицию в начале слова
+    /// 3. Возвращает null, если в запрошенном направлении нет границы слова
     /// </summary>
     private static TextPointer? GetPositionAtWordBoundary(this TextPointer position, LogicalDirection WordBreakDirection)
     {
@@ -100,13 +106,13 @@ public static class RichTextBoxHelper
         return navigator;
     }
 
-    // Helper for GetPositionAtWordBoundary.
-    // Returns true when passed TextPointer is next to a wordBreak in requested direction.
+    // Вспомогательный метод для GetPositionAtWordBoundary
+    // Возвращает true, если переданный TextPointer находится рядом с разделителем слова в указанном направлении
     private static bool IsPositionNextToWordBreak(this TextPointer position, LogicalDirection WordBreakDirection)
     {
         var is_at_word_boundary = false;
 
-        // Skip over any formatting.
+        // Пропустить любое форматирование
         if (position.GetPointerContext(WordBreakDirection) != TextPointerContext.Text)
             position = position.GetInsertionPosition(WordBreakDirection);
 
@@ -125,8 +131,8 @@ public static class RichTextBoxHelper
                 is_at_word_boundary = true;
         }
         else
-            // If we're not adjacent to text then we always want to consider this position a "word break". 
-            // In practice, we're most likely next to an embedded object or a block boundary.
+            // Если мы не рядом с текстом, считаем эту позицию границей слова
+            // На практике это означает, что мы рядом с встроенным объектом или границей блока
             is_at_word_boundary = true;
 
         return is_at_word_boundary;
