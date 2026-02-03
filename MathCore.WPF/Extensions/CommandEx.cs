@@ -38,7 +38,7 @@ public static class CommandEx
     /// <param name="Command">Команда</param>
     /// <param name="Parameter">Параметр команды</param>
     /// <returns>Истина, если команда была успешно выполнена</returns>
-    public static bool TryExecute(this ICommand? Command, object Parameter)
+    public static bool TryExecute(this ICommand? Command, object? Parameter = null)
     {
         if (Command is null || !Command.CanExecute(Parameter)) return false;
 
