@@ -11,26 +11,39 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.ValidationRules;
 
+/// <summary>Проверка длины строки</summary>
 public class StringLength : ValidationRule
 {
+    /// <summary>Разрешить пустое значение</summary>
     public bool AllowNull { get; set; }
 
+    /// <summary>Разрешить значения, не являющиеся строкой</summary>
     public bool AllowNotString { get; set; }
 
+    /// <summary>Эталонная длина строки</summary>
     [ConstructorArgument(nameof(Length))]
     public int Length { get; set; }
 
+    /// <summary>Разрешить равенство длины эталонной</summary>
     public bool Equal { get; set; } = true;
 
+    /// <summary>Разрешить длину меньше эталонной</summary>
     public bool Less { get; set; }
 
+    /// <summary>Разрешить длину больше эталонной</summary>
     public bool Gatherer { get; set; }
 
+    /// <summary>Инициализация нового экземпляра <see cref="StringLength"/></summary>
     public StringLength() { }
 
+    /// <summary>Инициализация нового экземпляра <see cref="StringLength"/></summary>
+    /// <param name="Length">Эталонная длина строки</param>
     public StringLength(int Length) => this.Length = Length;
 
-    /// <inheritdoc />
+    /// <summary>Проверка длины строки</summary>
+    /// <param name="value">Проверяемое значение</param>
+    /// <param name="c">Сведения о текущей культуре</param>
+    /// <returns>Результат проверки на соответствие длины</returns>
     public override ValidationResult Validate(object? value, CultureInfo c)
     {
         var valid = ValidationResult.ValidResult;

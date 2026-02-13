@@ -11,20 +11,30 @@ using System.Windows.Markup;
 
 namespace MathCore.WPF.ValidationRules;
 
+/// <summary>Проверка значения больше заданного</summary>
 public class ValueGreaterThan : ValidationRule
 {
+    /// <summary>Эталонное значение</summary>
     [ConstructorArgument(nameof(Value))]
     public double Value { get; set; }
 
+    /// <summary>Разрешить равенство эталонному значению</summary>
     public bool IsEqual { get; set; }
 
+    /// <summary>Сообщение об ошибке проверки</summary>
     public string? ErrorMessage { get; set; }
 
+    /// <summary>Инициализация нового экземпляра <see cref="ValueGreaterThan"/></summary>
     public ValueGreaterThan() { }
 
+    /// <summary>Инициализация нового экземпляра <see cref="ValueGreaterThan"/></summary>
+    /// <param name="value">Эталонное значение</param>
     public ValueGreaterThan(double value) => Value = value;
 
-    /// <inheritdoc />
+    /// <summary>Проверка значения на превышение эталонного</summary>
+    /// <param name="value">Проверяемое значение</param>
+    /// <param name="c">Сведения о текущей культуре</param>
+    /// <returns>Результат проверки на превышение или равенство</returns>
     public override ValidationResult Validate(object? value, CultureInfo c)
     {
         if (value is null) return new(false, "Значение не указано");
