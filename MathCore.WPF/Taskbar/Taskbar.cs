@@ -19,16 +19,16 @@ public static class Taskbar
     private const string ClassName = "Shell_TrayWnd";
     private static AppBarData _AppBarData;
 
-    /// <summary>Static initializer of the <see cref="Taskbar" /> class.</summary>
+    /// <summary>Статический инициализатор класса <see cref="Taskbar" /></summary>
     static Taskbar() => _AppBarData = new()
     {
         cbSize = (uint)Marshal.SizeOf(typeof(AppBarData)),
-        hWnd   = User32.FindWindow(ClassName, null)
+        hWnd = User32.FindWindow(ClassName, null)
     };
 
-    /// <summary>  Gets a value indicating whether the taskbar is always on top of other windows.</summary>
-    /// <value><c>true</c> if the taskbar is always on top of other windows; otherwise, <c>false</c>.</value>
-    /// <remarks>This property always returns <c>false</c> on Windows 7 and newer.</remarks>
+    /// <summary>Возвращает значение, указывающее, что панель задач всегда поверх других окон</summary>
+    /// <value><c>true</c>, если панель задач всегда поверх других окон; иначе <c>false</c></value>
+    /// <remarks>Это свойство всегда возвращает <c>false</c> в Windows 7 и новее</remarks>
     public static bool AlwaysOnTop
     {
         get
@@ -38,8 +38,8 @@ public static class Taskbar
         }
     }
 
-    /// <summary>  Gets a value indicating whether the taskbar is automatically hidden when inactive.</summary>
-    /// <value><c>true</c> if the taskbar is set to auto-hide is enabled; otherwise, <c>false</c>.</value>
+    /// <summary>Возвращает значение, указывающее, что панель задач автоматически скрывается при неактивности</summary>
+    /// <value><c>true</c>, если включено автоскрытие панели задач; иначе <c>false</c></value>
     public static bool AutoHide
     {
         get
@@ -49,7 +49,7 @@ public static class Taskbar
         }
     }
 
-    /// <summary>Gets the current display bounds of the taskbar.</summary>
+    /// <summary>Возвращает текущие границы отображения панели задач</summary>
     public static Rectangle CurrentBounds
     {
         get
@@ -61,7 +61,7 @@ public static class Taskbar
         }
     }
 
-    /// <summary>Gets the display bounds when the taskbar is fully visible.</summary>
+    /// <summary>Возвращает границы отображения при полностью видимой панели задач</summary>
     public static Rectangle DisplayBounds =>
         RefreshBoundsAndPosition()
             ? Rectangle.FromLTRB(
@@ -71,24 +71,24 @@ public static class Taskbar
                 _AppBarData.rect.Bottom)
             : CurrentBounds;
 
-    /// <summary>Gets the taskbar's window handle.</summary>
+    /// <summary>Возвращает дескриптор окна панели задач</summary>
     public static IntPtr Handle => _AppBarData.hWnd;
 
-    /// <summary>Gets the taskbar's position on the screen.</summary>
+    /// <summary>Возвращает положение панели задач на экране</summary>
     public static TaskbarPosition Position => RefreshBoundsAndPosition()
         ? (TaskbarPosition)_AppBarData.uEdge
         : TaskbarPosition.Unknown;
 
     private const int SW_HIDE = 0;
-    /// <summary>Hides the taskbar.</summary>
-    public static void Hide() => User32.ShowWindow(Handle, SW_HIDE);
+    /// <summary>Скрывает панель задач</summary>
+    public static void Hide() => _ = User32.ShowWindow(Handle, SW_HIDE);
 
     private const int SW_SHOW = 1;
 
-    /// <summary>Shows the taskbar.</summary>
-    public static void Show() => User32.ShowWindow(Handle, SW_SHOW);
+    /// <summary>Показывает панель задач</summary>
+    public static void Show() => _ = User32.ShowWindow(Handle, SW_SHOW);
 
     private static bool RefreshBoundsAndPosition() =>
-        //! SHAppBarMessage returns IntPtr.Zero **if it fails**
+        //! SHAppBarMessage возвращает IntPtr.Zero при ошибке
         Shell32.SHAppBarMessage(AppBarMessage.GetTaskbarPos, ref _AppBarData) != IntPtr.Zero;
 }
