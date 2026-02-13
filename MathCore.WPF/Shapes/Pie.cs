@@ -17,6 +17,9 @@ public class Pie : Shape
     private const FrameworkPropertyMetadataOptions __DependendPropertyMetadataOptions =
         FrameworkPropertyMetadataOptions.AffectsRender;
 
+    private const double FullCircleDegrees = 360d;
+    private const double MinArcDegrees = 1e-6; // минимальная длина дуги в градусах
+
     static Pie()
     {
         //StretchProperty.OverrideMetadata(typeof(Pie), new FrameworkPropertyMetadata(Stretch.None));
@@ -82,6 +85,10 @@ public class Pie : Shape
                 coerceValueCallback: null));
 
     /// <summary>Получает или устанавливает начальный угол сектора в градусах</summary>
+    /// <remarks>
+    /// Отсчёт ведётся по часовой стрелке, 0 градусов направлен вправо, 90 градусов вниз
+    /// Сектор всегда рисуется по часовой стрелке от нормализованного <see cref="StartAngle"/> к нормализованному <see cref="StopAngle"/>
+    /// </remarks>
     public double StartAngle { get => (double)GetValue(StartAngleProperty); set => SetValue(StartAngleProperty, value); }
 
     /// <summary>Определяет зависимое свойство для конечного угла сектора</summary>
@@ -98,6 +105,13 @@ public class Pie : Shape
         o.SetValue(AngleProperty, (double)e.NewValue - ((Pie)o).StartAngle);
 
     /// <summary>Получает или устанавливает конечный угол сектора в градусах</summary>
+    /// <remarks>
+    /// После нормализации обоих углов к диапазону [0;360) сектор рисуется по часовой стрелке
+    /// Примеры:
+    /// - StartAngle=270, StopAngle=60 → сектор 150° по часовой (270→360→60)
+    /// - StartAngle=60, StopAngle=270 → сектор 210° по часовой (60→270)
+    /// - StartAngle=0, StopAngle=360 → полный круг (разность исходных углов = 360°)
+    /// </remarks>
     public double StopAngle { get => (double)GetValue(StopAngleProperty); set => SetValue(StopAngleProperty, value); }
 
     /// <summary>Определяет зависимое свойство для угла раствора сектора</summary>
@@ -177,7 +191,7 @@ public class Pie : Shape
         return size;
     }
 
-    /// <summary>Вычисляетсектора на основе заданных параметров</summary>
+    /// <summary>Вычисляет геометрию сектора на основе заданных параметров</summary>
     /// <param name="rect">Прямоугольник ограничивающей области</param>
     /// <param name="start">Начальный угол в градусах</param>
     /// <param name="stop">Конечный угол в градусах</param>
@@ -205,7 +219,7 @@ public class Pie : Shape
         return _Pie;
     }
 
-    /// <summary>Обновляетэллипсов внешнего и внутреннего радиусов</summary>
+    /// <summary>Обновляет геометрию эллипсов внешнего и внутреннего радиусов</summary>
     /// <param name="rect">Прямоугольник ограничивающей области</param>
     /// <param name="R">Внешний радиус</param>
     /// <param name="r">Внутренний радиус</param>
@@ -227,15 +241,7 @@ public class Pie : Shape
         _InnerEllipse.RadiusY = h * r;
     }
 
-    //private static Point GetPoint(Point p0, Rect rect, double a, double r, double w, double h)
-    //{
-    //    const double to_rad = Math.PI / 180.0;
-    //    a -= 90;
-    //    a *= to_rad;
-    //    return new Point(p0.X + r * Math.Cos(a) * w / 2, p0.Y + r * Math.Sin(a) * h / 2);
-    //}
-
-    /// <summary>Вычисляетна эллипсе по углу и радиусу</summary>
+    /// <summary>Вычисляет координата точки на эллипсе по углу и радиусу</summary>
     /// <param name="rect">Прямоугольник ограничивающей области</param>
     /// <param name="a">Угол в градусах</param>
     /// <param name="r">Радиус (от 0 до 1)</param>
@@ -251,7 +257,14 @@ public class Pie : Shape
         return new(x, y);
     }
 
-    /// <summary>Рисует гев контекст потока</summary>
+    /// <summary>Нормализует угол к диапазону [0;360)</summary>
+    private static double NormalizeAngle(double angle)
+    {
+        angle %= FullCircleDegrees;
+        return angle < 0 ? angle + FullCircleDegrees : angle;
+    }
+
+    /// <summary>Рисует геометрию сектора в контекст потока</summary>
     /// <param name="g">Контекст потока геометрии</param>
     /// <param name="rect">Прямоугольник ограничивающей области</param>
     /// <param name="R">Внешний радиус</param>
@@ -269,11 +282,16 @@ public class Pie : Shape
         // Вычисляем центральную точку прямоугольника
         var p0 = new Point(0.5 * rect.Width + rect.Left, 0.5 * rect.Height + rect.Top);
 
-        // Нормализуем углы: a - меньший угол, b - больший угол
-        var a = Math.Min(start, stop);
-        var b = Math.Max(start, stop);
-        var d = b - a; // Разница углов (угол раствора сектора)
-        if (d is 0d) return;
+        // Нормализуем углы к диапазону [0;360)
+        var start_angle = NormalizeAngle(start);
+        var stop_angle = NormalizeAngle(stop);
+
+        // Вычисляем угловое расстояние по часовой стрелке от start_angle до stop_angle
+        var delta_clockwise = stop_angle - start_angle;
+        if (delta_clockwise < 0) delta_clockwise += FullCircleDegrees; // Приводим к диапазону [0;360)
+
+        // Слишком маленькая дуга считается нулевой
+        if (delta_clockwise < MinArcDegrees) return;
 
         // Если включено выравнивание, приводим к квадрату по меньшей стороне
         if (aligned)
@@ -283,13 +301,13 @@ public class Pie : Shape
         }
 
         // Вычисляем ключевые точки для построения сектора:
-        var in_arc_stop = GetPoint(rect, a, r);     // конечная точка внутренней дуги (начальный угол)
-        var out_arc_start = GetPoint(rect, a, R);   // начальная точка внешней дуги (начальный угол)
-        var out_arc_stop = GetPoint(rect, b, R);    // конечная точка внешней дуги (конечный угол)
-        var in_arc_start = GetPoint(rect, b, r);    // начальная точка внутренней дуги (конечный угол)
+        var out_arc_start = GetPoint(rect, start_angle, R);  // начальная точка внешней дуги
+        var out_arc_stop = GetPoint(rect, stop_angle, R);     // конечная точка внешней дуги
+        var in_arc_start = GetPoint(rect, start_angle, r);   // начальная точка внутренней дуги
+        var in_arc_stop = GetPoint(rect, stop_angle, r);      // конечная точка внутренней дуги
 
         // Определяем тип дуги (большая дуга если угол > 180°)
-        var arc_isout = d > 180.0;
+        var arc_isout = delta_clockwise > 180.0;
 
         // Вычисляем размеры эллипсов для внутренней и внешней дуг
         var in_arc_size = new Size(r * w / 2, r * h / 2);
@@ -304,7 +322,7 @@ public class Pie : Shape
         else
         {
             // Начинаем с центра (если r = 0) или с точки на внутренней дуге
-            g.BeginFigure(r is 0d ? p0 : in_arc_stop, true, true);
+            g.BeginFigure(r is 0d ? p0 : in_arc_start, true, true);
             g.LineTo(out_arc_start, true, true); // Линия к началу внешней дуги
         }
 
@@ -314,9 +332,9 @@ public class Pie : Shape
         if (r is 0d || line_only) return; // Если внутренний радиус 0 или это линия, завершаем
 
         // Рисуем линию к началу внутренней дуги
-        g.LineTo(in_arc_start, true, true);
+        g.LineTo(in_arc_stop, true, true);
 
         // Рисуем внутреннюю дугу от конечного до начального угла против часовой стрелки
-        g.ArcTo(in_arc_stop, in_arc_size, 0, arc_isout, SweepDirection.Counterclockwise, true, true);
+        g.ArcTo(in_arc_start, in_arc_size, 0, arc_isout, SweepDirection.Counterclockwise, true, true);
     }
 }

@@ -4,43 +4,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        xmlns:sh="clr-namespace:MathCore.WPF.Shapes;assembly=MathCore.WPF"
+        Title="{Binding Title}"
         Width="800" Height="450">
     <Window.Resources>
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
     </Window.Resources>
+    <Window.DataContext>
+        <!--<Binding Source="{StaticResource TestWindow8Model}"/>-->
+        <StaticResource ResourceKey="TestWindow8Model"/>
+    </Window.DataContext>
     <Grid>
-        <!-- Эксперимент с 3D-графикой -->
-
-        <Viewport3D>
-            <Viewport3D.Camera>
-                <PerspectiveCamera Position="0,0,5" 
-                                   LookDirection="0,0,-1" 
-                                   UpDirection="0,1,0" 
-                                   FieldOfView="60"/>
-            </Viewport3D.Camera>
-            
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <DirectionalLight Color="White" 
-                                      Direction="-1,-1,-2"/>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-
-            <ModelVisual3D>
-                <ModelVisual3D.Content>
-                    <GeometryModel3D>
-                        <GeometryModel3D.Geometry>
-                            <MeshGeometry3D Positions="-1,-1,0 1,-1,0 1,1,0 -1,1,0"
-                                            TriangleIndices="0 1 2 0 2 3"
-                                            TextureCoordinates="0,1 1,1 1,0 0,0"/>
-                        </GeometryModel3D.Geometry>
-                        <GeometryModel3D.Material>
-                            <DiffuseMaterial Brush="LightBlue"/>
-                        </GeometryModel3D.Material>
-                    </GeometryModel3D>
-                </ModelVisual3D.Content>
-            </ModelVisual3D>
-            
-        </Viewport3D>
+        <sh:Arc VerticalAlignment="Top" HorizontalAlignment="Left"
+                Width="200" Height="200" Margin="20"
+                Stroke="Red" StrokeThickness="4"
+                StartAngle="-30" StopAngle="185"/>
     </Grid>
 </Window>
