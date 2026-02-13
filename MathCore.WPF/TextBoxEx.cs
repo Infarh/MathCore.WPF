@@ -202,7 +202,7 @@ public static class TextBoxEx
         if (Keyboard.IsKeyDown(Key.LeftCtrl) && GetMouseWheelIncrementCtrlRatio(text_block) is not decimal.Zero and not 1m and var ratio)
             delta = Keyboard.IsKeyDown(Key.LeftShift) ? delta / ratio : delta * ratio;
 
-        var new_value = (value + delta);
+        var new_value = value + delta;
         var new_value_text = new_value.ToString(CultureInfo.InvariantCulture);
         text_block.Text = new_value_text;
     }
@@ -258,6 +258,46 @@ public static class TextBoxEx
 
     /// <summary>Получить значение свойства AutoSelectAll</summary>
     public static bool GetAutoSelectAll(DependencyObject d) => (bool)d.GetValue(AutoSelectAllProperty);
+
+    #endregion
+
+    #region Attached property EnterCommit : bool - Обновлять источник по Enter
+
+    /// <summary>Обновлять источник привязки при нажатии Enter</summary>
+    public static readonly DependencyProperty EnterCommitProperty =
+        DependencyProperty.RegisterAttached(
+            "EnterCommit",
+            typeof(bool),
+            typeof(TextBoxEx),
+            new(false, OnEnterCommitChanged));
+
+    /// <summary>Обработчик изменения свойства EnterCommit</summary>
+    private static void OnEnterCommitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is not UIElement element) return;
+
+        if ((bool)e.NewValue)
+            element.KeyDown += OnEnterCommitKeyDown;
+        else
+            element.KeyDown -= OnEnterCommitKeyDown;
+    }
+
+    /// <summary>Обработчик события нажатия клавиши для EnterCommit</summary>
+    private static void OnEnterCommitKeyDown(object sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter) return;
+        if (e.Source is not TextBox text_box) return;
+
+        var binding = text_box.GetBindingExpression(TextBox.TextProperty);
+        binding?.UpdateSource();
+    }
+
+    /// <summary>Установить значение свойства EnterCommit</summary>
+    [AttachedPropertyBrowsableForType(typeof(UIElement))]
+    public static void SetEnterCommit(DependencyObject d, bool value) => d.SetValue(EnterCommitProperty, value);
+
+    /// <summary>Получить значение свойства EnterCommit</summary>
+    public static bool GetEnterCommit(DependencyObject d) => (bool)d.GetValue(EnterCommitProperty);
 
     #endregion
 }

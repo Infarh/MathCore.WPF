@@ -83,7 +83,7 @@ public readonly ref struct FileDialogEx
     /// <summary>Создает построитель диалога открытия файла</summary>
     /// <returns>Новый экземпляр FileDialogEx для открытия файла</returns>
     public static FileDialogEx OpenFile() => new() { IsSaveFileDialog = false };
-    
+
     /// <summary>Создает построитель диалога открытия файла с указанным заголовком</summary>
     /// <param name="Title">Заголовок диалогового окна</param>
     /// <returns>Новый экземпляр FileDialogEx для открытия файла</returns>
@@ -92,7 +92,7 @@ public readonly ref struct FileDialogEx
     /// <summary>Создает построитель диалога сохранения файла</summary>
     /// <returns>Новый экземпляр FileDialogEx для сохранения файла</returns>
     public static FileDialogEx CreateFile() => new() { IsSaveFileDialog = true };
-    
+
     /// <summary>Создает построитель диалога сохранения файла с указанным заголовком</summary>
     /// <param name="Title">Заголовок диалогового окна</param>
     /// <returns>Новый экземпляр FileDialogEx для сохранения файла</returns>
@@ -101,7 +101,7 @@ public readonly ref struct FileDialogEx
     /// <summary>Создает новый построитель диалога файла</summary>
     /// <returns>Новый экземпляр FileDialogEx</returns>
     public static FileDialogEx New() => new();
-    
+
     /// <summary>Создает новый построитель диалога файла с указанным заголовком</summary>
     /// <param name="Title">Заголовок диалогового окна</param>
     /// <returns>Новый экземпляр FileDialogEx</returns>
