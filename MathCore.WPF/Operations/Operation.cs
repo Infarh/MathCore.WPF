@@ -36,12 +36,12 @@ public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute 
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(object? p)
     {
-        Error         = null;
+        Error = null;
         _Cancellation = new();
         var cancel = _Cancellation.Token;
-        _Timer         = Stopwatch.StartNew();
+        _Timer = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);
-        InProgress     = true;
+        InProgress = true;
 
         _ = _OperationTask.ContinueWith(OnOperationCompletedAsync, CancellationToken.None);
 
@@ -54,15 +54,15 @@ public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute 
     {
         Error = ResultTask switch
         {
-            { IsFaulted                : false }               => null,
+            { IsFaulted: false } => null,
             { Exception.InnerExceptions: { Count: 1 } errors } => errors[0],
-            _                                                  => ResultTask.Exception
+            _ => ResultTask.Exception
         };
 
         _Timer?.Stop();
         _Cancellation = null;
-        InProgress    = false;
-        Progress      = 0;
+        InProgress = false;
+        Progress = 0;
         SetTime(default, default, double.NaN);
 
         return Task.CompletedTask;
@@ -96,8 +96,8 @@ public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute 
     /// <param name="pps">Скорость движения значения прогресса - число процентов в секунду</param>
     private void SetTime(TimeSpan Elapsed, TimeSpan Remaining, double pps)
     {
-        ElapsedTime      = Elapsed;
-        RemainingTime    = Remaining;
+        ElapsedTime = Elapsed;
+        RemainingTime = Remaining;
         PercentPerSecond = pps;
 
         OnPropertyChanged(nameof(ElapsedTime));
@@ -174,7 +174,7 @@ public class Operation(OperationAction Execute, Func<object?, bool>? CanExecute 
     {
         add => Start.CanExecuteChanged += value;
         remove => Start.CanExecuteChanged -= value;
-    } 
+    }
 
     #endregion
 }
@@ -208,12 +208,12 @@ public class Operation<T>(OperationAction<T> Execute, Func<T?, bool>? CanExecute
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(T? p)
     {
-        Error         = null;
+        Error = null;
         _Cancellation = new();
         var cancel = _Cancellation.Token;
-        _Timer         = Stopwatch.StartNew();
+        _Timer = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);
-        InProgress     = true;
+        InProgress = true;
 
         _ = _OperationTask.ContinueWith(OnOperationCompletedAsync, CancellationToken.None);
 
@@ -226,15 +226,15 @@ public class Operation<T>(OperationAction<T> Execute, Func<T?, bool>? CanExecute
     {
         Error = ResultTask switch
         {
-            { IsFaulted                : false }               => null,
+            { IsFaulted: false } => null,
             { Exception.InnerExceptions: { Count: 1 } errors } => errors[0],
-            _                                                  => ResultTask.Exception
+            _ => ResultTask.Exception
         };
 
         _Timer?.Stop();
         _Cancellation = null;
-        InProgress    = false;
-        Progress      = 0;
+        InProgress = false;
+        Progress = 0;
         SetTime(default, default, double.NaN);
 
         return Task.CompletedTask;
@@ -268,8 +268,8 @@ public class Operation<T>(OperationAction<T> Execute, Func<T?, bool>? CanExecute
     /// <param name="pps">Скорость движения значения прогресса - число процентов в секунду</param>
     private void SetTime(TimeSpan Elapsed, TimeSpan Remaining, double pps)
     {
-        ElapsedTime      = Elapsed;
-        RemainingTime    = Remaining;
+        ElapsedTime = Elapsed;
+        RemainingTime = Remaining;
         PercentPerSecond = pps;
 
         OnPropertyChanged(nameof(ElapsedTime));
@@ -380,12 +380,12 @@ public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, b
     /// <summary>Логика выполнения - Выполнить операцию</summary>
     private Task OnStartCommandExecutedAsync(T? p)
     {
-        Error         = null;
+        Error = null;
         _Cancellation = new();
         var cancel = _Cancellation.Token;
-        _Timer         = Stopwatch.StartNew();
+        _Timer = Stopwatch.StartNew();
         _OperationTask = _Execute(p, new Progress<double>(progress => Progress = progress), cancel);
-        InProgress     = true;
+        InProgress = true;
 
         _ = _OperationTask.ContinueWith(OnOperationCompletedAsync, CancellationToken.None);
 
@@ -398,9 +398,9 @@ public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, b
     {
         Error = ResultTask switch
         {
-            { IsFaulted                : false }               => null,
+            { IsFaulted: false } => null,
             { Exception.InnerExceptions: { Count: 1 } errors } => errors[0],
-            _                                                  => ResultTask.Exception
+            _ => ResultTask.Exception
         };
 
         if (!ResultTask.IsFaulted)
@@ -408,8 +408,8 @@ public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, b
 
         _Timer?.Stop();
         _Cancellation = null;
-        InProgress    = false;
-        Progress      = 0;
+        InProgress = false;
+        Progress = 0;
         SetTime(default, default, double.NaN);
     }
 
@@ -451,8 +451,8 @@ public class Operation<T, TResult>(OperationFunc<T, TResult> Execute, Func<T?, b
     /// <param name="pps">Скорость движения значения прогресса - число процентов в секунду</param>
     private void SetTime(TimeSpan Elapsed, TimeSpan Remaining, double pps)
     {
-        ElapsedTime      = Elapsed;
-        RemainingTime    = Remaining;
+        ElapsedTime = Elapsed;
+        RemainingTime = Remaining;
         PercentPerSecond = pps;
 
         OnPropertyChanged(nameof(ElapsedTime));

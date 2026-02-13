@@ -5,6 +5,7 @@
   </Folder>
   <Folder Name="/.Service/.github/">
     <File Path=".github/copilot-instructions.md" />
+    <File Path=".github/explain-code.prompt.md" />
   </Folder>
   <Folder Name="/.Service/.github/workflows/">
     <File Path=".github/workflows/publish.yml" />
