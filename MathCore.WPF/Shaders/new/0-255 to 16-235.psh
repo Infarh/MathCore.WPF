@@ -1,3 +1,7 @@
+﻿// Параметры: width, height (размеры изображения в пикселях)
+// Назначение: преобразование диапазона видеозначений с полного (0-255) на ограниченный (16-235)
+// для видео стандарта BT.601/BT.709
+
 // $MinimumShaderProfile: ps_2_0
 
 sampler s0 : register(s0);
@@ -6,7 +10,7 @@ sampler s0 : register(s0);
 #define const_2 (219.0 / 255.0)
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
-	// original pixel
+	// исходный пиксель
 	float4 c0 = tex2D(s0, tex);
 
 	return (c0 * const_2) + const_1;

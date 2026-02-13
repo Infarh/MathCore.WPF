@@ -1,4 +1,9 @@
-// $MinimumShaderProfile: ps_2_0
+﻿// Параметры: width, height (размеры изображения в пикселях),
+//            one_over_width, one_over_height (предвычисленные 1/width и 1/height)
+// Назначение: резкость с размытием (sharpen with blur)
+// Метод: вычисление гауссова размытия в матрице 3x3, вычитание его из оригинального пикселя
+// Требование: шейдер профиля PS 2.0
+
 sampler s0 : register(s0);
 float4 p0 : register(c0);
 float4 p1 : register(c1);
@@ -17,7 +22,7 @@ float4 main( float2 tex : TEXCOORD0 ) : COLOR
 float dx = one_over_width;
 float dy = one_over_height;
 
-// recupperation de la matrice de 9 points
+// получение матрицы из 9 пикселей
 //   [ 1, 2 , 3 ]
 //   [ 4,ori, 5 ]
 //   [ 6, 7 , 8 ]
@@ -32,7 +37,7 @@ float dy = one_over_height;
    float4 c7 = tex2D(s0, tex + float2(0,dy));
    float4 c8 = tex2D(s0, tex + float2(dx,dy));
 
-// calcul image floue (filtre gaussien)
+// вычисление размытого изображения (гаусов фильтр)
 float  multipliers[9]=
             {1,2,1,
              2,4,2,
@@ -52,7 +57,7 @@ float4 total=0;
    // 1/(1+2+1+2+4+2+1+2+1) = 1/ 16 = .0625
    total *= 0.0625f;
 
-// soustraction de l'image flou a l'image originale
+// вычитание размытого изображения из оригинального
    total = 2*ori - total;
 //return ori;
    return total;

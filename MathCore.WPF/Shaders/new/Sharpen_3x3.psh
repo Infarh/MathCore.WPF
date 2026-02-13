@@ -1,5 +1,8 @@
-// Sharpen_3x3=ps_2_0
-// http://www.homecinema-fr.com/forum/viewtopic.php?t=29814317 
+﻿// Параметры: width, height (размеры в пикселях),
+//            one_over_width, one_over_height (предвычисленные 1/width и 1/height)
+// Назначение: фильтр резкости 3x3 с настраиваемым коэффициентом шкалирования
+// Метод: центральный пиксель умножается на 2.0, соседние на 0.1-0.15
+// Источник: http://www.homecinema-fr.com/forum/viewtopic.php?t=29814317
 
 sampler s0 : register(s0); 
 float4 p0 : register(c0); 

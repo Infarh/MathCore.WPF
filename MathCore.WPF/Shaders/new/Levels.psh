@@ -1,5 +1,7 @@
-// Levels=ps_2_0
-// Code from MPC
+﻿// Параметры: входное изображение в диапазоне ограниченного видео (16-235)
+// Назначение: преобразование видеозначений с ограниченного диапазона (16-235) на полный (0-255)
+// Применение: для видеопроцессинга без проверки разрешения
+// Код: из проекта MPC (Media Player Classic)
 
 sampler s0 : register(s0);
 
@@ -8,7 +10,7 @@ sampler s0 : register(s0);
 
 float4 main(float2 tex : TEXCOORD0) : COLOR
 {
-	// original pixel
+	// исходный пиксель
 	float4 c0 = tex2D(s0,tex);
 
 	return((c0 - const_1) * const_2);
