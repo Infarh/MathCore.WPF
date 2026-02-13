@@ -4,11 +4,12 @@ using System.Windows.Input;
 
 namespace MathCore.WPF;
 
+/// <summary>Менеджер переключения языка ввода</summary>
 public class LanguageManager : DependencyObject
 {
     #region InputCulture
 
-    /// <summary></summary>
+    /// <summary>Свойство зависимости для текущей культуры ввода</summary>
     public static readonly DependencyProperty InputCultureProperty =
         DependencyProperty.Register(
             nameof(InputCulture),
@@ -17,7 +18,7 @@ public class LanguageManager : DependencyObject
             new(InputLanguageManager.Current.CurrentInputLanguage, (s, e) => ChangeCulture((CultureInfo)e.NewValue)));
 
 
-    /// <summary></summary>
+    /// <summary>Текущая культура ввода</summary>
     public CultureInfo InputCulture { get => (CultureInfo)GetValue(InputCultureProperty); set => SetValue(InputCultureProperty, value); }
 
     #endregion
@@ -25,8 +26,10 @@ public class LanguageManager : DependencyObject
     #region Singleton
 
     private static volatile LanguageManager __Manager;
+
     private static readonly object __ManagerSyncRoot = new();
 
+    /// <summary>Текущий экземпляр менеджера языка ввода</summary>
     public static LanguageManager Current
     {
         get
@@ -46,5 +49,7 @@ public class LanguageManager : DependencyObject
 
     private void OnLanguageChanged(object Sender, InputLanguageEventArgs E) => InputCulture = E.NewLanguage;
 
+    /// <summary>Изменить текущую культуру ввода</summary>
+    /// <param name="culture">Новая культура ввода</param>
     private static void ChangeCulture(CultureInfo culture) => InputLanguageManager.Current.CurrentInputLanguage = culture;
 }

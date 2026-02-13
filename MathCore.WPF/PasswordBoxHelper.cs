@@ -5,19 +5,18 @@ using System.Windows.Controls;
 
 namespace MathCore.WPF;
 
-/// <summary>
-/// Creates a bindable attached property for the <see cref="PasswordBox.SecurePassword"/> property.
-/// </summary>
+/// <summary>Создаёт привязываемое присоединённое свойство для <see cref="PasswordBox.SecurePassword"/></summary>
 public static class PasswordBoxHelper
 {
-    // an attached behavior won't work due to view model validation not picking up the right control to adorn
+    /// <summary>Присоединённое свойство для привязки защищённого пароля</summary>
+    // присоединённое поведение не подходит из-за неверной привязки к элементу для валидации // кратко по делу
     public static readonly DependencyProperty SecurePasswordBindingProperty = DependencyProperty
        .RegisterAttached(
             "ShadowSecurePassword",
             typeof(SecureString),
             typeof(PasswordBoxHelper),
             new FrameworkPropertyMetadata(
-                new SecureString(), 
+                new SecureString(),
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 AttachedPropertyValueChanged));
 
@@ -28,15 +27,21 @@ public static class PasswordBoxHelper
             typeof(PasswordBoxHelper),
             new());
 
+    /// <summary>Устанавливает значение защищённого пароля</summary>
+    /// <param name="element">Элемент для установки значения</param>
+    /// <param name="SecureString">Значение защищённого пароля</param>
     public static void SetSecurePassword(PasswordBox element, SecureString SecureString) => element.SetValue(SecurePasswordBindingProperty, SecureString);
 
+    /// <summary>Возвращает значение защищённого пароля</summary>
+    /// <param name="element">Элемент для чтения значения</param>
+    /// <returns>Значение защищённого пароля</returns>
     public static SecureString GetSecurePassword(PasswordBox element) => (SecureString)element.GetValue(SecurePasswordBindingProperty)!;
 
     private static void AttachedPropertyValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        // we'll need to hook up to one of the element's events
-        // in order to allow the GC to collect the control, we'll wrap the event handler inside an object living in an attached property
-        // don't be tempted to use the Unloaded event as that will be fired  even when the control is still alive and well (e.g. switching tabs in a tab control) 
+        // требуется подписка на событие элемента для обновления значения // кратко по делу
+        // обработчик обёрнут в объект присоединённого свойства ради корректной сборки мусора // кратко по делу
+        // событие Unloaded использовать нельзя, оно срабатывает при переключении вкладок // кратко по делу
         var password_box = (PasswordBox)d;
         if (password_box.GetValue(__PasswordBindingMarshallerProperty) is not PasswordBindingMarshaller binding_marshaller)
         {
@@ -47,7 +52,7 @@ public static class PasswordBoxHelper
         binding_marshaller.UpdatePasswordBox(e.NewValue as SecureString);
     }
 
-    /// <summary>Encapsulated event logic</summary>
+    /// <summary>Инкапсулированная логика обработки событий</summary>
     private class PasswordBindingMarshaller
     {
         private readonly PasswordBox _PasswordBox;
@@ -67,10 +72,10 @@ public static class PasswordBoxHelper
             _IsMarshalling = true;
             try
             {
-                // setting up the SecuredPassword won't trigger a visual update so we'll have to use the Password property
+                // установка SecurePassword не обновляет визуальное значение, требуется Password // кратко по делу
                 _PasswordBox.Password = SecureStringToString(NewPassword);
 
-                // you may try the statement below, however the benefits are minimal security wise (you still have to extract the unsecured password for copying)
+                // можно использовать копирование, но выигрыш по безопасности минимален // кратко по делу
                 //newPassword.CopyInto(_passwordBox.SecurePassword);
             }
             finally
@@ -95,7 +100,7 @@ public static class PasswordBoxHelper
 
         private void PasswordBoxPasswordChanged(object sender, RoutedEventArgs e)
         {
-            // copy the password into the attached property
+            // копирование пароля в присоединённое свойство // кратко по делу
             if (_IsMarshalling)
                 return;
 
