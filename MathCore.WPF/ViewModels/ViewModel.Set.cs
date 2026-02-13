@@ -209,6 +209,13 @@ public partial class ViewModel
         return true;
     }
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если значение свойства установлено успешно</returns>
     public static bool Set<T>(
         ref T? field,
         T? value,

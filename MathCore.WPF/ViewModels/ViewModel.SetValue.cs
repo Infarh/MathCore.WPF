@@ -6,6 +6,12 @@ namespace MathCore.WPF.ViewModels;
 
 public partial class ViewModel
 {
+    /// <summary>Установить значение свойства с уведомлением об изменении</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Новое значение свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Результат установки значения</returns>
     [NotifyPropertyChangedInvocator]
     protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
     {
@@ -16,6 +22,13 @@ public partial class ViewModel
         return new(true, old_value, value, this);
     }
 
+    /// <summary>Установить значение свойства с проверкой и уведомлением об изменении</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Новое значение свойства</param>
+    /// <param name="value_checker">Проверка возможности установки значения</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Результат установки значения</returns>
     [NotifyPropertyChangedInvocator]
     protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
     {
