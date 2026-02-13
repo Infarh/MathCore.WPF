@@ -49,8 +49,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="handler">Отсоединяемый обработчик события <see cref="PropertyChanged"/></param>
     protected virtual void PropertyChanged_RemoveHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
 
-    /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
-    //public static bool IsDesignMode { get; set; } = LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+    /// <summary>Признак работы в режиме дизайна</summary>
     public static bool IsDesignMode { get; set; } = DesignerProperties.GetIsInDesignMode(new());
 
     private readonly object _PropertiesDependenciesSyncRoot = new();
@@ -173,6 +172,9 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
 
     private Dictionary<string, Action>? _PropertyChangedHandlers;
 
+    /// <summary>Добавить обработчик изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <param name="handler">Обработчик изменения свойства</param>
     protected void PropertyChanged_AddHandler(string PropertyName, Action handler)
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -185,6 +187,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         }
     }
 
+    /// <summary>Удалить обработчик изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <param name="handler">Обработчик изменения свойства</param>
+    /// <returns>Истина, если обработчик удалён</returns>
     protected bool PropertyChanged_RemoveHandler(string PropertyName, Action handler)
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -200,12 +206,17 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         }
     }
 
+    /// <summary>Очистить обработчики изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если обработчики удалены</returns>
     protected bool PropertyChanged_ClearHandlers(string PropertyName)
     {
         lock (_PropertiesDependenciesSyncRoot)
             return _PropertyChangedHandlers is { Count: > 0 } && _PropertyChangedHandlers.Remove(PropertyName);
     }
 
+    /// <summary>Очистить все обработчики изменения свойств</summary>
+    /// <returns>Истина, если обработчики удалены</returns>
     protected virtual bool PropertyChanged_ClearHandlers()
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -339,6 +350,12 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
 
     private readonly Dictionary<string, object?> _ModelPropertyValues = [];
 
+    /// <summary>Установить значение свойства в словаре модели</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="value">Новое значение свойства</param>
+    /// <param name="Property">Имя свойства</param>
+    /// <param name="UpdateCommandsState">Обновить состояния команд</param>
+    /// <returns>Истина, если значение изменилось</returns>
     protected bool Set<T>(
         T? value,
         [CallerMemberName] string Property = null!,
@@ -351,6 +368,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return true;
     }
 
+    /// <summary>Получить значение свойства из словаря модели</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="Property">Имя свойства</param>
+    /// <returns>Значение свойства или значение по умолчанию</returns>
     protected T? Get<T>([CallerMemberName] string Property = null!) =>
         _ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property)), out var value)
             ? (T?)value
@@ -360,9 +381,9 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <typeparam name="T">Тип значения свойства</typeparam>
     /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
     /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
     /// <param name="Sender">Объект-источник события</param>
     /// <param name="PropertyName">Имя свойства</param>
-    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
     /// <returns>Истина, если значение свойства установлено успешно</returns>
     public static bool Set<T>(
         ref T? field,
@@ -377,6 +398,13 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return true;
     }
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если значение свойства установлено успешно</returns>
     public static bool Set<T>(
         ref T? field,
         T? value,
@@ -401,6 +429,15 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return true;
     }
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="ValueChecker">Метод проверки возможности установки значения</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
+    /// <param name="Sender">Объект-источник события</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если значение свойства установлено успешно</returns>
     public static bool Set<T>(
         ref T? field,
         T? value,
@@ -410,6 +447,13 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         [CallerMemberName] string PropertyName = null!) =>
         ValueChecker(value) && Set(ref field, value, OnPropertyChanged, Sender, PropertyName);
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Результат установки значения</returns>
     public SetStaticValueResult<T> SetValue<T>(
         ref T? field,
         T? value,
@@ -424,6 +468,14 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return new(true, old_value, value, OnPropertyChanged);
     }
 
+    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
+    /// <param name="value">Значение свойства, которое надо установить</param>
+    /// <param name="ValueChecker">Метод проверки возможности установки значения</param>
+    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Результат установки значения</returns>
     public static SetStaticValueResult<T> SetValue<T>(
         [Attributes.NotNullIfNotNull(nameof(value))] ref T? field, 
         T? value,
@@ -439,6 +491,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return new(true, old_value, value, OnPropertyChanged);
     }
 
+    /// <summary>Проверить путь к файлу в режиме дизайна</summary>
+    /// <param name="RelativeFileName">Относительный путь к файлу</param>
+    /// <param name="SourceFilePath">Путь к исходному файлу</param>
+    /// <returns>Корректный путь к файлу</returns>
     public static string? CheckDesignModeFilePath(
         string? RelativeFileName,
         [CallerFilePath] string? SourceFilePath = null) =>
@@ -449,7 +505,6 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         && RelativeFileName[1] == ':'
             ? RelativeFileName
             : Path.Combine(Path.GetDirectoryName(SourceFilePath) ?? "", RelativeFileName);
-
     /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
     /// <typeparam name="T">Тип значения свойства</typeparam>
     /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
@@ -513,8 +568,13 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         private readonly T? _OldValue;
         private readonly T? _NewValue;
 
+        /// <summary>Признак успешного изменения значения</summary>
         public bool Result => _Result;
+
+        /// <summary>Предыдущее значение</summary>
         public T? OldValue => _OldValue;
+
+        /// <summary>Новое значение</summary>
         public T? NewValue => _NewValue;
 
         internal SetValueResult(bool Result, T? OldValue, ViewModel model) : this(Result, OldValue, OldValue, model) { }
@@ -526,78 +586,120 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             _Model = model;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action execute)
         {
             if (_Result) execute();
             return _Result;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action<object?> execute)
         {
             if (_Result) execute(NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action<T?> execute)
         {
             if (_Result) execute(NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие асинхронно при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool ThenAsync(Action execute)
         {
             if (_Result) Task.Run(execute);
             return _Result;
         }
 
+        /// <summary>Выполнить действие асинхронно при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool ThenAsync(Action<T?> execute)
         {
             if (_Result) NewValue.Async(execute);
             return _Result;
         }
 
+        /// <summary>Выполнить действие при выполнении условия</summary>
+        /// <param name="predicate">Условие выполнения</param>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool ThenIf(Func<T?, bool> predicate, Action<T?> execute)
         {
             if (_Result && predicate(NewValue)) execute(NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие асинхронно при выполнении условия</summary>
+        /// <param name="predicate">Условие выполнения</param>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool ThenIfAsync(Func<T?, bool> predicate, Action<T?> execute)
         {
             if (_Result && predicate(NewValue)) NewValue.Async(execute);
             return _Result;
         }
 
+        /// <summary>Установить значение при успешном изменении</summary>
+        /// <param name="SetAction">Действие установки</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> ThenSet(Action<T?> SetAction)
         {
             if (_Result) SetAction(NewValue);
             return this;
         }
 
+        /// <summary>Установить значение асинхронно при успешном изменении</summary>
+        /// <param name="SetAction">Действие установки</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> ThenSetAsync(Action<T?> SetAction)
         {
             if (_Result) NewValue.Async(SetAction);
             return this;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action<T?, T?> execute)
         {
             if (_Result) execute(OldValue, NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие асинхронно при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool ThenAsync(Action<T?, T?> execute)
         {
             if (_Result) OldValue.Async(NewValue, execute);
             return _Result;
         }
 
+        /// <summary>Уведомить об изменении указанного свойства</summary>
+        /// <param name="PropertyName">Имя свойства</param>
+        /// <param name="UpdateCommands">Обновить состояния команд</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> ThenUpdate(string PropertyName, bool UpdateCommands = false)
         {
             if (_Result) _Model.OnPropertyChanged(PropertyName, UpdateCommands);
             return this;
         }
 
+        /// <summary>Уведомить об изменении указанных свойств</summary>
+        /// <param name="PropertyNames">Имена свойств</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> ThenUpdate(params string[] PropertyNames)
         {
             if (!_Result) return this;
@@ -606,6 +708,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             return this;
         }
 
+        /// <summary>Уведомить об изменении указанных свойств</summary>
+        /// <param name="UpdateCommands">Обновить состояния команд</param>
+        /// <param name="PropertyNames">Имена свойств</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> ThenUpdate(bool UpdateCommands, params string[] PropertyNames)
         {
             if (!_Result) return this;
@@ -614,57 +720,86 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             return this;
         }
 
+        /// <summary>Уведомить об изменении указанного свойства</summary>
+        /// <param name="PropertyName">Имя свойства</param>
+        /// <param name="UpdateCommands">Обновить состояния команд</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> Update(string PropertyName, bool UpdateCommands = false)
         {
             _Model.OnPropertyChanged(PropertyName, UpdateCommands);
             return this;
         }
 
+        /// <summary>Уведомить об изменении указанных свойств</summary>
+        /// <param name="PropertyName">Имена свойств</param>
+        /// <returns>Текущий результат</returns>
         public SetValueResult<T> Update(params string[] PropertyName)
         {
             foreach (var name in PropertyName) _Model.OnPropertyChanged(name);
             return this;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action execute)
         {
             execute();
             return _Result;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<bool> execute)
         {
             execute(_Result);
             return _Result;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?> execute)
         {
             execute(NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, bool> execute)
         {
             execute(NewValue, _Result);
             return _Result;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, T?> execute)
         {
             execute(OldValue, NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, T?, bool> execute)
         {
             execute(OldValue, NewValue, _Result);
             return _Result;
         }
 
+        /// <summary>Преобразовать результат в логическое значение</summary>
+        /// <param name="result">Результат установки</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public static implicit operator bool(SetValueResult<T> result) => result._Result;
     }
 
+    /// <summary>Результат установки значения свойства со статическим обработчиком</summary>
     public readonly ref struct SetStaticValueResult<T>
     {
         private readonly bool _Result;
@@ -681,66 +816,108 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             _OnPropertyChanged = OnPropertyChanged;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action execute)
         {
             if (_Result) execute();
             return _Result;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action<T?> execute)
         {
             if (_Result) execute(_NewValue);
             return _Result;
         }
 
+        /// <summary>Выполнить действие при успешном изменении</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool Then(Action<T?, T?> execute)
         {
             if (_Result) execute(_OldValue, _NewValue);
             return _Result;
         }
 
+        /// <summary>Уведомить об изменении указанного свойства</summary>
+        /// <param name="PropertyName">Имя свойства</param>
+        /// <returns>Текущий результат</returns>
         public SetStaticValueResult<T> Update(string PropertyName)
         {
             _OnPropertyChanged(PropertyName);
             return this;
         }
 
+        /// <summary>Уведомить об изменении указанных свойств</summary>
+        /// <param name="PropertyName">Имена свойств</param>
+        /// <returns>Текущий результат</returns>
         public SetStaticValueResult<T> Update(params string[] PropertyName)
         {
             foreach (var name in PropertyName) _OnPropertyChanged(name);
             return this;
         }
 
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action execute)
         {
             execute();
             return _Result;
         }
+
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<bool> execute)
         {
             execute(_Result);
             return _Result;
         }
+
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?> execute)
         {
             execute(_NewValue);
             return _Result;
         }
+
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, bool> execute)
         {
             execute(_NewValue, _Result);
             return _Result;
         }
+
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, T?> execute)
         {
             execute(_OldValue, _NewValue);
             return _Result;
         }
+
+        /// <summary>Выполнить действие независимо от результата</summary>
+        /// <param name="execute">Действие</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public bool AnywayThen(Action<T?, T?, bool> execute)
         {
             execute(_OldValue, _NewValue, _Result);
             return _Result;
         }
+
+        /// <summary>Преобразовать результат в логическое значение</summary>
+        /// <param name="result">Результат установки</param>
+        /// <returns>Истина, если изменение произошло</returns>
         public static implicit operator bool(SetStaticValueResult<T> result) => result._Result;
     }
 
@@ -861,6 +1038,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return this;
     }
 
+    /// <summary>Обработчик инициализации в XAML</summary>
+    /// <param name="target">Целевой объект</param>
+    /// <param name="property">Целевое свойство</param>
+    /// <param name="root">Корневой объект</param>
     protected virtual void OnInitialized(object? target, object? property, object? root)
     {
 
