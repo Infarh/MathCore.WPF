@@ -40,7 +40,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MathCore" Version="0.0.94.3" />
+    <PackageReference Include="MathCore" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)'=='net4.6.1-windows'">
