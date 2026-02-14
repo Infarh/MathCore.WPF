@@ -1,29 +1,89 @@
 ﻿using System.Text;
 
-// TODO: put all error strings into resources
+// Примечание: все строки ошибок должны быть перемещены в ресурсы для локализации
 namespace MathCore.WPF.TeX;
 
+/// <summary>
+/// Парсер TeX формул - преобразует строковое представление в дерево атомов
+/// </summary>
+/// <remarks>
+/// Парсер реализует синтаксис LaTeX математических выражений и преобразует их
+/// в иерархию объектов Atom, которые затем преобразуются в визуальные боксы для рендеринга.
+/// 
+/// Поддерживаемые конструкции:
+/// - Символы и команды (например, \frac, \sqrt)
+/// - Группы в фигурных скобках
+/// - Надстрочные (^) и подстрочные (_) индексы
+/// - Штрихи (') для производных
+/// - Предопределённые формулы и символы
+/// 
+/// Парсер инициализируется один раз при создании первого экземпляра,
+/// загружая конфигурацию из XML файлов.
+/// </remarks>
+/// <example>
+/// <code><![CDATA[
+/// var parser = new TexFormulaParser();
+/// 
+/// // Простая формула
+/// var formula1 = parser.Parse("E = mc^2");
+/// 
+/// // Дробь
+/// var formula2 = parser.Parse("\\frac{a}{b}");
+/// 
+/// // Корень
+/// var formula3 = parser.Parse("\\sqrt[3]{x}");
+/// 
+/// // Рендеринг
+/// var renderer = formula1.GetRenderer(TexStyle.Display, 20.0);
+/// ]]></code>
+/// </example>
 public class TexFormulaParser
 {
-    // Special characters for parsing
+    // Специальные символы для парсинга
+    /// <summary>Символ экранирования для команд TeX</summary>
     private const char __EscapeChar = '\\';
 
+    /// <summary>Символ открывающейся группы</summary>
     private const char __LeftGroupChar = '{';
+
+    /// <summary>Символ закрывающейся группы</summary>
     private const char __RightGroupChar = '}';
+
+    /// <summary>Символ открывающейся квадратной скобки</summary>
     private const char __LeftBracketChar = '[';
+
+    /// <summary>Символ закрывающейся квадратной скобки</summary>
     private const char __RightBracketChar = ']';
 
+    /// <summary>Символ подстрочного индекса</summary>
     private const char __SubScriptChar = '_';
+
+    /// <summary>Символ надстрочного индекса</summary>
     private const char __SuperScriptChar = '^';
+
+    /// <summary>Символ штриха (производной)</summary>
     private const char __PrimeChar = '\'';
 
-    // Information used for parsing
+    // Информация, используемая при парсинге
+    /// <summary>Набор поддерживаемых команд TeX (frac, sqrt и т.д.)</summary>
     private static HashSet<string> __Commands;
+
+    /// <summary>Массив отображений символов на их TeX представления</summary>
     private static string[] __Symbols;
+
+    /// <summary>Массив отображений ограничителей на их TeX представления</summary>
     private static string[] __Delimiters;
+
+    /// <summary>Набор поддерживаемых текстовых стилей</summary>
     private static HashSet<string> __TextStyles;
+
+    /// <summary>Словарь предопределённых формул (кэш загруженных формул)</summary>
     private static readonly Dictionary<string, TexFormula> __PredefinedFormulas;
 
+    /// <summary>
+    /// Названия парных ограничителей для автоматического масштабирования
+    /// (например, \left( и \right))
+    /// </summary>
     private static readonly string[][] __DelimiterNames =
     [
         ["lbrace", "rbrace"],
@@ -39,11 +99,13 @@ public class TexFormulaParser
         ["Vert", "Vert"]
     ];
 
-    /// <summary>True if parser has been initialized</summary>
+    /// <summary>Флаг инициализации парсера</summary>
     private static bool __IsInitialized;
 
+    /// <summary>Получить названия парных ограничителей</summary>
     internal static string[][] DelimiterNames => __DelimiterNames;
 
+    /// <summary>Статический конструктор инициализирует парсер при первом использовании</summary>
     static TexFormulaParser()
     {
         __IsInitialized = false;
@@ -52,10 +114,13 @@ public class TexFormulaParser
         Initialize();
     }
 
+    /// <summary>Инициализирует внутренние структуры парсера из конфигурации</summary>
     private static void Initialize()
     {
+        // Регистрация поддерживаемых команд
         __Commands = ["frac", "sqrt"];
 
+        // Загрузка конфигурации из XML файлов
         var formula_settings_parser = new TexPredefinedFormulaSettingsParser();
         __Symbols    = formula_settings_parser.GetSymbolMappings();
         __Delimiters = formula_settings_parser.GetDelimiterMappings();
@@ -63,16 +128,28 @@ public class TexFormulaParser
 
         __IsInitialized = true;
 
+        // Загрузка предопределённых формул
         var predefined_formulas_parser = new TexPredefinedFormulaParser();
         predefined_formulas_parser.Parse(__PredefinedFormulas);
     }
 
+    /// <summary>
+    /// Получает предопределённую формулу по имени
+    /// </summary>
+    /// <param name="name">Имя предопределённой формулы</param>
+    /// <returns>Формула или null, если не найдена</returns>
     internal static TexFormula? GetFormula(string name)
     {
         var f = __PredefinedFormulas.GetValue(name);
         return f is null ? null : new TexFormula(f);
     }
 
+    /// <summary>
+    /// Получает TeX представление ограничителя по символу
+    /// </summary>
+    /// <param name="character">Символ ограничителя</param>
+    /// <returns>TeX имя ограничителя</returns>
+    /// <exception cref="DelimiterMappingNotFoundException">Если ограничитель не найден</exception>
     internal static string GetDelimeterMapping(char character)
     {
         if (character < 0 || character >= __Delimiters.Length)
@@ -81,22 +158,48 @@ public class TexFormulaParser
         return __Delimiters[character];
     }
 
+    /// <summary>
+    /// Получает атом ограничителя по его имени
+    /// </summary>
+    /// <param name="name">TeX имя ограничителя</param>
+    /// <returns>Атом ограничителя или null, если не является ограничителем</returns>
     internal static SymbolAtom? GetDelimiterSymbol(string name)
     {
         var result = SymbolAtom.GetAtom(name);
         return !result.IsDelimeter ? null : result;
     }
 
+    /// <summary>Проверяет, является ли символ специальным TeX символом</summary>
     private static bool IsSymbol(char c) => c is not (>= '0' and <= '9' or >= 'a' and <= 'z' or >= 'A' and <= 'Z');
 
+    /// <summary>Проверяет, является ли символ пробельным</summary>
     private static bool IsWhiteSpace(char ch) => ch is ' ' or '\t' or '\n' or '\r';
 
+    /// <summary>Инициализирует новый экземпляр парсера TeX формул</summary>
+    /// <exception cref="InvalidOperationException">Если парсер не был инициализирован</exception>
     public TexFormulaParser()
     {
         if (!__IsInitialized)
             throw new InvalidOperationException("Parser has not yet been initialized.");
     }
 
+    /// <summary>
+    /// Парсит строку TeX формулы и возвращает объект TexFormula
+    /// </summary>
+    /// <param name="value">TeX строка формулы для парсинга</param>
+    /// <returns>Объект TexFormula, готовый к рендерингу</returns>
+    /// <exception cref="TexParseException">Если обнаружена синтаксическая ошибка в формуле</exception>
+    /// <remarks>
+    /// Этот метод преобразует TeX строку в дерево атомов (Atom).
+    /// Поддерживает все основные конструкции LaTeX математических выражений.
+    /// </remarks>
+    /// <example>
+    /// <code><![CDATA[
+    /// var parser = new TexFormulaParser();
+    /// var formula = parser.Parse("x^2 + y^2 = z^2");
+    /// var renderer = formula.GetRenderer(TexStyle.Display, 20.0);
+    /// ]]></code>
+    /// </example>
     public TexFormula Parse(string value)
     {
         var formula  = new TexFormula();

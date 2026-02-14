@@ -2,11 +2,24 @@
 
 namespace MathCore.WPF.TeX;
 
-/// <summary>Box containing horizontal stack of child boxes</summary>
+/// <summary>
+/// Бокс, содержащий горизонтальный стек дочерних боксов
+/// </summary>
+/// <remarks>
+/// HorizontalBox используется для размещения боксов в горизонтальном направлении.
+/// Поддерживает выравнивание (влево, по центру, вправо).
+/// </remarks>
 internal sealed class HorizontalBox : Box
 {
+    /// <summary>Общая ширина всех дочерних боксов</summary>
     private double _ChildBoxesTotalWidth;
 
+    /// <summary>
+    /// Инициализирует новый бокс с одним элементом и заданным выравниванием
+    /// </summary>
+    /// <param name="box">Элемент для размещения</param>
+    /// <param name="width">Требуемая ширина контейнера</param>
+    /// <param name="alignment">Выравнивание (Center, Left, Right)</param>
     public HorizontalBox(Box box, double width, TexAlignment alignment)
         : this()
     {
@@ -30,12 +43,20 @@ internal sealed class HorizontalBox : Box
         }
     }
 
+    /// <summary>Инициализирует новый горизонтальный бокс с одним элементом</summary>
+    /// <param name="box">Элемент для добавления</param>
     public HorizontalBox(Box box) : this() => Add(box);
 
+    /// <summary>Инициализирует новый горизонтальный бокс с кистями для отрисовки</summary>
+    /// <param name="foreground">Кисть переднего плана</param>
+    /// <param name="background">Кисть фона</param>
     public HorizontalBox(Brush foreground, Brush background) : base(foreground, background) { }
 
+    /// <summary>Инициализирует новый пустой горизонтальный бокс</summary>
     public HorizontalBox() { }
 
+    /// <summary>Добавляет дочерний бокс и обновляет общую ширину</summary>
+    /// <param name="box">Бокс для добавления</param>
     public override void Add(Box box)
     {
         base.Add(box);
