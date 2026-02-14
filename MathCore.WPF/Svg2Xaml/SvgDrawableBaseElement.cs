@@ -36,29 +36,78 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
+/// <summary>
+/// Базовый класс для всех отрисовываемых элементов SVG (с поддержкой заполнения и обводки)
+/// </summary>
+/// <remarks>
+/// Класс содержит логику обработки атрибутов стиля, таких как fill (заполнение), stroke (обводка),
+/// opacity (прозрачность), transform (трансформация), clip-path (обрезка) и другие.
+/// Предоставляет методы для получения геометрии, кисти и пера для рисования
+/// </remarks>
 internal abstract class SvgDrawableBaseElement : SvgBaseElement
 {
 
     //==========================================================================
+    /// <summary>Прозрачность элемента (0-1)</summary>
     public readonly SvgLength Opacity = new(1.0);
+    
+    /// <summary>Прозрачность заполнения (0-1)</summary>
     public readonly SvgLength FillOpacity = new(1.0);
+    
+    /// <summary>Прозрачность обводки (0-1)</summary>
     public readonly SvgLength StrokeOpacity = new(1.0);
+    
+    /// <summary>Трансформация элемента (rotate, scale, translate, skew)</summary>
     public readonly SvgTransform? Transform;
+    
+    /// <summary>Заполнение элемента (цвет или градиент)</summary>
     public readonly SvgPaint? Fill = new SvgColorPaint(new(0, 0, 0));
-    public readonly SvgPaint? Stroke; /* new SvgColorPaint(new SvgColor(0, 0, 0)); */
+    
+    /// <summary>Обводка элемента</summary>
+    public readonly SvgPaint? Stroke;
+    
+    /// <summary>Ширина обводки</summary>
     public readonly SvgLength StrokeWidth = new(1);
+    
+    /// <summary>Форма окончания линии обводки (butt, round, square)</summary>
     public readonly SvgStrokeLinecap StrokeLinecap = SvgStrokeLinecap.Butt;
+    
+    /// <summary>Способ соединения линий обводки (miter, round, bevel)</summary>
     public readonly SvgStrokeLinejoin StrokeLinejoin = SvgStrokeLinejoin.Miter;
-    public readonly double StrokeMiterlimit = 4; // Double.None = inherit
+    
+    /// <summary>Предел соотношения для скоса при обводке</summary>
+    public readonly double StrokeMiterlimit = 4;
+    
+    /// <summary>Смещение штрихового массива обводки</summary>
     public readonly SvgLength StrokeDashoffset = new(0);
-    public readonly SvgLength?[] StrokeDasharray; // null = none, Length[0] = inherit
+    
+    /// <summary>Массив длин штрихов обводки (для пунктирных линий)</summary>
+    public readonly SvgLength?[] StrokeDasharray;
+    
+    /// <summary>Ссылка на элемент clip-path для обрезки</summary>
     public readonly string? ClipPath;
+    
+    /// <summary>Ссылка на фильтр для применения эффектов</summary>
     public readonly string? Filter;
+    
+    /// <summary>Ссылка на маску для прозрачности</summary>
     public readonly string? Mask;
+    
+    /// <summary>Видимость элемента (inline, block, none и т.д.)</summary>
     public readonly SvgDisplay Display = SvgDisplay.Inline;
+    
+    /// <summary>Правило заполнения (nonzero или evenodd)</summary>
     public readonly SvgFillRule FillRule = SvgFillRule.Nonzero;
 
     //==========================================================================
+    /// <summary>Инициализирует новый экземпляр класса <see cref="SvgDrawableBaseElement"/></summary>
+    /// <param name="document">SVG документ, содержащий элемент</param>
+    /// <param name="parent">Родительский элемент в иерархии SVG</param>
+    /// <param name="DrawableBaseElement">XElement, представляющий этот элемент</param>
+    /// <remarks>
+    /// Конструктор выполняет парсинг всех атрибутов стиля отрисовываемого элемента,
+    /// включая цвета, обводки, трансформации и другие визуальные свойства
+    /// </remarks>
     public SvgDrawableBaseElement(SvgDocument document, SvgBaseElement parent, XElement DrawableBaseElement)
         : base(document, parent, DrawableBaseElement)
     {
@@ -300,9 +349,20 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
     }
 
     //==========================================================================
+    /// <summary>
+    /// Получает базовую геометрию элемента без применения трансформаций и обрезки
+    /// </summary>
+    /// <returns>Объект Geometry, представляющий базовую форму элемента</returns>
     public abstract Geometry? GetBaseGeometry();
 
     //==========================================================================
+    /// <summary>
+    /// Получает геометрию элемента с учётом трансформаций и обрезки
+    /// </summary>
+    /// <returns>Объект Geometry с применёнными трансформациями и обрезкой</returns>
+    /// <remarks>
+    /// Метод применяет трансформацию и clip-path к базовой геометрии элемента
+    /// </remarks>
     public virtual Geometry? GetGeometry()
     {
         var geometry = GetBaseGeometry();
@@ -321,6 +381,13 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
     }
 
     //==========================================================================
+    /// <summary>
+    /// Получает объект Pen для рисования обводки элемента
+    /// </summary>
+    /// <returns>Объект Pen с параметрами обводки или null если обводка отсутствует</returns>
+    /// <remarks>
+    /// Метод создаёт перо с использованием свойств Stroke, StrokeWidth и прозрачности
+    /// </remarks>
     public Pen? GetPen()
     {
         if (Stroke is null)
@@ -338,6 +405,13 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
     }
 
     //==========================================================================
+    /// <summary>
+    /// Получает объект Brush для заполнения элемента
+    /// </summary>
+    /// <returns>Объект Brush с параметрами заполнения или null если заполнение отсутствует</returns>
+    /// <remarks>
+    /// Метод создаёт кисть с использованием свойств Fill и прозрачности
+    /// </remarks>
     public Brush? GetBrush()
     {
         var brush = Fill?.ToBrush(this);
@@ -349,6 +423,14 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
     }
 
     //==========================================================================
+    /// <summary>
+    /// Получает базовый Drawing для рисования элемента
+    /// </summary>
+    /// <returns>Объект Drawing для отрисовки</returns>
+    /// <remarks>
+    /// Метод создаёт GeometryDrawing с геометрией, кистью и пером элемента,
+    /// применяет правило заполнения
+    /// </remarks>
     public virtual Drawing? GetBaseDrawing()
     {
         var geometry = GetGeometry();
@@ -367,7 +449,7 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
             return null;
 
 
-        // Apply fill-rule...
+        // Применение правила заполнения...
         var path_geometry = Geometry.Combine(geometry, Geometry.Empty, GeometryCombineMode.Exclude, null);
         path_geometry.FillRule = FillRule switch
         {
@@ -383,6 +465,13 @@ internal abstract class SvgDrawableBaseElement : SvgBaseElement
     }
 
     //==========================================================================
+    /// <summary>
+    /// Выполняет полную отрисовку элемента с применением фильтров и масок
+    /// </summary>
+    /// <returns>Объект Drawing готовый для добавления в DrawingImage</returns>
+    /// <remarks>
+    /// Метод применяет фильтры, маски и другие эффекты к базовому Drawing
+    /// </remarks>
     public virtual Drawing? Draw()
     {
         var drawing = GetBaseDrawing();

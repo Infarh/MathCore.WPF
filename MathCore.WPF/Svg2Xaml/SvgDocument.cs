@@ -33,16 +33,36 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
+/// <summary>
+/// Представляет внутреннюю структуру загруженного SVG документа для рендеринга
+/// </summary>
+/// <remarks>
+/// Класс используется внутренне механизмом рендеринга SVG и не должен использоваться напрямую.
+/// Выполняет роль контейнера элементов SVG документа и отвечает за управление их состоянием
+/// </remarks>
 internal sealed class SvgDocument
 {
     //==========================================================================
+    /// <summary>
+    /// Словарь элементов документа, индексируемый по идентификаторам (id атрибутам)
+    /// </summary>
     public readonly Dictionary<string, SvgBaseElement> Elements = [];
 
     //==========================================================================
-    public readonly SvgSvgElement    Root;
+    /// <summary>Корневой элемент SVG документа</summary>
+    public readonly SvgSvgElement Root;
+    
+    /// <summary>Параметры для рендеринга документа</summary>
     public readonly SvgReaderOptions Options;
 
     //==========================================================================
+    /// <summary>Инициализирует новый экземпляр класса <see cref="SvgDocument"/></summary>
+    /// <param name="root">Корневой элемент (svg) из XElement</param>
+    /// <param name="options">Параметры для настройки рендеринга</param>
+    /// <remarks>
+    /// Конструктор создаёт структуру документа на основе XElement корневого элемента
+    /// и параметров рендеринга
+    /// </remarks>
     public SvgDocument(XElement root, SvgReaderOptions options)
     {
         Root    = new(this, null, root);
@@ -50,5 +70,13 @@ internal sealed class SvgDocument
     }
 
     //==========================================================================
+    /// <summary>
+    /// Выполняет рендеринг SVG документа в объект <see cref="DrawingImage"/>
+    /// </summary>
+    /// <returns>Объект <see cref="DrawingImage"/> содержащий отрисованный SVG</returns>
+    /// <remarks>
+    /// Метод вызывает метод Draw корневого элемента и оборачивает результат в DrawingImage
+    /// для использования в WPF элементах управления
+    /// </remarks>
     public DrawingImage Draw() => new(Root.Draw());
 } // class SvgDocument

@@ -32,35 +32,55 @@ using System.Xml.Linq;
 namespace MathCore.WPF.SVG;
 
 //****************************************************************************
-/// <summary>  Base class for all other SVG elements.</summary>
+/// <summary>
+/// Базовый класс для всех элементов SVG документа
+/// </summary>
+/// <remarks>
+/// Класс содержит общие свойства и логику обработки для всех элементов SVG.
+/// Выполняет парсинг атрибутов style и href, управление идентификаторами элементов
+/// </remarks>
 internal class SvgBaseElement
 {
 
     //==========================================================================
+    /// <summary>Документ, к которому принадлежит данный элемент</summary>
     public readonly SvgDocument Document;
 
     //==========================================================================
+    /// <summary>Ссылка на другой элемент (при наличии атрибута href)</summary>
     public readonly string? Reference;
 
     //==========================================================================
+    /// <summary>Корневой элемент SVG документа</summary>
     public SvgSvgElement Root => Document.Root;
 
     //==========================================================================
+    /// <summary>Родительский элемент в иерархии SVG</summary>
     public readonly SvgBaseElement Parent;
 
     //==========================================================================
+    /// <summary>Уникальный идентификатор элемента (из атрибута id)</summary>
     public readonly string Id;
 
     //==========================================================================
+    /// <summary>Исходный XElement из которого был создан данный элемент</summary>
     public readonly XElement Element;
 
     //==========================================================================
+    /// <summary>Инициализирует новый экземпляр класса <see cref="SvgBaseElement"/></summary>
+    /// <param name="document">SVG документ, содержащий элемент</param>
+    /// <param name="parent">Родительский элемент в иерархии SVG</param>
+    /// <param name="element">XElement, представляющий этот элемент в XML дереве</param>
+    /// <remarks>
+    /// Конструктор выполняет парсинг style атрибутов, регистрирует элемент в документе
+    /// если у него есть id, и извлекает информацию о ссылке (href)
+    /// </remarks>
     protected SvgBaseElement(SvgDocument document, SvgBaseElement parent, XElement element)
     {
         Document = document;
         Parent   = parent;
 
-        // Create attributes from styles...
+        // Преобразование стилей в атрибуты...
         var style_attribute = element.Attribute("style");
         if(style_attribute != null)
         {
@@ -79,10 +99,12 @@ internal class SvgBaseElement
             style_attribute.Remove();
         }
 
+        // Регистрация элемента по идентификатору
         var id_attribute = element.Attribute("id");
         if(id_attribute != null)
             Document.Elements[Id = id_attribute.Value] = this;
 
+        // Извлечение ссылки на элемент (xlink:href)
         if(element.Attribute(XName.Get("href", "http://www.w3.org/1999/xlink")) is { Value: [ '#', _ ] reference })
             Reference = reference[1..];
 
