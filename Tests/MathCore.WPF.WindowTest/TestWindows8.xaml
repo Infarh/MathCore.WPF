@@ -5,19 +5,97 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:sh="clr-namespace:MathCore.WPF.Shapes;assembly=MathCore.WPF"
+        xmlns:s="clr-namespace:System;assembly=System.Runtime"
         Title="{Binding Title}"
+        Background="Black"
+        Foreground="WhiteSmoke"
         Width="800" Height="450">
     <Window.Resources>
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
+        <Style x:Key="GaugeControlStyle" TargetType="ContentControl">
+            <Style.Resources>
+                <s:String x:Key="TestString">Test</s:String>
+                <s:Double x:Key="StartAngle">30</s:Double>
+                <s:Double x:Key="EndAngle">150</s:Double>
+                <s:Double x:Key="StartValue">0</s:Double>
+                <s:Double x:Key="EndValue">20</s:Double>
+            </Style.Resources>
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid>
+                            <Viewbox>
+                                <Border Width="100" Height="100" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}">
+                                    <Grid>
+                                        <TextBlock Text="{DynamicResource TestString}"/>
+                                        <sh:Arc StartAngle="{DynamicResource StartAngle}" StopAngle="{DynamicResource EndAngle}"
+                                                StrokeThickness="1" Stroke="WhiteSmoke"/>
+                                        <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Width="4" Height="4" Fill="WhiteSmoke"/>
+                                        <Line x:Name="PART_Arrow"  X1="1" X2="1" 
+                                              Y1="3" Y2="50"
+                                              StrokeStartLineCap="Triangle"
+                                              HorizontalAlignment="Center"
+                                              Stroke="Lime" StrokeThickness="2" StrokeEndLineCap="Round"
+                                              RenderTransformOrigin="0.5,0.5">
+                                            <Line.RenderTransform>
+                                                <RotateTransform>
+                                                    <RotateTransform.Angle>
+                                                        <Binding Path="Content" RelativeSource="{RelativeSource Mode=TemplatedParent}">
+                                                            <Binding.Converter>
+                                                                <Mapper Min="0" Max="100"
+                                                                        MinScale="0" MaxScale="90"/>
+                                                            </Binding.Converter>
+                                                        </Binding>
+                                                    </RotateTransform.Angle>
+                                                </RotateTransform>
+                                            </Line.RenderTransform>
+                                        </Line>
+                                        <TextBlock Foreground="White">
+                                            <TextBlock.Text>
+                                                <Binding Path="Content" RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                                         StringFormat="f2">
+                                                    <Binding.Converter>
+                                                        <Mapper MinValue="{DynamicResource StartValue}" 
+                                                                MaxValue="{DynamicResource EndValue}"
+                                                                MinScale="0" 
+                                                                MaxScale="90"
+                                                                />
+                                                    </Binding.Converter>
+                                                </Binding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Grid>
+                                </Border>
+                            </Viewbox>
+                            
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Window.DataContext>
-        <!--<Binding Source="{StaticResource TestWindow8Model}"/>-->
         <StaticResource ResourceKey="TestWindow8Model"/>
     </Window.DataContext>
     <Grid>
-        <sh:Arc VerticalAlignment="Top" HorizontalAlignment="Left"
-                Width="200" Height="200" Margin="20"
-                Stroke="Red" StrokeThickness="4"
-                StartAngle="-30" StopAngle="185"/>
+        <ContentControl Style="{StaticResource GaugeControlStyle}"
+                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                        Margin="30" Width="100" Height="100"
+                        BorderThickness="0" BorderBrush="Red"
+                        Content="0.1">
+            <ContentControl.Resources>
+                <s:String x:Key="TestString">123</s:String>
+                
+                <s:Double x:Key="StartAngle">60</s:Double>
+                <s:Double x:Key="EndAngle">150</s:Double>
+
+                <s:Double x:Key="StartValue">0</s:Double>
+                <s:Double x:Key="EndValue">20</s:Double>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>
