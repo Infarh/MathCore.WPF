@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
         xmlns:sh="clr-namespace:MathCore.WPF.Shapes;assembly=MathCore.WPF"
         xmlns:s="clr-namespace:System;assembly=System.Runtime"
+        xmlns:conv="clr-namespace:MathCore.WPF.Converters;assembly=MathCore.WPF"
         Title="{Binding Title}"
         Background="Black"
         Foreground="WhiteSmoke"
@@ -14,11 +15,17 @@
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
         <Style x:Key="GaugeControlStyle" TargetType="ContentControl">
             <Style.Resources>
-                <s:String x:Key="TestString">Test</s:String>
-                <s:Double x:Key="StartAngle">30</s:Double>
-                <s:Double x:Key="EndAngle">150</s:Double>
-                <s:Double x:Key="StartValue">0</s:Double>
-                <s:Double x:Key="EndValue">20</s:Double>
+                <s:Double x:Key="MinAngle">30</s:Double>
+                <s:Double x:Key="MaxAngle">150</s:Double>
+                <s:Double x:Key="MinValue">0</s:Double>
+                <s:Double x:Key="MaxValue">20</s:Double>
+
+                <conv:MapperConverter x:Key="ScaleConverter"
+                     MinValue="{DynamicResource MinValue}" 
+                     MaxValue="{DynamicResource MaxValue}"
+                     MinScale="{DynamicResource MinAngle}" 
+                     MaxScale="{DynamicResource MaxAngle}"
+                     />
             </Style.Resources>
             <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}"/>
             <Setter Property="Template">
@@ -30,8 +37,7 @@
                                         BorderThickness="{TemplateBinding BorderThickness}" 
                                         BorderBrush="{TemplateBinding BorderBrush}">
                                     <Grid>
-                                        <TextBlock Text="{DynamicResource TestString}"/>
-                                        <sh:Arc StartAngle="{DynamicResource StartAngle}" StopAngle="{DynamicResource EndAngle}"
+                                        <sh:Arc StartAngle="{DynamicResource MinAngle}" StopAngle="{DynamicResource MaxAngle}"
                                                 StrokeThickness="1" Stroke="WhiteSmoke"/>
                                         <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center"
                                                  Width="4" Height="4" Fill="WhiteSmoke"/>
@@ -42,36 +48,14 @@
                                               Stroke="Lime" StrokeThickness="2" StrokeEndLineCap="Round"
                                               RenderTransformOrigin="0.5,0.5">
                                             <Line.RenderTransform>
-                                                <RotateTransform>
-                                                    <RotateTransform.Angle>
-                                                        <Binding Path="Content" RelativeSource="{RelativeSource Mode=TemplatedParent}">
-                                                            <Binding.Converter>
-                                                                <Mapper Min="0" Max="100"
-                                                                        MinScale="0" MaxScale="90"/>
-                                                            </Binding.Converter>
-                                                        </Binding>
-                                                    </RotateTransform.Angle>
-                                                </RotateTransform>
+                                                <RotateTransform Angle="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ScaleConverter}}"/>
                                             </Line.RenderTransform>
                                         </Line>
-                                        <TextBlock Foreground="White">
-                                            <TextBlock.Text>
-                                                <Binding Path="Content" RelativeSource="{RelativeSource Mode=TemplatedParent}"
-                                                         StringFormat="f2">
-                                                    <Binding.Converter>
-                                                        <Mapper MinValue="{DynamicResource StartValue}" 
-                                                                MaxValue="{DynamicResource EndValue}"
-                                                                MinScale="0" 
-                                                                MaxScale="90"
-                                                                />
-                                                    </Binding.Converter>
-                                                </Binding>
-                                            </TextBlock.Text>
-                                        </TextBlock>
+                                        <TextBlock Foreground="White" 
+                                                   Text="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ScaleConverter}}"/>
                                     </Grid>
                                 </Border>
                             </Viewbox>
-                            
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -86,15 +70,13 @@
                         VerticalAlignment="Top" HorizontalAlignment="Left"
                         Margin="30" Width="100" Height="100"
                         BorderThickness="0" BorderBrush="Red"
-                        Content="0.1">
+                        Content="20">
             <ContentControl.Resources>
-                <s:String x:Key="TestString">123</s:String>
-                
-                <s:Double x:Key="StartAngle">60</s:Double>
-                <s:Double x:Key="EndAngle">150</s:Double>
+                <s:Double x:Key="MinAngle">60</s:Double>
+                <s:Double x:Key="MaxAngle">150</s:Double>
 
-                <s:Double x:Key="StartValue">0</s:Double>
-                <s:Double x:Key="EndValue">20</s:Double>
+                <s:Double x:Key="MinValue">0</s:Double>
+                <s:Double x:Key="MaxValue">20</s:Double>
             </ContentControl.Resources>
         </ContentControl>
     </Grid>
