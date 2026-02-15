@@ -45,6 +45,8 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         return (key, modifers);
     }
 
+    private readonly HashSet<GlobalHotKeyBinding> _Bindings = [];
+
     /// <summary>Инициализация новой коллекции горячих клавиш</summary>
     public GlobalHotKeysCollection() => ((INotifyCollectionChanged)this).CollectionChanged += OnCollectionChanged;
 
@@ -57,20 +59,60 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         switch (e.Action)
         {
             case NotifyCollectionChangedAction.Add:
-                if (e.NewItems?.Cast<GlobalHotKeyBinding>() is { } added)
-                    foreach (var item in e.NewItems.Cast<GlobalHotKeyBinding>()) item.SetHost(this);
+                AddBindings(e.NewItems);
                 break;
             case NotifyCollectionChangedAction.Remove:
-                if (e.OldItems?.Cast<GlobalHotKeyBinding>() is { } removed)
-                    foreach (var item in removed) item.SetHost(null);
+                RemoveBindings(e.OldItems);
                 break;
             case NotifyCollectionChangedAction.Replace:
-                if (e.NewItems?.Cast<GlobalHotKeyBinding>() is { } @new)
-                    foreach (var item in @new) item.SetHost(this);
-                if (e.OldItems?.Cast<GlobalHotKeyBinding>() is { } old)
-                    foreach (var item in old) item.SetHost(null);
+                AddBindings(e.NewItems);
+                RemoveBindings(e.OldItems);
+                break;
+            case NotifyCollectionChangedAction.Reset:
+                ResetBindings();
                 break;
         }
+    }
+
+    private void AddBindings(IList? Items)
+    {
+        if (Items is null) return;
+
+        foreach (GlobalHotKeyBinding item in Items)
+        {
+            item.SetHost(this);
+            _Bindings.Add(item);
+        }
+    }
+
+    private void RemoveBindings(IList? Items)
+    {
+        if (Items is null) return;
+
+        foreach (GlobalHotKeyBinding item in Items)
+        {
+            item.SetHost(null);
+            _Bindings.Remove(item);
+        }
+    }
+
+    private void ResetBindings()
+    {
+        var current_bindings = new HashSet<GlobalHotKeyBinding>(this);
+
+        foreach (var binding in _Bindings)
+        {
+            if (current_bindings.Contains(binding)) continue;
+
+            binding.SetHost(null);
+            Unregister(binding);
+        }
+
+        foreach (var binding in current_bindings)
+            binding.SetHost(this);
+
+        _Bindings.Clear();
+        _Bindings.UnionWith(current_bindings);
     }
 
     protected override Freezable CreateInstanceCore()
@@ -129,6 +171,24 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         Debug.WriteLine("Hot key id {0} registered for {1}", key_id, Key);
 
         return key_id;
+    }
+
+    private static void RemoveHotKeyId(ushort KeyId)
+    {
+        (Keys Key, ModifierKeys Modifer) key_to_remove = default;
+        var has_key = false;
+
+        foreach (var pair in __HotKeyIds)
+        {
+            if (pair.Value != KeyId) continue;
+
+            key_to_remove = pair.Key;
+            has_key = true;
+            break;
+        }
+
+        if (has_key)
+            __HotKeyIds.Remove(key_to_remove);
     }
 
     /// <summary>Таблица идентификаторов зарегистрированных горячих клавиш</summary>
@@ -190,7 +250,14 @@ public class GlobalHotKeysCollection : FreezableCollection<GlobalHotKeyBinding>,
         User32.UnregisterHotKey(IntPtr.Zero, KeyId);
         __RegisteredHotKeys.Remove(KeyId);
 
+        RemoveHotKeyId(KeyId);
         Kernel32.GlobalDeleteAtom(KeyId);
+
+        if (__HotKeyBindings is { Count: 0 })
+        {
+            ComponentDispatcher.ThreadPreprocessMessage -= OnFilterMessage;
+            __HotKeyBindings = null;
+        }
 
         Debug.WriteLine("Hot key {0} unregistered at system");
     }
