@@ -167,6 +167,63 @@ public class Addition(double P) : SimpleDoubleValueConverter(P,
 
 ---
 
+### `MapperConverter`
+**Назначение**: Freezable-версия конвертера Mapper для использования в XAML с наследованием DataContext
+
+**Параметры**:
+- `MinScale`, `MaxScale` — диапазон экранных значений (DependencyProperty)
+- `MinValue`, `MaxValue` — диапазон физических значений (DependencyProperty)
+
+**XAML использование в ресурсах с привязками**:
+```xaml
+<Window.Resources>
+  <local:MapperConverter x:Key="TempToAngleMapper" 
+                         MinValue="0" MaxValue="100" 
+                         MinScale="0" MaxScale="360" />
+</Window.Resources>
+
+<RotateTransform Angle="{Binding Temperature, Converter={StaticResource TempToAngleMapper}}" />
+```
+
+**XAML использование с динамическими привязками**:
+```xaml
+<local:MapperConverter MinValue="{Binding MinValue}" 
+                       MaxValue="{Binding MaxValue}"
+                       MinScale="0" MaxScale="100" />
+```
+
+**Пример**: Значение `50` из диапазона `[0, 100]` → `180` в диапазон `[0, 360]`
+
+**Особенности**: 
+- Наследует от `Freezable`, что позволяет получать `DataContext` из дерева XAML
+- Все свойства реализованы как `DependencyProperty` для полной поддержки привязок
+- Поддерживает обратное преобразование (`ConvertBack`)
+- Пересчитывает коэффициент масштабирования автоматически при изменении любого параметра диапазона
+
+---
+
+### `MapperF`
+**Назначение**: Расширение разметки для быстрого создания MapperConverter в привязках
+
+**Параметры**:
+- `MinValue`, `MaxValue` — диапазон физических значений
+- `MinScale`, `MaxScale` — диапазон экранных значений
+
+**XAML использование в привязке (простой синтаксис)**:
+```xaml
+<RotateTransform Angle="{Binding Temperature, 
+    Converter={local:MapperF MinValue=0, MaxValue=100, MinScale=0, MaxScale=360}}" />
+```
+
+**Пример**: Температура `50°C` → поворот на `180°`
+
+**Особенности**: 
+- Упрощённый синтаксис для статических конфигураций
+- Создаёт новый независимый экземпляр `MapperConverter` при каждом вызове
+- Используйте `MapperConverter` напрямую в ресурсах, если нужны динамические привязки параметров
+
+---
+
 ### `Inverse`
 **Назначение**: Вычисляет значение по формуле `f(x) = Parameter / x`
 
@@ -294,7 +351,7 @@ public class Addition(double P) : SimpleDoubleValueConverter(P,
 ---
 
 ### `GreaterThanOrEqual`
-**Назначение**: Проверяет, больше или равно ли значение параметру
+**Nazначение**: Проверяет, больше или равно ли значение параметру
 
 **Параметры**: `Value` (double) — пороговое значение
 
@@ -1033,9 +1090,20 @@ public class Addition(double P) : SimpleDoubleValueConverter(P,
 ---
 
 ### `Mapper`
-**Назначение**: Преобразует значения между диапазонами (масштабирование)
+**Назначение**: Преобразует физическое значение в экранное значение (масштабирование диапазонов)
 
-Описано выше в арифметических конвертерах.
+**Параметры**:
+- `MinScale`, `MaxScale` — диапазон экранных значений
+- `MinValue`, `MaxValue` — диапазон физических значений
+
+**XAML использование**:
+```xaml
+{Binding Value, Converter={Mapper MinScale=-200, MaxScale=400, MinValue=-5, MaxValue=5}}
+```
+
+**Пример**: Значение `-5` → `-200`, значение `5` → `400`
+
+**Особенности**: Линейное масштабирование между диапазонами
 
 ---
 
