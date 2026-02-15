@@ -1,4 +1,10 @@
-// $MinimumShaderProfile: ps_2_0
+﻿// $MinimumShaderProfile: ps_2_0
+
+// Параметры: регистры констант для коэффициентов яркости, контраста, гаммы
+// Назначение: коррекция яркости, контраста и гаммы с линейным масштабированием сверху вниз
+// Использование: для коррекции углов обзора ЖК-мониторов
+// Требования: шейдер профиля PS 2.0, работает с линейным RGB
+// Примечание: для обычного R'G'B' с видеогаммой необходимо сначала преобразовать в линейную форму
 
 // (C) 2011 Jan-Willem Krans (janwillem32 <at> hotmail.com) released under GPL v2; see COPYING.txt
 
@@ -38,12 +44,12 @@ sampler s0;
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
 	float3 s1 = tex2D(s0, tex).rgb;
-	// original pixel
+	// исходный пиксель
 	float texyi = 1.0 - tex.y;
 	s1 = s1 * (texyi * float3(RedContrastTop, GreenContrastTop, BlueContrastTop) + tex.y * float3(RedContrastBottom, GreenContrastBottom, BlueContrastBottom)) + texyi * float3(RedBrightnessTop, GreenBrightnessTop, BlueBrightnessTop) + tex.y * float3(RedBrightnessBottom, GreenBrightnessBottom, BlueBrightnessBottom);
-	// process contrast and brightness on the original pixel
-	// preserve the sign bits of RGB values
+	// применение контраста и яркости к исходному пикселю
+	// сохранение битов знака значений RGB
 	float3 sb = sign(s1);
 	return (sb*pow(abs(s1), texyi * float3(RedGammaTop, GreenGammaTop, BlueGammaTop) + tex.y * float3(RedGammaBottom, GreenGammaBottom, BlueGammaBottom))).rgbb;
-	// process gamma correction and output
+	// применение коррекции гаммы и вывод результата
 }

@@ -1,28 +1,83 @@
 ﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindows8"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
-        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
         xmlns:sh="clr-namespace:MathCore.WPF.Shapes;assembly=MathCore.WPF"
+        xmlns:s="clr-namespace:System;assembly=System.Runtime"
+        xmlns:conv="clr-namespace:MathCore.WPF.Converters;assembly=MathCore.WPF"
+        Title="{Binding Title}"
+        Background="Black"
+        Foreground="WhiteSmoke"
         Width="800" Height="450">
     <Window.Resources>
         <vm:TestWindow8ViewModel x:Key="TestWindow8Model"/>
+        <Style x:Key="GaugeControlStyle" TargetType="ContentControl">
+            <Style.Resources>
+                <s:Double x:Key="MinAngle">30</s:Double>
+                <s:Double x:Key="MaxAngle">150</s:Double>
+                <s:Double x:Key="MinValue">0</s:Double>
+                <s:Double x:Key="MaxValue">20</s:Double>
+
+                <conv:MapperConverter x:Key="ScaleConverter"
+                     MinValue="{DynamicResource MinValue}" 
+                     MaxValue="{DynamicResource MaxValue}"
+                     MinScale="{DynamicResource MinAngle}" 
+                     MaxScale="{DynamicResource MaxAngle}"
+                     />
+            </Style.Resources>
+            <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContentControl">
+                        <Grid>
+                            <Viewbox>
+                                <Border Width="100" Height="100" 
+                                        BorderThickness="{TemplateBinding BorderThickness}" 
+                                        BorderBrush="{TemplateBinding BorderBrush}">
+                                    <Grid>
+                                        <sh:Arc StartAngle="{DynamicResource MinAngle}" StopAngle="{DynamicResource MaxAngle}"
+                                                StrokeThickness="1" Stroke="WhiteSmoke"/>
+                                        <Ellipse VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                 Width="4" Height="4" Fill="WhiteSmoke"/>
+                                        <Line x:Name="PART_Arrow"  X1="1" X2="1" 
+                                              Y1="3" Y2="50"
+                                              StrokeStartLineCap="Triangle"
+                                              HorizontalAlignment="Center"
+                                              Stroke="Lime" StrokeThickness="2" StrokeEndLineCap="Round"
+                                              RenderTransformOrigin="0.5,0.5">
+                                            <Line.RenderTransform>
+                                                <RotateTransform Angle="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ScaleConverter}}"/>
+                                            </Line.RenderTransform>
+                                        </Line>
+                                        <TextBlock Foreground="White" 
+                                                   Text="{Binding Content, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource ScaleConverter}}"/>
+                                    </Grid>
+                                </Border>
+                            </Viewbox>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
+    <Window.DataContext>
+        <StaticResource ResourceKey="TestWindow8Model"/>
+    </Window.DataContext>
     <Grid>
-        <sh:Arrow X1="10" X2="300" Y1="30" Y2="300" 
-                  ArrowHeadLength="53" 
-                  ArrowHeadWidth="31" StrokeThickness="4" ArrowHeadOffset="64" Fill="Red"
-                  />
+        <ContentControl Style="{StaticResource GaugeControlStyle}"
+                        VerticalAlignment="Top" HorizontalAlignment="Left"
+                        Margin="30" Width="100" Height="100"
+                        BorderThickness="0" BorderBrush="Red"
+                        Content="20">
+            <ContentControl.Resources>
+                <s:Double x:Key="MinAngle">60</s:Double>
+                <s:Double x:Key="MaxAngle">150</s:Double>
 
-        <!-- Первая линия с явным указанием P1 и P2 для инициализации -->
-        <Line sh:LineEx.P1="10,30" sh:LineEx.P2="300,150" Stroke="Red" StrokeThickness="4" Name="Line1"/>
-        
-        <!-- Вторая линия: начинается в конце первой линии (P2), заканчивается в (300,200) -->
-        <Line Stroke="Blue" StrokeThickness="4" 
-              sh:LineEx.P1="{Binding Path=(sh:LineEx.P2), ElementName=Line1}" 
-              sh:LineEx.P2="300,200"/>
-
+                <s:Double x:Key="MinValue">0</s:Double>
+                <s:Double x:Key="MaxValue">20</s:Double>
+            </ContentControl.Resources>
+        </ContentControl>
     </Grid>
 </Window>

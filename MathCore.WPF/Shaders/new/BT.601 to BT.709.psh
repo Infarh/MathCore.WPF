@@ -1,4 +1,10 @@
-// $MinimumShaderProfile: ps_2_0
+﻿// $MinimumShaderProfile: ps_2_0
+
+// Параметры: c0.x, c0.y (разрешение видео в пикселях)
+// Назначение: преобразование цветового пространства BT.601 [SD] в BT.709 [HD]
+// Использование: для коррекции видео HD, закодированного с неправильным цветовым пространством SD
+// Принцип: преобразование RGB -> Y'CbCr (BT.601) -> RGB (BT.709)
+// Примечание: для видео SD (< 1120x630) никаких изменений не производится
 
 // (C) 2011 Jan-Willem Krans (janwillem32 <at> hotmail.com) released under GPL v2; see COPYING.txt
 
@@ -9,9 +15,9 @@ sampler s0;
 float2  c0;
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
-	float4 si = tex2D(s0, tex); // original pixel
+	float4 si = tex2D(s0, tex); // исходный пиксель
 	if (c0.x < 1120 && c0.y < 630) {
-		return si; // this shader does not alter SD video
+		return si; // этот шейдер не влияет на видео SD
 	}
 	float3 s1 = si.rgb;
 	s1 = s1.rrr * float3(0.299, -0.1495 / 0.886, 0.5) + s1.ggg * float3(0.587, -0.2935 / 0.886, -0.2935 / 0.701) + s1.bbb * float3(0.114, 0.5, -0.057 / 0.701); // RGB to Y'CbCr, BT.601 [SD] colorspace

@@ -7,8 +7,6 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Xaml;
 
-using MathCore.Annotations;
-
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable ParameterHidesMember
 
@@ -49,8 +47,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
     /// <param name="handler">Отсоединяемый обработчик события <see cref="PropertyChanged"/></param>
     protected virtual void PropertyChanged_RemoveHandler(PropertyChangedEventHandler handler) => PropertyChangedEvent -= handler;
 
-    /// <summary>Признак того, что мы находимся в режиме разработки под Visual Studio</summary>
-    //public static bool IsDesignMode { get; set; } = LicenseManager.UsageMode == LicenseUsageMode.Designtime;
+    /// <summary>Признак работы в режиме дизайна</summary>
     public static bool IsDesignMode { get; set; } = DesignerProperties.GetIsInDesignMode(new());
 
     private readonly object _PropertiesDependenciesSyncRoot = new();
@@ -173,6 +170,9 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
 
     private Dictionary<string, Action>? _PropertyChangedHandlers;
 
+    /// <summary>Добавить обработчик изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <param name="handler">Обработчик изменения свойства</param>
     protected void PropertyChanged_AddHandler(string PropertyName, Action handler)
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -185,6 +185,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         }
     }
 
+    /// <summary>Удалить обработчик изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <param name="handler">Обработчик изменения свойства</param>
+    /// <returns>Истина, если обработчик удалён</returns>
     protected bool PropertyChanged_RemoveHandler(string PropertyName, Action handler)
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -200,12 +204,17 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         }
     }
 
+    /// <summary>Очистить обработчики изменения указанного свойства</summary>
+    /// <param name="PropertyName">Имя свойства</param>
+    /// <returns>Истина, если обработчики удалены</returns>
     protected bool PropertyChanged_ClearHandlers(string PropertyName)
     {
         lock (_PropertiesDependenciesSyncRoot)
             return _PropertyChangedHandlers is { Count: > 0 } && _PropertyChangedHandlers.Remove(PropertyName);
     }
 
+    /// <summary>Очистить все обработчики изменения свойств</summary>
+    /// <returns>Истина, если обработчики удалены</returns>
     protected virtual bool PropertyChanged_ClearHandlers()
     {
         lock (_PropertiesDependenciesSyncRoot)
@@ -290,7 +299,7 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
             return;
         }
 
-        var now                    = DateTime.Now;
+        var now = DateTime.Now;
         var properties_invoke_time = _PropertyAsyncInvokeTime;
         if (properties_invoke_time.TryGetValue(PropertyName, out var last_call_time) && (now - last_call_time).TotalMilliseconds < Timeout)
         {
@@ -339,518 +348,29 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
 
     private readonly Dictionary<string, object?> _ModelPropertyValues = [];
 
-    protected bool Set<T>(
-        T? value,
-        [CallerMemberName] string Property = null!,
-        bool UpdateCommandsState = false)
-    {
-        if (_ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property), "Имя свойства не задано"), out var old_value) && Equals(old_value, value))
-            return false;
-        _ModelPropertyValues[Property] = value;
-        OnPropertyChanged(Property, UpdateCommandsState);
-        return true;
-    }
-
+    /// <summary>Получить значение свойства из словаря модели</summary>
+    /// <typeparam name="T">Тип значения свойства</typeparam>
+    /// <param name="Property">Имя свойства</param>
+    /// <returns>Значение свойства или значение по умолчанию</returns>
     protected T? Get<T>([CallerMemberName] string Property = null!) =>
         _ModelPropertyValues.TryGetValue(Property ?? throw new ArgumentNullException(nameof(Property)), out var value)
             ? (T?)value
             : default;
 
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="Sender">Объект-источник события</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <param name="OnPropertyChanged">Метод уведомления об изменении значения свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    public static bool Set<T>(
-        ref T? field,
-        T? value,
-        PropertyChangedEventHandler OnPropertyChanged,
-        object? Sender,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(Sender, new(PropertyName));
-        return true;
-    }
-
-    public static bool Set<T>(
-        ref T? field,
-        T? value,
-        Action<object?, string> OnPropertyChanged,
-        object? Sender, [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(Sender, PropertyName);
-        return true;
-    }
-
-    public static bool Set<T>(
-        ref T? field,
-        T? value,
-        Action<string> OnPropertyChanged,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return true;
-    }
-
-    public static bool Set<T>(
-        ref T? field,
-        T? value,
-        Func<T?, bool> ValueChecker,
-        PropertyChangedEventHandler OnPropertyChanged,
-        object? Sender,
-        [CallerMemberName] string PropertyName = null!) =>
-        ValueChecker(value) && Set(ref field, value, OnPropertyChanged, Sender, PropertyName);
-
-    public SetStaticValueResult<T> SetValue<T>(
-        ref T? field,
-        T? value,
-        Action<string> OnPropertyChanged,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
-        if (Equals(field, value)) return new(false, field, field, OnPropertyChanged);
-        var old_value = field;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return new(true, old_value, value, OnPropertyChanged);
-    }
-
-    public static SetStaticValueResult<T> SetValue<T>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref T? field, 
-        T? value,
-        Func<T?, bool> ValueChecker,
-        Action<string> OnPropertyChanged,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (OnPropertyChanged is null) throw new ArgumentNullException(nameof(OnPropertyChanged));
-        if (Equals(field, value) || !ValueChecker(value)) return new(false, field, value, OnPropertyChanged);
-        var old_value = field;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return new(true, old_value, value, OnPropertyChanged);
-    }
-
+    /// <summary>Проверить путь к файлу в режиме дизайна</summary>
+    /// <param name="RelativeFileName">Относительный путь к файлу</param>
+    /// <param name="SourceFilePath">Путь к исходному файлу</param>
+    /// <returns>Корректный путь к файлу</returns>
     public static string? CheckDesignModeFilePath(
         string? RelativeFileName,
         [CallerFilePath] string? SourceFilePath = null) =>
         !IsDesignMode
         || SourceFilePath is null
         || RelativeFileName is null
-        || RelativeFileName.Length > 3
-        && RelativeFileName[1] == ':'
+        || (RelativeFileName.Length > 3
+        && RelativeFileName[1] == ':')
             ? RelativeFileName
             : Path.Combine(Path.GetDirectoryName(SourceFilePath) ?? "", RelativeFileName);
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<T>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref T? field, 
-        T? value, 
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return true;
-    }
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="OldValue">Предыдущее значение</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, out T? OldValue, [CallerMemberName] string PropertyName = null!)
-    {
-        OldValue = field;
-        if (Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return true;
-    }
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return new(false, field, field, this);
-        var old_value = field;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return new(true, old_value, value, this);
-    }
-
-    [NotifyPropertyChangedInvocator]
-    protected virtual SetValueResult<T> SetValue<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, Func<T?, bool> value_checker, [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value) || !value_checker(value))
-            return new(false, field, value, this);
-        var old_value = field;
-        field = value;
-        OnPropertyChanged(PropertyName);
-        return new(true, old_value, value, this);
-    }
-
-    public readonly ref struct SetValueResult<T>
-    {
-        private readonly ViewModel _Model;
-        private readonly bool _Result;
-        private readonly T? _OldValue;
-        private readonly T? _NewValue;
-
-        public bool Result => _Result;
-        public T? OldValue => _OldValue;
-        public T? NewValue => _NewValue;
-
-        internal SetValueResult(bool Result, T? OldValue, ViewModel model) : this(Result, OldValue, OldValue, model) { }
-        internal SetValueResult(bool Result, T? OldValue, T? NewValue, ViewModel model)
-        {
-            _Result = Result;
-            _OldValue = OldValue;
-            _NewValue = NewValue;
-            _Model = model;
-        }
-
-        public bool Then(Action execute)
-        {
-            if (_Result) execute();
-            return _Result;
-        }
-
-        public bool Then(Action<object?> execute)
-        {
-            if (_Result) execute(NewValue);
-            return _Result;
-        }
-
-        public bool Then(Action<T?> execute)
-        {
-            if (_Result) execute(NewValue);
-            return _Result;
-        }
-
-        public bool ThenAsync(Action execute)
-        {
-            if (_Result) Task.Run(execute);
-            return _Result;
-        }
-
-        public bool ThenAsync(Action<T?> execute)
-        {
-            if (_Result) NewValue.Async(execute);
-            return _Result;
-        }
-
-        public bool ThenIf(Func<T?, bool> predicate, Action<T?> execute)
-        {
-            if (_Result && predicate(NewValue)) execute(NewValue);
-            return _Result;
-        }
-
-        public bool ThenIfAsync(Func<T?, bool> predicate, Action<T?> execute)
-        {
-            if (_Result && predicate(NewValue)) NewValue.Async(execute);
-            return _Result;
-        }
-
-        public SetValueResult<T> ThenSet(Action<T?> SetAction)
-        {
-            if (_Result) SetAction(NewValue);
-            return this;
-        }
-
-        public SetValueResult<T> ThenSetAsync(Action<T?> SetAction)
-        {
-            if (_Result) NewValue.Async(SetAction);
-            return this;
-        }
-
-        public bool Then(Action<T?, T?> execute)
-        {
-            if (_Result) execute(OldValue, NewValue);
-            return _Result;
-        }
-
-        public bool ThenAsync(Action<T?, T?> execute)
-        {
-            if (_Result) OldValue.Async(NewValue, execute);
-            return _Result;
-        }
-
-        public SetValueResult<T> ThenUpdate(string PropertyName, bool UpdateCommands = false)
-        {
-            if (_Result) _Model.OnPropertyChanged(PropertyName, UpdateCommands);
-            return this;
-        }
-
-        public SetValueResult<T> ThenUpdate(params string[] PropertyNames)
-        {
-            if (!_Result) return this;
-            foreach (var property in PropertyNames)
-                _Model.OnPropertyChanged(property);
-            return this;
-        }
-
-        public SetValueResult<T> ThenUpdate(bool UpdateCommands, params string[] PropertyNames)
-        {
-            if (!_Result) return this;
-            foreach (var property in PropertyNames)
-                _Model.OnPropertyChanged(property, UpdateCommands);
-            return this;
-        }
-
-        public SetValueResult<T> Update(string PropertyName, bool UpdateCommands = false)
-        {
-            _Model.OnPropertyChanged(PropertyName, UpdateCommands);
-            return this;
-        }
-
-        public SetValueResult<T> Update(params string[] PropertyName)
-        {
-            foreach (var name in PropertyName) _Model.OnPropertyChanged(name);
-            return this;
-        }
-
-        public bool AnywayThen(Action execute)
-        {
-            execute();
-            return _Result;
-        }
-
-        public bool AnywayThen(Action<bool> execute)
-        {
-            execute(_Result);
-            return _Result;
-        }
-
-        public bool AnywayThen(Action<T?> execute)
-        {
-            execute(NewValue);
-            return _Result;
-        }
-
-        public bool AnywayThen(Action<T?, bool> execute)
-        {
-            execute(NewValue, _Result);
-            return _Result;
-        }
-
-        public bool AnywayThen(Action<T?, T?> execute)
-        {
-            execute(OldValue, NewValue);
-            return _Result;
-        }
-
-        public bool AnywayThen(Action<T?, T?, bool> execute)
-        {
-            execute(OldValue, NewValue, _Result);
-            return _Result;
-        }
-
-        public static implicit operator bool(SetValueResult<T> result) => result._Result;
-    }
-
-    public readonly ref struct SetStaticValueResult<T>
-    {
-        private readonly bool _Result;
-        private readonly T? _OldValue;
-        private readonly T? _NewValue;
-        private readonly Action<string> _OnPropertyChanged;
-
-        internal SetStaticValueResult(bool Result, T? OldValue, Action<string> OnPropertyChanged) : this(Result, OldValue, OldValue, OnPropertyChanged) { }
-        internal SetStaticValueResult(bool Result, T? OldValue, T? NewValue, Action<string> OnPropertyChanged)
-        {
-            _Result = Result;
-            _OldValue = OldValue;
-            _NewValue = NewValue;
-            _OnPropertyChanged = OnPropertyChanged;
-        }
-
-        public bool Then(Action execute)
-        {
-            if (_Result) execute();
-            return _Result;
-        }
-
-        public bool Then(Action<T?> execute)
-        {
-            if (_Result) execute(_NewValue);
-            return _Result;
-        }
-
-        public bool Then(Action<T?, T?> execute)
-        {
-            if (_Result) execute(_OldValue, _NewValue);
-            return _Result;
-        }
-
-        public SetStaticValueResult<T> Update(string PropertyName)
-        {
-            _OnPropertyChanged(PropertyName);
-            return this;
-        }
-
-        public SetStaticValueResult<T> Update(params string[] PropertyName)
-        {
-            foreach (var name in PropertyName) _OnPropertyChanged(name);
-            return this;
-        }
-
-        public bool AnywayThen(Action execute)
-        {
-            execute();
-            return _Result;
-        }
-        public bool AnywayThen(Action<bool> execute)
-        {
-            execute(_Result);
-            return _Result;
-        }
-        public bool AnywayThen(Action<T?> execute)
-        {
-            execute(_NewValue);
-            return _Result;
-        }
-        public bool AnywayThen(Action<T?, bool> execute)
-        {
-            execute(_NewValue, _Result);
-            return _Result;
-        }
-        public bool AnywayThen(Action<T?, T?> execute)
-        {
-            execute(_OldValue, _NewValue);
-            return _Result;
-        }
-        public bool AnywayThen(Action<T?, T?, bool> execute)
-        {
-            execute(_OldValue, _NewValue, _Result);
-            return _Result;
-        }
-        public static implicit operator bool(SetStaticValueResult<T> result) => result._Result;
-    }
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="TField">Тип значения свойства</typeparam>
-    /// <typeparam name="TValue">Тип значения, устанавливаемого для свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="converter">Метод преобразования значения</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<TField, TValue>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref TField? field,
-        TValue? value,
-        Func<TValue?, TField?> converter,
-        [CallerMemberName] string PropertyName = null!) =>
-        Set(ref field, converter(value), PropertyName);
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="ValueChecker">Метод проверки правильности устанавливаемого значения</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    protected virtual bool Set<T>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref T? field,
-        T? value,
-        Func<T?, bool> ValueChecker,
-        [CallerMemberName] string PropertyName = null!) =>
-        ValueChecker(value) && Set(ref field, value, PropertyName);
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="TField">Тип значения свойства</typeparam>
-    /// <typeparam name="TValue">Тип значения, получаемого из свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="converter">Метод преобразования значения</param>
-    /// <param name="ValueChecker">Метод проверки правильности устанавливаемого значения</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    [NotifyPropertyChangedInvocator]
-    protected virtual bool Set<TField, TValue>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref TField? field,
-        TValue? value,
-        Func<TValue?, TField?> converter,
-        Func<TField?, bool> ValueChecker,
-        [CallerMemberName] string PropertyName = null!) =>
-        Set(ref field, converter(value), ValueChecker, PropertyName);
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Ссылка на поле, хранящее значение свойства</param>
-    /// <param name="value">Значение свойства, которое надо установить</param>
-    /// <param name="UpdateCommandsState">Обновить состояния команд</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    protected virtual bool Set<T>(
-        [Attributes.NotNullIfNotNull(nameof(value))] ref T? field,
-        T? value,
-        bool UpdateCommandsState,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        var result = Set(ref field, value, PropertyName);
-        if (result && UpdateCommandsState)
-            CommandManager.InvalidateRequerySuggested();
-        return result;
-    }
-
-    /// <summary>Метод установки значения свойства, осуществляющий генерацию события изменения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="Value">Новое значение свойства</param>
-    /// <param name="OldValue">Старое значение свойства</param>
-    /// <param name="Setter">Метод установки нового значения свойства</param>
-    /// <param name="ValueValidator">Метод проверки возможности установки нового значения свойства</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Истина, если значение свойства установлено успешно</returns>
-    protected virtual bool Set<T>(
-        T? Value,
-        T? OldValue,
-        Action<T?> Setter,
-        Func<T?, bool>? ValueValidator,
-        [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(Value, OldValue)) return false;
-        if (ValueValidator is not null && !ValueValidator(Value)) return false;
-        Setter(Value);
-        OnPropertyChanged(PropertyName);
-        return true;
-    }
-
-    /// <summary>Асинхронный метод изменения значения свойства</summary>
-    /// <typeparam name="T">Тип значения свойства</typeparam>
-    /// <param name="field">Поле, хранящее значение свойства</param>
-    /// <param name="value">Новое значение свойства</param>
-    /// <param name="PropertyName">Имя свойства</param>
-    /// <returns>Задача, возвращающая истину, если свойство изменило своё значение</returns>
-    protected virtual ValueTask<bool> SetAsync<T>([Attributes.NotNullIfNotNull(nameof(value))] ref T? field, T? value, [CallerMemberName] string PropertyName = null!)
-    {
-        if (Equals(field, value)) return new(false);
-        field = value;
-
-        return SetPropertyAsync(PropertyName);
-        async ValueTask<bool> SetPropertyAsync(string property)
-        {
-            await Task.Factory.StartNew(s => OnPropertyChanged((string)s!), property);
-            return true;
-        }
-    }
 
     /// <inheritdoc />
     public override object ProvideValue(IServiceProvider Service)
@@ -861,6 +381,10 @@ public abstract partial class ViewModel : MarkupExtension, INotifyPropertyChange
         return this;
     }
 
+    /// <summary>Обработчик инициализации в XAML</summary>
+    /// <param name="target">Целевой объект</param>
+    /// <param name="property">Целевое свойство</param>
+    /// <param name="root">Корневой объект</param>
     protected virtual void OnInitialized(object? target, object? property, object? root)
     {
 

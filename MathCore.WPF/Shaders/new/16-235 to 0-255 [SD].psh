@@ -1,4 +1,6 @@
-// $MinimumShaderProfile: ps_2_0
+﻿// Параметры: width, height (размеры изображения в пикселях)
+// Назначение: преобразование диапазона видеозначений с ограниченного (16-235) на полный (0-255)
+// для видео стандарта SD (стандартной четкости), с проверкой разрешения
 
 sampler s0 : register(s0);
 float4 p0 :  register(c0);
@@ -10,10 +12,10 @@ float4 p0 :  register(c0);
 #define const_2 (255.0 / 219.0)
 
 float4 main(float2 tex : TEXCOORD0) : COLOR {
-	// original pixel
+	// исходный пиксель
 	float4 c0 = tex2D(s0, tex);
 
-	// ATI driver only looks at the height
+	// драйверы ATI проверяют только высоту
 	if (height >= 720) {
 		return c0;
 	} else {

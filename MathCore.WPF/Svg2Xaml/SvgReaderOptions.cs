@@ -33,40 +33,61 @@ namespace MathCore.WPF.SVG;
 
 //****************************************************************************
 /// <summary>
-///   Defines a set of options to customize rendering repspectively reading 
-///   of SVG documents.
+/// Определяет набор параметров для настройки парсинга и рендеринга SVG документов
 /// </summary>
+/// <remarks>
+/// Класс используется для передачи опций в методы загрузки SvgReader.
+/// Позволяет контролировать применение эффектов и другие параметры рендеринга
+/// </remarks>
+/// <example>
+/// <code><![CDATA[
+/// // Создание опций с отключением эффектов
+/// var options = new SvgReaderOptions { IgnoreEffects = true };
+/// 
+/// using (var stream = File.OpenRead("image.svg"))
+/// {
+///     var drawingImage = SvgReader.Load(stream, options);
+/// }
+/// ]]></code>
+/// </example>
 public class SvgReaderOptions
 {
 
     //==========================================================================
-    private bool _MIgnoreEffects;
+    private bool _IgnoreEffects;
 
     //==========================================================================
-    /// <summary>  Initializes a new <see cref="SvgReaderOptions"/> instance.</summary>
+    /// <summary>Инициализирует новый экземпляр класса <see cref="SvgReaderOptions"/></summary>
+    /// <remarks>Создаёт параметры с значениями по умолчанию</remarks>
     public SvgReaderOptions()
     {
         // ...
     }
 
     //==========================================================================
-    /// <summary>  Initializes a new <see cref="SvgReaderOptions"/> instance.</summary>
+    /// <summary>Инициализирует новый экземпляр класса <see cref="SvgReaderOptions"/> с указанными параметрами</summary>
     /// <param name="IgnoreEffects">
-    ///   Specifies whether filter effects should be applied using WPF bitmap 
-    ///   effects.
+    /// Значение, указывающее должны ли фильтр-эффекты SVG игнорироваться или преобразовываться в растровые эффекты WPF
     /// </param>
-    public SvgReaderOptions(bool IgnoreEffects) => _MIgnoreEffects = IgnoreEffects;
+    /// <example>
+    /// <code><![CDATA[
+    /// // Создание опций с игнорированием эффектов
+    /// var options = new SvgReaderOptions(ignoreEffects: true);
+    /// ]]></code>
+    /// </example>
+    public SvgReaderOptions(bool IgnoreEffects) => _IgnoreEffects = IgnoreEffects;
 
     //==========================================================================
     /// <summary>
-    ///   Gets or sets whether SVG effects should either be ignored or 
-    ///   converted to <see cref="BitmapEffect">bitmap effects</see>.
+    /// Получает или устанавливает значение, указывающее должны ли SVG эффекты игнорироваться или преобразовываться в растровые эффекты WPF
     /// </summary>
+    /// <remarks>
+    /// Значение true отключает обработку фильтр-эффектов, значение false включает преобразование эффектов в <see cref="BitmapEffect"/>
+    /// </remarks>
     public bool IgnoreEffects 
     {
-        get => _MIgnoreEffects;
-
-        set => _MIgnoreEffects = value;
+        get => _IgnoreEffects;
+        set => _IgnoreEffects = value;
     }
 
 } // class SvgReaderOptions

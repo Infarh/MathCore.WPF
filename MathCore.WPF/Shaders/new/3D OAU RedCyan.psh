@@ -1,4 +1,7 @@
-// 3D OverandUnder Red/Cyan
+﻿// Параметры: width, height (размеры изображения в пикселях)
+// Назначение: преобразование 3D видео OverAndUnder (верхний кадр - красный, нижний - голубой)
+// в стереоскопическое цветное изображение красный-голубой анаглиф
+// Формула: красный из верхнего кадра, голубой из нижнего
 
 sampler s0 : register(s0);
 float4 p0 : register(c0);
@@ -20,5 +23,5 @@ float4 main(float2 tex : TEXCOORD0) : COLOR
 	float green = r.g * 0.8;
 	float blue = r.b;
 
-	return float4(red, green, blue, 9);
+	return float4(red, green, blue, 1);
 }

@@ -60,7 +60,8 @@ public class Arc : ShapeBase
     /// <summary>Начальный угол дуги в градусах</summary>
     /// <remarks>
     /// Отсчёт ведётся по часовой стрелке, 0 градусов направлен вправо, 90 градусов вниз
-    /// Дуга рисуется от <see cref="StartAngle"/> к <see cref="StopAngle"/>, знак разности задаёт направление обхода
+    /// Дуга всегда рисуется по часовой стрелке от нормализованного <see cref="StartAngle"/> к нормализованному <see cref="StopAngle"/>
+    /// Для задания больших дуг (более 180°) или дуг против часовой используйте углы вне диапазона [0;360)
     /// </remarks>
     public double StartAngle { get => (double)GetValue(StartAngleProperty); set => SetValue(StartAngleProperty, value); }
 
@@ -74,8 +75,11 @@ public class Arc : ShapeBase
 
     /// <summary>Конечный угол дуги в градусах</summary>
     /// <remarks>
-    /// Если разница между <see cref="StartAngle"/> и <see cref="StopAngle"/> по модулю близка к 360 градусам,
-    /// будет отрисована полная окружность вместо дуги
+    /// После нормализации обоих углов к диапазону [0;360) дуга рисуется по часовой стрелке
+    /// Примеры:
+    /// - StartAngle=270, StopAngle=60 → дуга 150° по часовой (270→360→60)
+    /// - StartAngle=60, StopAngle=270 → дуга 210° по часовой (60→270)
+    /// - StartAngle=0, StopAngle=360 → полная окружность (разность исходных углов = 360°)
     /// </remarks>
     public double StopAngle { get => (double)GetValue(StopAngleProperty); set => SetValue(StopAngleProperty, value); }
 
@@ -146,18 +150,23 @@ public class Arc : ShapeBase
         var h = rect.Height;
         if (w == 0 || h == 0) return Geometry.Empty; // Если хотя бы одна из сторон прямоугольника равна нулю, возвращаем пустую геометрию
 
+        // Вычисляем разность исходных углов для определения полной окружности
+        var d_raw_abs = Math.Abs(End - Start);
+
+        // Если длина дуги по модулю близка к полному кругу или превышает его, рисуем полную окружность
+        if (d_raw_abs >= FullCircleDegrees - MinArcDegrees)
+            return new EllipseGeometry(rect);
+
+        // Нормализуем углы к диапазону [0;360)
         var start_angle = NormalizeAngle(Start);
         var end_angle = NormalizeAngle(End);
 
-        var d_raw = end_angle - start_angle;
-        var d_abs = Math.Abs(d_raw);
-
-        // Если длина дуги по модулю близка к полному кругу, рисуем полную окружность
-        if (d_abs >= FullCircleDegrees - MinArcDegrees)
-            return new EllipseGeometry(rect);
+        // Вычисляем угловое расстояние по часовой стрелке от start_angle до end_angle
+        var delta_clockwise = end_angle - start_angle;
+        if (delta_clockwise < 0) delta_clockwise += FullCircleDegrees; // Приводим к диапазону [0;360)
 
         // Слишком маленькая дуга считается нулевой
-        if (d_abs < MinArcDegrees)
+        if (delta_clockwise < MinArcDegrees)
             return Geometry.Empty;
 
         var p1 = GetPoint(start_angle, Radius, rect); // Вычисляем координаты начальной точки дуги
@@ -170,8 +179,9 @@ public class Arc : ShapeBase
         var radius_y = Math.Max(0, half_height * Radius);
         var arc = new Size(radius_x, radius_y); // Размеры дуги (радиусы эллипса), гарантируем неотрицательность
 
-        var is_large = d_abs > 180; // Определяем, является ли дуга большой (более 180 градусов)
-        var sweep_direction = d_raw >= 0 ? SweepDirection.Clockwise : SweepDirection.Counterclockwise; // Учитываем направление дуги
+        // Дуга всегда рисуется по часовой стрелке между нормализованными углами
+        var is_large = delta_clockwise > 180; // Большая дуга, если угловое расстояние больше 180 градусов
+        var sweep_direction = SweepDirection.Clockwise;
 
         var geometry = new StreamGeometry(); // Создаём потоковую геометрию для описания дуги
         using var context = geometry.Open(); // Открываем контекст для построения фигуры

@@ -8,18 +8,28 @@ using System.Windows.Controls;
 
 namespace MathCore.WPF.ValidationRules;
 
+/// <summary>Проверка значения на принадлежность интервалу</summary>
 public class ValueInInterval : ValidationRule
 {
+    /// <summary>Минимальная граница интервала</summary>
     public double Min { get; set; } = double.NegativeInfinity;
 
+    /// <summary>Максимальная граница интервала</summary>
     public double Max { get; set; } = double.PositiveInfinity;
 
+    /// <summary>Разрешить равенство минимальной границе</summary>
     public bool MinEquals { get; set; } = true;
 
+    /// <summary>Разрешить равенство максимальной границе</summary>
     public bool MaxEquals { get; set; } = true;
 
+    /// <summary>Сообщение об ошибке проверки</summary>
     public string? ErrorMessage { get; set; }
 
+    /// <summary>Проверка значения на принадлежность интервалу</summary>
+    /// <param name="value">Проверяемое значение</param>
+    /// <param name="c">Сведения о текущей культуре</param>
+    /// <returns>Результат проверки на принадлежность интервалу</returns>
     /// <inheritdoc />
     public override ValidationResult Validate(object? value, CultureInfo c)
     {

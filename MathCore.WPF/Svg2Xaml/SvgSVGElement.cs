@@ -30,6 +30,10 @@ using System.Xml.Linq;
 
 namespace MathCore.WPF.SVG;
 
-/// <summary>  Represents an &lt;svg&gt; element.</summary>
+/// <summary>Представляет элемент &lt;svg&gt; корневого элемента SVG документа</summary>
+/// <remarks>
+/// Этот класс является представлением корневого элемента SVG и содержит все остальные элементы документа.
+/// Отвечает за управление координатной системой, viewBox и другими параметрами всего документа
+/// </remarks>
 internal class SvgSvgElement(SvgDocument document, SvgBaseElement parent, XElement SvgElement)
     : SvgDrawableContainerBaseElement(document, parent, SvgElement);

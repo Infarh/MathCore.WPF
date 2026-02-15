@@ -2,22 +2,33 @@
 // ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable once CheckNamespace
+using MathCore.WPF;
+
 namespace Microsoft.Win32;
 
 public static class OpenFileDialogExtensions
 {
-    public static string? GetFileName(this OpenFileDialog d) => d.ShowDialog() == true ? d.FileName : null;
-    public static string? GetFileName(this OpenFileDialog d, System.Windows.Window owner) => d.ShowDialog(owner) == true ? d.FileName : null;
-
-    public static System.IO.FileInfo? GetFileInfo(this OpenFileDialog dialog)
+    extension(OpenFileDialog)
     {
-        var file = dialog.GetFileName();
-        return string.IsNullOrWhiteSpace(file) ? null : new(file);
+        public static FileDialogEx Open(string Title) => FileDialogEx.OpenFile(Title);
     }
 
-    public static System.IO.FileInfo? GetFileInfo(this OpenFileDialog dialog, System.Windows.Window owner)
+    extension(OpenFileDialog dialog)
     {
-        var file = dialog.GetFileName(owner);
-        return string.IsNullOrWhiteSpace(file) ? null : new(file);
+        public string? GetFileName() => dialog.ShowDialog() == true ? dialog.FileName : null;
+
+        public string? GetFileName(System.Windows.Window owner) => dialog.ShowDialog(owner) == true ? dialog.FileName : null;
+
+        public System.IO.FileInfo? GetFileInfo()
+        {
+            var file = dialog.GetFileName();
+            return string.IsNullOrWhiteSpace(file) ? null : new(file);
+        }
+
+        public System.IO.FileInfo? GetFileInfo(System.Windows.Window owner)
+        {
+            var file = dialog.GetFileName(owner);
+            return string.IsNullOrWhiteSpace(file) ? null : new(file);
+        }
     }
 }

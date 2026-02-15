@@ -1,14 +1,25 @@
 ﻿using System.Collections;
 
-// Atom representing horizontal row of other atoms, separated by glue.
 namespace MathCore.WPF.TeX;
 
+/// <summary>
+/// Атом, представляющий горизонтальный ряд других атомов, разделённых пробелами (glue)
+/// </summary>
+/// <remarks>
+/// RowAtom служит контейнером для последовательности атомов, размещаемых горизонтально.
+/// Этот класс отвечает за:
+/// 1. Управление коллекцией дочерних атомов
+/// 2. Обработку правил TeX типографии (BinaryOperatorChangeSet, LigatureKernChangeSet)
+/// 3. Вставку пробелов между элементами согласно их типам
+/// </remarks>
 internal class RowAtom : Atom, IRow
 {
-    // Set of atom types that make previous atom of BinaryOperator type change to Ordinary type.
+    // Набор типов атомов, которые могут изменить тип BinaryOperator в Ordinary
+    // (например, если за оператором следует отношение, оператор становится обыкновенным символом)
     private static readonly BitArray __BinaryOperatorChangeSet;
 
-    // Set of atom types that may need kern, or together with previous atom, be replaced by ligature.
+    // Набор типов атомов, которые могут требовать kern (тонкую подстройку расстояния)
+    // или вместе с предыдущим атомом быть заменены на лигатуру (если такая существует)
     private static readonly BitArray __LigatureKernChangeSet;
 
     static RowAtom()
@@ -30,14 +41,27 @@ internal class RowAtom : Atom, IRow
         __LigatureKernChangeSet.Set((int)TexAtomType.Punctuation, true);
     }
 
+    /// <summary>Предыдущий атом (используется для подсчёта типов)</summary>
     public DummyAtom PreviousAtom { get; set; }
+
+    /// <summary>Коллекция дочерних атомов в этом ряду</summary>
     public List<Atom> Elements { get; }
+
+    /// <summary>Инициализирует новый пустой ряд атомов</summary>
     public RowAtom() => Elements = [];
 
+    /// <summary>
+    /// Инициализирует новый ряд атомов из списка формул
+    /// </summary>
+    /// <param name="FormulaList">Список формул для добавления</param>
     public RowAtom(List<TexFormula> FormulaList)
         : this() =>
         Elements.AddRange(FormulaList.Where(f => f.RootAtom != null).Select(f => f.RootAtom));
 
+    /// <summary>
+    /// Инициализирует новый ряд из одного базового атома
+    /// </summary>
+    /// <param name="BaseAtom">Базовый атом (может быть null или RowAtom)</param>
     public RowAtom(Atom? BaseAtom)
         : this()
     {
@@ -49,6 +73,10 @@ internal class RowAtom : Atom, IRow
         }
     }
 
+    /// <summary>
+    /// Добавляет атом в ряд
+    /// </summary>
+    /// <param name="atom">Добавляемый атом</param>
     public void Add(Atom? atom) { if(atom != null) Elements.Add(atom); }
 
     private static void ChangeAtomToOrdinary(DummyAtom CurrentAtom, DummyAtom? PreviousAtom, Atom? NextAtom)

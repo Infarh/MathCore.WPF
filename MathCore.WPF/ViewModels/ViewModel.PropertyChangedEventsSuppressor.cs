@@ -53,9 +53,7 @@ public partial class ViewModel
         }
     }
 
-    /// <summary>
-    /// Возвращает или создает объект, подавляющий события изменения свойств в течение указанного таймаута.
-    /// </summary>
+    /// <summary>Возвращает или создает объект, подавляющий события изменения свойств в течение указанного таймаута</summary>
     /// <param name="RegistrationTimeout">Время, в течение которого будут подавляться события изменения свойств.</param>
     /// <returns>Объект, подавляющий события изменения свойств.</returns>
     public PropertyChangedEventsSuppressor SuppressPropertyChanges(TimeSpan RegistrationTimeout = default)

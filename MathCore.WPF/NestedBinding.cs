@@ -6,6 +6,24 @@ using System.Windows.Markup;
 namespace MathCore.WPF;
 
 /// <summary>Расширение разметки для создания вложенных привязок.</summary>
+/// <example>
+/// Пример использования вложенных привязок в XAML:
+/// <code><![CDATA[
+/// <TextBlock>
+///     <TextBlock.Text>
+///         <wpf:NestedBinding Converter="{StaticResource OuterConverter}">
+///             <Binding Path="Property1"/>
+///             <wpf:NestedBinding Converter="{StaticResource InnerConverter}">
+///                 <Binding Path="Property2"/>
+///                 <Binding Path="Property3"/>
+///             </wpf:NestedBinding>
+///         </wpf:NestedBinding>
+///     </TextBlock.Text>
+/// </TextBlock>
+/// ]]></code>
+/// В этом примере InnerConverter сначала преобразует Property2 и Property3,
+/// затем OuterConverter преобразует Property1 и результат InnerConverter.
+/// </example>
 [Copyright("adeptuss", url = "https://habr.com/ru/post/277157/")]
 [ContentProperty(nameof(Bindings))]
 [MarkupExtensionReturnType(typeof(object))]
