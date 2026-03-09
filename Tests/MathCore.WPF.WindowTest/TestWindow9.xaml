@@ -1,0 +1,36 @@
+﻿<Window x:Class="MathCore.WPF.WindowTest.TestWindow9"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:l="clr-namespace:MathCore.WPF.WindowTest"
+        xmlns:vm="clr-namespace:MathCore.WPF.WindowTest.ViewModels"
+        xmlns:wpf="clr-namespace:MathCore.WPF.Controls;assembly=MathCore.WPF"
+        Title="{Binding Title}" 
+        Width="980" Height="560"
+        Background="#20242C">
+    <Window.DataContext>
+        <vm:TestWindow9ViewModel />
+    </Window.DataContext>
+    <Grid Margin="12">
+        <wpf:SpectrumControl
+            ItemsSource="{Binding Spectra}"
+            AmplitudeMinimum="{Binding AmplitudeMinimum}"
+            AmplitudeMaximum="{Binding AmplitudeMaximum}"
+            FrequencyMinimum="{Binding FrequencyMinimum}"
+            FrequencyMaximum="{Binding FrequencyMaximum}"
+            FrequencyUnit="{Binding FrequencyUnit}"
+            FrequencyScale="Logarithmic"
+            PlotBackground="#10151D"
+            GridLineBrush="#45505E"
+            GridLineThickness="0.8"
+            AxisBrush="#DCE6F2"
+            AxisThickness="1.1"
+            Foreground="#E5EDF7"
+            FontSize="11"
+            HorizontalGridDivisions="8"
+            VerticalGridDivisions="10"
+            DefaultSeriesStroke="Lime"
+            DefaultSeriesThickness="1.8"/>
+    </Grid>
+</Window>
